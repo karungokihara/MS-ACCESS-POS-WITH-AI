@@ -277,3 +277,19 @@ with the next steps.
 
 *Microsoft and Microsoft Access are trademarks of Microsoft Corporation. This system is an
 independent solution built on Microsoft Access.*
+
+---
+
+## Get in touch — MS ACCESS EDIT WITH AI
+
+Need a **guide**, a walkthrough for your team, or help editing this system with AI?
+
+**Email: [karungokihara@gmail.com](mailto:karungokihara@gmail.com?subject=MS%20ACCESS%20EDIT%20WITH%20AI%20—%20Guide%20Request)**
+
+Please put **“MS ACCESS EDIT WITH AI”** in the subject line and tell me what you need:
+
+- a step-by-step guide for using the system,
+- guidance on editing forms, queries, reports or VBA,
+- a fix, an enhancement or a new module.
+
+I reply with the next steps. **MS ACCESS EDIT WITH AI** — Microsoft Access editing, guidance and support. Mail me today.
