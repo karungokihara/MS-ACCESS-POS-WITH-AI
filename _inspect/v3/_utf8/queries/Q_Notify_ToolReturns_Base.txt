@@ -1,0 +1,132 @@
+﻿dbMemo "SQL" ="SELECT M.StockMovementID AS IssueMovementID, M.MovementDate AS IssueDate, M.Expe"
+    "ctedReturnDate, DateDiff('d', Date(), DateValue(M.ExpectedReturnDate)) AS DaysUn"
+    "tilDue, IIf(\015\012        DateValue(M.ExpectedReturnDate) < Date(),\015\012   "
+    "     'OVERDUE',\015\012        IIf(\015\012            DateValue(M.ExpectedRetur"
+    "nDate) <= Date() + 2,\015\012            'DUE SOON',\015\012            'NOT DUE"
+    "'\015\012        )\015\012    ) AS AlertStatus, I.ItemID, I.InternalSKU, I.ItemN"
+    "ame, C.CategoryName, II.ItemInstanceID, II.SerialNumber, M.ProjectID, M.Assembly"
+    "JobID, M.CustomerID, M.ReferenceDocument, M.Reason AS IssueReason, M.MovementNot"
+    "es, M.Notes, DMax(\015\012        'MovementDate',\015\012        'T_StockMovemen"
+    "ts',\015\012        'ItemInstanceID=' & [M].[ItemInstanceID] &\015\012        ' "
+    "AND ToLocationID Is Not Null' &\015\012        ' AND MovementDate >= #' & Format"
+    "([M].[MovementDate],'yyyy\\/mm\\/dd hh\\:nn\\:ss') & '#' &\015\012        ' AND "
+    "(Reason=''Return to Stock'' OR Reason=''Returned to Stock'' OR Reason=''Tool Ret"
+    "urn'' OR Reason=''Project Tool Return'' OR Reason=''Return From Project'')'\015\012"
+    "    ) AS ReturnedOn, IIf(\015\012        IsNull(\015\012            DMax(\015\012"
+    "                'MovementDate',\015\012                'T_StockMovements',\015\012"
+    "                'ItemInstanceID=' & [M].[ItemInstanceID] &\015\012              "
+    "  ' AND ToLocationID Is Not Null' &\015\012                ' AND MovementDate >="
+    " #' & Format([M].[MovementDate],'yyyy\\/mm\\/dd hh\\:nn\\:ss') & '#' &\015\012  "
+    "              ' AND (Reason=''Return to Stock'' OR Reason=''Returned to Stock'' "
+    "OR Reason=''Tool Return'' OR Reason=''Project Tool Return'' OR Reason=''Return F"
+    "rom Project'')'\015\012            )\015\012        ),\015\012        'NOT RETUR"
+    "NED',\015\012        'RETURNED'\015\012    ) AS ReturnStatus, IIf(\015\012      "
+    "  DateValue(M.ExpectedReturnDate) < Date(),\015\012        'Tool overdue: ' & Nz"
+    "(I.ItemName,'') & ' / Serial: ' & Nz(II.SerialNumber,''),\015\012        IIf(\015"
+    "\012            DateValue(M.ExpectedReturnDate) <= Date() + 2,\015\012          "
+    "  'Tool due soon: ' & Nz(I.ItemName,'') & ' / Serial: ' & Nz(II.SerialNumber,'')"
+    ",\015\012            'Tool not due yet: ' & Nz(I.ItemName,'') & ' / Serial: ' & "
+    "Nz(II.SerialNumber,'')\015\012        )\015\012    ) AS AlertMessage\015\012FROM"
+    " ((T_StockMovements AS M LEFT JOIN T_Items AS I ON M.ItemID = I.ItemID) LEFT JOI"
+    "N T_Categories AS C ON I.CategoryID = C.CategoryID) LEFT JOIN T_ItemInstances AS"
+    " II ON M.ItemInstanceID = II.ItemInstanceID\015\012WHERE M.ExpectedReturnDate Is"
+    " Not Null\015\012    AND M.ItemInstanceID Is Not Null\015\012ORDER BY M.Expected"
+    "ReturnDate, I.ItemName;\015\012"
+dbMemo "Connect" =""
+dbBoolean "ReturnsRecords" ="-1"
+dbInteger "ODBCTimeout" ="60"
+dbBoolean "OrderByOn" ="0"
+dbByte "Orientation" ="0"
+dbByte "DefaultView" ="2"
+dbBinary "GUID" = Begin
+    0x5086ce8c8c8d6249a3a69e5dc5e18873
+End
+dbBoolean "FilterOnLoad" ="0"
+dbBoolean "OrderByOnLoad" ="-1"
+dbByte "PublishToWeb" ="1"
+Begin
+    Begin
+        dbText "Name" ="IssueDate"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="IssueMovementID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="DaysUntilDue"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="M.ExpectedReturnDate"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.InternalSKU"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.ItemID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="AlertStatus"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.ItemName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="C.CategoryName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="II.ItemInstanceID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="II.SerialNumber"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="M.ProjectID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="M.AssemblyJobID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="M.CustomerID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="M.ReferenceDocument"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="IssueReason"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="M.MovementNotes"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="M.Notes"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="ReturnedOn"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="ReturnStatus"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="AlertMessage"
+        dbLong "AggregateType" ="-1"
+    End
+End

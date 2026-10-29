@@ -1,0 +1,1356 @@
+﻿Option Compare Database
+Option Explicit
+
+Private Const LINE_SUBFORM As String = "SF_SupplierPOLines"
+Private Const SUPPLIER_SETUP_FORM As String = "F_SupplierSetup"
+Private Const LOCATION_SETUP_FORM As String = "F_LocationSetup"
+Private Const GOODS_RECEIPT_FORM As String = "F_GoodsReceipt"
+
+
+
+'=============================================================
+' FORM EVENTS
+'=============================================================
+Private Sub Form_Load()
+
+    On Error GoTo Err_Handler
+
+    ConfigureFormControls
+    ConfigureComboBoxes
+    ConfigureLineSubform
+    RefreshWorkflowState
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The Supplier PO form could not be initialized." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Supplier Purchase Order"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_Current()
+
+    On Error GoTo Err_Handler
+
+    ConfigureLineSubform
+
+    If Not Me.NewRecord Then
+        RecalculatePOTotals
+    End If
+
+    RefreshWorkflowState
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The Supplier PO record could not be displayed." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Supplier Purchase Order"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_BeforeInsert(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    If Len(Trim$(Nz(Me.txtPONumber, vbNullString))) = 0 Then
+        Me.txtPONumber = NextSupplierPONumber()
+    End If
+
+    If IsNull(Me.txtPODate) Then
+        Me.txtPODate = Date
+    End If
+
+    If Len(Trim$(Nz(Me.cboPOType, vbNullString))) = 0 Then
+        Me.cboPOType = "Original"
+    End If
+
+    If Len(Trim$(Nz(Me.cboPOStatus, vbNullString))) = 0 Then
+        Me.cboPOStatus = "Draft"
+    End If
+
+    If IsNull(Me.chkPrepaidFreight) Then
+        Me.chkPrepaidFreight = False
+    End If
+
+    If IsNull(Me.txtSubtotalAmount) Then
+        Me.txtSubtotalAmount = 0
+    End If
+
+    If IsNull(Me.txtFreightAmount) Then
+        Me.txtFreightAmount = 0
+    End If
+
+    If IsNull(Me.txtTaxAmount) Then
+        Me.txtTaxAmount = 0
+    End If
+
+    If IsNull(Me.txtTotalAmount) Then
+        Me.txtTotalAmount = 0
+    End If
+
+    If IsNull(Me.cboCurrencyID) Then
+        If DCount("*", "T_Currencies") = 1 Then
+            Me.cboCurrencyID = DLookup("CurrencyID", "T_Currencies")
+        End If
+    End If
+
+    If IsNull(Me.txtCreatedOn) Then
+        Me.txtCreatedOn = Now()
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Cancel = True
+    MsgBox _
+        "The new Supplier PO could not be started." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "New Supplier PO"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_BeforeUpdate(Cancel As Integer)
+    UX_CoerceBooleans Me
+
+    On Error GoTo Err_Handler
+
+    NormalizeHeaderValues
+
+    If Not ValidateBasicHeader Then
+        Cancel = True
+        Exit Sub
+    End If
+
+    If IsNull(Me.txtCreatedOn) Then
+        Me.txtCreatedOn = Now()
+    End If
+
+    Me.txtUpdatedOn = Now()
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Cancel = True
+    MsgBox _
+        "The Supplier PO header could not be validated." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Supplier PO Validation"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_AfterUpdate()
+
+    On Error Resume Next
+
+    ConfigureLineSubform
+    Me.Controls(LINE_SUBFORM).Form.Requery
+    RefreshWorkflowState
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub Form_Error(DataErr As Integer, Response As Integer)
+    Dim uxHandled As Boolean
+    UX_SuppressFormError DataErr, Response, uxHandled
+    If uxHandled Then Exit Sub
+
+    Select Case DataErr
+
+        Case 3022
+            MsgBox _
+                "That Supplier PO number already exists." & _
+                vbCrLf & _
+                "A new PO number will be generated when you try again.", _
+                vbExclamation, _
+                "Duplicate Supplier PO"
+
+            If Me.NewRecord Then
+                On Error Resume Next
+                Me.txtPONumber = NextSupplierPONumber()
+                On Error GoTo 0
+            End If
+
+            Response = acDataErrContinue
+
+        Case 3314
+            MsgBox _
+                "A required Supplier PO field is missing.", _
+                vbExclamation, _
+                "Incomplete Supplier PO"
+
+            Response = acDataErrContinue
+
+        Case Else
+            Response = acDataErrDisplay
+
+    End Select
+
+End Sub
+
+'=============================================================
+' SUPPLIER EVENTS
+'=============================================================
+Private Sub cboSupplierID_BeforeUpdate(Cancel As Integer)
+
+    On Error GoTo Exit_Handler
+
+    If Nz(Me.txtSupplierPOID, 0) <= 0 Then
+        Exit Sub
+    End If
+
+    If Nz(Me.cboSupplierID.OldValue, 0) <= 0 Then
+        Exit Sub
+    End If
+
+    If Nz(Me.cboSupplierID.OldValue, 0) = _
+       Nz(Me.cboSupplierID.value, 0) Then
+        Exit Sub
+    End If
+
+    If DCount( _
+        "*", _
+        "T_SupplierPOLines", _
+        "SupplierPOID=" & CLng(Me.txtSupplierPOID)) > 0 Then
+
+        If MsgBox( _
+            "This PO already contains item lines." & _
+            vbCrLf & vbCrLf & _
+            "Changing the supplier can make existing supplier part " & _
+            "numbers and suggested prices incorrect." & _
+            vbCrLf & vbCrLf & _
+            "Continue changing the supplier?", _
+            vbQuestion + vbYesNo + vbDefaultButton2, _
+            "Change Supplier") <> vbYes Then
+
+            Cancel = True
+        End If
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+End Sub
+
+
+Private Sub cboSupplierID_AfterUpdate()
+
+    On Error GoTo Err_Handler
+
+    If Nz(Me.cboSupplierID, 0) <= 0 Then
+        Exit Sub
+    End If
+
+    If Len(Trim$(Nz(Me.txtPaymentTerms, vbNullString))) = 0 Then
+        Me.txtPaymentTerms = Nz(DLookup( _
+            "PaymentTerms", _
+            "T_Suppliers", _
+            "SupplierID=" & CLng(Me.cboSupplierID)), _
+            vbNullString)
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The supplier defaults could not be loaded." & _
+        vbCrLf & vbCrLf & Err.Description, _
+        vbExclamation, _
+        "Supplier Purchase Order"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cboSupplierID_NotInList( _
+    NewData As String, _
+    Response As Integer _
+)
+
+    Response = acDataErrContinue
+
+    If HandleComboNotInList( _
+        Me.cboSupplierID, _
+        NewData, _
+        SUPPLIER_SETUP_FORM, _
+        "T_Suppliers", _
+        "SupplierID", _
+        "CompanyName", _
+        "SupplierCode") Then
+
+        Response = acDataErrAdded
+    Else
+        On Error Resume Next
+        Me.cboSupplierID.Undo
+        On Error GoTo 0
+    End If
+
+End Sub
+
+
+Private Sub cboSupplierID_DblClick(Cancel As Integer)
+
+    Cancel = True
+
+    If Nz(Me.cboSupplierID, 0) > 0 Then
+        EditComboEntry _
+            Me.cboSupplierID, _
+            SUPPLIER_SETUP_FORM, _
+            "SupplierID"
+    Else
+        AddComboEntry _
+            Me.cboSupplierID, _
+            SUPPLIER_SETUP_FORM, _
+            "T_Suppliers", _
+            "SupplierID"
+    End If
+
+End Sub
+
+'=============================================================
+' DELIVERY LOCATION EVENTS
+'=============================================================
+Private Sub cboDeliveryLocationID_AfterUpdate()
+
+    On Error GoTo Err_Handler
+
+    Dim WarehouseID As Variant
+
+    If Nz(Me.cboDeliveryLocationID, 0) <= 0 Then
+        Exit Sub
+    End If
+
+    WarehouseID = DLookup( _
+        "WarehouseID", _
+        "T_Locations", _
+        "LocationID=" & CLng(Me.cboDeliveryLocationID))
+
+    If IsNull(WarehouseID) Then
+        Exit Sub
+    End If
+
+    If Len(Trim$(Nz(Me.txtShipToName, vbNullString))) = 0 Then
+        Me.txtShipToName = Nz(DLookup( _
+            "WarehouseName", _
+            "T_Warehouses", _
+            "WarehouseID=" & CLng(WarehouseID)), _
+            vbNullString)
+    End If
+
+    If Len(Trim$(Nz(Me.txtShipToAddress, vbNullString))) = 0 Then
+        Me.txtShipToAddress = Nz(DLookup( _
+            "Address", _
+            "T_Warehouses", _
+            "WarehouseID=" & CLng(WarehouseID)), _
+            vbNullString)
+    End If
+
+    If Len(Trim$(Nz( _
+        Me.txtShipToContactName, _
+        vbNullString))) = 0 Then
+
+        Me.txtShipToContactName = Nz(DLookup( _
+            "ContactPerson", _
+            "T_Warehouses", _
+            "WarehouseID=" & CLng(WarehouseID)), _
+            vbNullString)
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The delivery-location details could not be loaded." & _
+        vbCrLf & vbCrLf & Err.Description, _
+        vbExclamation, _
+        "Supplier PO Delivery"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cboDeliveryLocationID_NotInList( _
+    NewData As String, _
+    Response As Integer _
+)
+
+    Response = acDataErrContinue
+
+    If HandleComboNotInList( _
+        Me.cboDeliveryLocationID, _
+        NewData, _
+        LOCATION_SETUP_FORM, _
+        "T_Locations", _
+        "LocationID", _
+        "LocationName", _
+        "LocationCode") Then
+
+        Response = acDataErrAdded
+    Else
+        On Error Resume Next
+        Me.cboDeliveryLocationID.Undo
+        On Error GoTo 0
+    End If
+
+End Sub
+
+
+Private Sub cboDeliveryLocationID_DblClick(Cancel As Integer)
+
+    Cancel = True
+
+    If Nz(Me.cboDeliveryLocationID, 0) > 0 Then
+        EditComboEntry _
+            Me.cboDeliveryLocationID, _
+            LOCATION_SETUP_FORM, _
+            "LocationID"
+    Else
+        AddComboEntry _
+            Me.cboDeliveryLocationID, _
+            LOCATION_SETUP_FORM, _
+            "T_Locations", _
+            "LocationID"
+    End If
+
+End Sub
+
+'=============================================================
+' SUBFORM EVENT
+'=============================================================
+Private Sub SF_SupplierPOLines_Enter()
+
+    If Not SaveCurrentPO Then
+        On Error Resume Next
+        Me.cboSupplierID.SetFocus
+        On Error GoTo 0
+    End If
+
+End Sub
+
+'=============================================================
+' AMOUNT EVENT
+'=============================================================
+Private Sub txtFreightAmount_AfterUpdate()
+
+    RecalculatePOTotals
+
+End Sub
+
+'=============================================================
+' BUTTON EVENTS
+'=============================================================
+Private Sub cmdNewPO_Click()
+
+    On Error GoTo Err_Handler
+
+    If Not SaveLineSubformIfDirty Then
+        Exit Sub
+    End If
+
+    If Me.Dirty Then
+        If Not SaveCurrentPO Then
+            Exit Sub
+        End If
+    End If
+
+    DoCmd.GoToRecord , , acNewRec
+    RefreshWorkflowState
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "A new Supplier PO could not be opened." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "New Supplier PO"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cmdSavePO_Click()
+
+    On Error GoTo Err_Handler
+
+    If Not SaveCurrentPO Then
+        Exit Sub
+    End If
+
+    If Not SaveLineSubformIfDirty Then
+        Exit Sub
+    End If
+
+    RecalculatePOTotals
+
+    If Me.Dirty Then
+        Me.Dirty = False
+    End If
+
+    RefreshWorkflowState
+
+    MsgBox _
+        "Supplier PO saved successfully.", _
+        vbInformation, _
+        "Supplier PO Saved"
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The Supplier PO could not be saved." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Supplier PO Save Failed"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cmdSendPO_Click()
+
+    On Error GoTo Err_Handler
+
+    If Not SaveCurrentPO Then
+        Exit Sub
+    End If
+
+    If Not SaveLineSubformIfDirty Then
+        Exit Sub
+    End If
+
+    RecalculatePOTotals
+
+    If Me.Dirty Then
+        Me.Dirty = False
+    End If
+
+    If Not ValidatePOForSending Then
+        Exit Sub
+    End If
+
+    If MsgBox( _
+        "Mark PO " & Nz(Me.txtPONumber, vbNullString) & _
+        " as sent to the supplier?" & _
+        vbCrLf & vbCrLf & _
+        "This step records the sent status. PDF preview and email " & _
+        "delivery will be connected after the PO report is built.", _
+        vbQuestion + vbYesNo + vbDefaultButton2, _
+        "Mark Supplier PO as Sent") <> vbYes Then
+
+        Exit Sub
+    End If
+
+    Me.cboPOStatus = "Sent"
+    Me.txtSentOn = Now()
+    Me.txtUpdatedOn = Now()
+
+    If Me.Dirty Then
+        Me.Dirty = False
+    End If
+
+    RefreshWorkflowState
+
+    MsgBox _
+        "The Supplier PO has been marked as Sent." & _
+        vbCrLf & vbCrLf & _
+        "No email was sent during this step.", _
+        vbInformation, _
+        "Supplier PO Sent Status"
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The Supplier PO could not be marked as Sent." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Supplier PO"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cmdReceiveGoods_Click()
+
+    On Error GoTo Err_Handler
+
+    Dim SupplierPOID As Long
+    Dim POStatus As String
+
+    If Not SaveCurrentPO Then
+        Exit Sub
+    End If
+
+    SupplierPOID = CurrentSupplierPOID()
+    POStatus = Trim$(Nz(Me.cboPOStatus, vbNullString))
+
+    If POStatus <> "Sent" And _
+       POStatus <> "Partially Received" Then
+
+        MsgBox _
+            "Only a Sent or Partially Received Supplier PO can " & _
+            "be received.", _
+            vbInformation, _
+            "Supplier PO Not Ready"
+        Exit Sub
+    End If
+
+    If Not FormExists(GOODS_RECEIPT_FORM) Then
+        MsgBox _
+            "The Goods Receipt form has not been created yet." & _
+            vbCrLf & _
+            "It is the next implementation step.", _
+            vbInformation, _
+            "Goods Receipt"
+        Exit Sub
+    End If
+
+    DoCmd.OpenForm _
+        formName:=GOODS_RECEIPT_FORM, _
+        View:=acNormal, _
+        OpenArgs:="SupplierPOID=" & SupplierPOID
+
+    Exit Sub ' <--- Added to stop successful runs from falling into the error handler
+
+Err_Handler:
+    MsgBox _
+        "The Goods Receipt screen could not be opened." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Receive Supplier PO"
+        
+Exit_Handler:
+    Exit Sub ' <--- Added the missing label definition
+
+End Sub
+
+
+Private Sub cmdClose_Click()
+
+    On Error GoTo Err_Handler
+
+    If Not SaveLineSubformIfDirty Then
+        Exit Sub
+    End If
+
+    If Me.Dirty Then
+        If Not SaveCurrentPO Then
+            Exit Sub
+        End If
+    End If
+
+    DoCmd.close acForm, Me.Name, acSaveNo
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The Supplier PO form could not be closed." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Close Supplier PO"
+    Resume Exit_Handler
+
+End Sub
+
+'=============================================================
+' PUBLIC TOTAL RECALCULATION USED BY THE LINE SUBFORM
+'=============================================================
+Public Sub RecalculatePOTotals()
+
+    On Error GoTo Err_Handler
+
+    Dim SupplierPOID As Long
+    Dim calculatedSubtotal As Currency
+    Dim calculatedTax As Currency
+    Dim FreightAmount As Currency
+    Dim calculatedTotal As Currency
+
+    SupplierPOID = CurrentSupplierPOID()
+
+    If SupplierPOID > 0 Then
+        calculatedSubtotal = Nz(DLookup( _
+            "CalculatedSubtotal", _
+            "Q_SupplierPOLineTotals", _
+            "SupplierPOID=" & SupplierPOID), 0)
+
+        calculatedTax = Nz(DLookup( _
+            "CalculatedTax", _
+            "Q_SupplierPOLineTotals", _
+            "SupplierPOID=" & SupplierPOID), 0)
+    End If
+
+    FreightAmount = Nz(Me.txtFreightAmount, 0)
+    calculatedTotal = _
+        calculatedSubtotal + calculatedTax + FreightAmount
+
+    SetCurrencyIfDifferent _
+        Me.txtSubtotalAmount, _
+        calculatedSubtotal
+
+    SetCurrencyIfDifferent _
+        Me.txtTaxAmount, _
+        calculatedTax
+
+    SetCurrencyIfDifferent _
+        Me.txtTotalAmount, _
+        calculatedTotal
+
+    Me.Recalc
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The Supplier PO totals could not be recalculated." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Supplier PO Totals"
+    Resume Exit_Handler
+
+End Sub
+
+'=============================================================
+' FORM CONFIGURATION
+'=============================================================
+Private Sub ConfigureFormControls()
+
+    Me.txtSupplierPOID.Visible = False
+    Me.txtSupplierPOID.Enabled = False
+    Me.txtSupplierPOID.Locked = True
+
+    Me.txtPONumber.Locked = True
+    Me.txtPONumber.TabStop = False
+
+    Me.txtSubtotalAmount.Locked = True
+    Me.txtSubtotalAmount.TabStop = False
+
+    Me.txtTaxAmount.Locked = True
+    Me.txtTaxAmount.TabStop = False
+
+    Me.txtTotalAmount.Locked = True
+    Me.txtTotalAmount.TabStop = False
+
+    Me.cboPOStatus.Locked = True
+    Me.cboPOStatus.TabStop = False
+
+    Me.txtSentOn.Locked = True
+    Me.txtSentOn.TabStop = False
+
+    Me.txtCreatedOn.Visible = False
+    Me.txtUpdatedOn.Visible = False
+    Me.txtCreatedByUserID.Visible = False
+
+    Me.txtNOtes.EnterKeyBehavior = True
+    Me.txtNOtes.ScrollBars = 2
+
+    Me.txtPODate.defaultValue = "=Date()"
+    Me.cboPOType.defaultValue = """Original"""
+    Me.cboPOStatus.defaultValue = """Draft"""
+    Me.chkPrepaidFreight.defaultValue = "False"
+    Me.txtSubtotalAmount.defaultValue = "0"
+    Me.txtFreightAmount.defaultValue = "0"
+    Me.txtTaxAmount.defaultValue = "0"
+    Me.txtTotalAmount.defaultValue = "0"
+
+End Sub
+
+
+Private Sub ConfigureComboBoxes()
+
+    With Me.cboSupplierID
+        .RowSourceType = "Table/Query"
+        .RowSource = _
+            "SELECT SupplierID, CompanyName, SupplierCode, " & _
+            "ContactPerson, Email " & _
+            "FROM T_Suppliers " & _
+            "ORDER BY CompanyName, SupplierCode;"
+        .BoundColumn = 1
+        .ColumnCount = 5
+        .ColumnWidths = "0cm;6cm;3cm;4cm;5cm"
+        .LimitToList = True
+        .AutoExpand = True
+    End With
+
+    With Me.cboDeliveryLocationID
+        .RowSourceType = "Table/Query"
+        .RowSource = _
+            "SELECT L.LocationID, L.LocationName, " & _
+            "L.LocationCode, W.WarehouseName, " & _
+            "L.BinNumber, L.ShelfNumber " & _
+            "FROM T_Warehouses AS W INNER JOIN T_Locations AS L " & _
+            "ON W.WarehouseID=L.WarehouseID " & _
+            "ORDER BY W.WarehouseName, L.LocationName;"
+        .BoundColumn = 1
+        .ColumnCount = 6
+        .ColumnWidths = "0cm;5cm;3cm;4cm;2cm;2cm"
+        .LimitToList = True
+        .AutoExpand = True
+    End With
+
+    With Me.cboCurrencyID
+        .RowSourceType = "Table/Query"
+        .RowSource = _
+            "SELECT CurrencyID, CurrencyCode " & _
+            "FROM T_Currencies " & _
+            "ORDER BY CurrencyCode;"
+        .BoundColumn = 1
+        .ColumnCount = 2
+        .ColumnWidths = "0cm;3cm"
+        .LimitToList = True
+        .AutoExpand = True
+    End With
+
+    With Me.cboPOType
+        .RowSourceType = "Value List"
+        .RowSource = _
+            "Original;Change Order;Revision;Blanket;Release"
+        .BoundColumn = 1
+        .ColumnCount = 1
+        .LimitToList = True
+        .AutoExpand = True
+    End With
+
+    With Me.cboPOStatus
+        .RowSourceType = "Value List"
+        .RowSource = _
+            "Draft;Sent;Partially Received;Received;Closed;Cancelled"
+        .BoundColumn = 1
+        .ColumnCount = 1
+        .LimitToList = True
+        .AutoExpand = True
+    End With
+
+End Sub
+
+
+Private Sub ConfigureLineSubform()
+
+    On Error GoTo Err_Handler
+
+    With Me.Controls(LINE_SUBFORM)
+        If .SourceObject <> "Form.SF_SupplierPOLines" Then
+            .SourceObject = "Form.SF_SupplierPOLines"
+        End If
+        .LinkMasterFields = "txtSupplierPOID"
+        .LinkChildFields = "SupplierPOID"
+        .Enabled = True
+        .Locked = False
+    End With
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Err.Raise _
+        Err.Number, _
+        "ConfigureLineSubform", _
+        "Confirm that the subform control is named '" & _
+        LINE_SUBFORM & "'." & vbCrLf & Err.Description
+
+End Sub
+
+
+Private Sub RefreshWorkflowState()
+
+    On Error Resume Next
+
+    Dim POStatus As String
+    Dim canEdit As Boolean
+    Dim hasSavedPO As Boolean
+
+    POStatus = Trim$(Nz(Me.cboPOStatus, "Draft"))
+    hasSavedPO = (CurrentSupplierPOID() > 0)
+
+    canEdit = _
+        Me.NewRecord Or _
+        POStatus = "Draft"
+
+    Me.cboSupplierID.Locked = Not canEdit
+    Me.txtPODate.Locked = Not canEdit
+    Me.txtPORevisionDate.Locked = Not canEdit
+    Me.cboPOType.Locked = Not canEdit
+    Me.txtExpectedDeliveryDate.Locked = Not canEdit
+    Me.cboDeliveryLocationID.Locked = Not canEdit
+    Me.cboCurrencyID.Locked = Not canEdit
+    Me.txtPaymentTerms.Locked = Not canEdit
+    Me.txtShipVia.Locked = Not canEdit
+    Me.chkPrepaidFreight.Locked = Not canEdit
+    Me.txtResaleNo.Locked = Not canEdit
+    Me.txtSupplierQuoteReference.Locked = Not canEdit
+    Me.txtShipToName.Locked = Not canEdit
+    Me.txtShipToAddress.Locked = Not canEdit
+    Me.txtShipToContactName.Locked = Not canEdit
+    Me.txtShipToPhone.Locked = Not canEdit
+    Me.txtShipToEmail.Locked = Not canEdit
+    Me.txtAuthorizedBy.Locked = Not canEdit
+    Me.txtAuthorizedByEmail.Locked = Not canEdit
+    Me.txtFreightAmount.Locked = Not canEdit
+    Me.txtNOtes.Locked = Not canEdit
+
+    With Me.Controls(LINE_SUBFORM).Form
+        .AllowAdditions = canEdit
+        .AllowEdits = canEdit
+        .AllowDeletions = canEdit
+    End With
+
+    Me.cmdSavePO.Enabled = canEdit
+    Me.cmdSendPO.Enabled = hasSavedPO And POStatus = "Draft"
+
+    Me.cmdReceiveGoods.Enabled = _
+        hasSavedPO And _
+        (POStatus = "Sent" Or _
+         POStatus = "Partially Received")
+
+    If POStatus = "Sent" Then
+        Me.cmdSendPO.Caption = "PO Marked Sent"
+    Else
+        Me.cmdSendPO.Caption = "Mark as Sent"
+    End If
+
+    On Error GoTo 0
+
+End Sub
+
+'=============================================================
+' VALIDATION
+'=============================================================
+Private Function ValidateBasicHeader() As Boolean
+
+    ValidateBasicHeader = False
+
+    If Len(Trim$(Nz(Me.txtPONumber, vbNullString))) = 0 Then
+        Me.txtPONumber = NextSupplierPONumber()
+    End If
+
+    If DCount( _
+        "*", _
+        "T_SupplierPOs", _
+        "PONumber='" & _
+        Replace(Me.txtPONumber, "'", "''") & _
+        "' AND SupplierPOID<>" & _
+        Nz(Me.txtSupplierPOID, 0)) > 0 Then
+
+        MsgBox _
+            "Supplier PO number '" & Me.txtPONumber & _
+            "' already exists.", _
+            vbExclamation, _
+            "Duplicate Supplier PO"
+        Exit Function
+    End If
+
+    If Nz(Me.cboSupplierID, 0) <= 0 Then
+        MsgBox _
+            "Select the supplier for this purchase order.", _
+            vbExclamation, _
+            "Supplier Required"
+        Me.cboSupplierID.SetFocus
+        Exit Function
+    End If
+
+    If IsNull(Me.txtPODate) Then
+        MsgBox _
+            "Enter the PO date.", _
+            vbExclamation, _
+            "PO Date Required"
+        Me.txtPODate.SetFocus
+        Exit Function
+    End If
+
+    If Not IsNull(Me.txtExpectedDeliveryDate) Then
+        If CDate(Me.txtExpectedDeliveryDate) < _
+           CDate(Me.txtPODate) Then
+
+            MsgBox _
+                "Expected Delivery Date cannot be earlier than " & _
+                "the PO Date.", _
+                vbExclamation, _
+                "Invalid Delivery Date"
+            Me.txtExpectedDeliveryDate.SetFocus
+            Exit Function
+        End If
+    End If
+
+    If Nz(Me.txtFreightAmount, 0) < 0 Then
+        MsgBox _
+            "Freight Amount cannot be negative.", _
+            vbExclamation, _
+            "Invalid Freight Amount"
+        Me.txtFreightAmount.SetFocus
+        Exit Function
+    End If
+
+    ValidateBasicHeader = True
+
+End Function
+
+
+Private Function ValidatePOForSending() As Boolean
+
+    Dim SupplierPOID As Long
+
+    ValidatePOForSending = False
+    SupplierPOID = CurrentSupplierPOID()
+
+    If SupplierPOID <= 0 Then
+        Exit Function
+    End If
+
+    If DCount( _
+        "*", _
+        "T_SupplierPOLines", _
+        "SupplierPOID=" & SupplierPOID & _
+        " AND Nz([LineStatus],'Open')<>'Cancelled'") = 0 Then
+
+        MsgBox _
+            "Add at least one active item line before sending the PO.", _
+            vbExclamation, _
+            "PO Lines Required"
+        Exit Function
+    End If
+
+    If Nz(Me.cboDeliveryLocationID, 0) <= 0 Then
+        MsgBox _
+            "Select the delivery location before sending the PO.", _
+            vbExclamation, _
+            "Delivery Location Required"
+        Me.cboDeliveryLocationID.SetFocus
+        Exit Function
+    End If
+
+    If Nz(Me.cboCurrencyID, 0) <= 0 Then
+        MsgBox _
+            "Select the PO currency before sending it.", _
+            vbExclamation, _
+            "Currency Required"
+        Me.cboCurrencyID.SetFocus
+        Exit Function
+    End If
+
+    If Len(Trim$(Nz(Me.txtShipToName, vbNullString))) = 0 Then
+        MsgBox _
+            "Enter the Ship To name before sending the PO.", _
+            vbExclamation, _
+            "Ship To Required"
+        Me.txtShipToName.SetFocus
+        Exit Function
+    End If
+
+    If Len(Trim$(Nz(Me.txtShipToAddress, vbNullString))) = 0 Then
+        MsgBox _
+            "Enter the Ship To address before sending the PO.", _
+            vbExclamation, _
+            "Ship To Address Required"
+        Me.txtShipToAddress.SetFocus
+        Exit Function
+    End If
+
+    If Len(Trim$(Nz(Me.txtAuthorizedBy, vbNullString))) = 0 Then
+        MsgBox _
+            "Enter the person authorizing this PO.", _
+            vbExclamation, _
+            "Authorization Required"
+        Me.txtAuthorizedBy.SetFocus
+        Exit Function
+    End If
+
+    ValidatePOForSending = True
+
+End Function
+
+
+Private Sub NormalizeHeaderValues()
+
+    NormalizeTextControl "txtPONumber"
+    NormalizeTextControl "txtPaymentTerms"
+    NormalizeTextControl "txtShipVia"
+    NormalizeTextControl "txtResaleNo"
+    NormalizeTextControl "txtSupplierQuoteReference"
+    NormalizeTextControl "txtShipToName"
+    NormalizeTextControl "txtShipToAddress"
+    NormalizeTextControl "txtShipToContactName"
+    NormalizeTextControl "txtShipToPhone"
+    NormalizeTextControl "txtShipToEmail"
+    NormalizeTextControl "txtAuthorizedBy"
+    NormalizeTextControl "txtAuthorizedByEmail"
+
+    If Len(Trim$(Nz(Me.cboPOType, vbNullString))) = 0 Then
+        Me.cboPOType = "Original"
+    End If
+
+    If Len(Trim$(Nz(Me.cboPOStatus, vbNullString))) = 0 Then
+        Me.cboPOStatus = "Draft"
+    End If
+
+    If IsNull(Me.txtFreightAmount) Then
+        Me.txtFreightAmount = 0
+    End If
+
+End Sub
+
+'=============================================================
+' SAVE AND SUBFORM HELPERS
+'=============================================================
+Private Function SaveCurrentPO() As Boolean
+
+    On Error GoTo Err_Handler
+
+    SaveCurrentPO = False
+
+    If Me.NewRecord And Not Me.Dirty Then
+        MsgBox _
+            "Select a supplier before saving the purchase order.", _
+            vbInformation, _
+            "Supplier PO"
+        Exit Function
+    End If
+
+    If Me.Dirty Then
+        Me.Dirty = False
+    End If
+
+    SaveCurrentPO = (CurrentSupplierPOID() > 0)
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    MsgBox _
+        "The Supplier PO header could not be saved." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Supplier PO Save"
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function SaveLineSubformIfDirty() As Boolean
+
+    On Error GoTo Err_Handler
+
+    SaveLineSubformIfDirty = True
+
+    With Me.Controls(LINE_SUBFORM).Form
+        If .Dirty Then
+            .Dirty = False
+        End If
+    End With
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    SaveLineSubformIfDirty = False
+    MsgBox _
+        "The current Supplier PO line could not be saved." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Supplier PO Line"
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function CurrentSupplierPOID() As Long
+
+    On Error GoTo Exit_Handler
+
+    CurrentSupplierPOID = Nz(Me.txtSupplierPOID, 0)
+
+Exit_Handler:
+    Exit Function
+
+End Function
+
+'=============================================================
+' PO NUMBER GENERATION
+'=============================================================
+Private Function NextSupplierPONumber() As String
+
+    On Error GoTo Err_Handler
+
+    Dim rs As DAO.Recordset
+    Dim existingNumber As String
+    Dim numericPart As Long
+    Dim maximumNumber As Long
+    Dim candidate As String
+
+    Set rs = CurrentDb.OpenRecordset( _
+        "SELECT PONumber " & _
+        "FROM T_SupplierPOs " & _
+        "WHERE PONumber Like 'SPO-*';", _
+        dbOpenSnapshot)
+
+    Do While Not rs.EOF
+
+        existingNumber = Trim$(Nz(rs!PONumber, vbNullString))
+
+        If UCase$(Left$(existingNumber, 4)) = "SPO-" Then
+            numericPart = Val(Mid$(existingNumber, 5))
+
+            If numericPart > maximumNumber Then
+                maximumNumber = numericPart
+            End If
+        End If
+
+        rs.MoveNext
+    Loop
+
+    candidate = "SPO-" & Format$(maximumNumber + 1, "00000")
+
+    Do While DCount( _
+        "*", _
+        "T_SupplierPOs", _
+        "PONumber='" & Replace(candidate, "'", "''") & "'") > 0
+
+        maximumNumber = maximumNumber + 1
+        candidate = "SPO-" & Format$(maximumNumber + 1, "00000")
+    Loop
+
+    NextSupplierPONumber = candidate
+
+Exit_Handler:
+    On Error Resume Next
+    If Not rs Is Nothing Then
+        rs.close
+    End If
+    Set rs = Nothing
+    On Error GoTo 0
+    Exit Function
+
+Err_Handler:
+    NextSupplierPONumber = _
+        "SPO-" & Format$(Nz(DMax( _
+            "SupplierPOID", _
+            "T_SupplierPOs"), 0) + 1, "00000")
+    Resume Exit_Handler
+
+End Function
+
+'=============================================================
+' GENERIC HELPERS
+'=============================================================
+Private Sub SetCurrencyIfDifferent( _
+    ByVal targetControl As Access.Control, _
+    ByVal newValue As Currency _
+)
+
+    If CCur(Nz(targetControl.value, 0)) <> newValue Then
+        targetControl.value = newValue
+    End If
+
+End Sub
+
+
+Private Sub NormalizeTextControl(ByVal controlName As String)
+
+    If Not ControlExists(controlName) Then
+        Exit Sub
+    End If
+
+    With Me.Controls(controlName)
+        If Len(Trim$(Nz(.value, vbNullString))) = 0 Then
+            .value = Null
+        Else
+            .value = Trim$(CStr(.value))
+        End If
+    End With
+
+End Sub
+
+
+Private Function ControlExists(ByVal controlName As String) As Boolean
+
+    On Error GoTo Not_Found
+
+    Dim controlObject As Access.Control
+
+    Set controlObject = Me.Controls(controlName)
+    ControlExists = True
+
+Exit_Handler:
+    Set controlObject = Nothing
+    Exit Function
+
+Not_Found:
+    ControlExists = False
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function FormExists(ByVal formName As String) As Boolean
+
+    On Error GoTo Not_Found
+
+    Dim formObject As AccessObject
+
+    For Each formObject In CurrentProject.AllForms
+        If StrComp( _
+            formObject.Name, _
+            formName, _
+            vbTextCompare) = 0 Then
+
+            FormExists = True
+            Exit Function
+        End If
+    Next formObject
+
+Not_Found:
+    FormExists = False
+
+End Function

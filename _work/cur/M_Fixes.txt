@@ -1,0 +1,864 @@
+﻿Option Compare Database
+Option Explicit
+
+'=============================================================
+' MODULE: M_Fixes
+'
+' Shared helpers for:
+'   - area readiness counts and drill-down lists
+'   - location / warehouse setup corrections
+'   - template status and part-number rules
+'   - list-form sizing so datasheets can scroll horizontally
+'=============================================================
+
+Public Const UX_STATUS_VALUES As String = _
+    "Draft;In Review;Pending Approval;Complete"
+
+
+'=============================================================
+' STATUS RULES
+'=============================================================
+
+Public Function UX_StatusList() As String
+
+    UX_StatusList = UX_STATUS_VALUES
+
+End Function
+
+
+Public Function UX_IsDraftStatus(ByVal statusValue As Variant) As Boolean
+
+    Dim statusText As String
+
+    statusText = Trim$(Nz(statusValue, vbNullString))
+
+    If Len(statusText) = 0 Then
+        UX_IsDraftStatus = True
+        Exit Function
+    End If
+
+    UX_IsDraftStatus = _
+        (StrComp(statusText, "Draft", vbTextCompare) = 0)
+
+End Function
+
+
+Public Sub UX_ConfigureStatusCombo(ByVal comboControl As Control)
+
+    On Error Resume Next
+
+    If comboControl Is Nothing Then Exit Sub
+
+    comboControl.RowSourceType = "Value List"
+    comboControl.RowSource = UX_STATUS_VALUES
+    comboControl.LimitToList = True
+    comboControl.ColumnCount = 1
+    comboControl.BoundColumn = 1
+    comboControl.defaultValue = """Draft"""
+
+    On Error GoTo 0
+
+End Sub
+
+
+'=============================================================
+' AREA DEFINITIONS
+'=============================================================
+
+Public Function UX_AreaKey(ByVal areaName As String) As String
+
+    Select Case LCase$(Trim$(areaName))
+
+        Case "customer": UX_AreaKey = "CustomerID"
+        Case "supplier": UX_AreaKey = "SupplierID"
+        Case "category": UX_AreaKey = "CategoryID"
+        Case "unit": UX_AreaKey = "UnitID"
+        Case "item": UX_AreaKey = "ItemID"
+        Case "template": UX_AreaKey = "AssemblyTemplateID"
+        Case "warehouse": UX_AreaKey = "WarehouseID"
+        Case "location": UX_AreaKey = "LocationID"
+        Case "project": UX_AreaKey = "ProjectID"
+
+    End Select
+
+End Function
+
+
+Public Function UX_AreaSource(ByVal areaName As String) As String
+
+    Select Case LCase$(Trim$(areaName))
+
+        Case "customer": UX_AreaSource = "T_Customers"
+        Case "supplier": UX_AreaSource = "T_Suppliers"
+        Case "category": UX_AreaSource = "T_Categories"
+        Case "unit": UX_AreaSource = "T_Units"
+        Case "item": UX_AreaSource = "T_Items"
+        Case "template": UX_AreaSource = "T_AssemblyTemplates"
+        Case "warehouse": UX_AreaSource = "T_Warehouses"
+        Case "location": UX_AreaSource = "T_Locations"
+        Case "project": UX_AreaSource = "T_Projects"
+
+    End Select
+
+End Function
+
+
+Public Function UX_AreaScope(ByVal areaName As String) As String
+
+    'The internal test customer is never part of customer readiness.
+    If LCase$(Trim$(areaName)) = "customer" Then
+        UX_AreaScope = _
+            "UCase(Trim(Nz([CustomerType],'')))<>'INTERNAL'"
+    Else
+        UX_AreaScope = vbNullString
+    End If
+
+End Function
+
+
+Public Function UX_AreaCriteria(ByVal areaName As String) As String
+
+    Dim criteriaText As String
+
+    Select Case LCase$(Trim$(areaName))
+
+        Case "customer"
+
+            criteriaText = UX_AnyMissing( _
+                UX_Blank("CustomerName"), _
+                UX_Blank("CustomerType"), _
+                UX_Blank("Status"), _
+                UX_Blank("Phone"), _
+                UX_Blank("BillingAddress"))
+
+        Case "supplier"
+
+            criteriaText = UX_AnyMissing( _
+                UX_Blank("CompanyName"), _
+                UX_Blank("SupplierCode"))
+
+        Case "category"
+
+            criteriaText = UX_AnyMissing( _
+                UX_Blank("CategoryName"), _
+                UX_MissingKey("ItemTypeID"), _
+                "[RequiresSerial] Is Null", _
+                "[RequiresExpiry] Is Null")
+
+        Case "unit"
+
+            criteriaText = UX_AnyMissing( _
+                UX_Blank("UnitCode"), _
+                UX_Blank("UnitName"))
+
+        Case "item"
+
+            criteriaText = UX_AnyMissing( _
+                UX_Blank("InternalSKU"), _
+                UX_Blank("ItemName"), _
+                UX_Blank("ItemClass"), _
+                UX_MissingKey("CategoryID"), _
+                UX_MissingKey("BaseUnitID"), _
+                UX_MissingKey("DefaultLocationID"), _
+                "[ReorderLevel] Is Null", _
+                "[MinStockLevel] Is Null", _
+                "[MaxStockLevel] Is Null", _
+                "[RequiresSerial] Is Null", _
+                "(Nz([RequiresSerial],0)<>0 AND " & _
+                    UX_Blank("SerialNumber") & ")")
+
+        Case "template"
+
+            'Drafts are work in progress and never counted as incomplete.
+            criteriaText = _
+                "(Len(Trim(Nz([Status],'')))>0 AND " & _
+                "UCase(Trim([Status]))<>'DRAFT') AND (" & _
+                UX_AnyMissing( _
+                    UX_Blank("TemplateCode"), _
+                    UX_Blank("TemplateName"), _
+                    UX_MissingKey("CustomerID"), _
+                    "([OutputQuantity] Is Null OR [OutputQuantity]<=0)", _
+                    UX_Blank("RevisionNo"), _
+                    UX_Blank("Status"), _
+                    "[EstimatedLaborHours] Is Null", _
+                    "[EstimatedMaterialCost] Is Null", _
+                    "[EstimatedTotalCost] Is Null") & ")"
+
+        Case "warehouse"
+
+            criteriaText = UX_AnyMissing( _
+                UX_Blank("WarehouseName"), _
+                UX_Blank("WarehouseCode"))
+
+        Case "location"
+
+            'A location is valid without a warehouse.
+            criteriaText = UX_AnyMissing( _
+                UX_Blank("LocationCode"), _
+                UX_Blank("LocationName"))
+
+        Case "project"
+
+            criteriaText = UX_AnyMissing( _
+                UX_Blank("ProjectName"), _
+                UX_Blank("Status"), _
+                UX_MissingKey("CustomerID"))
+
+    End Select
+
+    UX_AreaCriteria = criteriaText
+
+End Function
+
+
+Public Function UX_AreaTotal(ByVal areaName As String) As Long
+
+    Dim sourceName As String
+    Dim scopeText As String
+
+    sourceName = UX_AreaSource(areaName)
+
+    If Len(sourceName) = 0 Then Exit Function
+
+    scopeText = UX_AreaScope(areaName)
+
+    If Len(scopeText) = 0 Then
+        UX_AreaTotal = DCount("*", sourceName)
+    Else
+        UX_AreaTotal = DCount("*", sourceName, scopeText)
+    End If
+
+End Function
+
+
+Public Function UX_AreaIncomplete(ByVal areaName As String) As Long
+
+    Dim sourceName As String
+    Dim criteriaText As String
+
+    sourceName = UX_AreaSource(areaName)
+
+    If Len(sourceName) = 0 Then Exit Function
+
+    criteriaText = UX_AreaCriteria(areaName)
+
+    If Len(criteriaText) = 0 Then Exit Function
+
+    UX_AreaIncomplete = _
+        DCount( _
+            "*", _
+            sourceName, _
+            UX_Combine(UX_AreaScope(areaName), criteriaText))
+
+End Function
+
+
+Public Function UX_AreaDrafts(ByVal areaName As String) As Long
+
+    If LCase$(Trim$(areaName)) <> "template" Then Exit Function
+
+    UX_AreaDrafts = _
+        DCount( _
+            "*", _
+            "T_AssemblyTemplates", _
+            "(Len(Trim(Nz([Status],'')))=0 OR " & _
+                "UCase(Trim([Status]))='DRAFT')")
+
+End Function
+
+
+Public Function UX_AreaReady(ByVal areaName As String) As Long
+
+    Dim readyCount As Long
+
+    readyCount = _
+        UX_AreaTotal(areaName) - _
+        UX_AreaIncomplete(areaName) - _
+        UX_AreaDrafts(areaName)
+
+    If readyCount < 0 Then readyCount = 0
+
+    UX_AreaReady = readyCount
+
+End Function
+
+
+Public Function UX_AreaReadyPhrase(ByVal areaName As String) As String
+
+    Dim totalCount As Long
+    Dim incompleteCount As Long
+    Dim draftCount As Long
+    Dim singularName As String
+    Dim pluralName As String
+
+    totalCount = UX_AreaTotal(areaName)
+    incompleteCount = UX_AreaIncomplete(areaName)
+    draftCount = UX_AreaDrafts(areaName)
+
+    singularName = LCase$(Trim$(areaName))
+    pluralName = singularName & "s"
+    If singularName = "category" Then pluralName = "categories"
+
+    If totalCount = 0 Then
+        UX_AreaReadyPhrase = "No " & pluralName & " set up"
+        Exit Function
+    End If
+
+    If incompleteCount > 0 Then
+
+        UX_AreaReadyPhrase = _
+            UX_CountPhrase(UX_AreaReady(areaName), singularName, pluralName) & _
+            " ready; " & _
+            UX_CountPhrase(incompleteCount, singularName, pluralName) & _
+            " incomplete"
+
+    Else
+
+        UX_AreaReadyPhrase = _
+            UX_CountPhrase(UX_AreaReady(areaName), singularName, pluralName) & _
+            " ready"
+
+    End If
+
+    If draftCount > 0 Then
+        UX_AreaReadyPhrase = _
+            UX_AreaReadyPhrase & _
+            "; " & UX_CountPhrase(draftCount, "draft", "drafts")
+    End If
+
+End Function
+
+
+'=============================================================
+' DRILL-DOWN FILTERS AND LIST OPENING
+'=============================================================
+
+Public Function UX_AreaListForm(ByVal areaName As String) As String
+
+    Select Case LCase$(Trim$(areaName))
+
+        Case "customer": UX_AreaListForm = "F_CustomerList"
+        Case "supplier": UX_AreaListForm = "F_SupplierList"
+        Case "category": UX_AreaListForm = "F_CategoriesList"
+        Case "unit": UX_AreaListForm = "F_UnitList"
+        Case "item": UX_AreaListForm = "F_ItemSetupList"
+        Case "template": UX_AreaListForm = "F_TemplateList"
+        Case "warehouse": UX_AreaListForm = "F_WarehouseList"
+        Case "location": UX_AreaListForm = "F_LocationSetup"
+        Case "project": UX_AreaListForm = "F_ProjectList"
+
+    End Select
+
+End Function
+
+
+Public Function UX_AreaDrillFilter(ByVal areaName As String) As String
+
+    Dim keyName As String
+    Dim sourceName As String
+    Dim criteriaText As String
+
+    keyName = UX_AreaKey(areaName)
+    sourceName = UX_AreaSource(areaName)
+
+    If Len(keyName) = 0 Or Len(sourceName) = 0 Then Exit Function
+
+    criteriaText = _
+        UX_Combine( _
+            UX_AreaScope(areaName), _
+            UX_AreaCriteria(areaName))
+
+    If Len(criteriaText) = 0 Then Exit Function
+
+    UX_AreaDrillFilter = _
+        "[" & keyName & "] IN (SELECT [" & keyName & "] FROM [" & _
+        sourceName & "] WHERE " & criteriaText & ")"
+
+End Function
+
+
+Public Function UX_OpenAreaList( _
+    ByVal areaName As String, _
+    Optional ByVal incompleteOnly As Boolean = False _
+) As Boolean
+
+    Dim listFormName As String
+    Dim filterText As String
+
+    On Error GoTo Err_Handler
+
+    listFormName = UX_AreaListForm(areaName)
+
+    If Len(listFormName) = 0 Then Exit Function
+
+    If LCase$(Trim$(areaName)) = "location" Then
+
+        'The location editor is a single-record form, so the filter
+        'is passed in the WhereCondition and stays applied on load.
+        If incompleteOnly Then
+            filterText = UX_AreaDrillFilter(areaName)
+            DoCmd.OpenForm listFormName, acNormal, , filterText
+        Else
+            DoCmd.OpenForm listFormName, acNormal
+        End If
+
+        UX_OpenAreaList = True
+        Exit Function
+
+    End If
+
+    DoCmd.OpenForm listFormName, acNormal
+    UX_FilterLoadedForm listFormName, areaName, incompleteOnly
+
+    UX_OpenAreaList = True
+    Exit Function
+
+Err_Handler:
+
+    MsgBox _
+        "The " & areaName & " list could not be opened." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Open List"
+
+End Function
+
+
+'=============================================================
+' UNIT LIST ACTIONS
+'=============================================================
+
+Public Function UX_OpenNewUnit() As Boolean
+
+    On Error GoTo Err_Handler
+
+    DoCmd.OpenForm "F_UnitSetup", acNormal, , , acFormAdd, acDialog
+
+    UX_RequeryUnitList
+
+    UX_OpenNewUnit = True
+    Exit Function
+
+Err_Handler:
+
+    MsgBox _
+        "The unit editor could not be opened." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Units"
+
+End Function
+
+
+Public Function UX_EditCurrentUnit() As Boolean
+
+    Dim frm As Form
+    Dim unitIDValue As Long
+
+    On Error GoTo Err_Handler
+
+    Set frm = Screen.ActiveForm
+
+    If frm Is Nothing Then Exit Function
+
+    unitIDValue = Nz(frm![UnitID], 0)
+
+    If unitIDValue <= 0 Then Exit Function
+
+    DoCmd.OpenForm _
+        "F_UnitSetup", _
+        acNormal, _
+        , _
+        "UnitID=" & CStr(unitIDValue), _
+        , _
+        acDialog
+
+    frm.Requery
+
+    UX_EditCurrentUnit = True
+    Exit Function
+
+Err_Handler:
+
+    MsgBox _
+        "The unit could not be opened for editing." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Units"
+
+End Function
+
+
+Public Function UX_CloseActiveForm() As Boolean
+
+    On Error Resume Next
+
+    If Not Screen.ActiveForm Is Nothing Then
+        DoCmd.close acForm, Screen.ActiveForm.Name
+    End If
+
+    UX_CloseActiveForm = True
+
+End Function
+
+
+Private Sub UX_RequeryUnitList()
+
+    On Error Resume Next
+
+    If CurrentProject.AllForms("F_UnitList").IsLoaded Then
+        Forms("F_UnitList").Requery
+    End If
+
+End Sub
+
+
+Public Sub UX_FilterLoadedForm( _
+    ByVal formName As String, _
+    ByVal areaName As String, _
+    ByVal incompleteOnly As Boolean _
+)
+
+    Dim frm As Form
+    Dim listForm As Form
+    Dim filterText As String
+
+    On Error Resume Next
+
+    If Not CurrentProject.AllForms(formName).IsLoaded Then Exit Sub
+
+    Set frm = Forms(formName)
+
+    If incompleteOnly Then
+        filterText = UX_AreaDrillFilter(areaName)
+    Else
+        filterText = vbNullString
+    End If
+
+    If incompleteOnly And Len(filterText) = 0 Then Exit Sub
+
+    Set listForm = UX_SubformOf(frm)
+
+    If listForm Is Nothing Then
+        Set listForm = frm
+    End If
+
+    If Len(filterText) = 0 Then
+        listForm.FilterOn = False
+        listForm.Filter = vbNullString
+    Else
+        listForm.Filter = filterText
+        listForm.FilterOn = True
+    End If
+
+    listForm.Requery
+
+    On Error GoTo 0
+
+End Sub
+
+
+Public Function UX_SubformOf(ByVal frm As Form) As Form
+
+    Dim ctl As Control
+
+    On Error Resume Next
+
+    If frm Is Nothing Then Exit Function
+
+    For Each ctl In frm.Controls
+
+        If ctl.ControlType = acSubform Then
+            If Not ctl.Form Is Nothing Then
+                If Not ctl.Form.Recordset Is Nothing Then
+                    Set UX_SubformOf = ctl.Form
+                    Exit Function
+                End If
+            End If
+        End If
+
+    Next ctl
+
+    On Error GoTo 0
+
+End Function
+
+
+'=============================================================
+' MISSING FIELD HIGHLIGHT
+'=============================================================
+
+Public Sub UX_HighlightMissing( _
+    ByVal frm As Form, _
+    ParamArray controlNames() As Variant _
+)
+
+    Dim controlName As Variant
+    Dim ctl As Control
+    Dim valueText As String
+
+    On Error Resume Next
+
+    For Each controlName In controlNames
+
+        Set ctl = Nothing
+        Set ctl = frm.Controls(CStr(controlName))
+
+        If Not ctl Is Nothing Then
+
+            valueText = vbNullString
+
+            If Not IsNull(ctl.value) Then
+                valueText = Trim$(CStr(ctl.value))
+            End If
+
+            If Len(valueText) = 0 Then
+                ctl.BackColor = RGB(255, 232, 232)
+            Else
+                ctl.BackColor = RGB(255, 255, 255)
+            End If
+
+        End If
+
+    Next controlName
+
+    On Error GoTo 0
+
+End Sub
+
+
+Public Sub UX_HighlightMissingCustomer(ByVal frm As Form)
+
+    UX_HighlightMissing _
+        frm, _
+        "txtCustomerName", _
+        "cboCustomerType", _
+        "cboStatus", _
+        "txtPhone", _
+        "txtBillingAddress"
+
+End Sub
+
+
+'=============================================================
+' LIST FORM SIZING
+'=============================================================
+
+Public Function UX_IsListForm(ByVal frm As Form) As Boolean
+
+    Dim nameText As String
+
+    On Error Resume Next
+
+    If frm Is Nothing Then Exit Function
+
+    nameText = frm.Name
+
+    If Len(nameText) > 4 Then
+        If StrComp(Right$(nameText, 4), "List", vbTextCompare) = 0 Then
+            UX_IsListForm = True
+        End If
+    End If
+
+End Function
+
+
+Public Sub UX_FitListForm(ByVal frm As Form)
+
+    Dim ctl As Control
+    Dim listForm As Form
+    Dim newWidth As Long
+
+    On Error Resume Next
+
+    If frm Is Nothing Then Exit Sub
+
+    For Each ctl In frm.Controls
+
+        If ctl.ControlType = acSubform Then
+
+            newWidth = frm.InsideWidth - ctl.Left - 240
+
+            If newWidth > 3000 Then
+                ctl.Width = newWidth
+            End If
+
+            Set listForm = ctl.Form
+
+            If Not listForm Is Nothing Then
+                listForm.ScrollBars = 3
+            End If
+
+        End If
+
+    Next ctl
+
+    On Error GoTo 0
+
+End Sub
+
+
+'=============================================================
+' TEMPLATE PART NUMBERS
+'=============================================================
+
+Public Function UX_GeneratePartNumber( _
+    ByVal TemplateCode As String, _
+    ByVal RevisionNo As String _
+) As String
+
+    Dim baseCode As String
+    Dim revisionText As String
+
+    baseCode = UCase$(Trim$(Nz(TemplateCode, vbNullString)))
+    revisionText = UCase$(Trim$(Nz(RevisionNo, vbNullString)))
+
+    If Len(baseCode) = 0 Then Exit Function
+
+    baseCode = Replace(baseCode, " ", "-")
+
+    If Len(revisionText) > 0 Then
+        UX_GeneratePartNumber = baseCode & "-R" & revisionText
+    Else
+        UX_GeneratePartNumber = baseCode
+    End If
+
+End Function
+
+
+Public Sub UX_ApplyTemplatePartNumber(ByVal frm As Form)
+
+    Dim autoControl As Control
+    Dim numberControl As Control
+    Dim generatedNumber As String
+    Dim currentNumber As String
+
+    On Error Resume Next
+
+    If frm Is Nothing Then Exit Sub
+    If frm.NewRecord = False Then
+        If frm.Dirty = False Then Exit Sub
+    End If
+
+    Set autoControl = frm.Controls("chkAutoGeneratePartNumber")
+    Set numberControl = frm.Controls("txtInternalPartNumber")
+
+    If autoControl Is Nothing Or numberControl Is Nothing Then Exit Sub
+
+    If autoControl.value = False Then Exit Sub
+
+    generatedNumber = _
+        UX_GeneratePartNumber( _
+            Nz(frm.Controls("txtTemplateCode").value, vbNullString), _
+            Nz(frm.Controls("txtRevisionNo").value, vbNullString))
+
+    If Len(generatedNumber) = 0 Then Exit Sub
+
+    currentNumber = Trim$(Nz(numberControl.value, vbNullString))
+
+    If Len(currentNumber) = 0 Then
+        numberControl.value = generatedNumber
+    End If
+
+    On Error GoTo 0
+
+End Sub
+
+
+'=============================================================
+' CRITERIA BUILDERS
+'=============================================================
+
+Public Function UX_Blank(ByVal fieldName As String) As String
+
+    UX_Blank = _
+        "Len(Trim(Nz([" & fieldName & "],'')))=0"
+
+End Function
+
+
+Public Function UX_MissingKey(ByVal fieldName As String) As String
+
+    UX_MissingKey = _
+        "Nz([" & fieldName & "],0)=0"
+
+End Function
+
+
+Public Function UX_AnyMissing( _
+    ParamArray expressions() As Variant _
+) As String
+
+    Dim result As String
+    Dim oneExpression As Variant
+
+    For Each oneExpression In expressions
+
+        If Len(Trim$(CStr(oneExpression))) > 0 Then
+
+            If Len(result) > 0 Then
+                result = result & " OR "
+            End If
+
+            result = result & "(" & CStr(oneExpression) & ")"
+
+        End If
+
+    Next oneExpression
+
+    UX_AnyMissing = result
+
+End Function
+
+
+Public Function UX_Combine( _
+    ByVal firstPart As String, _
+    ByVal secondPart As String _
+) As String
+
+    If Len(Trim$(firstPart)) = 0 Then
+        UX_Combine = secondPart
+    ElseIf Len(Trim$(secondPart)) = 0 Then
+        UX_Combine = firstPart
+    Else
+        UX_Combine = "(" & firstPart & ") AND (" & secondPart & ")"
+    End If
+
+End Function
+
+
+Public Function UX_CountPhrase( _
+    ByVal recordCount As Long, _
+    ByVal singularName As String, _
+    ByVal pluralName As String _
+) As String
+
+    If recordCount = 1 Then
+        UX_CountPhrase = recordCount & " " & singularName
+    Else
+        UX_CountPhrase = recordCount & " " & pluralName
+    End If
+
+End Function
+
+
+'=============================================================
+' COMPILE CHECK
+'=============================================================
+
+Public Function UX_CompileAll() As Boolean
+
+    On Error Resume Next
+
+    DoCmd.RunCommand acCmdCompileAndSaveAllModules
+    UX_CompileAll = Application.IsCompiled
+
+    On Error GoTo 0
+
+End Function

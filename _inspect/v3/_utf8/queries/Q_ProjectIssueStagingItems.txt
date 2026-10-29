@@ -1,0 +1,64 @@
+﻿dbMemo "SQL" ="SELECT S.StagingID, S.ProjectID, S.IssueType, S.ItemID, I.ItemName, U.UnitName, "
+    "S.RequiredQty, S.AvailableQty, S.IssueQty, S.Selected, S.Notes\015\012FROM (T_Pr"
+    "ojectIssueStaging AS S INNER JOIN T_Items AS I ON S.ItemID = I.ItemID) LEFT JOIN"
+    " T_Units AS U ON I.BaseUnitID = U.UnitID;\015\012"
+dbMemo "Connect" =""
+dbBoolean "ReturnsRecords" ="-1"
+dbInteger "ODBCTimeout" ="60"
+dbByte "RecordsetType" ="0"
+dbBoolean "OrderByOn" ="0"
+dbByte "Orientation" ="0"
+dbByte "DefaultView" ="2"
+dbBinary "GUID" = Begin
+    0x5e378c133c52f1409f95873dae650033
+End
+dbBoolean "FilterOnLoad" ="0"
+dbBoolean "OrderByOnLoad" ="-1"
+dbBoolean "TotalsRow" ="0"
+dbByte "PublishToWeb" ="1"
+Begin
+    Begin
+        dbText "Name" ="S.Notes"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="S.StagingID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="S.IssueType"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="S.ProjectID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="S.ItemID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.ItemName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="U.UnitName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="S.RequiredQty"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="S.AvailableQty"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="S.IssueQty"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="S.Selected"
+        dbLong "AggregateType" ="-1"
+    End
+End

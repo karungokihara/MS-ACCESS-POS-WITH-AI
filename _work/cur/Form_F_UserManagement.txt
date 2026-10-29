@@ -1,0 +1,41 @@
+﻿Option Compare Database
+
+Private Sub cmdSaveUser_Click()
+
+    If Nz(Me.Username, "") = "" Then
+        MsgBox "Enter username.", vbExclamation
+        Exit Sub
+    End If
+
+    If Nz(Me.PasswordHash, "") = "" Then
+        MsgBox "Enter password.", vbExclamation
+        Exit Sub
+    End If
+
+    If Nz(Me.FullName, "") = "" Then
+        MsgBox "Enter full name.", vbExclamation
+        Exit Sub
+    End If
+
+    If Nz(Me.RoleID, 0) = 0 Then
+        MsgBox "Select a role.", vbExclamation
+        Exit Sub
+    End If
+
+    If Me.Dirty Then Me.Dirty = False
+
+    MsgBox "User saved successfully.", vbInformation
+
+End Sub
+
+
+Private Sub Form_Load()
+
+    If Not HasPermission("User Management") Then
+        MsgBox "Access denied. Only Admin can manage users.", _
+               vbExclamation, "Access Denied"
+        DoCmd.close acForm, Me.Name
+        Exit Sub
+    End If
+
+End Sub

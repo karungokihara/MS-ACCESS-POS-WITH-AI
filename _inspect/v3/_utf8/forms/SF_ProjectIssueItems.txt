@@ -1,0 +1,557 @@
+﻿Version =21
+VersionRequired =20
+PublishOption =1
+Checksum =1471944295
+Begin Form
+    AllowDeletions = NotDefault
+    DividingLines = NotDefault
+    AllowAdditions = NotDefault
+    DefaultView =2
+    ViewsAllowed =2
+    PictureAlignment =2
+    DatasheetGridlinesBehavior =3
+    GridX =24
+    GridY =24
+    Width =12540
+    RowHeight =396
+    DatasheetFontHeight =11
+    ItemSuffix =14
+    Right =15090
+    Bottom =4695
+    DatasheetGridlinesColor =15263976
+    RecSrcDt = Begin
+        0xfbea6f9f0f92e640
+    End
+    GUID = Begin
+        0x5e98b588e551c84ca0963584da3d47b6
+    End
+    BeforeUpdate ="[Event Procedure]"
+    DatasheetFontName ="Aptos"
+    OnLoad ="[Event Procedure]"
+    AllowFormView =0
+    FilterOnLoad =0
+    ShowPageMargins =0
+    DisplayOnSharePointSite =1
+    AllowLayoutView =0
+    DatasheetAlternateBackColor =15921906
+    DatasheetGridlinesColor12 =0
+    FitToScreen =1
+    DatasheetBackThemeColorIndex =1
+    BorderThemeColorIndex =3
+    ThemeFontIndex =1
+    ForeThemeColorIndex =0
+    AlternateBackThemeColorIndex =1
+    AlternateBackShade =95.0
+    NoSaveCTIWhenDisabled =1
+    Begin
+        Begin Label
+            BackStyle =0
+            FontSize =11
+            BorderColor =8355711
+            ForeColor =6710886
+            FontName ="Aptos"
+            GridlineColor =10921638
+            ThemeFontIndex =1
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =0
+            BorderTint =50.0
+            ForeThemeColorIndex =0
+            ForeTint =60.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin CheckBox
+            BorderLineStyle =0
+            LabelX =230
+            LabelY =-30
+            BorderColor =10921638
+            GridlineColor =10921638
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin TextBox
+            AddColon = NotDefault
+            FELineBreak = NotDefault
+            BorderLineStyle =0
+            LabelX =-1800
+            FontSize =11
+            BorderColor =10921638
+            ForeColor =4210752
+            FontName ="Aptos"
+            AsianLineBreak =1
+            GridlineColor =10921638
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            ThemeFontIndex =1
+            ForeThemeColorIndex =0
+            ForeTint =75.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin FormHeader
+            Height =960
+            BackColor =14482166
+            Name ="FormHeader"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x99e42869d7b5204e898c995d27a636ed
+            End
+            AlternateBackShade =95.0
+            BackTint =20.0
+        End
+        Begin Section
+            Height =4800
+            BackColor =14482166
+            Name ="Detail"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0xdc3dbdc2adf8fb44b69d4a809af92ee9
+            End
+            AlternateBackColor =14482166
+            AlternateBackShade =95.0
+            Begin
+                Begin TextBox
+                    OverlapFlags =87
+                    IMESentenceMode =3
+                    Left =2760
+                    Top =1140
+                    Width =2280
+                    Height =312
+                    ColumnWidth =3324
+                    TabIndex =1
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="Text0"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x9d67c152f38b2a47a1a36a22535aace3
+                    End
+
+                    LayoutCachedLeft =2760
+                    LayoutCachedTop =1140
+                    LayoutCachedWidth =5040
+                    LayoutCachedHeight =1452
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =93
+                            Left =1260
+                            Top =1140
+                            Width =1500
+                            Height =312
+                            Name ="Label1"
+                            Caption ="Item Name"
+                            GUID = Begin
+                                0x3c64607614a17f4581a19b9d1ff80865
+                            End
+                            LayoutCachedLeft =1260
+                            LayoutCachedTop =1140
+                            LayoutCachedWidth =2760
+                            LayoutCachedHeight =1452
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =87
+                    IMESentenceMode =3
+                    Left =2760
+                    Top =1572
+                    Width =2280
+                    Height =312
+                    TabIndex =2
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="Text2"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x206c4a56e5fb5541b6800d638f7d2742
+                    End
+
+                    LayoutCachedLeft =2760
+                    LayoutCachedTop =1572
+                    LayoutCachedWidth =5040
+                    LayoutCachedHeight =1884
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =93
+                            Left =1260
+                            Top =1572
+                            Width =1500
+                            Height =312
+                            Name ="Label3"
+                            Caption ="Unit"
+                            GUID = Begin
+                                0x08973e9e3f48b24091a6a26561fd4fcd
+                            End
+                            LayoutCachedLeft =1260
+                            LayoutCachedTop =1572
+                            LayoutCachedWidth =2760
+                            LayoutCachedHeight =1884
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =87
+                    IMESentenceMode =3
+                    Left =2760
+                    Top =2004
+                    Width =2280
+                    Height =312
+                    ColumnWidth =1488
+                    TabIndex =3
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="Text4"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x795f725283285c4caa232ebea32df4ce
+                    End
+
+                    LayoutCachedLeft =2760
+                    LayoutCachedTop =2004
+                    LayoutCachedWidth =5040
+                    LayoutCachedHeight =2316
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =93
+                            Left =1260
+                            Top =2004
+                            Width =1500
+                            Height =312
+                            Name ="Label5"
+                            Caption ="Required Qty"
+                            GUID = Begin
+                                0xb2ca619388a28941890bc1b09dff30e2
+                            End
+                            LayoutCachedLeft =1260
+                            LayoutCachedTop =2004
+                            LayoutCachedWidth =2760
+                            LayoutCachedHeight =2316
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =87
+                    IMESentenceMode =3
+                    Left =2760
+                    Top =2436
+                    Width =2280
+                    Height =312
+                    ColumnWidth =1440
+                    TabIndex =4
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="Text6"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xb62c550dcac86345b89dc1ef9ce59839
+                    End
+
+                    LayoutCachedLeft =2760
+                    LayoutCachedTop =2436
+                    LayoutCachedWidth =5040
+                    LayoutCachedHeight =2748
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =93
+                            Left =1260
+                            Top =2436
+                            Width =1500
+                            Height =312
+                            Name ="Label7"
+                            Caption ="Available Qty"
+                            GUID = Begin
+                                0x3d5859f2ecfa9c458dc8d9eddc300134
+                            End
+                            LayoutCachedLeft =1260
+                            LayoutCachedTop =2436
+                            LayoutCachedWidth =2760
+                            LayoutCachedHeight =2748
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =87
+                    IMESentenceMode =3
+                    Left =2760
+                    Top =2868
+                    Width =2280
+                    Height =312
+                    ColumnWidth =1272
+                    TabIndex =5
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="Text8"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x4d5bbc457467b141a18c2f9aa6a8bf02
+                    End
+
+                    LayoutCachedLeft =2760
+                    LayoutCachedTop =2868
+                    LayoutCachedWidth =5040
+                    LayoutCachedHeight =3180
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =93
+                            Left =1260
+                            Top =2868
+                            Width =1500
+                            Height =312
+                            Name ="Label9"
+                            Caption ="Issue Qty"
+                            GUID = Begin
+                                0x8401905627eec543a997d5e0ad1b8521
+                            End
+                            LayoutCachedLeft =1260
+                            LayoutCachedTop =2868
+                            LayoutCachedWidth =2760
+                            LayoutCachedHeight =3180
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =87
+                    IMESentenceMode =3
+                    Left =2760
+                    Top =3300
+                    Width =2280
+                    Height =312
+                    ColumnWidth =4476
+                    TabIndex =6
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="Text10"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xc773a344172761439b06b293c55862da
+                    End
+
+                    LayoutCachedLeft =2760
+                    LayoutCachedTop =3300
+                    LayoutCachedWidth =5040
+                    LayoutCachedHeight =3612
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =93
+                            Left =1260
+                            Top =3300
+                            Width =1500
+                            Height =312
+                            Name ="Label11"
+                            Caption ="Notes"
+                            GUID = Begin
+                                0x347aa50d2c93224c9a73074c8520b162
+                            End
+                            LayoutCachedLeft =1260
+                            LayoutCachedTop =3300
+                            LayoutCachedWidth =2760
+                            LayoutCachedHeight =3612
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin CheckBox
+                    OverlapFlags =85
+                    Left =2820
+                    Top =720
+                    Width =420
+                    Height =300
+                    ColumnWidth =948
+                    Name ="Check12"
+                    GUID = Begin
+                        0x5c91fa799d9b474aaf4e814ee51761f4
+                    End
+
+                    LayoutCachedLeft =2820
+                    LayoutCachedTop =720
+                    LayoutCachedWidth =3240
+                    LayoutCachedHeight =1020
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =1860
+                            Top =660
+                            Width =888
+                            Height =312
+                            Name ="Label13"
+                            Caption ="Select"
+                            GUID = Begin
+                                0x58aa1a05813bb94890b61a288d3701f1
+                            End
+                            LayoutCachedLeft =1860
+                            LayoutCachedTop =660
+                            LayoutCachedWidth =2748
+                            LayoutCachedHeight =972
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =1320
+            BackColor =14482166
+            Name ="FormFooter"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0xd4bfe8ad1501024a81a77e1a1fffb65e
+            End
+            AlternateBackShade =95.0
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+'=============================================================
+' FORM: SF_ProjectIssueItems
+' STEP 3 - SHARED ISSUE / RETURN LINE VALIDATION
+'
+' F_ProjectIssue supplies this form's RecordSource and binds the
+' existing generic datasheet controls.
+'=============================================================
+
+Private Const QUANTITY_EPSILON As Double = 0.000001
+
+
+Private Sub Form_Load()
+
+    Me.AllowAdditions = False
+    Me.AllowDeletions = False
+    Me.AllowEdits = True
+
+End Sub
+
+
+Private Sub Form_BeforeUpdate(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    Dim actionWord As String
+
+    actionWord = CurrentActionWord()
+
+    If Nz(Me!IssueQty, 0) < 0 Then
+        MsgBox _
+            UCase$(Left$(actionWord, 1)) & Mid$(actionWord, 2) & _
+            " quantity cannot be negative.", _
+            vbExclamation, _
+            "Invalid Quantity"
+        Me.Controls("Text8").SetFocus
+        Cancel = True
+        Exit Sub
+    End If
+
+    If Nz(Me!selected, False) And Nz(Me!IssueQty, 0) <= 0 Then
+        MsgBox _
+            "Enter a " & actionWord & _
+            " quantity greater than zero, or clear Select.", _
+            vbExclamation, _
+            "Quantity Required"
+        Me.Controls("Text8").SetFocus
+        Cancel = True
+        Exit Sub
+    End If
+
+    If Nz(Me!selected, False) And _
+       Nz(Me!IssueQty, 0) > Nz(Me!AvailableQty, 0) Then
+
+        MsgBox _
+            UCase$(Left$(actionWord, 1)) & Mid$(actionWord, 2) & _
+            " quantity cannot be greater than the available quantity.", _
+            vbExclamation, _
+            "Quantity Not Available"
+        Me.Controls("Text8").SetFocus
+        Cancel = True
+        Exit Sub
+    End If
+
+    If Nz(Me!selected, False) And _
+       Nz(Me!ItemInstanceID, 0) > 0 And _
+       Abs(Nz(Me!IssueQty, 0) - 1) > QUANTITY_EPSILON Then
+
+        MsgBox _
+            "A serialized item must have quantity 1.", _
+            vbExclamation, _
+            "Serialized Quantity"
+        Me.Controls("Text8").SetFocus
+        Cancel = True
+        Exit Sub
+    End If
+
+    Me!Notes = Trim$(Nz(Me!Notes, vbNullString))
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Cancel = True
+    MsgBox _
+        "The project item line could not be validated." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Project Item"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Function CurrentActionWord() As String
+
+    On Error GoTo Use_Issue
+
+    If StrComp( _
+        Nz(Me.Parent!txtIssueType, vbNullString), _
+        "Tool Return", _
+        vbTextCompare) = 0 Then
+
+        CurrentActionWord = "return"
+    Else
+        CurrentActionWord = "issue"
+    End If
+
+    Exit Function
+
+Use_Issue:
+    CurrentActionWord = "issue"
+
+End Function

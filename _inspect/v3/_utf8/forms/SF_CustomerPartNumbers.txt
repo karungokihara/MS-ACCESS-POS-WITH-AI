@@ -1,0 +1,746 @@
+﻿Version =21
+VersionRequired =20
+PublishOption =1
+Checksum =-897024281
+Begin Form
+    RecordSelectors = NotDefault
+    AutoCenter = NotDefault
+    DividingLines = NotDefault
+    AllowDesignChanges = NotDefault
+    DefaultView =2
+    PictureAlignment =2
+    DatasheetGridlinesBehavior =3
+    GridX =24
+    GridY =24
+    Width =10206
+    DatasheetFontHeight =11
+    ItemSuffix =9
+    Right =15090
+    Bottom =4695
+    DatasheetGridlinesColor =15263976
+    RecSrcDt = Begin
+        0x737b7041718de640
+    End
+    GUID = Begin
+        0x2674bcf83ed31a4fb13a746394df40c8
+    End
+    RecordSource ="T_ItemPartNumbers"
+    Caption ="SF_CustomerPartNumbers"
+    BeforeInsert ="[Event Procedure]"
+    BeforeUpdate ="[Event Procedure]"
+    DatasheetFontName ="Aptos"
+    PrtMip = Begin
+        0x6801000068010000680100006801000000000000201c0000e010000001000000 ,
+        0x010000006801000000000000a10700000100000001000000
+    End
+    PrtDevMode = Begin
+        0x0000000000000000308490d58b0200000000000000000000e70a7e35f77f0000 ,
+        0x010403069c004003032d000001000100ea0a6f08640001000f00580202000100 ,
+        0x5802030001004c657474657200000000030000000000c8420000c842e8e8e800 ,
+        0x40b5ade28b020000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000ffffffff4749533400000000000000000000000044494e55 ,
+        0x2200c80024031c00ac13d8c00000000000000000000000000000000000000000 ,
+        0x0000000000000000050000000000070000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000100000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000c8000000534d544a ,
+        0x000000001000b8007b00330045004500330039003100310034002d0033003000 ,
+        0x420034002d0034003500610034002d0041003100300039002d00310039004400 ,
+        0x3400410034003000460043004300320032007d000000524553444c4c00556e69 ,
+        0x726573444c4c00506170657253697a65004c4554544552004f7269656e746174 ,
+        0x696f6e00504f525452414954005265736f6c7574696f6e004450493630300043 ,
+        0x6f6c6f724d6f6465003234627070000000000000000000000000000000000000 ,
+        0x1c0000005634444d0100000000000000000000000000000000000000
+    End
+    PrtDevNames = Begin
+        0x08002c003f000100000000000000000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000000000000000006e ,
+        0x756c3a0000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000
+    End
+    OnLoad ="[Event Procedure]"
+    FilterOnLoad =0
+    ShowPageMargins =0
+    DisplayOnSharePointSite =1
+    DatasheetAlternateBackColor =15921906
+    DatasheetGridlinesColor12 =0
+    FitToScreen =1
+    DatasheetBackThemeColorIndex =1
+    BorderThemeColorIndex =3
+    ThemeFontIndex =1
+    ForeThemeColorIndex =0
+    AlternateBackThemeColorIndex =1
+    AlternateBackShade =95.0
+    PrtDevModeW = Begin
+        0x000037c78b02000021000000f77f000030bafbd48b0200002100000000000000 ,
+        0x80befbd48b0200005fed3db5f97f0000000008c48b020000796d2ff7f1000000 ,
+        0x01040306dc004003032d000001000100ea0a6f08640001000f00580202000100 ,
+        0x5802030001004c006500740074006500720000000000000040bafbd48b020000 ,
+        0x0000000000000000000000000000000030bafbd48b02000065000000f1000000 ,
+        0x2100000000000000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000ffffffff4749533400000000000000000000000044494e55 ,
+        0x2200c80024031c00ac13d8c00000000000000000000000000000000000000000 ,
+        0x0000000000000000050000000000070000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000100000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000c8000000534d544a ,
+        0x000000001000b8007b00330045004500330039003100310034002d0033003000 ,
+        0x420034002d0034003500610034002d0041003100300039002d00310039004400 ,
+        0x3400410034003000460043004300320032007d000000524553444c4c00556e69 ,
+        0x726573444c4c00506170657253697a65004c4554544552004f7269656e746174 ,
+        0x696f6e00504f525452414954005265736f6c7574696f6e004450493630300043 ,
+        0x6f6c6f724d6f6465003234627070000000000000000000000000000000000000 ,
+        0x1c0000005634444d0100000000000000000000000000000000000000
+    End
+    PrtDevNamesW = Begin
+        0x040028003b000100000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000006e0075006c003a000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000
+    End
+    NoSaveCTIWhenDisabled =1
+    Begin
+        Begin Label
+            BackStyle =0
+            FontSize =11
+            BorderColor =8355711
+            ForeColor =6710886
+            FontName ="Aptos"
+            GridlineColor =10921638
+            ThemeFontIndex =1
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =0
+            BorderTint =50.0
+            ForeThemeColorIndex =0
+            ForeTint =60.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin TextBox
+            AddColon = NotDefault
+            FELineBreak = NotDefault
+            BorderLineStyle =0
+            LabelX =-1800
+            FontSize =11
+            BorderColor =10921638
+            ForeColor =4210752
+            FontName ="Aptos"
+            AsianLineBreak =1
+            GridlineColor =10921638
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            ThemeFontIndex =1
+            ForeThemeColorIndex =0
+            ForeTint =75.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin ComboBox
+            AddColon = NotDefault
+            BorderLineStyle =0
+            LabelX =-1800
+            FontSize =11
+            BorderColor =10921638
+            ForeColor =2102279
+            FontName ="Aptos"
+            GridlineColor =10921638
+            AllowValueListEdits =1
+            InheritValueList =1
+            ThemeFontIndex =1
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            ForeThemeColorIndex =2
+            ForeShade =50.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin FormHeader
+            Height =1080
+            BackColor =14482166
+            Name ="FormHeader"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x89d08372ff8d3c49b1e528615dadc9c1
+            End
+            AutoHeight =1
+            AlternateBackShade =95.0
+            BackTint =20.0
+            Begin
+                Begin Label
+                    OverlapFlags =85
+                    Left =60
+                    Top =60
+                    Width =5674
+                    Height =1020
+                    FontSize =20
+                    Name ="Label6"
+                    Caption ="SF_CustomerPartNumbers"
+                    GUID = Begin
+                        0x0c9e080664adee41a01e21dae8623867
+                    End
+                    LayoutCachedLeft =60
+                    LayoutCachedTop =60
+                    LayoutCachedWidth =5734
+                    LayoutCachedHeight =1080
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                End
+            End
+        End
+        Begin Section
+            Height =4200
+            BackColor =14482166
+            Name ="Detail"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x7b05817095647e44bbd4887528154721
+            End
+            AlternateBackColor =14482166
+            AlternateBackShade =95.0
+            Begin
+                Begin TextBox
+                    Visible = NotDefault
+                    ColumnHidden = NotDefault
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =2898
+                    Top =360
+                    Width =1488
+                    Height =312
+                    ColumnWidth =1488
+                    ColumnOrder =0
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtCustomerID"
+                    ControlSource ="CustomerID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x4c7c506c300c454784599f7a36eb7371
+                    End
+
+                    LayoutCachedLeft =2898
+                    LayoutCachedTop =360
+                    LayoutCachedWidth =4386
+                    LayoutCachedHeight =672
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =360
+                            Width =2448
+                            Height =312
+                            Name ="CustomerID_Label"
+                            Caption ="CustomerID"
+                            GUID = Begin
+                                0x3808b51ff8c91e46a13285a667b9dc70
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =360
+                            LayoutCachedWidth =2808
+                            LayoutCachedHeight =672
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    Visible = NotDefault
+                    ColumnHidden = NotDefault
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =2898
+                    Top =1320
+                    Width =1488
+                    Height =312
+                    ColumnWidth =1488
+                    ColumnOrder =2
+                    TabIndex =1
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtPartNumberTypeID"
+                    ControlSource ="PartNumberTypeID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xd095934692c9ec479ae3797baf2d7e22
+                    End
+
+                    LayoutCachedLeft =2898
+                    LayoutCachedTop =1320
+                    LayoutCachedWidth =4386
+                    LayoutCachedHeight =1632
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =1320
+                            Width =2448
+                            Height =312
+                            Name ="PartNumberTypeID_Label"
+                            Caption ="PartNumberTypeID"
+                            GUID = Begin
+                                0x0b5f42eb87548f4da42a309a7438f209
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =1320
+                            LayoutCachedWidth =2808
+                            LayoutCachedHeight =1632
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =2898
+                    Top =1740
+                    Width =7248
+                    Height =576
+                    ColumnWidth =3000
+                    ColumnOrder =3
+                    TabIndex =2
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtPartNumber"
+                    ControlSource ="PartNumber"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x9dfa3421ad693148a4593679634f02f7
+                    End
+
+                    LayoutCachedLeft =2898
+                    LayoutCachedTop =1740
+                    LayoutCachedWidth =10146
+                    LayoutCachedHeight =2316
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =1740
+                            Width =2448
+                            Height =312
+                            Name ="PartNumber_Label"
+                            Caption ="PartNumber"
+                            GUID = Begin
+                                0xb8a2c39f756b5743b629498670eef5ed
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =1740
+                            LayoutCachedWidth =2808
+                            LayoutCachedHeight =2052
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin ComboBox
+                    LimitToList = NotDefault
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    ColumnCount =4
+                    Left =2880
+                    Top =900
+                    Width =2040
+                    Height =300
+                    ColumnWidth =3264
+                    ColumnOrder =1
+                    TabIndex =3
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    ColumnInfo ="\"\";\"\";\"\";\"\";\"\";\"\";\"\";\"\";\"10\";\"100\""
+                    GUID = Begin
+                        0x58ecaf4279be8f49b211445b4353f56b
+                    End
+                    Name ="cboItemID"
+                    ControlSource ="ItemID"
+                    RowSourceType ="Table/Query"
+                    RowSource ="SELECT ItemID, InternalSKU, ItemName, Nz([ItemClass], '') AS ItemClassName FROM "
+                        "T_Items ORDER BY InternalSKU, ItemName;"
+                    ColumnWidths ="0;1701;3969;1701"
+                    FontName ="Segoe UI"
+                    BaseInfo ="\"SELECT ItemID, InternalSKU, ItemName, Nz([ItemClass], '') AS ItemClassName FRO"
+                        "M T_Items ORDER BY InternalSKU, ItemName;\";\"T_Items\";\"\";\"ItemID\";\"Intern"
+                        "alSKU\";\"PrimaryKey\""
+
+                    LayoutCachedLeft =2880
+                    LayoutCachedTop =900
+                    LayoutCachedWidth =4920
+                    LayoutCachedHeight =1200
+                    ThemeFontIndex =-1
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ForeThemeColorIndex =-1
+                    ForeShade =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =1080
+                            Top =900
+                            Width =864
+                            Height =300
+                            Name ="Label8"
+                            Caption ="Item"
+                            GUID = Begin
+                                0x4ed9325c8562d441b038ff0720c2e7ee
+                            End
+                            LayoutCachedLeft =1080
+                            LayoutCachedTop =900
+                            LayoutCachedWidth =1944
+                            LayoutCachedHeight =1200
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =14482166
+            Name ="FormFooter"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x659ac214bc48134dbdb51a3e980d5f39
+            End
+            AutoHeight =1
+            AlternateBackShade =95.0
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+'=============================================================
+' FORM: SF_CustomerPartNumbers
+'
+' PURPOSE:
+'   Stores customer-specific part numbers for internal items.
+'
+' EXAMPLE:
+'   Customer Part Number: ABC-SHELF-A100
+'   Internal Item:        SHELF-001 - Wooden Shelf
+'
+' TABLE:
+'   T_ItemPartNumbers
+'
+' REQUIRED PARENT FORM:
+'   F_CustomerSetup
+'
+' IMPORTANT:
+'   The parent form/subform link should be:
+'       Link Master Fields: CustomerID
+'       Link Child Fields:  CustomerID
+'=============================================================
+
+
+Private Sub Form_Load()
+
+    On Error Resume Next
+
+    ConfigureItemCombo
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub Form_BeforeInsert(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    EnsureParentCustomerSaved
+
+    Me!CustomerID = CLng(Me.Parent!txtCustomerID)
+    Me!PartNumberTypeID = GetCustomerPartNumberTypeID()
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+
+    Cancel = True
+
+    MsgBox _
+        "The customer part-number row could not be started." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Customer Part Number"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_BeforeUpdate(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    EnsureParentCustomerSaved
+
+    Me!CustomerID = CLng(Me.Parent!txtCustomerID)
+    Me!PartNumberTypeID = GetCustomerPartNumberTypeID()
+
+    If IsNull(Me!ItemID) Then
+
+        MsgBox _
+            "Select the internal item for this customer part number.", _
+            vbExclamation, _
+            "Internal Item Required"
+
+        Cancel = True
+        Exit Sub
+
+    End If
+
+    If Len(Trim$(Nz(Me!PartNumber, vbNullString))) = 0 Then
+
+        MsgBox _
+            "Enter the customer part number.", _
+            vbExclamation, _
+            "Customer Part Number Required"
+
+        Cancel = True
+        Exit Sub
+
+    End If
+
+    Me!PartNumber = UCase$(Trim$(Nz(Me!PartNumber, vbNullString)))
+
+    If Me.NewRecord Then
+
+        If CustomerPartNumberAlreadyExists( _
+            CLng(Me!CustomerID), _
+            CLng(Me!PartNumberTypeID), _
+            CStr(Me!PartNumber) _
+        ) Then
+
+            MsgBox _
+                "This customer part number already exists for this customer." & _
+                vbCrLf & vbCrLf & _
+                "Customer Part Number: " & Me!PartNumber, _
+                vbExclamation, _
+                "Duplicate Customer Part Number"
+
+            Cancel = True
+            Exit Sub
+
+        End If
+
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+
+    Cancel = True
+
+    MsgBox _
+        "The customer part-number row could not be validated." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Customer Part Number"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub ConfigureItemCombo()
+
+    On Error Resume Next
+
+    Me.cboItemID.RowSourceType = "Table/Query"
+
+    Me.cboItemID.RowSource = _
+        "SELECT " & _
+            "ItemID, " & _
+            "InternalSKU, " & _
+            "ItemName, " & _
+            "Nz([ItemClass], '') AS ItemClassName " & _
+        "FROM T_Items " & _
+        "ORDER BY InternalSKU, ItemName;"
+
+    Me.cboItemID.BoundColumn = 1
+    Me.cboItemID.ColumnCount = 4
+    Me.cboItemID.ColumnWidths = "0cm;3cm;7cm;3cm"
+    Me.cboItemID.LimitToList = True
+    Me.cboItemID.AutoExpand = True
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub EnsureParentCustomerSaved()
+
+    If Me.Parent Is Nothing Then
+
+        Err.Raise _
+            vbObjectError + 4001, _
+            "EnsureParentCustomerSaved", _
+            "This subform must be used inside F_CustomerSetup."
+
+    End If
+
+    If Me.Parent.NewRecord Then
+
+        If Me.Parent.Dirty Then
+            Me.Parent.Dirty = False
+        End If
+
+    ElseIf Me.Parent.Dirty Then
+
+        Me.Parent.Dirty = False
+
+    End If
+
+    If IsNull(Me.Parent!txtCustomerID) Then
+
+        Err.Raise _
+            vbObjectError + 4002, _
+            "EnsureParentCustomerSaved", _
+            "Save the customer record before adding customer part numbers."
+
+    End If
+
+End Sub
+
+
+Private Function GetCustomerPartNumberTypeID() As Long
+
+    Dim valueFound As Variant
+
+    valueFound = DLookup( _
+        "PartNumberTypeID", _
+        "T_PartNumberTypes", _
+        "PartNumberTypeName = 'Customer'" _
+    )
+
+    If IsNull(valueFound) Then
+
+        Err.Raise _
+            vbObjectError + 4003, _
+            "GetCustomerPartNumberTypeID", _
+            "The part-number type 'Customer' was not found in T_PartNumberTypes."
+
+    End If
+
+    GetCustomerPartNumberTypeID = CLng(valueFound)
+
+End Function
+
+
+Private Function CustomerPartNumberAlreadyExists( _
+    ByVal CustomerID As Long, _
+    ByVal PartNumberTypeID As Long, _
+    ByVal PartNumber As String _
+) As Boolean
+
+    Dim criteria As String
+
+    criteria = _
+        "CustomerID = " & CustomerID & _
+        " AND PartNumberTypeID = " & PartNumberTypeID & _
+        " AND PartNumber = " & SqlText(PartNumber)
+
+    CustomerPartNumberAlreadyExists = _
+        DCount("*", "T_ItemPartNumbers", criteria) > 0
+
+End Function
+
+
+Private Function SqlText( _
+    ByVal value As String _
+) As String
+
+    SqlText = "'" & Replace(value, "'", "''") & "'"
+
+End Function

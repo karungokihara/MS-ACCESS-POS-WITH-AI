@@ -1,0 +1,99 @@
+﻿dbMemo "SQL" ="SELECT T.AssemblyTemplateID, T.TemplateCode, T.TemplateName, T.FinishedItemID, I"
+    ".InternalSKU AS FinishedItemSKU, I.ItemName AS FinishedItemName, T.CustomerID, T"
+    ".CustomerPartNumber, T.OutputQuantity, T.RevisionNo, T.Status, T.EstimatedLaborH"
+    "ours, T.EstimatedMaterialCost, T.EstimatedTotalCost, DCount(\"*\",\"T_AssemblyTe"
+    "mplateMaterials\",\"AssemblyTemplateID=\" & [T].[AssemblyTemplateID]) AS Materia"
+    "lLineCount, DCount(\"*\",\"T_AssemblyTemplateTools\",\"AssemblyTemplateID=\" & ["
+    "T].[AssemblyTemplateID]) AS ToolLineCount, T.CreatedOn, T.UpdatedOn, T.Notes\015"
+    "\012FROM T_AssemblyTemplates AS T LEFT JOIN T_Items AS I ON T.FinishedItemID = I"
+    ".ItemID\015\012ORDER BY T.TemplateName, T.TemplateCode;\015\012"
+dbMemo "Connect" =""
+dbBoolean "ReturnsRecords" ="-1"
+dbInteger "ODBCTimeout" ="60"
+dbBoolean "OrderByOn" ="0"
+dbByte "Orientation" ="0"
+dbByte "DefaultView" ="2"
+dbBinary "GUID" = Begin
+    0xba66b4bfde225a4ab7f8d14958b8ba66
+End
+dbBoolean "FilterOnLoad" ="0"
+dbBoolean "OrderByOnLoad" ="-1"
+dbByte "PublishToWeb" ="1"
+Begin
+    Begin
+        dbText "Name" ="T.TemplateCode"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="T.AssemblyTemplateID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="T.FinishedItemID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="T.TemplateName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="T.CustomerID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="FinishedItemName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="FinishedItemSKU"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="T.CustomerPartNumber"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="T.OutputQuantity"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="T.RevisionNo"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="T.Status"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="T.EstimatedLaborHours"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="T.EstimatedMaterialCost"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="T.EstimatedTotalCost"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="MaterialLineCount"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="ToolLineCount"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="T.CreatedOn"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="T.UpdatedOn"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="T.Notes"
+        dbLong "AggregateType" ="-1"
+    End
+End

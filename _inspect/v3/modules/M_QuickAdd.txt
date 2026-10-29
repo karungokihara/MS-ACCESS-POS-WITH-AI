@@ -1,0 +1,351 @@
+Option Compare Database
+Option Explicit
+
+'=============================================================
+' STANDARD MODULE: M_QuickAdd
+'
+' IMPORTANT:
+'   HandleComboNotInList must not requery or assign the combo.
+'   Access still owns the typed text while NotInList is running.
+'   The calling event returns acDataErrAdded so Access refreshes
+'   and selects the saved row after the event has ended.
+'=============================================================
+
+Public Function HandleComboNotInList( _
+    ByVal cbo As Access.ComboBox, _
+    ByVal NewData As String, _
+    ByVal setupFormName As String, _
+    ByVal tableName As String, _
+    ByVal idField As String, _
+    ParamArray matchingFields() As Variant _
+) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim enteredText As String
+    Dim escapedText As String
+    Dim criteria As String
+    Dim fieldName As String
+    Dim savedID As Variant
+    Dim position As Long
+    Dim openArguments As String
+    Dim parentItemClass As String
+
+    HandleComboNotInList = False
+
+    enteredText = Trim$(Nz(NewData, vbNullString))
+
+    If Len(enteredText) = 0 Then
+        Exit Function
+    End If
+
+    If MsgBox( _
+        "'" & enteredText & "' is not currently in the list." & _
+        vbCrLf & vbCrLf & _
+        "Would you like to add it now?", _
+        vbQuestion + vbYesNo, _
+        "Add New Entry") <> vbYes Then
+
+        Exit Function
+
+    End If
+
+    If Not QuickAddFormExists(setupFormName) Then
+
+        MsgBox _
+            "The setup form '" & setupFormName & "' could not be found.", _
+            vbExclamation, _
+            "Quick Add"
+
+        Exit Function
+
+    End If
+
+    '---------------------------------------------------------
+    ' Build the normal Quick Add argument
+    '---------------------------------------------------------
+
+    openArguments = "QUICKADD|" & enteredText
+
+    '---------------------------------------------------------
+    ' SPECIAL CASE:
+    ' When creating a Category from F_ItemSetup, also pass
+    ' the currently selected Item Type.
+    '---------------------------------------------------------
+
+    If StrComp(setupFormName, "F_CategorySetup", vbTextCompare) = 0 Then
+
+        On Error Resume Next
+
+        parentItemClass = Trim$(Nz(cbo.Parent!cboItemClass.value, vbNullString))
+
+        On Error GoTo Err_Handler
+
+        If Len(parentItemClass) > 0 Then
+
+            openArguments = _
+                "QUICKADD|" & enteredText & "|" & parentItemClass
+
+        End If
+
+    End If
+
+    '---------------------------------------------------------
+    ' Open setup form
+    '---------------------------------------------------------
+
+    DoCmd.OpenForm _
+        formName:=setupFormName, _
+        View:=acNormal, _
+        DataMode:=acFormAdd, _
+        WindowMode:=acDialog, _
+        OpenArgs:=openArguments
+
+    '---------------------------------------------------------
+    ' Find the newly saved record
+    '---------------------------------------------------------
+
+    escapedText = Replace(enteredText, "'", "''")
+
+    For position = LBound(matchingFields) To UBound(matchingFields)
+
+        fieldName = Trim$(CStr(matchingFields(position)))
+
+        If Len(fieldName) > 0 Then
+
+            If Len(criteria) > 0 Then
+                criteria = criteria & " OR "
+            End If
+
+            criteria = criteria & _
+                "Nz([" & fieldName & "],'')='" & _
+                escapedText & "'"
+
+        End If
+
+    Next position
+
+    If Len(criteria) = 0 Then
+
+        MsgBox _
+            "No matching field was supplied for the new entry.", _
+            vbExclamation, _
+            "Quick Add"
+
+        Exit Function
+
+    End If
+
+    savedID = DLookup( _
+        "[" & idField & "]", _
+        "[" & tableName & "]", _
+        "(" & criteria & ")")
+
+    If IsNull(savedID) Then
+
+        MsgBox _
+            "The new entry was not found after the setup form closed." & _
+            vbCrLf & _
+            "Save it using the same name that you typed.", _
+            vbInformation, _
+            "Quick Add"
+
+        Exit Function
+
+    End If
+
+    HandleComboNotInList = True
+
+    Exit Function
+
+Err_Handler:
+
+    MsgBox _
+        "The new entry could not be created." & vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Quick Add"
+
+End Function
+
+'=============================================================
+' PREFILL A SETUP FORM FROM OPENARGS
+'=============================================================
+
+Public Sub SeedQuickAddField( _
+    ByVal frm As Access.Form, _
+    ByVal targetControlName As String _
+)
+
+    On Error GoTo Exit_Handler
+
+    Dim argumentText As String
+    Dim enteredText As String
+    Dim separatorPosition As Long
+
+    argumentText = Nz(frm.OpenArgs, vbNullString)
+
+    If Left$(argumentText, 9) <> "QUICKADD|" Then
+        Exit Sub
+    End If
+
+    enteredText = Mid$(argumentText, 10)
+
+    'If additional context was passed after the entered text,
+    'only use the first section as the field value.
+    separatorPosition = InStr(enteredText, "|")
+
+    If separatorPosition > 0 Then
+        enteredText = Left$(enteredText, separatorPosition - 1)
+    End If
+
+    If Len(Trim$(enteredText)) = 0 Then
+        Exit Sub
+    End If
+
+    frm.Controls(targetControlName).value = enteredText
+
+Exit_Handler:
+    Exit Sub
+
+End Sub
+
+'=============================================================
+' ADD BUTTON SUPPORT
+' Safe because this does not run inside NotInList.
+'=============================================================
+
+Public Sub AddComboEntry( _
+    ByVal cbo As Access.ComboBox, _
+    ByVal setupFormName As String, _
+    ByVal tableName As String, _
+    ByVal idField As String _
+)
+
+    On Error GoTo Err_Handler
+
+    Dim oldMaximumID As Long
+    Dim newMaximumID As Long
+
+    If Not QuickAddFormExists(setupFormName) Then
+        MsgBox _
+            "The setup form '" & setupFormName & "' could not be found.", _
+            vbExclamation, _
+            "Add Entry"
+        Exit Sub
+    End If
+
+    oldMaximumID = Nz( _
+        DMax("[" & idField & "]", "[" & tableName & "]"), _
+        0)
+
+    DoCmd.OpenForm _
+        formName:=setupFormName, _
+        View:=acNormal, _
+        DataMode:=acFormAdd, _
+        WindowMode:=acDialog
+
+    newMaximumID = Nz( _
+        DMax("[" & idField & "]", "[" & tableName & "]"), _
+        0)
+
+    cbo.Requery
+
+    If newMaximumID > oldMaximumID Then
+        cbo.value = newMaximumID
+    End If
+
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The entry could not be added." & vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Add Entry"
+
+End Sub
+
+'=============================================================
+' EDIT BUTTON / DOUBLE-CLICK SUPPORT
+' Safe because this does not run inside NotInList.
+'=============================================================
+
+Public Sub EditComboEntry( _
+    ByVal cbo As Access.ComboBox, _
+    ByVal setupFormName As String, _
+    ByVal idField As String _
+)
+
+    On Error GoTo Err_Handler
+
+    Dim selectedID As Variant
+
+    If IsNull(cbo.value) Then
+        MsgBox _
+            "Select an entry first.", _
+            vbInformation, _
+            "Edit Entry"
+        Exit Sub
+    End If
+
+    If Not QuickAddFormExists(setupFormName) Then
+        MsgBox _
+            "The setup form '" & setupFormName & "' could not be found.", _
+            vbExclamation, _
+            "Edit Entry"
+        Exit Sub
+    End If
+
+    selectedID = cbo.value
+
+    DoCmd.OpenForm _
+        formName:=setupFormName, _
+        View:=acNormal, _
+        WhereCondition:="[" & idField & "]=" & CLng(selectedID), _
+        DataMode:=acFormEdit, _
+        WindowMode:=acDialog
+
+    cbo.Requery
+    cbo.value = selectedID
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The entry could not be edited." & vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Edit Entry"
+
+End Sub
+
+'=============================================================
+' FORM EXISTENCE CHECK
+'=============================================================
+
+Public Function QuickAddFormExists( _
+    ByVal formName As String _
+) As Boolean
+
+    On Error GoTo Not_Found
+
+    Dim formObject As AccessObject
+
+    For Each formObject In CurrentProject.AllForms
+        If StrComp( _
+            formObject.Name, _
+            formName, _
+            vbTextCompare) = 0 Then
+
+            QuickAddFormExists = True
+            Exit Function
+        End If
+    Next formObject
+
+Not_Found:
+    QuickAddFormExists = False
+
+End Function

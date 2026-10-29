@@ -1,0 +1,119 @@
+=== F_CustomerSetup
+Label20 type=100 src= cap=Customer Setup L=6000 T=60
+cboFindCustomer type=111 src= cap= L=2940 T=660
+Label22 type=100 src= cap=Find Customer L=360 T=660
+cmdUXBack type=104 src= cap=Back L=200 T=60
+txtCustomerID type=109 src=CustomerID cap= L=13758 T=300
+CustomerID_Label type=100 src= cap=CustomerID L=13440 T=300
+txtCustomerCode type=109 src=CustomerCode cap= L=2898 T=780
+CustomerCode_Label type=100 src= cap=CustomerCode  * L=360 T=780
+txtCustomerName type=109 src=CustomerName cap= L=2898 T=1200
+CustomerName_Label type=100 src= cap=CustomerName   * L=360 T=1200
+txtContactPerson type=109 src=ContactPerson cap= L=2898 T=1680
+ContactPerson_Label type=100 src= cap=ContactPerson L=360 T=1680
+txtPhone type=109 src=Phone cap= L=2898 T=2160
+Phone_Label type=100 src= cap=Phone L=360 T=2160
+txtEmail type=109 src=Email cap= L=2898 T=2640
+Email_Label type=100 src= cap=Email   * L=360 T=2640
+txtBillingAddress type=109 src=BillingAddress cap= L=9618 T=780
+BillingAddress_Label type=100 src= cap=Billing Address L=7680 T=780
+txtShippingAddress type=109 src=ShippingAddress cap= L=9618 T=1260
+ShippingAddress_Label type=100 src= cap=Shipping Address L=7656 T=1260
+txtNotes type=109 src=Notes cap= L=2838 T=3180
+Notes_Label type=100 src= cap=Notes L=300 T=3300
+cmdNewCustomer type=104 src= cap=Add New Customer L=1680 T=4620
+cmdSaveCustomer type=104 src= cap=Save L=4500 T=4620
+cmdClose type=104 src= cap=Close L=7200 T=4620
+SF_CustomerPartNumbers type=112 src= cap= L=0 T=5580
+SF_CustomerPartNumbers Label type=100 src= cap=Customer Part Numbers L=3840 T=5220
+cboStatus type=111 src= cap= L=9600 T=1680
+Label29 type=100 src= cap=Status L=7800 T=1680
+cboCustomerType type=111 src=CustomerType cap= L=9600 T=2100
+Label30 type=100 src= cap=CustomerType L=7800 T=2100
+=== F_AssemblyTemplate
+Label18 type=100 src= cap=Assembly Template L=7560 T=60
+cmdUXBack type=104 src= cap=Back L=200 T=60
+txtAssemblyTemplateID type=109 src=AssemblyTemplateID cap= L=11898 T=2640
+AssemblyTemplateID_Label type=100 src= cap=AssemblyTemplateID L=9600 T=2640
+txtTemplateCode type=109 src=TemplateCode cap= L=2538 T=720
+TemplateCode_Label type=100 src= cap=TemplateCode L=0 T=720
+txtTemplateName type=109 src=TemplateName cap= L=2538 T=300
+TemplateName_Label type=100 src= cap=TemplateName L=0 T=300
+txtOutputQuantity type=109 src=OutputQuantity cap= L=2514 T=1560
+OutputQuantity_Label type=100 src= cap=OutputQuantity L=60 T=1560
+txtRevisionNo type=109 src=RevisionNo cap= L=10662 T=420
+RevisionNo_Label type=100 src= cap=Revision No L=8124 T=420
+txtEstimatedLaborHours type=109 src=EstimatedLaborHours cap= L=10662 T=840
+EstimatedLaborHours_Label type=100 src= cap=Estimated Labor Hours L=8100 T=840
+txtEstimatedMaterialCost type=109 src=EstimatedMaterialCost cap= L=10662 T=1260
+EstimatedMaterialCost_Label type=100 src= cap=Estimated Material Cost L=7980 T=1260
+txtEstimatedTotalCost type=109 src=EstimatedTotalCost cap= L=10662 T=1680
+EstimatedTotalCost_Label type=100 src= cap=Estimated Total Cost L=8124 T=1680
+txtNotes type=109 src=Notes cap= L=480 T=3120
+Notes_Label type=100 src= cap=Work Instructions / Notes L=6300 T=2640
+cboCustomerID type=111 src=CustomerID cap= L=2520 T=1140
+Label20 type=100 src= cap=Customer L=720 T=1140
+cboStatus type=111 src=Status cap= L=10644 T=2040
+Label28 type=100 src= cap=Status L=8844 T=2040
+cmdNewTemplate type=104 src= cap=New Template L=840 T=5400
+cmdSaveTemplate type=104 src= cap=Save Template L=2820 T=5400
+cmdRecalculateCosts type=104 src= cap=Recalculate Cost L=4740 T=5400
+cmdClose type=104 src= cap=Close L=9000 T=5400
+SF_AssemblyTemplateMaterials type=112 src= cap= L=240 T=6180
+SF_AssemblyTemplateMaterials Label type=100 src= cap=Assembly Materials L=8100 T=5880
+SF_AssemblyTemplateTools type=112 src= cap= L=13320 T=360
+SF_AssemblyTemplateTools Label type=100 src= cap=Assembly Tools L=16080 T=60
+cmdPrintNotesPDF type=104 src= cap=Print Notes L=6840 T=5400
+cmdNewCustomer type=104 src= cap=Add  L=6240 T=1140
+cmdAddToolItem type=104 src= cap=Add tool L=11100 T=5400
+cmdAddMaterialItem type=104 src= cap=Add Materials L=12960 T=5400
+cboWorkInstructionID type=111 src=WorkInstructionID cap= L=3150 T=2640
+Label57 type=100 src= cap=Choose Work Instruction L=420 T=2640
+cmdManageWorkInstructions type=104 src= cap=Manage Work Instructions L=15300 T=5400
+Label62 type=100 src= cap=Part Numbers L=480 T=12300
+Label63 type=100 src= cap=Manufacturer Part No. L=480 T=12660
+Text64 type=109 src=ManufacturerPartNumber cap= L=3500 T=12660
+Label65 type=100 src= cap=Vendor Part No. L=7000 T=12660
+Text66 type=109 src=VendorPartNumber cap= L=9400 T=12660
+Label67 type=100 src= cap=Internal Part No. L=480 T=13040
+Text68 type=109 src=InternalPartNumber cap= L=3500 T=13040
+Check69 type=106 src=AutoGeneratePartNumber cap= L=7000 T=13040
+=== F_SystemSettings
+Label0 type=100 src= cap=SYSTEM SETUP L=6960 T=240
+lblSetupSummary type=100 src= cap=3 of 8 setup areas completed L=0 T=960
+lblSetupProgress type=100 src= cap=Setup Completion: 37% L=2760 T=960
+lblIncompleteSummary type=100 src= cap=47 incomplete records across 5 setup areas L=5220 T=960
+cmdUXBack type=104 src= cap=Back L=200 T=60
+shpStorageCard type=101 src= cap= L=12180 T=1860
+shpPartnersCard type=101 src= cap= L=1200 T=1860
+shpInventoryCard type=101 src= cap= L=6660 T=1860
+cmdCustomerSetup type=104 src= cap=Review Customers L=1260 T=1980
+cmdSupplierSetup type=104 src= cap=Review Suppliers L=1260 T=3420
+cmdCategorySetup type=104 src= cap=Review Categories L=6780 T=1920
+cmdWarehouseSetup type=104 src= cap=Manage Warehouses L=12300 T=1980
+cmdItemSetup type=104 src= cap=Review Items L=6780 T=4200
+cmdRefresh type=104 src= cap=Refresh L=6420 T=6900
+cmdNextStep type=104 src= cap=Next L=8100 T=6900
+cmdLocationSetup type=104 src= cap=Manage Locations L=12300 T=3300
+cmdClose type=104 src= cap=Close L=9660 T=6900
+Label11 type=100 src= cap=?? PARTNERS L=2100 T=1380
+Label12 type=100 src= cap=?? ITEMS L=8124 T=1380
+Label13 type=100 src= cap=?? STORAGE L=12840 T=1380
+lblWarehouseStatus type=100 src= cap=1 warehouse ready L=12300 T=2460
+lblLocationStatus type=100 src= cap=9 locations ready L=12300 T=3840
+lblSupplierStatus type=100 src= cap=0 suppliers ready; 4 suppliers incomplete L=1260 T=3900
+lblCustomerStatus type=100 src= cap=0 customers ready; 7 customers incomplete L=1260 T=2460
+lblItemStatus type=100 src= cap=3 items ready; 14 items incomplete L=6780 T=4680
+lblCategoryStatus type=100 src= cap=6 categories ready; 7 categories incomplete L=6780 T=2460
+cmdNextAction type=104 src= cap=Review Categories L=5700 T=720
+lblNextActionTitle type=100 src= cap=NEXT ACTION L=480 T=300
+cmdTemplateSetup type=104 src= cap=Review Templates L=6780 T=5340
+cmdUnitSetup type=104 src= cap=Add Units L=6780 T=3120
+lblUnitStatus type=100 src= cap=7 units ready L=6780 T=3600
+lblTemplateStatus type=100 src= cap=0 templates ready; 15 templates incomplete L=6780 T=5880
+boxNextAction type=101 src= cap= L=420 T=180
+lblNextAction type=100 src= cap=7 category records need required details. L=480 T=720
+cmdUserManagement type=104 src= cap=User Management L=15840 T=360
+Command44 type=104 src= cap=Backup All Data L=1200 T=7500
+Command45 type=104 src= cap=Restore All Data L=4400 T=7500
+DONE

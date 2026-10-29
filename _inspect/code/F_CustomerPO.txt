@@ -1,0 +1,1796 @@
+﻿Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+'=============================================================
+' FORM: F_CustomerPO
+'
+' PURPOSE:
+'   Records customer purchase orders received from customers.
+'
+' IMPORTANT:
+'   Vendor on the customer PO means "our company".
+'   Therefore, this form does not ask for Vendor.
+'
+'   This form does NOT move stock.
+'   This form does NOT create invoice directly.
+'
+' REQUIRED MAIN FORM CONTROLS:
+'   txtCustomerPOID
+'   cboCustomerID
+'   txtPONumber
+'   txtPODate
+'   txtPORevisionDate
+'   cboPOType
+'   txtPaymentTerms
+'   txtShipVia
+'   chkPrepaidFreight
+'   txtResaleNo
+'   txtShipToName
+'   txtShipToAddress
+'   txtShipToContactName
+'   txtShipToPhone
+'   txtShipToEmail
+'   txtAuthorizedBy
+'   txtAuthorizedByEmail
+'   txtSubtotalAmount
+'   txtMiscChargeAmount
+'   txtTaxAmount
+'   txtTotalAmount
+'   cboPOStatus
+'   chkGoodsConfirmed
+'   txtGoodsConfirmedOn
+'   txtSalesOrderID
+'   txtInvoiceID
+'   txtSourceFilePath
+'   txtNotes
+'
+' REQUIRED SUBFORM CONTROL NAME:
+'   subCustomerPOLines
+'
+' SUBFORM BEHAVIOUR:
+'   The lines subform remains enabled for both new and existing POs.
+'   When the user enters it, Access automatically saves a valid PO
+'   header first so that CustomerPOID can link the child lines.
+'
+' REQUIRED BUTTONS:
+'   cmdNewPO
+'   cmdSavePO
+'   cmdConfirmGoods
+'   cmdCreateSalesOrder
+'   cmdOpenSalesOrder
+'   cmdClose
+'=============================================================
+
+
+'=============================================================
+' FORM EVENTS
+'=============================================================
+Private Sub Form_Load()
+
+    On Error GoTo Err_Handler
+
+    ConfigurePOForm
+    ConfigurePOCombos
+    SetPODefaultValues
+    SetLineSubformAvailability
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+
+    MsgBox _
+        "The customer PO form could not be loaded." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Customer PO"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_Current()
+
+    On Error Resume Next
+
+    SetPODefaultValues
+    SetLineSubformAvailability
+    RecalculatePOTotals
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub Form_BeforeUpdate(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    If IsBlankNewPORecord Then
+        Me.Undo
+        Exit Sub
+    End If
+
+    NormalizePOValues
+
+    If Not ValidatePORecord Then
+        Cancel = True
+        Exit Sub
+    End If
+
+    If Me.NewRecord Then
+        SafeSetField "CreatedOn", Now()
+    End If
+
+    SafeSetField "UpdatedOn", Now()
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+
+    Cancel = True
+
+    MsgBox _
+        "The customer PO could not be validated." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Customer PO Validation"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_AfterUpdate()
+
+    On Error Resume Next
+
+    SetLineSubformAvailability
+
+    On Error GoTo 0
+
+End Sub
+
+
+'=============================================================
+' CONTROL EVENTS
+'=============================================================
+Private Sub cboCustomerID_AfterUpdate()
+
+    On Error Resume Next
+
+    If IsNull(Me.cboCustomerID) Then Exit Sub
+
+    If Len(Trim$(Nz(Me.txtShipToName, vbNullString))) = 0 Then
+        Me.txtShipToName = Nz(Me.cboCustomerID.Column(1), vbNullString)
+    End If
+
+    If Len(Trim$(Nz(Me.txtPaymentTerms, vbNullString))) = 0 Then
+        Me.txtPaymentTerms = Nz(DLookup( _
+            "DefaultPaymentTerms", _
+            "T_Customers", _
+            "CustomerID = " & CLng(Me.cboCustomerID) _
+        ), vbNullString)
+    End If
+
+    If Len(Trim$(Nz(Me.txtShipVia, vbNullString))) = 0 Then
+        Me.txtShipVia = Nz(DLookup( _
+            "DefaultShipVia", _
+            "T_Customers", _
+            "CustomerID = " & CLng(Me.cboCustomerID) _
+        ), vbNullString)
+    End If
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub txtMiscChargeAmount_AfterUpdate()
+
+    RecalculatePOTotals
+
+End Sub
+
+
+Private Sub txtPONumber_BeforeUpdate(Cancel As Integer)
+
+    If Nz(Me.cboCustomerID, 0) = 0 Then
+        MsgBox "Please select a customer.", vbExclamation
+        Cancel = True
+        Exit Sub
+    End If
+
+    If Nz(DLookup("CustomerType", "T_Customers", _
+        "CustomerID=" & Me.cboCustomerID), "") = "External" Then
+
+        If Trim(Nz(Me.txtPONumber, "")) = "" Then
+            MsgBox "PO Number is required for External customers.", _
+                   vbExclamation, "PO Required"
+            Cancel = True
+            
+            Exit Sub
+        End If
+
+    End If
+
+End Sub
+
+
+
+
+Private Sub txtTaxAmount_AfterUpdate()
+
+    RecalculatePOTotals
+
+End Sub
+
+
+'=============================================================
+' BUTTON EVENTS
+'=============================================================
+
+Private Sub cmdSavePO_Click()
+
+    On Error GoTo Err_Handler
+
+    If IsBlankNewPORecord Then
+
+        MsgBox _
+            "Enter the customer PO details before saving.", _
+            vbExclamation, _
+            "Customer PO Required"
+
+        Me.cboCustomerID.SetFocus
+        Exit Sub
+
+    End If
+
+    'PO is mandatory for External customers only
+    If Nz(DLookup("CustomerType", "T_Customers", _
+        "CustomerID=" & Nz(Me.cboCustomerID, 0)), "") = "External" Then
+
+        If Trim(Nz(Me.txtPONumber, "")) = "" Then
+
+            MsgBox _
+                "PO Number is required for External customers.", _
+                vbExclamation, _
+                "PO Required"
+
+            Exit Sub
+
+        End If
+
+    End If
+
+    If Me.Dirty Then
+        Me.Dirty = False
+    End If
+
+    SetLineSubformAvailability
+
+    If SaveLineSubformIfDirty = False Then
+        Exit Sub
+    End If
+
+    RecalculatePOTotals
+
+    If Me.Dirty Then
+        Me.Dirty = False
+    End If
+
+    MsgBox _
+        "Customer PO saved successfully.", _
+        vbInformation, _
+        "Customer PO Saved"
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+
+    If Err.Number = 3022 Then
+
+        MsgBox _
+            "This PO may already exist for the selected customer." & _
+            vbCrLf & vbCrLf & _
+            "Check the PO number and try again.", _
+            vbExclamation, _
+            "Duplicate PO"
+
+    Else
+
+        MsgBox _
+            "The customer PO could not be saved." & _
+            vbCrLf & vbCrLf & _
+            "Error Number: " & Err.Number & vbCrLf & _
+            "Details: " & Err.Description, _
+            vbExclamation, _
+            "Customer PO Save Failed"
+
+    End If
+
+    Resume Exit_Handler
+
+End Sub
+
+
+
+Private Sub cmdCreateSalesOrder_Click()
+
+    On Error GoTo Err_Handler
+
+    Dim newSalesOrderID As Long
+    Dim existingSalesOrderID As Long
+    Dim poID As Long
+
+    poID = Nz(Me.txtCustomerPOID, 0)
+
+    If poID <= 0 Then
+        MsgBox _
+            "Save the customer PO before creating a sales order.", _
+            vbExclamation, _
+            "Customer PO Required"
+        Exit Sub
+    End If
+
+    'Save current PO header only if it is dirty.
+    If Me.Dirty Then
+        DoCmd.RunCommand acCmdSaveRecord
+    End If
+
+    'Save current PO line if the user is editing one.
+    If SaveLineSubformIfDirty = False Then
+        Exit Sub
+    End If
+
+    RecalculatePOTotals
+
+    If CountPOLines = 0 Then
+        MsgBox _
+            "Add at least one PO line before creating a sales order.", _
+            vbExclamation, _
+            "No PO Lines"
+        Exit Sub
+    End If
+
+    If Nz(Me.chkGoodsConfirmed, False) = False Then
+        MsgBox _
+            "Confirm goods before creating the sales order.", _
+            vbExclamation, _
+            "Goods Not Confirmed"
+        Exit Sub
+    End If
+
+    'Check whether a Sales Order already exists.
+    existingSalesOrderID = Nz(DLookup( _
+        "SalesOrderID", _
+        "T_SalesOrders", _
+        "CustomerPOID = " & poID _
+    ), 0)
+
+    If existingSalesOrderID > 0 Then
+
+        MsgBox _
+            "A sales order already exists for this customer PO." & _
+            vbCrLf & vbCrLf & _
+            "The existing sales order will be opened.", _
+            vbInformation, _
+            "Sales Order Already Exists"
+
+        Me.Refresh
+        OpenSalesOrderByID existingSalesOrderID
+        Exit Sub
+
+    End If
+
+    'Create Sales Order using the transaction function.
+    newSalesOrderID = CreateSalesOrderFromCurrentPO()
+
+    If newSalesOrderID <= 0 Then
+        Exit Sub
+    End If
+
+    'Do not manually set txtSalesOrderID/cboPOStatus here.
+    'CreateSalesOrderFromCurrentPO already updates T_CustomerPOs directly.
+    'Just refresh the form to pull the updated values from the table.
+    Me.Refresh
+
+    MsgBox _
+        "Sales order created successfully.", _
+        vbInformation, _
+        "Sales Order Created"
+
+    OpenSalesOrderByID newSalesOrderID
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+
+    MsgBox _
+        "The sales order could not be created." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Create Sales Order"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cmdOpenSalesOrder_Click()
+
+    On Error GoTo Err_Handler
+
+    Dim salesOrderIDValue As Long
+    Dim poID As Long
+
+    poID = Nz(Me.txtCustomerPOID, 0)
+    salesOrderIDValue = Nz(Me.txtSalesOrderID, 0)
+
+    If salesOrderIDValue <= 0 And poID > 0 Then
+        salesOrderIDValue = Nz(DLookup( _
+            "SalesOrderID", _
+            "T_SalesOrders", _
+            "CustomerPOID = " & poID _
+        ), 0)
+    End If
+
+    If salesOrderIDValue <= 0 Then
+
+        MsgBox _
+            "No sales order has been created for this customer PO yet.", _
+            vbExclamation, _
+            "Sales Order Not Found"
+
+        Exit Sub
+
+    End If
+
+    OpenSalesOrderByID salesOrderIDValue
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+
+    MsgBox _
+        "The sales order could not be opened." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Open Sales Order"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cmdClose_Click()
+
+    On Error GoTo Err_Handler
+
+    If Me.Dirty Then
+        Me.Dirty = False
+    End If
+
+    If SaveLineSubformIfDirty = False Then
+        Exit Sub
+    End If
+
+    DoCmd.close acForm, Me.Name
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+
+    MsgBox _
+        "The customer PO form could not be closed." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Close Customer PO"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' TOTALS
+'=============================================================
+Public Sub RecalculatePOTotals()
+
+    On Error GoTo Err_Handler
+
+    Dim poID As Long
+    Dim subtotalAmountValue As Currency
+    Dim miscAmountValue As Currency
+    Dim taxAmountValue As Currency
+    Dim totalAmountValue As Currency
+
+    poID = Nz(Me.txtCustomerPOID, 0)
+
+    If poID <= 0 Then
+        Exit Sub
+    End If
+
+    subtotalAmountValue = Nz(DSum( _
+        "Nz([LineSubtotal],0)", _
+        "T_CustomerPOLines", _
+        "CustomerPOID = " & poID _
+    ), 0)
+
+    miscAmountValue = Nz(Me.txtMiscChargeAmount, 0)
+    taxAmountValue = Nz(Me.txtTaxAmount, 0)
+
+    totalAmountValue = subtotalAmountValue + miscAmountValue + taxAmountValue
+
+    Me.txtSubtotalAmount = subtotalAmountValue
+    Me.txtTotalAmount = totalAmountValue
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+
+    MsgBox _
+        "PO totals could not be recalculated." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "PO Totals"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Function CountPOLines() As Long
+
+    On Error GoTo Err_Handler
+
+    If Nz(Me.txtCustomerPOID, 0) <= 0 Then
+        CountPOLines = 0
+    Else
+        CountPOLines = Nz(DCount( _
+            "*", _
+            "T_CustomerPOLines", _
+            "CustomerPOID = " & CLng(Me.txtCustomerPOID) _
+        ), 0)
+    End If
+
+    Exit Function
+
+Err_Handler:
+    CountPOLines = 0
+
+End Function
+
+
+'=============================================================
+' CONFIGURATION
+'=============================================================
+Private Sub ConfigurePOForm()
+
+    On Error Resume Next
+
+    Me.txtCustomerPOID.Visible = False
+    Me.txtCustomerPOID.Enabled = False
+    Me.txtCustomerPOID.Locked = True
+
+    Me.txtSalesOrderID.Visible = False
+    Me.txtInvoiceID.Visible = False
+
+    Me.txtSubtotalAmount.Locked = True
+    Me.txtTotalAmount.Locked = True
+    Me.txtGoodsConfirmedOn.Locked = True
+
+    Me.txtShipToAddress.EnterKeyBehavior = True
+    Me.txtShipToAddress.ScrollBars = 2
+
+    Me.txtNOtes.EnterKeyBehavior = True
+    Me.txtNOtes.ScrollBars = 2
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub ConfigurePOCombos()
+
+    On Error GoTo Err_Handler
+
+    Me.cboCustomerID.RowSourceType = "Table/Query"
+    Me.cboCustomerID.RowSource = _
+        "SELECT CustomerID, CustomerName " & _
+        "FROM T_Customers " & _
+        "ORDER BY CustomerName;"
+
+    Me.cboCustomerID.BoundColumn = 1
+    Me.cboCustomerID.ColumnCount = 2
+    Me.cboCustomerID.ColumnWidths = "0cm;8cm"
+    Me.cboCustomerID.LimitToList = True
+    Me.cboCustomerID.AutoExpand = True
+    Me.cboCustomerID.Requery
+
+
+    Me.cboPOType.RowSourceType = "Value List"
+    Me.cboPOType.RowSource = _
+        "Original;" & _
+        "Change Order;" & _
+        "Revision;" & _
+        "Blanket;" & _
+        "Release"
+
+    Me.cboPOType.BoundColumn = 1
+    Me.cboPOType.ColumnCount = 1
+    Me.cboPOType.ColumnWidths = "4cm"
+    Me.cboPOType.LimitToList = True
+    Me.cboPOType.AutoExpand = True
+    Me.cboPOType.Requery
+
+
+    Me.cboPOStatus.RowSourceType = "Value List"
+    Me.cboPOStatus.RowSource = _
+        "Received;" & _
+        "Goods Confirmed;" & _
+        "Sales Order Created;" & _
+        "Invoiced;" & _
+        "Closed;" & _
+        "Cancelled"
+
+    Me.cboPOStatus.BoundColumn = 1
+    Me.cboPOStatus.ColumnCount = 1
+    Me.cboPOStatus.ColumnWidths = "5cm"
+    Me.cboPOStatus.LimitToList = True
+    Me.cboPOStatus.AutoExpand = True
+    Me.cboPOStatus.Requery
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+
+    MsgBox _
+        "The customer PO combo boxes could not be loaded." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Customer PO Combos"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub SetPODefaultValues()
+
+    On Error Resume Next
+
+    Me.txtPODate.defaultValue = "Date()"
+    Me.cboPOType.defaultValue = """Original"""
+    Me.cboPOStatus.defaultValue = """Received"""
+    Me.chkPrepaidFreight.defaultValue = "False"
+    Me.chkGoodsConfirmed.defaultValue = "False"
+    Me.txtSubtotalAmount.defaultValue = "0"
+    Me.txtMiscChargeAmount.defaultValue = "0"
+    Me.txtTaxAmount.defaultValue = "0"
+    Me.txtTotalAmount.defaultValue = "0"
+
+    If Me.NewRecord Then
+
+        If IsNull(Me.txtPODate) Then Me.txtPODate = Date
+        If Len(Trim$(Nz(Me.cboPOType, vbNullString))) = 0 Then Me.cboPOType = "Original"
+        If Len(Trim$(Nz(Me.cboPOStatus, vbNullString))) = 0 Then Me.cboPOStatus = "Received"
+        If IsNull(Me.chkPrepaidFreight) Then Me.chkPrepaidFreight = False
+        If IsNull(Me.chkGoodsConfirmed) Then Me.chkGoodsConfirmed = False
+        If IsNull(Me.txtSubtotalAmount) Then Me.txtSubtotalAmount = 0
+        If IsNull(Me.txtMiscChargeAmount) Then Me.txtMiscChargeAmount = 0
+        If IsNull(Me.txtTaxAmount) Then Me.txtTaxAmount = 0
+        If IsNull(Me.txtTotalAmount) Then Me.txtTotalAmount = 0
+
+    End If
+
+    On Error GoTo 0
+
+End Sub
+
+
+'=============================================================
+' VALIDATION
+'=============================================================
+Private Sub NormalizePOValues()
+
+    Me.txtPONumber = UCase$(Trim$(Nz(Me.txtPONumber, vbNullString)))
+    Me.cboPOType = Trim$(Nz(Me.cboPOType, vbNullString))
+    Me.txtPaymentTerms = Trim$(Nz(Me.txtPaymentTerms, vbNullString))
+    Me.txtShipVia = Trim$(Nz(Me.txtShipVia, vbNullString))
+    Me.txtResaleNo = Trim$(Nz(Me.txtResaleNo, vbNullString))
+    Me.txtShipToName = Trim$(Nz(Me.txtShipToName, vbNullString))
+    Me.txtShipToContactName = Trim$(Nz(Me.txtShipToContactName, vbNullString))
+    Me.txtShipToPhone = Trim$(Nz(Me.txtShipToPhone, vbNullString))
+    Me.txtShipToEmail = Trim$(Nz(Me.txtShipToEmail, vbNullString))
+    Me.txtAuthorizedBy = Trim$(Nz(Me.txtAuthorizedBy, vbNullString))
+    Me.txtAuthorizedByEmail = Trim$(Nz(Me.txtAuthorizedByEmail, vbNullString))
+    Me.cboPOStatus = Trim$(Nz(Me.cboPOStatus, vbNullString))
+
+    If IsNull(Me.txtPODate) Then
+        Me.txtPODate = Date
+    End If
+
+    If Len(Trim$(Nz(Me.cboPOType, vbNullString))) = 0 Then
+        Me.cboPOType = "Original"
+    End If
+
+    If Len(Trim$(Nz(Me.cboPOStatus, vbNullString))) = 0 Then
+        Me.cboPOStatus = "Received"
+    End If
+
+    If IsNull(Me.chkPrepaidFreight) Then
+        Me.chkPrepaidFreight = False
+    End If
+
+    If IsNull(Me.chkGoodsConfirmed) Then
+        Me.chkGoodsConfirmed = False
+    End If
+
+    If IsNull(Me.txtMiscChargeAmount) Then
+        Me.txtMiscChargeAmount = 0
+    End If
+
+    If IsNull(Me.txtTaxAmount) Then
+        Me.txtTaxAmount = 0
+    End If
+
+End Sub
+
+
+Private Function ValidatePORecord() As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim currentPOID As Long
+    Dim criteriaText As String
+    Dim customerTypeValue As String
+
+    ValidatePORecord = False
+
+    currentPOID = Nz(Me.txtCustomerPOID, 0)
+
+    '---------------------------------------------------------
+    ' Customer is always required
+    '---------------------------------------------------------
+    If IsNull(Me.cboCustomerID) Then
+
+        MsgBox _
+            "Select the customer.", _
+            vbExclamation, _
+            "Customer Required"
+
+        Me.cboCustomerID.SetFocus
+        Exit Function
+
+    End If
+
+    '---------------------------------------------------------
+    ' Determine customer type
+    '---------------------------------------------------------
+    customerTypeValue = Nz(DLookup( _
+        "CustomerType", _
+        "T_Customers", _
+        "CustomerID = " & CLng(Me.cboCustomerID) _
+    ), "")
+
+    '---------------------------------------------------------
+    ' PO Number is required ONLY for External customers
+    '---------------------------------------------------------
+    If StrComp(Trim$(customerTypeValue), "External", vbTextCompare) = 0 Then
+
+        If Len(Trim$(Nz(Me.txtPONumber, vbNullString))) = 0 Then
+
+            MsgBox _
+                "Enter the customer's PO number." & _
+                vbCrLf & vbCrLf & _
+                "PO Number is required for External customers.", _
+                vbExclamation, _
+                "PO Number Required"
+
+            Me.txtPONumber.SetFocus
+            Exit Function
+
+        End If
+
+    End If
+
+    '---------------------------------------------------------
+    ' PO Date is required
+    '---------------------------------------------------------
+    If IsNull(Me.txtPODate) Then
+
+        MsgBox _
+            "Enter the PO date.", _
+            vbExclamation, _
+            "PO Date Required"
+
+        Me.txtPODate.SetFocus
+        Exit Function
+
+    End If
+
+    '---------------------------------------------------------
+    ' Duplicate PO check
+    ' Only perform it when a PO number has been entered.
+    ' Internal customers may legitimately have no PO number.
+    '---------------------------------------------------------
+    If Len(Trim$(Nz(Me.txtPONumber, vbNullString))) > 0 Then
+
+        criteriaText = _
+            "CustomerID = " & CLng(Me.cboCustomerID) & _
+            " AND PONumber = " & SqlText(CStr(Me.txtPONumber))
+
+        If currentPOID > 0 Then
+
+            criteriaText = criteriaText & _
+                " AND CustomerPOID <> " & currentPOID
+
+        End If
+
+        If DCount("*", "T_CustomerPOs", criteriaText) > 0 Then
+
+            MsgBox _
+                "This customer already has a PO with the same PO number." & _
+                vbCrLf & vbCrLf & _
+                "Check whether this is a revision/change order or use a different PO number.", _
+                vbExclamation, _
+                "Duplicate Customer PO"
+
+            Me.txtPONumber.SetFocus
+            Exit Function
+
+        End If
+
+    End If
+
+    ValidatePORecord = True
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+
+    MsgBox _
+        "PO validation failed." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "PO Validation"
+
+    ValidatePORecord = False
+    Resume Exit_Handler
+
+End Function
+
+Private Function IsBlankNewPORecord() As Boolean
+
+    If Not Me.NewRecord Then
+        IsBlankNewPORecord = False
+        Exit Function
+    End If
+
+    IsBlankNewPORecord = _
+        IsNull(Me.cboCustomerID) And _
+        Len(Trim$(Nz(Me.txtPONumber, vbNullString))) = 0 And _
+        Len(Trim$(Nz(Me.txtShipToName, vbNullString))) = 0
+
+End Function
+
+
+'=============================================================
+' SUBFORM HANDLING
+'=============================================================
+Private Sub SetLineSubformAvailability()
+
+    On Error GoTo Err_Handler
+
+    If ControlExists("subCustomerPOLines") Then
+
+        With Me.Controls("subCustomerPOLines")
+
+            .Enabled = True
+            .Locked = False
+
+            With .Form
+                .AllowAdditions = True
+                .AllowEdits = True
+                .AllowDeletions = True
+            End With
+
+        End With
+
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+
+    MsgBox _
+        "The customer PO lines could not be enabled." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Customer PO Lines"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Function SaveLineSubformIfDirty() As Boolean
+
+    On Error GoTo Err_Handler
+
+    SaveLineSubformIfDirty = True
+
+    If Not ControlExists("subCustomerPOLines") Then
+        Exit Function
+    End If
+
+    With Me.Controls("subCustomerPOLines").Form
+
+        If .Dirty Then
+            .Dirty = False
+        End If
+
+    End With
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+
+    SaveLineSubformIfDirty = False
+
+    MsgBox _
+        "The PO line currently being edited could not be saved." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "PO Line Save Failed"
+
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' CUSTOMER PO -> SALES ORDER
+'=============================================================
+Private Function CreateSalesOrderFromCurrentPO() As Long
+
+    On Error GoTo Err_Handler
+
+    Dim db As Object
+    Dim wrk As Object
+
+    Dim rsSO As Object
+    Dim rsPOLines As Object
+    Dim rsSOLines As Object
+    Dim rsPOUpdate As Object
+    Dim rsPOLineUpdate As Object
+
+    Dim poID As Long
+    Dim newSOID As Long
+    Dim salesOrderNoValue As String
+
+    Dim qtyValue As Double
+    Dim unitPriceValue As Currency
+    Dim lineSubtotalValue As Currency
+    Dim lineDescriptionValue As String
+
+    Dim transactionStarted As Boolean
+    Dim stepName As String
+
+    transactionStarted = False
+    stepName = "Starting"
+
+    poID = Nz(Me.txtCustomerPOID, 0)
+
+    If poID <= 0 Then
+        CreateSalesOrderFromCurrentPO = 0
+        Exit Function
+    End If
+
+    Set db = CurrentDb
+    Set wrk = DBEngine.Workspaces(0)
+
+    stepName = "Generating sales order number"
+    salesOrderNoValue = GetNextDocumentNumberValue("SalesOrder", "SO", 1001, 5)
+
+    stepName = "Starting transaction"
+    wrk.BeginTrans
+    transactionStarted = True
+
+    '---------------------------------------------------------
+    ' 1. Create Sales Order header
+    '---------------------------------------------------------
+    stepName = "Opening T_SalesOrders"
+
+    Set rsSO = db.OpenRecordset("T_SalesOrders", 2)
+
+    stepName = "Adding sales order header"
+
+    rsSO.addnew
+
+    SafeSetRSField rsSO, "SalesOrderNo", salesOrderNoValue
+    SafeSetRSField rsSO, "CustomerPOID", poID
+
+    If IsNull(Me.cboCustomerID) Then
+        SafeSetRSField rsSO, "CustomerID", Null
+    Else
+        SafeSetRSField rsSO, "CustomerID", CLng(Me.cboCustomerID)
+    End If
+
+    SafeSetRSField rsSO, "OrderDate", Date
+    SafeSetRSField rsSO, "PaymentTerms", Nz(Me.txtPaymentTerms, vbNullString)
+    SafeSetRSField rsSO, "ShipVia", Nz(Me.txtShipVia, vbNullString)
+    SafeSetRSField rsSO, "ShipToName", Nz(Me.txtShipToName, vbNullString)
+    SafeSetRSField rsSO, "ShipToAddress", Nz(Me.txtShipToAddress, vbNullString)
+    SafeSetRSField rsSO, "SalesOrderStatus", "Open"
+    SafeSetRSField rsSO, "Notes", "Created from Customer PO " & Nz(Me.txtPONumber, vbNullString)
+    SafeSetRSField rsSO, "CreatedOn", Now()
+    SafeSetRSField rsSO, "UpdatedOn", Now()
+
+    stepName = "Saving sales order header"
+
+    rsSO.Update
+    rsSO.Bookmark = rsSO.LastModified
+
+    If Not RSHasField(rsSO, "SalesOrderID") Then
+        Err.Raise 3265, , "T_SalesOrders does not contain SalesOrderID."
+    End If
+
+    newSOID = CLng(Nz(rsSO.Fields("SalesOrderID").value, 0))
+
+    If newSOID <= 0 Then
+        Err.Raise 5, , "SalesOrderID was not generated."
+    End If
+
+    rsSO.close
+    Set rsSO = Nothing
+
+    '---------------------------------------------------------
+    ' 2. Copy Customer PO lines into Sales Order lines
+    '---------------------------------------------------------
+    stepName = "Opening customer PO lines"
+
+    Set rsPOLines = db.OpenRecordset( _
+        "SELECT * FROM T_CustomerPOLines WHERE CustomerPOID = " & poID, _
+        2 _
+    )
+
+    If rsPOLines.EOF Then
+        Err.Raise 3021, , "No customer PO lines were found for this customer PO."
+    End If
+
+    stepName = "Opening T_SalesOrderLines"
+
+    Set rsSOLines = db.OpenRecordset("T_SalesOrderLines", 2)
+
+    stepName = "Creating sales order lines"
+
+    Do While Not rsPOLines.EOF
+
+        qtyValue = CDbl(Nz(RSValue(rsPOLines, "QuantityOrdered", 0), 0))
+        unitPriceValue = CCur(Nz(RSValue(rsPOLines, "UnitPrice", 0), 0))
+        lineSubtotalValue = CCur(Nz(RSValue(rsPOLines, "LineSubtotal", qtyValue * unitPriceValue), qtyValue * unitPriceValue))
+        lineDescriptionValue = CStr(Nz(RSValue(rsPOLines, "LineDescription", vbNullString), vbNullString))
+
+        If Len(Trim$(lineDescriptionValue)) = 0 Then
+            lineDescriptionValue = CStr(Nz(RSValue(rsPOLines, "CustomerPartNumber", vbNullString), vbNullString))
+        End If
+
+        rsSOLines.addnew
+
+        SafeSetRSField rsSOLines, "SalesOrderID", newSOID
+        SafeSetRSField rsSOLines, "CustomerPOLineID", RSValue(rsPOLines, "CustomerPOLineID", Null)
+        SafeSetRSField rsSOLines, "ItemID", RSValue(rsPOLines, "ItemID", Null)
+        SafeSetRSField rsSOLines, "LineDescription", lineDescriptionValue
+        SafeSetRSField rsSOLines, "QuantityOrdered", qtyValue
+        SafeSetRSField rsSOLines, "QuantityShipped", 0
+        SafeSetRSField rsSOLines, "UnitID", RSValue(rsPOLines, "UnitID", Null)
+        SafeSetRSField rsSOLines, "UnitPrice", unitPriceValue
+        SafeSetRSField rsSOLines, "LineSubtotal", lineSubtotalValue
+        SafeSetRSField rsSOLines, "Taxable", Nz(RSValue(rsPOLines, "Taxable", False), False)
+        SafeSetRSField rsSOLines, "LineStatus", "Open"
+        SafeSetRSField rsSOLines, "CreatedOn", Now()
+        SafeSetRSField rsSOLines, "UpdatedOn", Now()
+
+        rsSOLines.Update
+
+        rsPOLines.MoveNext
+
+    Loop
+
+    rsPOLines.close
+    Set rsPOLines = Nothing
+
+    rsSOLines.close
+    Set rsSOLines = Nothing
+
+    '---------------------------------------------------------
+    ' 3. Update Customer PO header
+    '---------------------------------------------------------
+    stepName = "Updating customer PO header"
+
+    Set rsPOUpdate = db.OpenRecordset( _
+        "SELECT * FROM T_CustomerPOs WHERE CustomerPOID = " & poID, _
+        2 _
+    )
+
+    If Not rsPOUpdate.EOF Then
+
+        rsPOUpdate.Edit
+
+        SafeSetRSField rsPOUpdate, "SalesOrderID", newSOID
+        SafeSetRSField rsPOUpdate, "POStatus", "Sales Order Created"
+        SafeSetRSField rsPOUpdate, "UpdatedOn", Now()
+
+        rsPOUpdate.Update
+
+    End If
+
+    rsPOUpdate.close
+    Set rsPOUpdate = Nothing
+
+    '---------------------------------------------------------
+    ' 4. Update Customer PO lines
+    '---------------------------------------------------------
+    stepName = "Updating customer PO lines"
+
+    Set rsPOLineUpdate = db.OpenRecordset( _
+        "SELECT * FROM T_CustomerPOLines WHERE CustomerPOID = " & poID, _
+        2 _
+    )
+
+    Do While Not rsPOLineUpdate.EOF
+
+        rsPOLineUpdate.Edit
+
+        SafeSetRSField rsPOLineUpdate, "LineStatus", "Sales Order Created"
+        SafeSetRSField rsPOLineUpdate, "UpdatedOn", Now()
+
+        rsPOLineUpdate.Update
+        rsPOLineUpdate.MoveNext
+
+    Loop
+
+    rsPOLineUpdate.close
+    Set rsPOLineUpdate = Nothing
+
+    '---------------------------------------------------------
+    ' 5. Commit transaction
+    '---------------------------------------------------------
+    stepName = "Committing transaction"
+
+    wrk.CommitTrans
+    transactionStarted = False
+
+    CreateSalesOrderFromCurrentPO = newSOID
+
+Exit_Handler:
+
+    On Error Resume Next
+
+    If Not rsSO Is Nothing Then rsSO.close
+    If Not rsPOLines Is Nothing Then rsPOLines.close
+    If Not rsSOLines Is Nothing Then rsSOLines.close
+    If Not rsPOUpdate Is Nothing Then rsPOUpdate.close
+    If Not rsPOLineUpdate Is Nothing Then rsPOLineUpdate.close
+
+    Set rsSO = Nothing
+    Set rsPOLines = Nothing
+    Set rsSOLines = Nothing
+    Set rsPOUpdate = Nothing
+    Set rsPOLineUpdate = Nothing
+    Set db = Nothing
+    Set wrk = Nothing
+
+    On Error GoTo 0
+
+    Exit Function
+
+Err_Handler:
+
+    Dim realErrNumber As Long
+    Dim realErrDescription As String
+    Dim realStepName As String
+
+    realErrNumber = Err.Number
+    realErrDescription = Err.Description
+    realStepName = stepName
+
+    On Error Resume Next
+
+    If transactionStarted Then
+        wrk.Rollback
+        transactionStarted = False
+    End If
+
+    If Not rsSO Is Nothing Then rsSO.close
+    If Not rsPOLines Is Nothing Then rsPOLines.close
+    If Not rsSOLines Is Nothing Then rsSOLines.close
+    If Not rsPOUpdate Is Nothing Then rsPOUpdate.close
+    If Not rsPOLineUpdate Is Nothing Then rsPOLineUpdate.close
+
+    On Error GoTo 0
+
+    MsgBox _
+        "The sales order transaction could not be completed." & _
+        vbCrLf & vbCrLf & _
+        "Failed Step: " & realStepName & vbCrLf & _
+        "Error Number: " & realErrNumber & vbCrLf & _
+        "Details: " & realErrDescription, _
+        vbExclamation, _
+        "Sales Order Creation Failed"
+
+    CreateSalesOrderFromCurrentPO = 0
+    Resume Exit_Handler
+
+End Function
+
+
+Private Sub OpenSalesOrderByID(ByVal salesOrderIDValue As Long)
+
+    On Error GoTo Err_Handler
+
+    If salesOrderIDValue <= 0 Then
+
+        MsgBox _
+            "No valid Sales Order ID was provided.", _
+            vbExclamation, _
+            "Open Sales Order"
+
+        Exit Sub
+
+    End If
+
+    If Not FormExists("F_SalesOrders") Then
+
+        MsgBox _
+            "The form F_SalesOrders was not found. Check the sales order form name.", _
+            vbExclamation, _
+            "Form Not Found"
+
+        Exit Sub
+
+    End If
+
+    DoCmd.OpenForm _
+        "F_SalesOrders", _
+        acNormal, _
+        , _
+        "SalesOrderID = " & salesOrderIDValue
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+
+    MsgBox _
+        "The sales order could not be opened." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Open Sales Order"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' DOCUMENT NUMBERING
+'=============================================================
+Private Function GetNextDocumentNumberValue( _
+    ByVal documentTypeValue As String, _
+    ByVal defaultPrefix As String, _
+    ByVal defaultNextNumber As Long, _
+    ByVal defaultNumberLength As Long _
+) As String
+
+    On Error GoTo Err_Handler
+
+    Dim db As Object
+    Dim rs As Object
+    Dim sqlLookup As String
+
+    Dim prefixValue As String
+    Dim nextNumberValue As Long
+    Dim numberLengthValue As Long
+
+    Set db = CurrentDb
+
+    sqlLookup = _
+        "SELECT * FROM T_DocumentNumbers " & _
+        "WHERE DocumentType = '" & Replace(documentTypeValue, "'", "''") & "';"
+
+    Set rs = db.OpenRecordset(sqlLookup, 2)
+
+    If rs.EOF Then
+
+        prefixValue = defaultPrefix
+        nextNumberValue = defaultNextNumber
+        numberLengthValue = defaultNumberLength
+
+        rs.addnew
+
+        rs.Fields("DocumentType").value = documentTypeValue
+        rs.Fields("Prefix").value = prefixValue
+        rs.Fields("NextNumber").value = nextNumberValue + 1
+        rs.Fields("NumberLength").value = numberLengthValue
+        rs.Fields("LastUpdatedOn").value = Now()
+
+        rs.Update
+
+    Else
+
+        prefixValue = Nz(RSValue(rs, "Prefix", defaultPrefix), defaultPrefix)
+        nextNumberValue = CLng(Nz(RSValue(rs, "NextNumber", defaultNextNumber), defaultNextNumber))
+        numberLengthValue = CLng(Nz(RSValue(rs, "NumberLength", defaultNumberLength), defaultNumberLength))
+
+        rs.Edit
+
+        SafeSetRSField rs, "NextNumber", nextNumberValue + 1
+        SafeSetRSField rs, "LastUpdatedOn", Now()
+
+        rs.Update
+
+    End If
+
+    GetNextDocumentNumberValue = _
+        prefixValue & Format(nextNumberValue, String(numberLengthValue, "0"))
+
+Exit_Handler:
+
+    On Error Resume Next
+
+    If Not rs Is Nothing Then
+        rs.close
+    End If
+
+    Set rs = Nothing
+    Set db = Nothing
+
+    On Error GoTo 0
+
+    Exit Function
+
+Err_Handler:
+
+    GetNextDocumentNumberValue = _
+        defaultPrefix & Format(Now(), "yyyymmddhhnnss")
+
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' SAFE HELPERS
+'=============================================================
+Private Sub SafeSetField(ByVal fieldName As String, ByVal fieldValue As Variant)
+
+    On Error Resume Next
+    Me(fieldName) = fieldValue
+    On Error GoTo 0
+
+End Sub
+
+
+Private Function ControlExists(ByVal controlName As String) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim ctl As Control
+
+    Set ctl = Me.Controls(controlName)
+    ControlExists = True
+
+Exit_Handler:
+    Set ctl = Nothing
+    Exit Function
+
+Err_Handler:
+    ControlExists = False
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function SqlText(ByVal value As String) As String
+
+    SqlText = "'" & Replace(value, "'", "''") & "'"
+
+End Function
+
+
+Private Function RSHasField(ByVal rs As Object, ByVal fieldName As String) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim i As Long
+
+    For i = 0 To rs.Fields.Count - 1
+
+        If StrComp(rs.Fields(i).Name, fieldName, vbTextCompare) = 0 Then
+            RSHasField = True
+            Exit Function
+        End If
+
+    Next i
+
+    RSHasField = False
+    Exit Function
+
+Err_Handler:
+    RSHasField = False
+
+End Function
+
+
+Private Function RSValue(ByVal rs As Object, ByVal fieldName As String, ByVal defaultValue As Variant) As Variant
+
+    On Error GoTo Err_Handler
+
+    If RSHasField(rs, fieldName) Then
+
+        If IsNull(rs.Fields(fieldName).value) Then
+            RSValue = defaultValue
+        Else
+            RSValue = rs.Fields(fieldName).value
+        End If
+
+    Else
+
+        RSValue = defaultValue
+
+    End If
+
+    Exit Function
+
+Err_Handler:
+    RSValue = defaultValue
+
+End Function
+
+
+Private Sub SafeSetRSField(ByVal rs As Object, ByVal fieldName As String, ByVal fieldValue As Variant)
+
+    On Error Resume Next
+
+    If RSHasField(rs, fieldName) Then
+        rs.Fields(fieldName).value = fieldValue
+    End If
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Function FormExists(ByVal FormName As String) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim obj As AccessObject
+
+    For Each obj In CurrentProject.AllForms
+
+        If StrComp(obj.Name, FormName, vbTextCompare) = 0 Then
+            FormExists = True
+            Exit Function
+        End If
+
+    Next obj
+
+    FormExists = False
+
+Exit_Handler:
+    Set obj = Nothing
+    Exit Function
+
+Err_Handler:
+    FormExists = False
+    Resume Exit_Handler
+
+End Function
+Private Sub cmdConfirmGoods_Click()
+
+    On Error GoTo Err_Handler
+
+    Dim poID As Long
+
+    poID = Nz(Me.txtCustomerPOID, 0)
+
+    If IsBlankNewPORecord Or poID <= 0 Then
+
+        MsgBox _
+            "Save the customer PO before confirming goods.", _
+            vbExclamation, _
+            "Customer PO Required"
+
+        Exit Sub
+
+    End If
+
+    If Me.Dirty Then
+        DoCmd.RunCommand acCmdSaveRecord
+    End If
+
+    If SaveLineSubformIfDirty = False Then
+        Exit Sub
+    End If
+
+    If CountPOLines = 0 Then
+
+        MsgBox _
+            "Add at least one PO line before confirming goods.", _
+            vbExclamation, _
+            "No PO Lines"
+
+        Exit Sub
+
+    End If
+
+    RecalculatePOTotals
+
+    If CanConfirmGoodsForPO(poID, True) = False Then
+        Exit Sub
+    End If
+
+    Me.chkGoodsConfirmed = True
+    Me.txtGoodsConfirmedOn = Now()
+    Me.cboPOStatus = "Goods Confirmed"
+
+    If Me.Dirty Then
+        DoCmd.RunCommand acCmdSaveRecord
+    End If
+
+    MsgBox _
+        "Goods have been confirmed for this customer PO." & vbCrLf & vbCrLf & _
+        "You can now create the sales order.", _
+        vbInformation, _
+        "Goods Confirmed"
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+
+    MsgBox _
+        "The goods confirmation could not be completed." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Confirm Goods"
+
+    Resume Exit_Handler
+
+End Sub
+Private Function CanConfirmGoodsForPO( _
+    ByVal customerPOIDValue As Long, _
+    ByVal showReport As Boolean _
+) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim db As Object
+    Dim rsLines As Object
+
+    Dim itemIDValue As Variant
+    Dim lineDescriptionValue As String
+
+    Dim qtyRequiredValue As Double
+    Dim qtyOnHandValue As Double
+    Dim qtyReservedValue As Double
+    Dim qtyAvailableValue As Double
+
+    Dim stockLineCount As Long
+    Dim serviceLineCount As Long
+    Dim shortageCount As Long
+
+    Dim reportText As String
+    Dim lineText As String
+
+    CanConfirmGoodsForPO = False
+
+    Set db = CurrentDb
+
+    Set rsLines = db.OpenRecordset( _
+        "SELECT * FROM T_CustomerPOLines WHERE CustomerPOID = " & customerPOIDValue, _
+        2 _
+    )
+
+    If rsLines.EOF Then
+
+        If showReport Then
+            MsgBox _
+                "This customer PO has no lines.", _
+                vbExclamation, _
+                "No PO Lines"
+        End If
+
+        GoTo Exit_Handler
+
+    End If
+
+    reportText = "Goods Confirmation Check" & vbCrLf & String(45, "-") & vbCrLf
+
+    Do While Not rsLines.EOF
+
+        itemIDValue = RSValue(rsLines, "ItemID", Null)
+        lineDescriptionValue = CStr(Nz(RSValue(rsLines, "LineDescription", vbNullString), vbNullString))
+        qtyRequiredValue = CDbl(Nz(RSValue(rsLines, "QuantityOrdered", 0), 0))
+
+        If Len(Trim$(lineDescriptionValue)) = 0 Then
+            lineDescriptionValue = CStr(Nz(RSValue(rsLines, "CustomerPartNumber", vbNullString), vbNullString))
+        End If
+
+        If IsNull(itemIDValue) Or Nz(itemIDValue, 0) <= 0 Then
+
+            serviceLineCount = serviceLineCount + 1
+
+            lineText = "NON-STOCK / SERVICE LINE: " & lineDescriptionValue & vbCrLf
+            lineText = lineText & "No ItemID linked, so no stock check is needed." & vbCrLf & vbCrLf
+
+            reportText = reportText & lineText
+
+        Else
+
+            stockLineCount = stockLineCount + 1
+
+            qtyOnHandValue = GetTotalOnHandForPOItem(CLng(itemIDValue))
+            qtyReservedValue = GetTotalReservedForPOItem(CLng(itemIDValue))
+            qtyAvailableValue = qtyOnHandValue - qtyReservedValue
+
+            If qtyAvailableValue >= qtyRequiredValue Then
+
+                lineText = "OK: " & lineDescriptionValue & vbCrLf
+                lineText = lineText & _
+                    "Required: " & qtyRequiredValue & _
+                    ", Available: " & qtyAvailableValue & vbCrLf & vbCrLf
+
+            Else
+
+                shortageCount = shortageCount + 1
+
+                lineText = "SHORTAGE: " & lineDescriptionValue & vbCrLf
+                lineText = lineText & _
+                    "Required: " & qtyRequiredValue & _
+                    ", Available: " & qtyAvailableValue & _
+                    ", Short By: " & (qtyRequiredValue - qtyAvailableValue) & vbCrLf & vbCrLf
+
+            End If
+
+            reportText = reportText & lineText
+
+        End If
+
+        rsLines.MoveNext
+
+    Loop
+
+    If stockLineCount = 0 And serviceLineCount > 0 Then
+
+        CanConfirmGoodsForPO = True
+        reportText = reportText & "Result: All lines are non-stock/service lines. Goods can be confirmed."
+
+    ElseIf shortageCount = 0 Then
+
+        CanConfirmGoodsForPO = True
+        reportText = reportText & "Result: Stock is available. Goods can be confirmed."
+
+    Else
+
+        CanConfirmGoodsForPO = False
+        reportText = reportText & "Result: Goods cannot be confirmed because some items have shortages."
+
+    End If
+
+    If showReport Then
+        MsgBox reportText, vbInformation, "Goods Confirmation Check"
+    End If
+
+Exit_Handler:
+
+    On Error Resume Next
+
+    If Not rsLines Is Nothing Then
+        rsLines.close
+    End If
+
+    Set rsLines = Nothing
+    Set db = Nothing
+
+    On Error GoTo 0
+
+    Exit Function
+
+Err_Handler:
+
+    If showReport Then
+
+        MsgBox _
+            "Goods confirmation stock check failed." & _
+            vbCrLf & vbCrLf & _
+            "Error Number: " & Err.Number & vbCrLf & _
+            "Details: " & Err.Description, _
+            vbExclamation, _
+            "Goods Confirmation Check"
+
+    End If
+
+    CanConfirmGoodsForPO = False
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function GetTotalOnHandForPOItem(ByVal itemIDValue As Long) As Double
+
+    On Error GoTo Err_Handler
+
+    GetTotalOnHandForPOItem = Nz(DSum( _
+        "Nz([QuantityOnHand],0)", _
+        "T_StockBalances", _
+        "ItemID = " & itemIDValue _
+    ), 0)
+
+    Exit Function
+
+Err_Handler:
+    GetTotalOnHandForPOItem = 0
+
+End Function
+
+
+Private Function GetTotalReservedForPOItem(ByVal itemIDValue As Long) As Double
+
+    On Error GoTo Err_Handler
+
+    GetTotalReservedForPOItem = Nz(DSum( _
+        "Nz([QuantityReserved],0)", _
+        "T_StockBalances", _
+        "ItemID = " & itemIDValue _
+    ), 0)
+
+    Exit Function
+
+Err_Handler:
+    GetTotalReservedForPOItem = 0
+
+End Function

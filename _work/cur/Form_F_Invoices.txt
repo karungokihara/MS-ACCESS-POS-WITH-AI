@@ -1,0 +1,1970 @@
+﻿Option Compare Database
+Option Explicit
+
+'=============================================================
+' FORM: F_Invoices
+'
+' PURPOSE:
+'   Invoice / Pro Forma invoice form.
+'
+' PDF:
+'   Exports R_Invoice report filtered to current InvoiceID.
+'
+' IMPORTANT:
+'   Open Sales Order and Open Customer PO are now resolved from:
+'       1. T_Invoices
+'       2. Open F_SalesOrders / F_CustomerPO forms
+'       3. T_InvoiceLines
+'       4. T_SalesOrderLines
+'       5. T_SalesOrders
+'       6. T_CustomerPOLines
+'
+' REQUIRED REPORT:
+'   R_Invoice
+'
+' REQUIRED SUBFORM CONTROL:
+'   subInvoiceLines
+'
+' BUTTONS:
+'   cmdSaveInvoice
+'   cmdMakePDF
+'   cmdOpenSalesOrder
+'   cmdOpenCustomerPO
+'   cmdClose
+'
+' OPTIONAL BUTTONS:
+'   cmdOpenPDF
+'   cmdPrintRecord
+'=============================================================
+
+Private Const PDF_MAIN_FOLDER As String = "\Documents\Inventory System PDFs"
+Private Const PDF_INVOICE_FOLDER As String = "\Documents\Inventory System PDFs\Invoices"
+Private Const INVOICE_REPORT_NAME As String = "R_Invoice"
+
+Private m_IsExplicitSave As Boolean
+Private m_IsClosingForm As Boolean
+Private m_IsDiscardingEdits As Boolean
+
+
+'=============================================================
+' FORM EVENTS
+'=============================================================
+
+Private Sub Form_Load()
+    UX_MarkRequired Me, "CustomerID", "InvoiceDate"
+
+    On Error Resume Next
+
+    ConfigureInvoiceForm
+    ConfigureInvoiceCombos
+    SetInvoiceDefaults
+    SetLineSubformAvailability
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub Form_Current()
+
+    On Error Resume Next
+
+    SetInvoiceDefaults
+    SetLineSubformAvailability
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub Form_BeforeUpdate(Cancel As Integer)
+    UX_CoerceBooleans Me
+
+    On Error GoTo Err_Handler
+
+    If m_IsDiscardingEdits Then
+        Exit Sub
+    End If
+
+
+    If IsBlankNewInvoiceRecord Then
+        Cancel = True
+        Exit Sub
+    End If
+
+    NormalizeInvoiceValues
+
+    If Not ValidateInvoiceRecord Then
+        Cancel = True
+        Exit Sub
+    End If
+
+    If Me.NewRecord Then
+        SafeSetControlValue "CreatedOn", Now()
+    End If
+
+    SafeSetControlValue "UpdatedOn", Now()
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+
+    Cancel = True
+
+    MsgBox _
+        "The invoice could not be validated." & _
+        vbCrLf & vbCrLf & _
+        "Error " & Err.Number & ": " & Err.Description, _
+        vbExclamation, _
+        "Invoice Validation"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_AfterUpdate()
+
+    On Error Resume Next
+
+    SetLineSubformAvailability
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub Form_Delete(Cancel As Integer)
+
+    Cancel = True
+
+    MsgBox _
+        "Invoices cannot be deleted from this form." & vbCrLf & vbCrLf & _
+        "This prevents relationship errors because invoice lines may already exist.", _
+        vbExclamation, _
+        "Delete Invoice Blocked"
+
+End Sub
+
+
+Private Sub Form_Error(DataErr As Integer, Response As Integer)
+    Dim uxHandled As Boolean
+    UX_SuppressFormError DataErr, Response, uxHandled
+    If uxHandled Then Exit Sub
+
+    On Error Resume Next
+
+    If DataErr = 3200 Then
+
+        Response = acDataErrContinue
+
+        MsgBox _
+            "Access blocked an unsafe invoice change because invoice lines already exist." & _
+            vbCrLf & vbCrLf & _
+            "Use the Save Invoice button after making valid changes.", _
+            vbExclamation, _
+            "Invoice Relationship Protection"
+
+        Exit Sub
+
+    End If
+
+    Response = acDataErrDisplay
+
+End Sub
+
+
+'=============================================================
+' CONTROL EVENTS
+'=============================================================
+
+Private Sub CustomerID_AfterUpdate()
+
+    On Error Resume Next
+
+    Dim ctlCustomer As Control
+
+    Set ctlCustomer = GetControlRef("CustomerID")
+
+    If ctlCustomer Is Nothing Then Exit Sub
+    If IsNull(ctlCustomer.value) Then Exit Sub
+
+    If Len(Trim$(Nz(GetControlValue("BillToName"), vbNullString))) = 0 Then
+        SafeSetControlValue "BillToName", Nz(ctlCustomer.Column(1), vbNullString)
+    End If
+
+    If Len(Trim$(Nz(GetControlValue("PaymentTerms"), vbNullString))) = 0 Then
+
+        SafeSetControlValue _
+            "PaymentTerms", _
+            Nz(DLookup( _
+                "DefaultPaymentTerms", _
+                "T_Customers", _
+                "CustomerID = " & CLng(ctlCustomer.value) _
+            ), vbNullString)
+
+    End If
+
+    Set ctlCustomer = Nothing
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub TaxAmount_AfterUpdate()
+
+    CalculateAndStoreInvoiceTotals False
+
+End Sub
+
+
+'=============================================================
+' BUTTON EVENTS
+'=============================================================
+
+Private Sub cmdSaveInvoice_Click()
+
+    Call SaveInvoiceRecord(True)
+
+End Sub
+
+
+Private Sub cmdMakePDF_Click()
+
+    CreateInvoicePDF
+
+End Sub
+
+
+Private Sub cmdOpenPDF_Click()
+
+    CreateInvoicePDF
+
+End Sub
+
+
+Private Sub cmdPrintRecord_Click()
+
+    CreateInvoicePDF
+
+End Sub
+
+
+Private Sub cmdOpenSalesOrder_Click()
+
+    On Error GoTo Err_Handler
+
+    Dim invoiceIDValue As Long
+    Dim salesOrderIDValue As Long
+
+    invoiceIDValue = GetCurrentInvoiceID()
+
+    If invoiceIDValue <= 0 Then
+
+        MsgBox _
+            "Please save the invoice first.", _
+            vbExclamation, _
+            "Open Sales Order"
+
+        Exit Sub
+
+    End If
+
+    salesOrderIDValue = ResolveSalesOrderID(invoiceIDValue)
+
+    If salesOrderIDValue <= 0 Then
+
+        MsgBox _
+            "No linked Sales Order could be found for this invoice." & vbCrLf & vbCrLf & _
+            "InvoiceID: " & invoiceIDValue & vbCrLf & _
+            "Checked: T_Invoices, open F_SalesOrders, T_InvoiceLines, and T_SalesOrderLines.", _
+            vbExclamation, _
+            "Sales Order Not Linked"
+
+        Exit Sub
+
+    End If
+
+    SyncInvoiceLinks invoiceIDValue, salesOrderIDValue, 0
+
+    If FormExists("F_SalesOrders") = False Then
+
+        MsgBox _
+            "The Sales Order form was not found." & vbCrLf & vbCrLf & _
+            "Expected form: F_SalesOrders", _
+            vbExclamation, _
+            "Sales Order Form Missing"
+
+        Exit Sub
+
+    End If
+
+    If CurrentProject.AllForms("F_SalesOrders").IsLoaded Then
+        DoCmd.close acForm, "F_SalesOrders", acSaveNo
+    End If
+
+    DoCmd.OpenForm _
+        "F_SalesOrders", _
+        acNormal, _
+        , _
+        "SalesOrderID = " & salesOrderIDValue
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+
+    MsgBox _
+        "The linked sales order could not be opened." & _
+        vbCrLf & vbCrLf & _
+        "InvoiceID: " & GetCurrentInvoiceID() & vbCrLf & _
+        "Error " & Err.Number & ": " & Err.Description, _
+        vbExclamation, _
+        "Open Sales Order"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cmdOpenCustomerPO_Click()
+
+    On Error GoTo Err_Handler
+
+    Dim invoiceIDValue As Long
+    Dim salesOrderIDValue As Long
+    Dim customerPOIDValue As Long
+
+    invoiceIDValue = GetCurrentInvoiceID()
+
+    If invoiceIDValue <= 0 Then
+
+        MsgBox _
+            "Please save the invoice first.", _
+            vbExclamation, _
+            "Open Customer PO"
+
+        Exit Sub
+
+    End If
+
+    salesOrderIDValue = ResolveSalesOrderID(invoiceIDValue)
+    customerPOIDValue = ResolveCustomerPOID(invoiceIDValue, salesOrderIDValue)
+
+    If customerPOIDValue <= 0 Then
+
+        MsgBox _
+            "No linked Customer PO could be found for this invoice." & vbCrLf & vbCrLf & _
+            "InvoiceID: " & invoiceIDValue & vbCrLf & _
+            "Checked: T_Invoices, open F_CustomerPO, T_SalesOrders, T_InvoiceLines, T_SalesOrderLines, and T_CustomerPOLines.", _
+            vbExclamation, _
+            "Customer PO Not Linked"
+
+        Exit Sub
+
+    End If
+
+    SyncInvoiceLinks invoiceIDValue, salesOrderIDValue, customerPOIDValue
+
+    If FormExists("F_CustomerPO") = False Then
+
+        MsgBox _
+            "The Customer PO form was not found." & vbCrLf & vbCrLf & _
+            "Expected form: F_CustomerPO", _
+            vbExclamation, _
+            "Customer PO Form Missing"
+
+        Exit Sub
+
+    End If
+
+    If CurrentProject.AllForms("F_CustomerPO").IsLoaded Then
+        DoCmd.close acForm, "F_CustomerPO", acSaveNo
+    End If
+
+    DoCmd.OpenForm _
+        "F_CustomerPO", _
+        acNormal, _
+        , _
+        "CustomerPOID = " & customerPOIDValue
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+
+    MsgBox _
+        "The linked customer PO could not be opened." & _
+        vbCrLf & vbCrLf & _
+        "InvoiceID: " & GetCurrentInvoiceID() & vbCrLf & _
+        "Error " & Err.Number & ": " & Err.Description, _
+        vbExclamation, _
+        "Open Customer PO"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cmdClose_Click()
+
+    On Error GoTo Err_Handler
+
+    Dim Response As VbMsgBoxResult
+
+    m_IsClosingForm = True
+
+    If HasPendingEdits Then
+
+        Response = MsgBox( _
+            "Save changes before closing this invoice?", _
+            vbQuestion + vbYesNoCancel, _
+            "Close Invoice" _
+        )
+
+        Select Case Response
+
+            Case vbYes
+
+                If SaveInvoiceRecord(False) = False Then
+                    m_IsClosingForm = False
+                    Exit Sub
+                End If
+
+            Case vbNo
+
+                DiscardPendingEditsSafely
+
+            Case vbCancel
+
+                m_IsClosingForm = False
+                Exit Sub
+
+        End Select
+
+    End If
+
+    DoCmd.close acForm, Me.Name, acSaveNo
+
+Exit_Handler:
+    m_IsClosingForm = False
+    Exit Sub
+
+Err_Handler:
+
+    MsgBox _
+        "The invoice form could not be closed." & _
+        vbCrLf & vbCrLf & _
+        "Error " & Err.Number & ": " & Err.Description, _
+        vbExclamation, _
+        "Close Invoice"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' SAVE INVOICE
+'=============================================================
+
+Private Function SaveInvoiceRecord( _
+    Optional ByVal showSuccessMessage As Boolean = True _
+) As Boolean
+
+    On Error GoTo Err_Handler
+
+    SaveInvoiceRecord = False
+
+    If IsBlankNewInvoiceRecord Then
+
+        MsgBox _
+            "Enter invoice details before saving.", _
+            vbExclamation, _
+            "Invoice Required"
+
+        SafeSetFocus "CustomerID"
+        Exit Function
+
+    End If
+
+    m_IsExplicitSave = True
+
+    NormalizeInvoiceValues
+
+    If Not ValidateInvoiceRecord Then
+        m_IsExplicitSave = False
+        Exit Function
+    End If
+
+    If Me.NewRecord Then
+        SafeSetControlValue "CreatedOn", Now()
+    End If
+
+    SafeSetControlValue "UpdatedOn", Now()
+
+    If Me.Dirty Then
+        DoCmd.RunCommand acCmdSaveRecord
+    End If
+
+    If SaveInvoiceLineEditsSafely(False) = False Then
+        m_IsExplicitSave = False
+        Exit Function
+    End If
+
+    CalculateAndStoreInvoiceTotals False
+
+    If Me.Dirty Then
+        DoCmd.RunCommand acCmdSaveRecord
+    End If
+
+    m_IsExplicitSave = False
+
+    If showSuccessMessage Then
+
+        MsgBox _
+            "Invoice saved successfully.", _
+            vbInformation, _
+            "Invoice Saved"
+
+    End If
+
+    SaveInvoiceRecord = True
+
+Exit_Handler:
+    m_IsExplicitSave = False
+    Exit Function
+
+Err_Handler:
+
+    m_IsExplicitSave = False
+
+    If Err.Number = 3200 Then
+
+        MsgBox _
+            "The invoice could not be saved because Access detected an unsafe parent invoice change while invoice lines exist." & _
+            vbCrLf & vbCrLf & _
+            "Cancel the pending header edit, then save again.", _
+            vbExclamation, _
+            "Invoice Relationship Protection"
+
+    ElseIf Err.Number = 3022 Then
+
+        MsgBox _
+            "This invoice number already exists. Use a different invoice number.", _
+            vbExclamation, _
+            "Duplicate Invoice"
+
+    Else
+
+        MsgBox _
+            "The invoice could not be saved." & _
+            vbCrLf & vbCrLf & _
+            "Error " & Err.Number & ": " & Err.Description, _
+            vbExclamation, _
+            "Invoice Save Failed"
+
+    End If
+
+    SaveInvoiceRecord = False
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' PDF EXPORT USING R_INVOICE REPORT
+'=============================================================
+
+Private Sub CreateInvoicePDF()
+
+    On Error GoTo Err_Handler
+
+    If PrepareInvoiceForPDF = False Then
+        Exit Sub
+    End If
+
+    ExportCurrentInvoiceReportToPDF
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+
+    MsgBox _
+        "The invoice PDF could not be created." & _
+        vbCrLf & vbCrLf & _
+        "Error " & Err.Number & ": " & Err.Description, _
+        vbExclamation, _
+        "Create Invoice PDF"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Function PrepareInvoiceForPDF() As Boolean
+
+    On Error GoTo Err_Handler
+
+    PrepareInvoiceForPDF = False
+
+    If SaveInvoiceRecord(False) = False Then
+        Exit Function
+    End If
+
+    If GetCurrentInvoiceID() <= 0 Then
+
+        MsgBox _
+            "Please save the invoice before creating the PDF.", _
+            vbExclamation, _
+            "Create Invoice PDF"
+
+        Exit Function
+
+    End If
+
+    CalculateAndStoreInvoiceTotals False
+
+    PrepareInvoiceForPDF = True
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+
+    MsgBox _
+        "The invoice could not be prepared for PDF." & _
+        vbCrLf & vbCrLf & _
+        "Error " & Err.Number & ": " & Err.Description, _
+        vbExclamation, _
+        "Prepare Invoice PDF"
+
+    PrepareInvoiceForPDF = False
+    Resume Exit_Handler
+
+End Function
+
+
+Private Sub ExportCurrentInvoiceReportToPDF()
+
+    On Error GoTo Err_Handler
+
+    Dim invoiceIDValue As Long
+    Dim invoiceNoValue As String
+    Dim folderPath As String
+    Dim FilePath As String
+    Dim whereText As String
+
+    Dim realErrNumber As Long
+    Dim realErrDescription As String
+
+    invoiceIDValue = GetCurrentInvoiceID()
+    invoiceNoValue = Trim$(Nz(GetControlValue("InvoiceNo"), vbNullString))
+
+    If Len(invoiceNoValue) = 0 Then
+        invoiceNoValue = "Invoice_" & CStr(invoiceIDValue)
+    End If
+
+    invoiceNoValue = CleanFileName(invoiceNoValue)
+
+    folderPath = Environ$("USERPROFILE") & PDF_INVOICE_FOLDER
+
+    EnsureFolderExists Environ$("USERPROFILE") & PDF_MAIN_FOLDER
+    EnsureFolderExists folderPath
+
+    FilePath = folderPath & "\Invoice_" & invoiceNoValue & ".pdf"
+
+    whereText = "[InvoiceID]=" & invoiceIDValue
+
+    If ReportExists(INVOICE_REPORT_NAME) = False Then
+
+        MsgBox _
+            "The invoice report was not found." & vbCrLf & vbCrLf & _
+            "Expected report: " & INVOICE_REPORT_NAME, _
+            vbExclamation, _
+            "Invoice Report Missing"
+
+        Exit Sub
+
+    End If
+
+    If CurrentProject.AllReports(INVOICE_REPORT_NAME).IsLoaded Then
+        DoCmd.close acReport, INVOICE_REPORT_NAME, acSaveNo
+    End If
+
+    DoCmd.OpenReport _
+        INVOICE_REPORT_NAME, _
+        acViewPreview, _
+        , _
+        whereText, _
+        acHidden
+
+    DoCmd.OutputTo _
+        acOutputReport, _
+        INVOICE_REPORT_NAME, _
+        acFormatPDF, _
+        FilePath, _
+        True
+
+    DoCmd.close acReport, INVOICE_REPORT_NAME, acSaveNo
+
+    MsgBox _
+        "Invoice PDF created successfully." & _
+        vbCrLf & vbCrLf & _
+        FilePath, _
+        vbInformation, _
+        "Create Invoice PDF"
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+
+    realErrNumber = Err.Number
+    realErrDescription = Err.Description
+
+    On Error Resume Next
+    DoCmd.close acReport, INVOICE_REPORT_NAME, acSaveNo
+    On Error GoTo 0
+
+    MsgBox _
+        "The invoice PDF could not be created." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & realErrNumber & vbCrLf & _
+        "Details: " & realErrDescription, _
+        vbExclamation, _
+        "Create Invoice PDF"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' LINK RESOLUTION
+'=============================================================
+
+Private Function ResolveSalesOrderID(ByVal invoiceIDValue As Long) As Long
+
+    On Error GoTo Err_Handler
+
+    Dim foundValue As Variant
+
+    ResolveSalesOrderID = 0
+
+    If invoiceIDValue <= 0 Then Exit Function
+
+    '1. Directly from T_Invoices
+    foundValue = SafeDLookup("SalesOrderID", "T_Invoices", "InvoiceID=" & invoiceIDValue)
+
+    If Nz(foundValue, 0) > 0 Then
+        ResolveSalesOrderID = CLng(foundValue)
+        Exit Function
+    End If
+
+    '2. From current form control
+    foundValue = GetControlValue("SalesOrderID")
+
+    If Nz(foundValue, 0) > 0 Then
+        ResolveSalesOrderID = CLng(foundValue)
+        Exit Function
+    End If
+
+    '3. From open Sales Order form
+    If FormIsLoaded("F_SalesOrders") Then
+
+        foundValue = Nz(Forms!F_SalesOrders!SalesOrderID, 0)
+
+        If Nz(foundValue, 0) > 0 Then
+            ResolveSalesOrderID = CLng(foundValue)
+            Exit Function
+        End If
+
+    End If
+
+    '4. From invoice lines through SalesOrderLineID
+    foundValue = SafeDLookup( _
+        "SalesOrderLineID", _
+        "T_InvoiceLines", _
+        "InvoiceID=" & invoiceIDValue & " AND SalesOrderLineID Is Not Null" _
+    )
+
+    If Nz(foundValue, 0) > 0 Then
+
+        foundValue = SafeDLookup( _
+            "SalesOrderID", _
+            "T_SalesOrderLines", _
+            "SalesOrderLineID=" & CLng(foundValue) _
+        )
+
+        If Nz(foundValue, 0) > 0 Then
+            ResolveSalesOrderID = CLng(foundValue)
+            Exit Function
+        End If
+
+    End If
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    ResolveSalesOrderID = 0
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function ResolveCustomerPOID( _
+    ByVal invoiceIDValue As Long, _
+    ByVal salesOrderIDValue As Long _
+) As Long
+
+    On Error GoTo Err_Handler
+
+    Dim foundValue As Variant
+    Dim salesOrderLineIDValue As Long
+    Dim customerPOLineIDValue As Long
+
+    ResolveCustomerPOID = 0
+
+    If invoiceIDValue <= 0 Then Exit Function
+
+    '1. Directly from T_Invoices
+    foundValue = SafeDLookup("CustomerPOID", "T_Invoices", "InvoiceID=" & invoiceIDValue)
+
+    If Nz(foundValue, 0) > 0 Then
+        ResolveCustomerPOID = CLng(foundValue)
+        Exit Function
+    End If
+
+    '2. From current form control
+    foundValue = GetControlValue("CustomerPOID")
+
+    If Nz(foundValue, 0) > 0 Then
+        ResolveCustomerPOID = CLng(foundValue)
+        Exit Function
+    End If
+
+    '3. From open Customer PO form
+    If FormIsLoaded("F_CustomerPO") Then
+
+        foundValue = Nz(Forms!F_CustomerPO!CustomerPOID, 0)
+
+        If Nz(foundValue, 0) > 0 Then
+            ResolveCustomerPOID = CLng(foundValue)
+            Exit Function
+        End If
+
+    End If
+
+    '4. From Sales Order header
+    If salesOrderIDValue > 0 Then
+
+        foundValue = SafeDLookup( _
+            "CustomerPOID", _
+            "T_SalesOrders", _
+            "SalesOrderID=" & salesOrderIDValue _
+        )
+
+        If Nz(foundValue, 0) > 0 Then
+            ResolveCustomerPOID = CLng(foundValue)
+            Exit Function
+        End If
+
+    End If
+
+    '5. From invoice line CustomerPOLineID
+    foundValue = SafeDLookup( _
+        "CustomerPOLineID", _
+        "T_InvoiceLines", _
+        "InvoiceID=" & invoiceIDValue & " AND CustomerPOLineID Is Not Null" _
+    )
+
+    If Nz(foundValue, 0) > 0 Then
+
+        customerPOLineIDValue = CLng(foundValue)
+
+        foundValue = SafeDLookup( _
+            "CustomerPOID", _
+            "T_CustomerPOLines", _
+            "CustomerPOLineID=" & customerPOLineIDValue _
+        )
+
+        If Nz(foundValue, 0) > 0 Then
+            ResolveCustomerPOID = CLng(foundValue)
+            Exit Function
+        End If
+
+    End If
+
+    '6. From invoice line SalesOrderLineID -> SalesOrderLine -> CustomerPOLineID -> CustomerPO
+    foundValue = SafeDLookup( _
+        "SalesOrderLineID", _
+        "T_InvoiceLines", _
+        "InvoiceID=" & invoiceIDValue & " AND SalesOrderLineID Is Not Null" _
+    )
+
+    If Nz(foundValue, 0) > 0 Then
+
+        salesOrderLineIDValue = CLng(foundValue)
+
+        foundValue = SafeDLookup( _
+            "CustomerPOLineID", _
+            "T_SalesOrderLines", _
+            "SalesOrderLineID=" & salesOrderLineIDValue _
+        )
+
+        If Nz(foundValue, 0) > 0 Then
+
+            customerPOLineIDValue = CLng(foundValue)
+
+            foundValue = SafeDLookup( _
+                "CustomerPOID", _
+                "T_CustomerPOLines", _
+                "CustomerPOLineID=" & customerPOLineIDValue _
+            )
+
+            If Nz(foundValue, 0) > 0 Then
+                ResolveCustomerPOID = CLng(foundValue)
+                Exit Function
+            End If
+
+        End If
+
+    End If
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    ResolveCustomerPOID = 0
+    Resume Exit_Handler
+
+End Function
+
+
+Private Sub SyncInvoiceLinks( _
+    ByVal invoiceIDValue As Long, _
+    ByVal salesOrderIDValue As Long, _
+    ByVal customerPOIDValue As Long _
+)
+
+    On Error Resume Next
+
+    Dim SqlText As String
+    Dim setText As String
+
+    If invoiceIDValue <= 0 Then Exit Sub
+
+    If salesOrderIDValue > 0 Then
+        setText = setText & "SalesOrderID=" & salesOrderIDValue
+    End If
+
+    If customerPOIDValue > 0 Then
+
+        If Len(setText) > 0 Then
+            setText = setText & ", "
+        End If
+
+        setText = setText & "CustomerPOID=" & customerPOIDValue
+
+    End If
+
+    If Len(setText) = 0 Then Exit Sub
+
+    setText = setText & ", UpdatedOn=#" & Format$(Now(), "yyyy\/mm\/dd hh\:nn\:ss") & "#"
+
+    SqlText = _
+        "UPDATE T_Invoices SET " & setText & _
+        " WHERE InvoiceID=" & invoiceIDValue & ";"
+
+    CurrentDb.Execute SqlText, 128
+
+    If salesOrderIDValue > 0 Then
+        SafeSetControlValue "SalesOrderID", salesOrderIDValue
+    End If
+
+    If customerPOIDValue > 0 Then
+        SafeSetControlValue "CustomerPOID", customerPOIDValue
+    End If
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Function SafeDLookup( _
+    ByVal fieldName As String, _
+    ByVal tableName As String, _
+    ByVal criteriaText As String _
+) As Variant
+
+    On Error GoTo Err_Handler
+
+    SafeDLookup = DLookup(fieldName, tableName, criteriaText)
+    Exit Function
+
+Err_Handler:
+    SafeDLookup = Null
+
+End Function
+
+
+'=============================================================
+' CURRENT RECORD HELPERS
+'=============================================================
+
+Private Function GetCurrentInvoiceID() As Long
+
+    On Error GoTo Err_Handler
+
+    GetCurrentInvoiceID = Nz(GetControlValue("InvoiceID"), 0)
+
+    If GetCurrentInvoiceID <= 0 Then
+        GetCurrentInvoiceID = Nz(Me!InvoiceID, 0)
+    End If
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    GetCurrentInvoiceID = 0
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' TOTALS
+'=============================================================
+
+Public Sub RecalculateInvoiceTotals()
+
+    CalculateAndStoreInvoiceTotals False
+
+End Sub
+
+
+Private Function CalculateAndStoreInvoiceTotals( _
+    Optional ByVal showErrors As Boolean = False _
+) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim invoiceIDValue As Long
+    Dim subtotalValue As Currency
+    Dim taxValue As Currency
+    Dim grandTotalValue As Currency
+    Dim sqlUpdate As String
+
+    CalculateAndStoreInvoiceTotals = False
+
+    invoiceIDValue = GetCurrentInvoiceID()
+
+    If invoiceIDValue <= 0 Then
+        CalculateAndStoreInvoiceTotals = True
+        Exit Function
+    End If
+
+    subtotalValue = Nz(DSum( _
+        "Nz([LineSubtotal],0)", _
+        "T_InvoiceLines", _
+        "InvoiceID = " & invoiceIDValue _
+    ), 0)
+
+    taxValue = Nz(GetControlValue("TaxAmount"), 0)
+    grandTotalValue = subtotalValue + taxValue
+
+    sqlUpdate = _
+        "UPDATE T_Invoices SET " & _
+        "SubtotalAmount = " & SqlCurrency(subtotalValue) & ", " & _
+        "GrandTotalAmount = " & SqlCurrency(grandTotalValue) & ", " & _
+        "UpdatedOn = #" & Format$(Now(), "yyyy\/mm\/dd hh\:nn\:ss") & "# " & _
+        "WHERE InvoiceID = " & invoiceIDValue & ";"
+
+    CurrentDb.Execute sqlUpdate, 128
+
+    SafeSetControlValue "SubtotalAmount", subtotalValue
+    SafeSetControlValue "GrandTotalAmount", grandTotalValue
+
+    CalculateAndStoreInvoiceTotals = True
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+
+    CalculateAndStoreInvoiceTotals = False
+
+    If showErrors Then
+        MsgBox _
+            "Invoice totals could not be recalculated." & _
+            vbCrLf & vbCrLf & _
+            "Error " & Err.Number & ": " & Err.Description, _
+            vbExclamation, _
+            "Invoice Totals"
+    End If
+
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function SqlCurrency(ByVal valueToFormat As Currency) As String
+
+    SqlCurrency = Trim$(Str$(CDbl(valueToFormat)))
+
+End Function
+
+
+'=============================================================
+' CONFIGURATION
+'=============================================================
+
+Private Sub ConfigureInvoiceForm()
+
+    On Error Resume Next
+
+    Me.AllowDeletions = False
+    Me.DataEntry = False
+
+    SafeSetControlVisible "InvoiceID", False
+    SafeSetControlLocked "InvoiceID", True
+    SafeSetControlEnabled "InvoiceID", False
+
+    SafeSetControlVisible "CustomerPOID", False
+    SafeSetControlVisible "SalesOrderID", False
+    SafeSetControlVisible "CreatedOn", False
+    SafeSetControlVisible "UpdatedOn", False
+
+    SafeSetControlLocked "SubtotalAmount", True
+    SafeSetControlLocked "GrandTotalAmount", True
+
+    If Not GetControlRef("BillToAddress") Is Nothing Then
+        GetControlRef("BillToAddress").EnterKeyBehavior = True
+        GetControlRef("BillToAddress").ScrollBars = 2
+    End If
+
+    If Not GetControlRef("Notes") Is Nothing Then
+        GetControlRef("Notes").EnterKeyBehavior = True
+        GetControlRef("Notes").ScrollBars = 2
+    End If
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub ConfigureInvoiceCombos()
+
+    On Error Resume Next
+
+    Dim ctl As Control
+
+    Set ctl = GetControlRef("CustomerID")
+
+    If Not ctl Is Nothing Then
+
+        With ctl
+            .RowSourceType = "Table/Query"
+            .RowSource = _
+                "SELECT CustomerID, CustomerName, CustomerCode " & _
+                "FROM T_Customers " & _
+                "ORDER BY CustomerName;"
+            .BoundColumn = 1
+            .ColumnCount = 3
+            .ColumnWidths = "0cm;6cm;3cm"
+            .LimitToList = True
+            .AutoExpand = True
+            .Requery
+        End With
+
+    End If
+
+    Set ctl = GetControlRef("InvoiceType")
+
+    If Not ctl Is Nothing Then
+
+        With ctl
+            .RowSourceType = "Value List"
+            .RowSource = "Pro Forma;Final;Credit Memo"
+            .LimitToList = True
+            .Requery
+        End With
+
+    End If
+
+    Set ctl = GetControlRef("InvoiceStatus")
+
+    If Not ctl Is Nothing Then
+
+        With ctl
+            .RowSourceType = "Value List"
+            .RowSource = "Draft;Sent;Partially Paid;Paid;Cancelled"
+            .LimitToList = True
+            .Requery
+        End With
+
+    End If
+
+    Set ctl = Nothing
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub SetInvoiceDefaults()
+
+    On Error Resume Next
+
+    SetControlDefaultValue "InvoiceDate", "Date()"
+    SetControlDefaultValue "InvoiceType", """Pro Forma"""
+    SetControlDefaultValue "InvoiceStatus", """Draft"""
+    SetControlDefaultValue "SubtotalAmount", "0"
+    SetControlDefaultValue "TaxAmount", "0"
+    SetControlDefaultValue "GrandTotalAmount", "0"
+
+    If Me.NewRecord Then
+
+        If IsNull(GetControlValue("InvoiceDate")) Then
+            SafeSetControlValue "InvoiceDate", Date
+        End If
+
+        If Len(Trim$(Nz(GetControlValue("InvoiceType"), vbNullString))) = 0 Then
+            SafeSetControlValue "InvoiceType", "Pro Forma"
+        End If
+
+        If Len(Trim$(Nz(GetControlValue("InvoiceStatus"), vbNullString))) = 0 Then
+            SafeSetControlValue "InvoiceStatus", "Draft"
+        End If
+
+        If IsNull(GetControlValue("SubtotalAmount")) Then
+            SafeSetControlValue "SubtotalAmount", 0
+        End If
+
+        If IsNull(GetControlValue("TaxAmount")) Then
+            SafeSetControlValue "TaxAmount", 0
+        End If
+
+        If IsNull(GetControlValue("GrandTotalAmount")) Then
+            SafeSetControlValue "GrandTotalAmount", 0
+        End If
+
+    End If
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub SetControlDefaultValue( _
+    ByVal controlName As String, _
+    ByVal defaultValueText As String _
+)
+
+    On Error Resume Next
+
+    Dim ctl As Control
+
+    Set ctl = GetControlRef(controlName)
+
+    If Not ctl Is Nothing Then
+        ctl.defaultValue = defaultValueText
+    End If
+
+    Set ctl = Nothing
+
+    On Error GoTo 0
+
+End Sub
+
+
+'=============================================================
+' VALIDATION / NORMALIZATION
+'=============================================================
+
+Private Sub NormalizeInvoiceValues()
+
+    If Len(Trim$(Nz(GetControlValue("InvoiceNo"), vbNullString))) = 0 Then
+        SafeSetControlValue "InvoiceNo", GetNextInvoiceNumber()
+    Else
+        SafeSetControlValue "InvoiceNo", UCase$(Trim$(Nz(GetControlValue("InvoiceNo"), vbNullString)))
+    End If
+
+    If IsNull(GetControlValue("InvoiceDate")) Then
+        SafeSetControlValue "InvoiceDate", Date
+    End If
+
+    If Len(Trim$(Nz(GetControlValue("InvoiceType"), vbNullString))) = 0 Then
+        SafeSetControlValue "InvoiceType", "Pro Forma"
+    End If
+
+    If Len(Trim$(Nz(GetControlValue("InvoiceStatus"), vbNullString))) = 0 Then
+        SafeSetControlValue "InvoiceStatus", "Draft"
+    End If
+
+    SafeSetControlValue "PaymentTerms", Trim$(Nz(GetControlValue("PaymentTerms"), vbNullString))
+    SafeSetControlValue "BillToName", Trim$(Nz(GetControlValue("BillToName"), vbNullString))
+    SafeSetControlValue "BillToAddress", Trim$(Nz(GetControlValue("BillToAddress"), vbNullString))
+    SafeSetControlValue "Notes", Trim$(Nz(GetControlValue("Notes"), vbNullString))
+
+    If IsNull(GetControlValue("TaxAmount")) Then
+        SafeSetControlValue "TaxAmount", 0
+    End If
+
+End Sub
+
+
+Private Function ValidateInvoiceRecord() As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim currentInvoiceID As Long
+    Dim invoiceNoValue As String
+    Dim criteriaText As String
+
+    ValidateInvoiceRecord = False
+
+    currentInvoiceID = GetCurrentInvoiceID()
+    invoiceNoValue = Trim$(Nz(GetControlValue("InvoiceNo"), vbNullString))
+
+    If Len(invoiceNoValue) = 0 Then
+
+        MsgBox _
+            "Enter the invoice number.", _
+            vbExclamation, _
+            "Invoice Number Required"
+
+        SafeSetFocus "InvoiceNo"
+        Exit Function
+
+    End If
+
+    If IsNull(GetControlValue("CustomerID")) Then
+
+        MsgBox _
+            "Select the customer.", _
+            vbExclamation, _
+            "Customer Required"
+
+        SafeSetFocus "CustomerID"
+        Exit Function
+
+    End If
+
+    If IsNull(GetControlValue("InvoiceDate")) Then
+
+        MsgBox _
+            "Enter the invoice date.", _
+            vbExclamation, _
+            "Invoice Date Required"
+
+        SafeSetFocus "InvoiceDate"
+        Exit Function
+
+    End If
+
+    criteriaText = "InvoiceNo = '" & Replace(invoiceNoValue, "'", "''") & "'"
+
+    If currentInvoiceID > 0 Then
+        criteriaText = criteriaText & " AND InvoiceID <> " & currentInvoiceID
+    End If
+
+    If DCount("*", "T_Invoices", criteriaText) > 0 Then
+
+        MsgBox _
+            "This invoice number already exists.", _
+            vbExclamation, _
+            "Duplicate Invoice"
+
+        SafeSetFocus "InvoiceNo"
+        Exit Function
+
+    End If
+
+    ValidateInvoiceRecord = True
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    ValidateInvoiceRecord = False
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function IsBlankNewInvoiceRecord() As Boolean
+
+    If Not Me.NewRecord Then
+        IsBlankNewInvoiceRecord = False
+        Exit Function
+    End If
+
+    IsBlankNewInvoiceRecord = _
+        Len(Trim$(Nz(GetControlValue("InvoiceNo"), vbNullString))) = 0 And _
+        IsNull(GetControlValue("CustomerID")) And _
+        Len(Trim$(Nz(GetControlValue("BillToName"), vbNullString))) = 0 And _
+        Nz(GetControlValue("SalesOrderID"), 0) = 0 And _
+        Nz(GetControlValue("CustomerPOID"), 0) = 0
+
+End Function
+
+
+'=============================================================
+' SUBFORM HANDLING
+'=============================================================
+
+Private Sub SetLineSubformAvailability()
+
+    On Error Resume Next
+
+    Dim allowLines As Boolean
+
+    allowLines = _
+        Not Me.NewRecord And _
+        GetCurrentInvoiceID() > 0
+
+    If ControlExists("subInvoiceLines") Then
+
+        With Me.Controls("subInvoiceLines")
+
+            .Enabled = allowLines
+            .Locked = Not allowLines
+
+            With .Form
+                .AllowAdditions = allowLines
+                .AllowEdits = allowLines
+                .AllowDeletions = allowLines
+            End With
+
+        End With
+
+    End If
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Function SaveInvoiceLineEditsSafely( _
+    Optional ByVal showErrors As Boolean = False _
+) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim frmLines As Form
+
+    SaveInvoiceLineEditsSafely = True
+
+    If Not ControlExists("subInvoiceLines") Then
+        Exit Function
+    End If
+
+    Set frmLines = Me.Controls("subInvoiceLines").Form
+
+    If frmLines.Dirty Then
+
+        If SubformInvoiceLineIsBlank(frmLines) Then
+            frmLines.Undo
+        Else
+            frmLines.Dirty = False
+        End If
+
+    End If
+
+Exit_Handler:
+    Set frmLines = Nothing
+    Exit Function
+
+Err_Handler:
+
+    If IsAutomationDisconnectError(Err.Number) Then
+        SaveInvoiceLineEditsSafely = True
+        Resume Exit_Handler
+    End If
+
+    SaveInvoiceLineEditsSafely = False
+
+    If showErrors Then
+        MsgBox _
+            "The invoice line currently being edited could not be saved." & _
+            vbCrLf & vbCrLf & _
+            "Error " & Err.Number & ": " & Err.Description, _
+            vbExclamation, _
+            "Invoice Line Save Failed"
+    End If
+
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function SubformInvoiceLineIsBlank(ByVal frm As Form) As Boolean
+
+    On Error GoTo Err_Handler
+
+    If Not frm.NewRecord Then
+        SubformInvoiceLineIsBlank = False
+        Exit Function
+    End If
+
+    SubformInvoiceLineIsBlank = _
+        IsNull(frm!ItemID) And _
+        Len(Trim$(Nz(frm!ItemCode, vbNullString))) = 0 And _
+        Len(Trim$(Nz(frm!LineDescription, vbNullString))) = 0 And _
+        Nz(frm!Quantity, 0) = 0 And _
+        IsNull(frm!UnitID) And _
+        Nz(frm!UnitPrice, 0) = 0
+
+    Exit Function
+
+Err_Handler:
+    SubformInvoiceLineIsBlank = False
+
+End Function
+
+
+Private Function HasPendingEdits() As Boolean
+
+    HasPendingEdits = False
+
+    On Error Resume Next
+
+    If Me.Dirty Then
+        HasPendingEdits = True
+    End If
+
+    If ControlExists("subInvoiceLines") Then
+        If Me.Controls("subInvoiceLines").Form.Dirty Then
+            HasPendingEdits = True
+        End If
+    End If
+
+    On Error GoTo 0
+
+End Function
+
+
+Private Sub DiscardPendingEditsSafely()
+
+    On Error Resume Next
+
+    m_IsDiscardingEdits = True
+
+    If ControlExists("subInvoiceLines") Then
+        If Me.Controls("subInvoiceLines").Form.Dirty Then
+            Me.Controls("subInvoiceLines").Form.Undo
+        End If
+    End If
+
+    If Me.Dirty Then
+        Me.Undo
+    End If
+
+    m_IsDiscardingEdits = False
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Function IsAutomationDisconnectError(ByVal errorNumber As Long) As Boolean
+
+    Select Case errorNumber
+
+        Case -2147418105, -2147417848, -2147417846, 440, 91
+            IsAutomationDisconnectError = True
+
+        Case Else
+            IsAutomationDisconnectError = False
+
+    End Select
+
+End Function
+
+
+'=============================================================
+' DOCUMENT NUMBERING
+'=============================================================
+
+Private Function GetNextInvoiceNumber() As String
+
+    On Error GoTo Err_Handler
+
+    Dim db As DAO.Database
+    Dim rs As DAO.Recordset
+    Dim sqlLookup As String
+
+    Dim prefixValue As String
+    Dim nextNumberValue As Long
+    Dim numberLengthValue As Long
+
+    Set db = CurrentDb
+
+    sqlLookup = _
+        "SELECT * FROM T_DocumentNumbers " & _
+        "WHERE DocumentType = 'Invoice';"
+
+    Set rs = db.OpenRecordset(sqlLookup, dbOpenDynaset)
+
+    If rs.EOF Then
+
+        prefixValue = "INV"
+        nextNumberValue = 157
+        numberLengthValue = 4
+
+        rs.addnew
+        rs!documentType = "Invoice"
+        rs!prefix = prefixValue
+        rs!nextNumber = nextNumberValue + 1
+        rs!NumberLength = numberLengthValue
+        rs!LastUpdatedOn = Now()
+        rs.Update
+
+    Else
+
+        prefixValue = Nz(rs!prefix, "INV")
+        nextNumberValue = Nz(rs!nextNumber, 157)
+        numberLengthValue = Nz(rs!NumberLength, 4)
+
+        rs.Edit
+        rs!nextNumber = nextNumberValue + 1
+        rs!LastUpdatedOn = Now()
+        rs.Update
+
+    End If
+
+    GetNextInvoiceNumber = _
+        prefixValue & Format(nextNumberValue, String(numberLengthValue, "0"))
+
+Exit_Handler:
+
+    On Error Resume Next
+
+    If Not rs Is Nothing Then
+        rs.close
+    End If
+
+    Set rs = Nothing
+    Set db = Nothing
+
+    On Error GoTo 0
+
+    Exit Function
+
+Err_Handler:
+    GetNextInvoiceNumber = "INV" & Format(Now(), "yyyymmddhhnnss")
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' FOLDER / FILE HELPERS
+'=============================================================
+
+Private Sub EnsureFolderExists(ByVal folderPath As String)
+
+    On Error GoTo Err_Handler
+
+    If Len(Dir(folderPath, vbDirectory)) = 0 Then
+        MkDir folderPath
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The PDF folder could not be created." & vbCrLf & vbCrLf & _
+        "Folder: " & folderPath & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Create PDF Folder"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Function CleanFileName(ByVal fileNameText As String) As String
+
+    Dim badChars As Variant
+    Dim i As Long
+
+    badChars = Array("\", "/", ":", "*", "?", """", "<", ">", "|")
+
+    CleanFileName = Trim$(Nz(fileNameText, vbNullString))
+
+    For i = LBound(badChars) To UBound(badChars)
+        CleanFileName = Replace(CleanFileName, badChars(i), "_")
+    Next i
+
+    If Len(CleanFileName) = 0 Then
+        CleanFileName = "Invoice"
+    End If
+
+End Function
+
+
+'=============================================================
+' OBJECT EXISTENCE HELPERS
+'=============================================================
+
+Private Function ReportExists(ByVal reportName As String) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim tmp As String
+
+    tmp = CurrentProject.AllReports(reportName).Name
+
+    ReportExists = True
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    ReportExists = False
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function FormExists(ByVal formName As String) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim tmp As String
+
+    tmp = CurrentProject.AllForms(formName).Name
+
+    FormExists = True
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    FormExists = False
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function FormIsLoaded(ByVal formName As String) As Boolean
+
+    On Error GoTo Err_Handler
+
+    FormIsLoaded = CurrentProject.AllForms(formName).IsLoaded
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    FormIsLoaded = False
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' SAFE CONTROL HELPERS
+'=============================================================
+
+Private Function GetControlValue(ByVal controlName As String) As Variant
+
+    On Error GoTo Err_Handler
+
+    Dim ctl As Control
+
+    Set ctl = GetControlRef(controlName)
+
+    If Not ctl Is Nothing Then
+        GetControlValue = ctl.value
+        Set ctl = Nothing
+        Exit Function
+    End If
+
+    GetControlValue = Me(controlName).value
+
+    Set ctl = Nothing
+    Exit Function
+
+Err_Handler:
+    GetControlValue = Null
+
+End Function
+
+
+Private Function GetControlRef(ByVal logicalName As String) As Control
+
+    On Error Resume Next
+
+    Set GetControlRef = Nothing
+
+    Set GetControlRef = Me.Controls(logicalName)
+
+    If GetControlRef Is Nothing Then
+        Set GetControlRef = Me.Controls("txt" & logicalName)
+    End If
+
+    If GetControlRef Is Nothing Then
+        Set GetControlRef = Me.Controls("cbo" & logicalName)
+    End If
+
+    On Error GoTo 0
+
+End Function
+
+
+Private Sub SafeSetControlValue( _
+    ByVal controlName As String, _
+    ByVal controlValue As Variant _
+)
+
+    On Error Resume Next
+
+    Dim ctl As Control
+
+    Set ctl = GetControlRef(controlName)
+
+    If Not ctl Is Nothing Then
+        ctl.value = controlValue
+    End If
+
+    Set ctl = Nothing
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub SafeSetControlVisible( _
+    ByVal controlName As String, _
+    ByVal visibleValue As Boolean _
+)
+
+    On Error Resume Next
+
+    Dim ctl As Control
+
+    Set ctl = GetControlRef(controlName)
+
+    If Not ctl Is Nothing Then
+        ctl.Visible = visibleValue
+    End If
+
+    Set ctl = Nothing
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub SafeSetControlLocked( _
+    ByVal controlName As String, _
+    ByVal lockedValue As Boolean _
+)
+
+    On Error Resume Next
+
+    Dim ctl As Control
+
+    Set ctl = GetControlRef(controlName)
+
+    If Not ctl Is Nothing Then
+        ctl.Locked = lockedValue
+    End If
+
+    Set ctl = Nothing
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub SafeSetControlEnabled( _
+    ByVal controlName As String, _
+    ByVal enabledValue As Boolean _
+)
+
+    On Error Resume Next
+
+    Dim ctl As Control
+
+    Set ctl = GetControlRef(controlName)
+
+    If Not ctl Is Nothing Then
+        ctl.Enabled = enabledValue
+    End If
+
+    Set ctl = Nothing
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub SafeSetFocus(ByVal controlName As String)
+
+    On Error Resume Next
+
+    Dim ctl As Control
+
+    Set ctl = GetControlRef(controlName)
+
+    If Not ctl Is Nothing Then
+        ctl.SetFocus
+    End If
+
+    Set ctl = Nothing
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Function ControlExists(ByVal controlName As String) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim ctl As Control
+
+    Set ctl = Me.Controls(controlName)
+
+    ControlExists = True
+
+Exit_Handler:
+    Set ctl = Nothing
+    Exit Function
+
+Err_Handler:
+    ControlExists = False
+    Resume Exit_Handler
+
+End Function
+
+Private Sub CustomerID_NotInList(NewData As String, Response As Integer)
+    On Error GoTo Err_Handler
+    Response = acDataErrContinue
+    If HandleComboNotInList(Me!CustomerID, NewData, "F_CustomerSetup", "T_Customers", "CustomerID", "CustomerName", "CustomerCode") Then
+        Response = acDataErrAdded
+    Else
+        Me!CustomerID.Undo
+    End If
+    Exit Sub
+Err_Handler:
+    Response = acDataErrContinue
+    MsgBox Err.Description, vbExclamation, "Add Customer"
+End Sub
+
+Private Sub Form_Unload(Cancel As Integer)
+    On Error Resume Next
+    If Me.NewRecord And Me.Dirty Then Me.Undo
+End Sub

@@ -1,0 +1,2006 @@
+﻿Version =21
+VersionRequired =20
+PublishOption =1
+Checksum =-661367784
+Begin Form
+    PopUp = NotDefault
+    Modal = NotDefault
+    RecordSelectors = NotDefault
+    AutoCenter = NotDefault
+    NavigationButtons = NotDefault
+    DividingLines = NotDefault
+    AllowDesignChanges = NotDefault
+    DefaultView =0
+    ScrollBars =0
+    ViewsAllowed =1
+    TabularFamily =0
+    PictureAlignment =2
+    DatasheetGridlinesBehavior =3
+    GridX =24
+    GridY =24
+    Width =7860
+    DatasheetFontHeight =11
+    ItemSuffix =12
+    Left =2655
+    Top =4065
+    Right =17745
+    Bottom =8760
+    DatasheetGridlinesColor =15263976
+    RecSrcDt = Begin
+        0xc07c3c189391e640
+    End
+    GUID = Begin
+        0x947c878a4a94384989b693455dde02e2
+    End
+    RecordSource ="T_Locations"
+    Caption ="F_LocationsSetup"
+    OnCurrent ="[Event Procedure]"
+    BeforeInsert ="[Event Procedure]"
+    BeforeUpdate ="[Event Procedure]"
+    DatasheetFontName ="Aptos"
+    PrtMip = Begin
+        0x6801000068010000680100006801000000000000201c0000e010000001000000 ,
+        0x010000006801000000000000a10700000100000001000000
+    End
+    PrtDevMode = Begin
+        0x0082a78bd1020000001fd5d7e7000000000000000000000027164810f67f0000 ,
+        0x010403069c004003032d000001000100ea0a6f08640001000f00580202000100 ,
+        0x5802030001004c657474657200000000030000000000c8420000c842e8e8e800 ,
+        0x0036068cd1020000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000ffffffff4749533400000000000000000000000044494e55 ,
+        0x2200c80024031c00ac13d8c00000000000000000000000000000000000000000 ,
+        0x0000000000000000050000000000070000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000100000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000c8000000534d544a ,
+        0x000000001000b8007b00330045004500330039003100310034002d0033003000 ,
+        0x420034002d0034003500610034002d0041003100300039002d00310039004400 ,
+        0x3400410034003000460043004300320032007d000000524553444c4c00556e69 ,
+        0x726573444c4c00506170657253697a65004c4554544552004f7269656e746174 ,
+        0x696f6e00504f525452414954005265736f6c7574696f6e004450493630300043 ,
+        0x6f6c6f724d6f6465003234627070000000000000000000000000000000000000 ,
+        0x1c0000005634444d0100000000000000000000000000000000000000
+    End
+    PrtDevNames = Begin
+        0x08002c003f000100000000000000000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000000000000000006e ,
+        0x756c3a0000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x00000000
+    End
+    OnLoad ="[Event Procedure]"
+    OnError ="[Event Procedure]"
+    AllowDatasheetView =0
+    FilterOnLoad =0
+    ShowPageMargins =0
+    DisplayOnSharePointSite =1
+    DatasheetAlternateBackColor =15921906
+    DatasheetGridlinesColor12 =0
+    FitToScreen =1
+    DatasheetBackThemeColorIndex =1
+    BorderThemeColorIndex =3
+    ThemeFontIndex =1
+    ForeThemeColorIndex =0
+    AlternateBackThemeColorIndex =1
+    AlternateBackShade =95.0
+    PrtDevModeW = Begin
+        0x00001d80d102000002000000f67f000010665380d10200000200000000000000 ,
+        0x606a5380d10200005fedb96dfe7f0000000088edd10200000971d6d7e7000000 ,
+        0x01040306dc004003032d000001000100ea0a6f08640001000f00580202000100 ,
+        0x5802030001004c006500740074006500720000000000000020665380d1020000 ,
+        0x0000000000000000000000000000000010665380d102000046000000e7000000 ,
+        0x0200000000000000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000ffffffff4749533400000000000000000000000044494e55 ,
+        0x2200c80024031c00ac13d8c00000000000000000000000000000000000000000 ,
+        0x0000000000000000050000000000070000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000100000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000c8000000534d544a ,
+        0x000000001000b8007b00330045004500330039003100310034002d0033003000 ,
+        0x420034002d0034003500610034002d0041003100300039002d00310039004400 ,
+        0x3400410034003000460043004300320032007d000000524553444c4c00556e69 ,
+        0x726573444c4c00506170657253697a65004c4554544552004f7269656e746174 ,
+        0x696f6e00504f525452414954005265736f6c7574696f6e004450493630300043 ,
+        0x6f6c6f724d6f6465003234627070000000000000000000000000000000000000 ,
+        0x1c0000005634444d0100000000000000000000000000000000000000
+    End
+    PrtDevNamesW = Begin
+        0x040028003b000100000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000006e0075006c003a000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000
+    End
+    NoSaveCTIWhenDisabled =1
+    Begin
+        Begin Label
+            BackStyle =0
+            TextFontFamily =0
+            FontSize =11
+            BorderColor =8355711
+            ForeColor =6710886
+            FontName ="Aptos"
+            GridlineColor =10921638
+            ThemeFontIndex =1
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =0
+            BorderTint =50.0
+            ForeThemeColorIndex =0
+            ForeTint =60.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin CommandButton
+            TextFontFamily =0
+            FontSize =11
+            FontWeight =400
+            ForeColor =4210752
+            FontName ="Aptos"
+            GridlineColor =10921638
+            ForeThemeColorIndex =0
+            ForeTint =75.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+            UseTheme =1
+            Shape =1
+            Gradient =12
+            BackColor =14790982
+            BackThemeColorIndex =4
+            BackTint =60.0
+            BorderLineStyle =0
+            BorderColor =14790982
+            BorderThemeColorIndex =4
+            BorderTint =60.0
+            ThemeFontIndex =1
+            HoverColor =15453059
+            HoverThemeColorIndex =4
+            HoverTint =40.0
+            PressedColor =6440976
+            PressedThemeColorIndex =4
+            PressedShade =75.0
+            HoverForeColor =4210752
+            HoverForeThemeColorIndex =0
+            HoverForeTint =75.0
+            PressedForeColor =4210752
+            PressedForeThemeColorIndex =0
+            PressedForeTint =75.0
+        End
+        Begin TextBox
+            AddColon = NotDefault
+            FELineBreak = NotDefault
+            TextFontFamily =0
+            BorderLineStyle =0
+            LabelX =-1800
+            FontSize =11
+            BorderColor =10921638
+            ForeColor =4210752
+            FontName ="Aptos"
+            AsianLineBreak =1
+            GridlineColor =10921638
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            ThemeFontIndex =1
+            ForeThemeColorIndex =0
+            ForeTint =75.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin ComboBox
+            AddColon = NotDefault
+            TextFontFamily =0
+            BorderLineStyle =0
+            LabelX =-1800
+            FontSize =11
+            BorderColor =10921638
+            ForeColor =2102279
+            FontName ="Aptos"
+            GridlineColor =10921638
+            AllowValueListEdits =1
+            InheritValueList =1
+            ThemeFontIndex =1
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            ForeThemeColorIndex =2
+            ForeShade =50.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin FormHeader
+            Height =960
+            BackColor =14482166
+            Name ="FormHeader"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x458baacc14455e46b874a4beaa548e58
+            End
+            AlternateBackShade =95.0
+            BackTint =20.0
+            Begin
+                Begin Label
+                    OverlapFlags =93
+                    TextAlign =2
+                    Left =1560
+                    Top =300
+                    Width =3802
+                    Height =540
+                    FontSize =20
+                    FontWeight =700
+                    ForeColor =4272139
+                    Name ="Label10"
+                    Caption ="Locations Setup"
+                    GUID = Begin
+                        0x10d68067cdc9094bae30f8ba37667820
+                    End
+                    LayoutCachedLeft =1560
+                    LayoutCachedTop =300
+                    LayoutCachedWidth =5362
+                    LayoutCachedHeight =840
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    ForeShade =50.0
+                End
+                Begin CommandButton
+                    OverlapFlags =215
+                    TextFontFamily =34
+                    Left =200
+                    Top =80
+                    Width =1400
+                    FontWeight =700
+                    ForeColor =16777215
+                    Name ="cmdUXBack"
+                    Caption ="Back"
+                    OnClick ="=UX_GoBack()"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdUXBack\")"
+                    GUID = Begin
+                        0x17ab642da333c34bb6965d756f255a3c
+                    End
+
+                    LayoutCachedLeft =200
+                    LayoutCachedTop =80
+                    LayoutCachedWidth =1600
+                    LayoutCachedHeight =440
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                    Overlaps =1
+                End
+            End
+        End
+        Begin Section
+            Height =3240
+            BackColor =14482166
+            Name ="Detail"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x2f999127af9458499f3f05d9e691c20a
+            End
+            AlternateBackColor =14482166
+            AlternateBackShade =95.0
+            Begin
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =2058
+                    Top =480
+                    Width =3648
+                    Height =324
+                    ColumnWidth =3000
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="LocationCode"
+                    ControlSource ="LocationCode"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xb5f548fe6e94284db96c49a26b4e4993
+                    End
+
+                    LayoutCachedLeft =2058
+                    LayoutCachedTop =480
+                    LayoutCachedWidth =5706
+                    LayoutCachedHeight =804
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =120
+                            Top =480
+                            Width =1848
+                            Height =324
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="LocationCode_Label"
+                            Caption ="LocationCode"
+                            GUID = Begin
+                                0x32435ce30a50974bb2e9dae21e4f6609
+                            End
+                            LayoutCachedLeft =120
+                            LayoutCachedTop =480
+                            LayoutCachedWidth =1968
+                            LayoutCachedHeight =804
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =2058
+                    Top =900
+                    Width =3636
+                    Height =360
+                    ColumnWidth =3000
+                    TabIndex =1
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="LocationName"
+                    ControlSource ="LocationName"
+                    AfterUpdate ="[Event Procedure]"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x0599d8facbea484bb2cbf7c7dcd22c5e
+                    End
+
+                    LayoutCachedLeft =2058
+                    LayoutCachedTop =900
+                    LayoutCachedWidth =5694
+                    LayoutCachedHeight =1260
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =120
+                            Top =900
+                            Width =1848
+                            Height =324
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="LocationName_Label"
+                            Caption ="Location Name"
+                            GUID = Begin
+                                0xa88e849ff492924d9b7bac97f2d67419
+                            End
+                            LayoutCachedLeft =120
+                            LayoutCachedTop =900
+                            LayoutCachedWidth =1968
+                            LayoutCachedHeight =1224
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =2058
+                    Top =1380
+                    Width =3648
+                    Height =324
+                    ColumnWidth =3000
+                    TabIndex =2
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="BinNumber"
+                    ControlSource ="BinNumber"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x6844c9648dd72545815ea70f9e122463
+                    End
+
+                    LayoutCachedLeft =2058
+                    LayoutCachedTop =1380
+                    LayoutCachedWidth =5706
+                    LayoutCachedHeight =1704
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =120
+                            Top =1380
+                            Width =1848
+                            Height =324
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="BinNumber_Label"
+                            Caption ="BinNumber"
+                            GUID = Begin
+                                0x5595b3adfa69ea4da2cd3ecf487bfca6
+                            End
+                            LayoutCachedLeft =120
+                            LayoutCachedTop =1380
+                            LayoutCachedWidth =1968
+                            LayoutCachedHeight =1704
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =2058
+                    Top =1800
+                    Width =3648
+                    Height =324
+                    ColumnWidth =3000
+                    TabIndex =3
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="ShelfNumber"
+                    ControlSource ="ShelfNumber"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x1d6eb0a8f3dbad4997e9aaad56683c83
+                    End
+
+                    LayoutCachedLeft =2058
+                    LayoutCachedTop =1800
+                    LayoutCachedWidth =5706
+                    LayoutCachedHeight =2124
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =120
+                            Top =1800
+                            Width =1848
+                            Height =324
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="ShelfNumber_Label"
+                            Caption ="ShelfNumber"
+                            GUID = Begin
+                                0x1f545308bcb50648a1b7b893a3912089
+                            End
+                            LayoutCachedLeft =120
+                            LayoutCachedTop =1800
+                            LayoutCachedWidth =1968
+                            LayoutCachedHeight =2124
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    Left =2400
+                    Top =2520
+                    Width =1800
+                    Height =300
+                    FontWeight =700
+                    TabIndex =4
+                    ForeColor =16777215
+                    Name ="cmdSaveClose"
+                    Caption ="Save"
+                    OnClick ="[Event Procedure]"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdSaveClose\")"
+                    GUID = Begin
+                        0x30ff6d35c5f3c0499bf604bc6d0e1965
+                    End
+
+                    LayoutCachedLeft =2400
+                    LayoutCachedTop =2520
+                    LayoutCachedWidth =4200
+                    LayoutCachedHeight =2820
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    HoverForeTint =100.0
+                    HoverForeShade =50.0
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    PressedForeTint =100.0
+                    PressedForeShade =50.0
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                End
+                Begin ComboBox
+                    Visible = NotDefault
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =2058
+                    Top =60
+                    Width =2436
+                    Height =300
+                    TabIndex =5
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    ColumnInfo ="\"\";\"\";\"4\";\"4\""
+                    GUID = Begin
+                        0x98fa38fa82f47846a17e0e7d762ee04a
+                    End
+                    Name ="cboWarehouseID"
+                    ControlSource ="WarehouseID"
+                    RowSourceType ="Table/Query"
+                    RowSource ="SELECT WarehouseID, WarehouseName, WarehouseCode\015\012FROM T_Warehouses\015\012"
+                        "ORDER BY WarehouseName, WarehouseCode;"
+                    FontName ="Segoe UI"
+
+                    LayoutCachedLeft =2058
+                    LayoutCachedTop =60
+                    LayoutCachedWidth =4494
+                    LayoutCachedHeight =360
+                    ThemeFontIndex =-1
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =75.0
+                    ForeShade =100.0
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =120
+                            Top =60
+                            Width =1848
+                            Height =324
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="WarehouseID_Label"
+                            Caption ="Warehouse (type a new name to add it)"
+                            GUID = Begin
+                                0xf3f8c1ade185f14ebc0cbf39d36f2f8c
+                            End
+                            LayoutCachedLeft =120
+                            LayoutCachedTop =60
+                            LayoutCachedWidth =1968
+                            LayoutCachedHeight =384
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =14482166
+            Name ="FormFooter"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0xe974a0b307b43b438f7378f50a39289f
+            End
+            AutoHeight =1
+            AlternateBackShade =95.0
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+'=============================================================
+' FORM: F_LocationSetup
+'
+' PURPOSE:
+'   Creates and edits stock locations.
+'
+' IMPORTANT DESIGN NAMES:
+'   Warehouse combo:     cboWarehouseID
+'   Location code:       LocationCode or txtLocationCode
+'   Location name:       LocationName or txtLocationName
+'   Bin number:          BinNumber or txtBinNumber
+'   Shelf number:        ShelfNumber or txtShelfNumber
+'   Save and Close:      cmdSaveClose
+'   Close without save:  cmdClose
+'
+' QUICK ADD FROM ITEM SETUP:
+'   F_ItemSetup opens this form with:
+'
+'       QUICKADD|typed location name
+'
+'   This module automatically fills the typed Location Name.
+'
+' WAREHOUSE QUICK ADD:
+'   Typing a warehouse that is not in cboWarehouseID asks whether
+'   it should be created. It then opens F_Warehouses using the
+'   same standard HandleComboNotInList helper already used by the
+'   rest of the application.
+'=============================================================
+
+Private Const WAREHOUSE_SETUP_FORM As String = "F_Warehouses"
+Private Const WAREHOUSE_TABLE As String = "T_Warehouses"
+
+Private mQuickAddMode As Boolean
+Private mInitializing As Boolean
+
+
+'=============================================================
+' FORM EVENTS
+'=============================================================
+
+Private Sub Form_Load()
+    UX_MarkRequired Me, "LocationName", "cboWarehouseID"
+
+    On Error GoTo Err_Handler
+
+    mInitializing = True
+    mQuickAddMode = IsQuickAddRequest()
+
+    ConfigureFormControls
+    ConfigureWarehouseCombo
+
+    If Me.NewRecord Then
+        ApplyNewRecordDefaults
+        ApplyQuickAddLocationName
+        EnsureLocationCode
+    End If
+
+    mInitializing = False
+    SetInitialFocus
+
+Exit_Handler:
+    mInitializing = False
+    Exit Sub
+
+Err_Handler:
+    mInitializing = False
+
+    MsgBox _
+        "Location Setup could not be initialized." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Location Setup"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_Current()
+
+    On Error GoTo Err_Handler
+
+    If Me.NewRecord Then
+        ApplyNewRecordDefaults
+        EnsureLocationCode
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The location record could not be displayed." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Location Setup"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_BeforeInsert(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    If RecordsetHasField("CreatedOn") Then
+        If IsNull(Me.Recordset.Fields("CreatedOn").value) Then
+            Me.Recordset.Fields("CreatedOn").value = Now()
+        End If
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Cancel = True
+
+    MsgBox _
+        "The new location record could not be started." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Location Setup"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_BeforeUpdate(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    NormalizeLocationValues
+    EnsureLocationCode
+
+    If Not ValidateLocationRecord Then
+        Cancel = True
+        Exit Sub
+    End If
+
+    If RecordsetHasField("UpdatedOn") Then
+        Me.Recordset.Fields("UpdatedOn").value = Now()
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Cancel = True
+
+    MsgBox _
+        "The location could not be validated." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Location Setup"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_Error( _
+    DataErr As Integer, _
+    Response As Integer _
+)
+
+    If DataErr = 3022 Then
+
+        MsgBox _
+            "The location code already exists.", _
+            vbExclamation, _
+            "Duplicate Location"
+
+        Response = acDataErrContinue
+
+    Else
+
+        Response = acDataErrDisplay
+
+    End If
+
+End Sub
+
+
+'=============================================================
+' WAREHOUSE COMBO EVENTS
+'=============================================================
+
+Private Sub cboWarehouseID_NotInList( _
+    NewData As String, _
+    Response As Integer _
+)
+
+    On Error GoTo Err_Handler
+
+    Response = acDataErrContinue
+
+    If HandleComboNotInList( _
+        Me.cboWarehouseID, _
+        NewData, _
+        WAREHOUSE_SETUP_FORM, _
+        WAREHOUSE_TABLE, _
+        "WarehouseID", _
+        "WarehouseName", _
+        "WarehouseCode") Then
+
+        Response = acDataErrAdded
+
+    Else
+
+        Me.cboWarehouseID.Undo
+
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Response = acDataErrContinue
+
+    MsgBox _
+        "The warehouse could not be created." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Warehouse Quick Add"
+
+    On Error Resume Next
+    Me.cboWarehouseID.Undo
+    On Error GoTo 0
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cboWarehouseID_DblClick(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    Cancel = True
+
+    If Nz(Me.cboWarehouseID, 0) > 0 Then
+
+        EditComboEntry _
+            Me.cboWarehouseID, _
+            WAREHOUSE_SETUP_FORM, _
+            "WarehouseID"
+
+    Else
+
+        AddComboEntry _
+            Me.cboWarehouseID, _
+            WAREHOUSE_SETUP_FORM, _
+            WAREHOUSE_TABLE, _
+            "WarehouseID"
+
+    End If
+
+    Me.cboWarehouseID.Requery
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "Warehouse Setup could not be opened." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Warehouse Setup"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cboWarehouseID_AfterUpdate()
+
+    On Error Resume Next
+    Me.cboWarehouseID.Requery
+    On Error GoTo 0
+
+End Sub
+
+
+'=============================================================
+' LOCATION NAME EVENTS
+'=============================================================
+
+Private Sub txtLocationName_AfterUpdate()
+
+    If Not mInitializing And Me.NewRecord Then
+        EnsureLocationCode
+    End If
+
+End Sub
+
+
+Private Sub LocationName_AfterUpdate()
+
+    If Not mInitializing And Me.NewRecord Then
+        EnsureLocationCode
+    End If
+
+End Sub
+
+
+'=============================================================
+' BUTTON EVENTS
+'=============================================================
+
+Private Sub cmdSaveClose_Click()
+
+    SaveAndCloseLocation
+
+End Sub
+
+
+'Supports the button currently shown with the name Save.
+Private Sub Save_Click()
+
+    SaveAndCloseLocation
+
+End Sub
+
+
+'Supports an existing button named cmdSave.
+Private Sub cmdSave_Click()
+
+    SaveAndCloseLocation
+
+End Sub
+
+
+Private Sub cmdClose_Click()
+
+    CloseLocationWithoutForcedSave
+
+End Sub
+
+
+Private Sub close_Click()
+
+    CloseLocationWithoutForcedSave
+
+End Sub
+
+
+Private Sub cmdNew_Click()
+
+    OpenNewLocationRecord
+
+End Sub
+
+
+Private Sub addnew_Click()
+
+    OpenNewLocationRecord
+
+End Sub
+
+
+'=============================================================
+' SAVE AND CLOSE
+'=============================================================
+
+Private Sub SaveAndCloseLocation()
+
+    On Error GoTo Err_Handler
+
+    If Not SaveLocationRecord Then
+        Exit Sub
+    End If
+
+    DoCmd.close _
+        acForm, _
+        Me.Name, _
+        acSaveNo
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The location could not be saved and closed." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Location Setup"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Function SaveLocationRecord() As Boolean
+
+    On Error GoTo Err_Handler
+
+    SaveLocationRecord = False
+
+    NormalizeLocationValues
+    EnsureLocationCode
+
+    If Not ValidateLocationRecord Then
+        Exit Function
+    End If
+
+    If Me.Dirty Then
+        Me.Dirty = False
+    End If
+
+    SaveLocationRecord = _
+        (CurrentLocationID() > 0)
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    MsgBox _
+        "The location record could not be saved." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Location Setup"
+
+    Resume Exit_Handler
+
+End Function
+
+
+Private Sub CloseLocationWithoutForcedSave()
+
+    On Error GoTo Err_Handler
+
+    Dim responseValue As VbMsgBoxResult
+
+    If Me.Dirty Then
+
+        responseValue = MsgBox( _
+            "Save the location changes before closing?", _
+            vbQuestion + vbYesNoCancel, _
+            "Close Location Setup")
+
+        Select Case responseValue
+
+            Case vbYes
+
+                If Not SaveLocationRecord Then
+                    Exit Sub
+                End If
+
+            Case vbNo
+
+                Me.Undo
+
+            Case vbCancel
+
+                Exit Sub
+
+        End Select
+
+    End If
+
+    DoCmd.close _
+        acForm, _
+        Me.Name, _
+        acSaveNo
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "Location Setup could not be closed." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Location Setup"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub OpenNewLocationRecord()
+
+    On Error GoTo Err_Handler
+
+    If Me.Dirty Then
+        If Not SaveLocationRecord Then
+            Exit Sub
+        End If
+    End If
+
+    DoCmd.GoToRecord _
+        acDataForm, _
+        Me.Name, _
+        acNewRec
+
+    mQuickAddMode = False
+    ApplyNewRecordDefaults
+    SetInitialFocus
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "A new location could not be opened." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Location Setup"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' FORM CONFIGURATION
+'=============================================================
+
+Private Sub ConfigureFormControls()
+
+    Dim controlName As String
+
+    'Only the location primary key is hidden.
+    controlName = FirstExistingControlName( _
+        "txtLocationID", _
+        "LocationID")
+
+    If Len(controlName) > 0 Then
+
+        If StrComp( _
+            controlName, _
+            "LocationID", _
+            vbTextCompare) = 0 Then
+
+            'Do not accidentally hide a visible business field
+            'when no dedicated LocationID textbox exists.
+            If ControlSourceIs( _
+                Me.Controls(controlName), _
+                "LocationID") Then
+
+                With Me.Controls(controlName)
+                    .Visible = False
+                    .Enabled = False
+                    .Locked = True
+                    .TabStop = False
+                End With
+
+            End If
+
+        Else
+
+            With Me.Controls(controlName)
+                .Visible = False
+                .Enabled = False
+                .Locked = True
+                .TabStop = False
+            End With
+
+        End If
+
+    End If
+
+    'Location code is generated automatically.
+    controlName = FirstExistingControlName( _
+        "txtLocationCode", _
+        "LocationCode")
+
+    If Len(controlName) > 0 Then
+
+        With Me.Controls(controlName)
+            .Visible = True
+            .Enabled = True
+            .Locked = True
+            .TabStop = False
+        End With
+
+    End If
+
+    'Warehouse must always remain visible and editable.
+    If ControlExists("cboWarehouseID") Then
+
+        With Me.cboWarehouseID
+            .Visible = True
+            .Enabled = True
+            .Locked = False
+            .TabStop = True
+        End With
+
+    End If
+
+End Sub
+
+
+Private Sub ConfigureWarehouseCombo()
+
+    On Error GoTo Err_Handler
+
+    If Not ControlExists("cboWarehouseID") Then
+
+        Err.Raise _
+            vbObjectError + 7401, _
+            "ConfigureWarehouseCombo", _
+            "The combo box cboWarehouseID was not found." & _
+            vbCrLf & vbCrLf & _
+            "Convert the WarehouseID textbox to a combo box " & _
+            "and name it cboWarehouseID."
+
+    End If
+
+    If Me.cboWarehouseID.ControlType <> acComboBox Then
+
+        Err.Raise _
+            vbObjectError + 7402, _
+            "ConfigureWarehouseCombo", _
+            "cboWarehouseID must be a combo box."
+
+    End If
+
+    With Me.cboWarehouseID
+
+        .ControlSource = "WarehouseID"
+
+        .RowSourceType = "Table/Query"
+        .RowSource = _
+            "SELECT WarehouseID, WarehouseName, WarehouseCode " & _
+            "FROM T_Warehouses " & _
+            "ORDER BY WarehouseName, WarehouseCode;"
+
+        .BoundColumn = 1
+        .ColumnCount = 3
+        .ColumnWidths = "0cm;6cm;3cm"
+
+        .LimitToList = True
+        .AutoExpand = True
+
+        .Visible = True
+        .Enabled = True
+        .Locked = False
+        .TabStop = True
+
+        .Requery
+
+    End With
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Err.Raise _
+        Err.Number, _
+        "ConfigureWarehouseCombo", _
+        Err.Description
+
+End Sub
+
+
+'=============================================================
+' QUICK ADD FROM ITEM SETUP
+'=============================================================
+
+Private Function IsQuickAddRequest() As Boolean
+
+    IsQuickAddRequest = _
+        (StrComp( _
+            Left$(Trim$(Nz(Me.OpenArgs, vbNullString)), 9), _
+            "QUICKADD|", _
+            vbTextCompare) = 0)
+
+End Function
+
+
+Private Function QuickAddTypedText() As String
+
+    Dim openArguments As String
+
+    openArguments = _
+        Trim$(Nz(Me.OpenArgs, vbNullString))
+
+    If StrComp( _
+        Left$(openArguments, 9), _
+        "QUICKADD|", _
+        vbTextCompare) = 0 Then
+
+        QuickAddTypedText = _
+            Trim$(Mid$(openArguments, 10))
+
+    Else
+
+        QuickAddTypedText = vbNullString
+
+    End If
+
+End Function
+
+
+Private Sub ApplyQuickAddLocationName()
+
+    Dim typedLocationName As String
+    Dim controlName As String
+
+    typedLocationName = QuickAddTypedText()
+
+    If Len(typedLocationName) = 0 Then
+        Exit Sub
+    End If
+
+    controlName = FirstExistingControlName( _
+        "txtLocationName", _
+        "LocationName")
+
+    If Len(controlName) = 0 Then
+
+        Err.Raise _
+            vbObjectError + 7403, _
+            "ApplyQuickAddLocationName", _
+            "The Location Name control could not be found."
+
+    End If
+
+    Me.Controls(controlName).value = typedLocationName
+
+    EnsureLocationCode
+
+    On Error Resume Next
+    Me.Controls(controlName).SetFocus
+    Me.Controls(controlName).SelStart = _
+        Len(Nz(Me.Controls(controlName).value, vbNullString))
+    On Error GoTo 0
+
+End Sub
+
+
+'=============================================================
+' DEFAULTS / NORMALIZATION / VALIDATION
+'=============================================================
+
+Private Sub ApplyNewRecordDefaults()
+
+    If Not Me.NewRecord Then
+        Exit Sub
+    End If
+
+    'When only one warehouse exists, select it automatically.
+    If DCount("*", WAREHOUSE_TABLE) = 1 Then
+
+        If Nz(Me.cboWarehouseID, 0) <= 0 Then
+
+            Me.cboWarehouseID = _
+                DLookup("WarehouseID", WAREHOUSE_TABLE)
+
+        End If
+
+    End If
+
+    If RecordsetHasField("CreatedOn") Then
+
+        If IsNull(Me.Recordset.Fields("CreatedOn").value) Then
+            Me.Recordset.Fields("CreatedOn").value = Now()
+        End If
+
+    End If
+
+End Sub
+
+
+Private Sub NormalizeLocationValues()
+
+    NormalizeRequiredText _
+        "LocationName", _
+        Array("txtLocationName", "LocationName"), _
+        False
+
+    NormalizeRequiredText _
+        "LocationCode", _
+        Array("txtLocationCode", "LocationCode"), _
+        True
+
+    NormalizeOptionalText _
+        "BinNumber", _
+        Array("txtBinNumber", "BinNumber")
+
+    NormalizeOptionalText _
+        "ShelfNumber", _
+        Array("txtShelfNumber", "ShelfNumber")
+
+    NormalizeOptionalText _
+        "Notes", _
+        Array("txtNotes", "txtNOtes", "Notes")
+
+End Sub
+
+
+Private Sub NormalizeRequiredText( _
+    ByVal fieldName As String, _
+    ByVal candidateControls As Variant, _
+    ByVal makeUpperCase As Boolean _
+)
+
+    Dim valueText As String
+
+    valueText = Trim$(Nz(ReadFormValue( _
+        fieldName, _
+        candidateControls), _
+        vbNullString))
+
+    If makeUpperCase Then
+        valueText = UCase$(valueText)
+    End If
+
+    WriteFormValue _
+        fieldName, _
+        candidateControls, _
+        valueText, _
+        False
+
+End Sub
+
+
+Private Sub NormalizeOptionalText( _
+    ByVal fieldName As String, _
+    ByVal candidateControls As Variant _
+)
+
+    Dim valueText As String
+
+    valueText = Trim$(Nz(ReadFormValue( _
+        fieldName, _
+        candidateControls), _
+        vbNullString))
+
+    If Len(valueText) = 0 Then
+
+        WriteFormValue _
+            fieldName, _
+            candidateControls, _
+            Null, _
+            True
+
+    Else
+
+        WriteFormValue _
+            fieldName, _
+            candidateControls, _
+            valueText, _
+            True
+
+    End If
+
+End Sub
+
+
+Private Function ValidateLocationRecord() As Boolean
+
+    Dim warehouseIDValue As Long
+    Dim locationIDValue As Long
+    Dim locationNameValue As String
+    Dim locationCodeValue As String
+
+    ValidateLocationRecord = False
+
+    warehouseIDValue = Nz(Me.cboWarehouseID, 0)
+
+    If warehouseIDValue <= 0 Then
+
+        MsgBox _
+            "Select or create the warehouse for this location.", _
+            vbExclamation, _
+            "Warehouse Required"
+
+        Me.cboWarehouseID.SetFocus
+        Exit Function
+
+    End If
+
+    locationNameValue = Trim$(Nz(ReadFormValue( _
+        "LocationName", _
+        Array("txtLocationName", "LocationName")), _
+        vbNullString))
+
+    If Len(locationNameValue) = 0 Then
+
+        MsgBox _
+            "Enter the location name.", _
+            vbExclamation, _
+            "Location Name Required"
+
+        FocusControlIfExists _
+            "txtLocationName", _
+            "LocationName"
+
+        Exit Function
+
+    End If
+
+    locationCodeValue = UCase$(Trim$(Nz(ReadFormValue( _
+        "LocationCode", _
+        Array("txtLocationCode", "LocationCode")), _
+        vbNullString)))
+
+    If Len(locationCodeValue) = 0 Then
+
+        MsgBox _
+            "The location code could not be generated.", _
+            vbExclamation, _
+            "Location Code Required"
+
+        Exit Function
+
+    End If
+
+    locationIDValue = CurrentLocationID()
+
+    If DCount( _
+        "*", _
+        "T_Locations", _
+        "[LocationCode]=" & SqlText(locationCodeValue) & _
+        " AND [LocationID]<>" & CStr(locationIDValue)) > 0 Then
+
+        MsgBox _
+            "The location code already exists.", _
+            vbExclamation, _
+            "Duplicate Location Code"
+
+        Exit Function
+
+    End If
+
+    ValidateLocationRecord = True
+
+End Function
+
+
+'=============================================================
+' LOCATION CODE
+'=============================================================
+
+Private Sub EnsureLocationCode()
+
+    Dim locationNameValue As String
+    Dim locationCodeValue As String
+
+    If Not Me.NewRecord Then
+        Exit Sub
+    End If
+
+    locationNameValue = Trim$(Nz(ReadFormValue( _
+        "LocationName", _
+        Array("txtLocationName", "LocationName")), _
+        vbNullString))
+
+    If Len(locationNameValue) = 0 Then
+        Exit Sub
+    End If
+
+    locationCodeValue = Trim$(Nz(ReadFormValue( _
+        "LocationCode", _
+        Array("txtLocationCode", "LocationCode")), _
+        vbNullString))
+
+    If Len(locationCodeValue) > 0 Then
+        Exit Sub
+    End If
+
+    WriteFormValue _
+        "LocationCode", _
+        Array("txtLocationCode", "LocationCode"), _
+        GenerateLocationCode(locationNameValue), _
+        False
+
+End Sub
+
+
+Private Function GenerateLocationCode( _
+    ByVal LocationName As String _
+) As String
+
+    Dim prefix As String
+    Dim nextNumber As Long
+    Dim existingMaximum As Variant
+    Dim candidate As String
+
+    prefix = FourCharacterPrefix( _
+        LocationName, _
+        "LOCA")
+
+    existingMaximum = DMax( _
+        "Val(Mid([LocationCode],6))", _
+        "T_Locations", _
+        "[LocationCode] Like " & _
+            SqlText(prefix & "-*") & _
+        " AND IsNumeric(Mid([LocationCode],6))")
+
+    If IsNull(existingMaximum) Then
+        nextNumber = 1
+    Else
+        nextNumber = CLng(existingMaximum) + 1
+    End If
+
+    Do
+
+        candidate = _
+            prefix & "-" & _
+            Format$(nextNumber, "00000")
+
+        If DCount( _
+            "*", _
+            "T_Locations", _
+            "[LocationCode]=" & _
+                SqlText(candidate)) = 0 Then
+
+            Exit Do
+
+        End If
+
+        nextNumber = nextNumber + 1
+
+    Loop
+
+    GenerateLocationCode = candidate
+
+End Function
+
+
+Private Function FourCharacterPrefix( _
+    ByVal sourceText As String, _
+    ByVal fallbackPrefix As String _
+) As String
+
+    Dim resultText As String
+    Dim oneCharacter As String
+    Dim position As Long
+
+    sourceText = UCase$(Trim$(sourceText))
+
+    For position = 1 To Len(sourceText)
+
+        oneCharacter = Mid$(sourceText, position, 1)
+
+        If oneCharacter Like "[A-Z]" Then
+
+            resultText = resultText & oneCharacter
+
+            If Len(resultText) = 4 Then
+                Exit For
+            End If
+
+        End If
+
+    Next position
+
+    If Len(resultText) = 0 Then
+
+        resultText = _
+            Left$(fallbackPrefix & "XXXX", 4)
+
+    ElseIf Len(resultText) < 4 Then
+
+        resultText = _
+            resultText & _
+            String$(4 - Len(resultText), "X")
+
+    End If
+
+    FourCharacterPrefix = resultText
+
+End Function
+
+
+'=============================================================
+' SAFE CONTROL / FIELD HELPERS
+'=============================================================
+
+Private Function FirstExistingControlName( _
+    ParamArray controlNames() As Variant _
+) As String
+
+    Dim controlName As Variant
+
+    For Each controlName In controlNames
+
+        If ControlExists(CStr(controlName)) Then
+
+            FirstExistingControlName = _
+                CStr(controlName)
+
+            Exit Function
+
+        End If
+
+    Next controlName
+
+    FirstExistingControlName = vbNullString
+
+End Function
+
+
+Private Function ControlExists( _
+    ByVal controlName As String _
+) As Boolean
+
+    On Error GoTo Not_Found
+
+    Dim controlObject As Access.Control
+
+    Set controlObject = Me.Controls(controlName)
+    ControlExists = True
+
+Exit_Handler:
+    Set controlObject = Nothing
+    Exit Function
+
+Not_Found:
+    ControlExists = False
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function ControlSourceIs( _
+    ByVal controlObject As Access.Control, _
+    ByVal expectedSource As String _
+) As Boolean
+
+    On Error GoTo Not_Match
+
+    ControlSourceIs = _
+        (StrComp( _
+            Replace(Replace( _
+                Trim$(Nz(controlObject.ControlSource, vbNullString)), _
+                "[", _
+                vbNullString), _
+                "]", _
+                vbNullString), _
+            expectedSource, _
+            vbTextCompare) = 0)
+
+    Exit Function
+
+Not_Match:
+    ControlSourceIs = False
+
+End Function
+
+
+Private Function RecordsetHasField( _
+    ByVal fieldName As String _
+) As Boolean
+
+    On Error GoTo Not_Found
+
+    Dim testName As String
+
+    testName = _
+        Me.Recordset.Fields(fieldName).Name
+
+    RecordsetHasField = True
+    Exit Function
+
+Not_Found:
+    RecordsetHasField = False
+
+End Function
+
+
+Private Function ReadFormValue( _
+    ByVal fieldName As String, _
+    ByVal candidateControls As Variant _
+) As Variant
+
+    Dim controlName As Variant
+
+    For Each controlName In candidateControls
+
+        If ControlExists(CStr(controlName)) Then
+
+            ReadFormValue = _
+                Me.Controls(CStr(controlName)).value
+
+            Exit Function
+
+        End If
+
+    Next controlName
+
+    If RecordsetHasField(fieldName) Then
+
+        ReadFormValue = _
+            Me.Recordset.Fields(fieldName).value
+
+    Else
+
+        ReadFormValue = Null
+
+    End If
+
+End Function
+
+
+Private Sub WriteFormValue( _
+    ByVal fieldName As String, _
+    ByVal candidateControls As Variant, _
+    ByVal newValue As Variant, _
+    ByVal optionalField As Boolean _
+)
+
+    Dim controlName As Variant
+
+    For Each controlName In candidateControls
+
+        If ControlExists(CStr(controlName)) Then
+
+            Me.Controls(CStr(controlName)).value = newValue
+            Exit Sub
+
+        End If
+
+    Next controlName
+
+    If RecordsetHasField(fieldName) Then
+
+        Me.Recordset.Fields(fieldName).value = newValue
+        Exit Sub
+
+    End If
+
+    If Not optionalField Then
+
+        Err.Raise _
+            vbObjectError + 7404, _
+            "WriteFormValue", _
+            "The field or control '" & fieldName & _
+            "' could not be found."
+
+    End If
+
+End Sub
+
+
+Private Function CurrentLocationID() As Long
+
+    If Me.NewRecord Then
+        CurrentLocationID = 0
+        Exit Function
+    End If
+
+    If RecordsetHasField("LocationID") Then
+        CurrentLocationID = Nz(Me.Recordset.Fields("LocationID").value, 0)
+    Else
+        CurrentLocationID = 0
+    End If
+
+End Function
+
+
+Private Sub FocusControlIfExists( _
+    ParamArray controlNames() As Variant _
+)
+
+    Dim controlName As Variant
+
+    On Error Resume Next
+
+    For Each controlName In controlNames
+
+        If ControlExists(CStr(controlName)) Then
+
+            Me.Controls(CStr(controlName)).SetFocus
+            Exit For
+
+        End If
+
+    Next controlName
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub SetInitialFocus()
+
+    If Nz(Me.cboWarehouseID, 0) <= 0 Then
+
+        Me.cboWarehouseID.SetFocus
+
+    ElseIf Len(QuickAddTypedText()) > 0 Then
+
+        FocusControlIfExists _
+            "txtLocationName", _
+            "LocationName"
+
+    Else
+
+        Me.cboWarehouseID.SetFocus
+
+    End If
+
+End Sub
+
+
+Private Function SqlText( _
+    ByVal value As String _
+) As String
+
+    SqlText = _
+        "'" & Replace(value, "'", "''") & "'"
+
+End Function

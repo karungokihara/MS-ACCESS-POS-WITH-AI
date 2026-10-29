@@ -1,0 +1,49 @@
+﻿dbMemo "SQL" ="SELECT SupplierID, SupplierCode, CompanyName, ContactPerson, Phone, Email, Addre"
+    "ss, PaymentTerms\015\012FROM T_Suppliers\015\012ORDER BY CompanyName, SupplierCo"
+    "de;\015\012"
+dbMemo "Connect" =""
+dbBoolean "ReturnsRecords" ="-1"
+dbInteger "ODBCTimeout" ="60"
+dbBoolean "OrderByOn" ="0"
+dbByte "Orientation" ="0"
+dbByte "DefaultView" ="2"
+dbBinary "GUID" = Begin
+    0xba56519c93aebe4f9689cea9fcfc5b1f
+End
+dbBoolean "FilterOnLoad" ="0"
+dbBoolean "OrderByOnLoad" ="-1"
+dbByte "PublishToWeb" ="1"
+Begin
+    Begin
+        dbText "Name" ="SupplierCode"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="SupplierID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="Phone"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="ContactPerson"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="CompanyName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="PaymentTerms"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="Address"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="Email"
+        dbLong "AggregateType" ="-1"
+    End
+End

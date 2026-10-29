@@ -1,0 +1,77 @@
+﻿dbMemo "SQL" ="SELECT C.CustomerID, C.CustomerName, C.DefaultPaymentTerms, C.DefaultShipVia, Nz"
+    "(P.TotalPOs,0) AS TotalPOs, Nz(P.OpenPOs,0) AS OpenPOs, Nz(SO.TotalSalesOrders,0"
+    ") AS TotalSalesOrders, Nz(SO.OpenSalesOrders,0) AS OpenSalesOrders, Nz(INV.Total"
+    "Invoices,0) AS TotalInvoices, Nz(INV.OpenInvoices,0) AS OpenInvoices, Nz(INV.Inv"
+    "oiceValue,0) AS InvoiceValue\015\012FROM ((T_Customers AS C LEFT JOIN (SELECT\015"
+    "\012                CustomerID,\015\012                Count(*) AS TotalPOs,\015"
+    "\012                Sum(IIf(Nz([POStatus],'') Not In ('Closed','Cancelled'),1,0)"
+    ") AS OpenPOs\015\012            FROM T_CustomerPOs\015\012            GROUP BY C"
+    "ustomerID\015\012        )  AS P ON C.CustomerID = P.CustomerID) LEFT JOIN (SELE"
+    "CT\015\012                CustomerID,\015\012                Count(*) AS TotalSa"
+    "lesOrders,\015\012                Sum(IIf(Nz([SalesOrderStatus],'') Not In ('Clo"
+    "sed','Cancelled','Shipped'),1,0)) AS OpenSalesOrders\015\012            FROM T_S"
+    "alesOrders\015\012            GROUP BY CustomerID\015\012        )  AS SO ON C.C"
+    "ustomerID = SO.CustomerID) LEFT JOIN (SELECT\015\012                CustomerID,\015"
+    "\012                Count(*) AS TotalInvoices,\015\012                Sum(IIf(Nz"
+    "([InvoiceStatus],'') Not In ('Paid','Cancelled'),1,0)) AS OpenInvoices,\015\012 "
+    "               Sum(Nz([GrandTotalAmount],0)) AS InvoiceValue\015\012            "
+    "FROM T_Invoices\015\012            GROUP BY CustomerID\015\012        )  AS INV "
+    "ON C.CustomerID = INV.CustomerID\015\012ORDER BY C.CustomerName;\015\012"
+dbMemo "Connect" =""
+dbBoolean "ReturnsRecords" ="-1"
+dbInteger "ODBCTimeout" ="60"
+dbBoolean "OrderByOn" ="0"
+dbByte "Orientation" ="0"
+dbByte "DefaultView" ="2"
+dbBinary "GUID" = Begin
+    0x5f2529a8ccf4234caa1786dde12b32cd
+End
+dbBoolean "FilterOnLoad" ="0"
+dbBoolean "OrderByOnLoad" ="-1"
+dbByte "PublishToWeb" ="1"
+Begin
+    Begin
+        dbText "Name" ="C.CustomerName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="C.CustomerID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="C.DefaultShipVia"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="C.DefaultPaymentTerms"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="TotalSalesOrders"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="OpenPOs"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="TotalPOs"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="OpenSalesOrders"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="TotalInvoices"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="OpenInvoices"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="InvoiceValue"
+        dbLong "AggregateType" ="-1"
+    End
+End

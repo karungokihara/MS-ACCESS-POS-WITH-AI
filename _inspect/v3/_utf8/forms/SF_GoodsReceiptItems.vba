@@ -1,0 +1,893 @@
+﻿Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+'=============================================================
+' FORM: SF_GoodsReceiptItems
+'
+' PURPOSE:
+'   Maintains the editable receipt lines loaded from a
+'   Supplier Purchase Order.
+'
+' IMPORTANT:
+'   This form does not post stock. Stock posting will be
+'   performed later by F_GoodsReceipt in one transaction.
+'=============================================================
+
+Private Const RECEIPT_STATUS_DRAFT As String = "Draft"
+Private Const RECEIPT_STATUS_POSTED As String = "Posted"
+Private Const RECEIPT_STATUS_CANCELLED As String = "Cancelled"
+
+
+Private Sub Form_Load()
+
+    On Error GoTo Err_Handler
+
+    ConfigureControls
+    ApplyEditState
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The goods-receipt items subform could not be configured." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Goods Receipt Items"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_Current()
+
+    On Error GoTo Err_Handler
+
+    ApplyEditState
+    Me.Recalc
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The receipt line could not be displayed correctly." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Goods Receipt Items"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_BeforeInsert(Cancel As Integer)
+
+    Cancel = True
+
+    MsgBox _
+        "Receipt lines must be loaded from the selected Supplier PO." & _
+        vbCrLf & vbCrLf & _
+        "Use the Load Outstanding Lines button on the Goods Receipt form.", _
+        vbInformation, _
+        "Load Supplier PO Lines"
+
+End Sub
+
+
+Private Sub Form_BeforeUpdate(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    Dim GoodsReceiptID As Long
+    Dim GoodsReceiptItemID As Long
+    Dim SupplierPOLineID As Long
+    Dim ItemID As Long
+
+    Dim QuantityReceived As Double
+    Dim otherReceiptQuantity As Double
+    Dim totalReceiptQuantity As Double
+    Dim remainingBefore As Double
+
+    Dim SerialNumber As String
+    Dim RequiresSerial As Boolean
+
+    '---------------------------------------------------------
+    ' Receipt status
+    '---------------------------------------------------------
+    If Not ReceiptCanBeEdited() Then
+
+        MsgBox _
+            "This receipt is already posted or cancelled and cannot be edited.", _
+            vbExclamation, _
+            "Receipt Locked"
+
+        Cancel = True
+        Exit Sub
+
+    End If
+
+    '---------------------------------------------------------
+    ' Parent receipt
+    '---------------------------------------------------------
+    GoodsReceiptID = Nz(Me!GoodsReceiptID, 0)
+
+    If GoodsReceiptID <= 0 Then
+
+        MsgBox _
+            "This line is not linked to a saved goods receipt.", _
+            vbExclamation, _
+            "Receipt Link Required"
+
+        Cancel = True
+        Exit Sub
+
+    End If
+
+    GoodsReceiptItemID = Nz(Me!GoodsReceiptItemID, 0)
+    SupplierPOLineID = Nz(Me!SupplierPOLineID, 0)
+    ItemID = Nz(Me!ItemID, 0)
+
+    '---------------------------------------------------------
+    ' Supplier PO line
+    '---------------------------------------------------------
+    If SupplierPOLineID <= 0 Then
+
+        MsgBox _
+            "This receipt line is not connected to a Supplier PO line.", _
+            vbExclamation, _
+            "Supplier PO Line Required"
+
+        Cancel = True
+        Exit Sub
+
+    End If
+
+    '---------------------------------------------------------
+    ' Item
+    '---------------------------------------------------------
+    If ItemID <= 0 Then
+
+        MsgBox _
+            "The receipt line does not have a valid item.", _
+            vbExclamation, _
+            "Item Required"
+
+        Cancel = True
+        Exit Sub
+
+    End If
+
+    '---------------------------------------------------------
+    ' Unit
+    '---------------------------------------------------------
+    If Nz(Me!UnitID, 0) <= 0 Then
+
+        MsgBox _
+            "The receipt line does not have a valid unit.", _
+            vbExclamation, _
+            "Unit Required"
+
+        Cancel = True
+        Exit Sub
+
+    End If
+
+    '---------------------------------------------------------
+    ' Quantity
+    '
+    ' Zero is allowed because the user may receive only some
+    ' of the PO lines. Negative quantities are not allowed.
+    '---------------------------------------------------------
+    If IsNull(Me!QuantityReceived) Then
+
+        MsgBox _
+            "Enter the quantity being received." & vbCrLf & _
+            "Enter zero if this line is not being received now.", _
+            vbExclamation, _
+            "Quantity Required"
+
+        Cancel = True
+        Exit Sub
+
+    End If
+
+    If Not IsNumeric(Me!QuantityReceived) Then
+
+        MsgBox _
+            "Quantity received must be numeric.", _
+            vbExclamation, _
+            "Invalid Quantity"
+
+        Cancel = True
+        Exit Sub
+
+    End If
+
+    QuantityReceived = CDbl(Me!QuantityReceived)
+
+    If QuantityReceived < 0 Then
+
+        MsgBox _
+            "Quantity received cannot be negative.", _
+            vbExclamation, _
+            "Invalid Quantity"
+
+        Cancel = True
+        Exit Sub
+
+    End If
+
+    '---------------------------------------------------------
+    ' Prevent over-receiving.
+    '
+    ' This includes other rows in the same draft receipt.
+    ' It therefore also supports serialized items represented
+    ' by several quantity-one rows.
+    '---------------------------------------------------------
+    remainingBefore = GetRemainingBefore(SupplierPOLineID)
+
+    otherReceiptQuantity = GetOtherReceiptQuantity( _
+        GoodsReceiptID, _
+        SupplierPOLineID, _
+        GoodsReceiptItemID)
+
+    totalReceiptQuantity = otherReceiptQuantity + QuantityReceived
+
+    If totalReceiptQuantity > remainingBefore + 0.0000001 Then
+
+        MsgBox _
+            "The total quantity entered for this Supplier PO line " & _
+            "is greater than its outstanding quantity." & _
+            vbCrLf & vbCrLf & _
+            "Outstanding before this receipt: " & _
+            Format$(remainingBefore, "0.####") & vbCrLf & _
+            "Other rows in this receipt: " & _
+            Format$(otherReceiptQuantity, "0.####") & vbCrLf & _
+            "Quantity on this row: " & _
+            Format$(QuantityReceived, "0.####"), _
+            vbExclamation, _
+            "Quantity Exceeds Outstanding"
+
+        Cancel = True
+        Exit Sub
+
+    End If
+
+    '---------------------------------------------------------
+    ' Validate fields needed only when quantity is received.
+    '---------------------------------------------------------
+    If QuantityReceived > 0 Then
+
+        If Nz(Me!LocationID, 0) <= 0 Then
+
+            MsgBox _
+                "Select the location where this item is being received.", _
+                vbExclamation, _
+                "Receiving Location Required"
+
+            Cancel = True
+            Exit Sub
+
+        End If
+
+        If IsNull(Me!UnitCost) Then
+
+            MsgBox _
+                "Enter the unit cost for the received item.", _
+                vbExclamation, _
+                "Unit Cost Required"
+
+            Cancel = True
+            Exit Sub
+
+        End If
+
+        If Not IsNumeric(Me!UnitCost) Then
+
+            MsgBox _
+                "Unit cost must be numeric.", _
+                vbExclamation, _
+                "Invalid Unit Cost"
+
+            Cancel = True
+            Exit Sub
+
+        End If
+
+        If CCur(Me!UnitCost) < 0 Then
+
+            MsgBox _
+                "Unit cost cannot be negative.", _
+                vbExclamation, _
+                "Invalid Unit Cost"
+
+            Cancel = True
+            Exit Sub
+
+        End If
+
+    End If
+
+    '---------------------------------------------------------
+    ' Serialized-item validation
+    '---------------------------------------------------------
+    RequiresSerial = ItemRequiresSerial(ItemID)
+    SerialNumber = Trim$(Nz(Me!SerialNumber, vbNullString))
+
+    If RequiresSerial Then
+
+        If QuantityReceived = 0 Then
+
+            Me!SerialNumber = Null
+
+        Else
+
+            If Abs(QuantityReceived - 1) > 0.0000001 Then
+
+                MsgBox _
+                    "A serialized receipt row must have a quantity of one." & _
+                    vbCrLf & vbCrLf & _
+                    "Each physical serial number must have its own row.", _
+                    vbExclamation, _
+                    "Serialized Quantity"
+
+                Cancel = True
+                Exit Sub
+
+            End If
+
+            If Len(SerialNumber) = 0 Then
+
+                MsgBox _
+                    "Enter the serial number for this item.", _
+                    vbExclamation, _
+                    "Serial Number Required"
+
+                Cancel = True
+                Exit Sub
+
+            End If
+
+            Me!SerialNumber = SerialNumber
+
+            If SerialExistsInStock(SerialNumber) Then
+
+                MsgBox _
+                    "Serial number '" & SerialNumber & _
+                    "' already exists in T_ItemInstances.", _
+                    vbExclamation, _
+                    "Duplicate Serial Number"
+
+                Cancel = True
+                Exit Sub
+
+            End If
+
+            If SerialExistsInAnotherReceipt( _
+                SerialNumber, _
+                GoodsReceiptItemID) Then
+
+                MsgBox _
+                    "Serial number '" & SerialNumber & _
+                    "' is already entered on another active receipt line.", _
+                    vbExclamation, _
+                    "Duplicate Serial Number"
+
+                Cancel = True
+                Exit Sub
+
+            End If
+
+        End If
+
+    Else
+
+        'Bulk items must not carry serial numbers.
+        Me!SerialNumber = Null
+
+    End If
+
+    '---------------------------------------------------------
+    ' Audit dates
+    '---------------------------------------------------------
+    If IsNull(Me!CreatedOn) Then
+        Me!CreatedOn = Now()
+    End If
+
+    Me!UpdatedOn = Now()
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Cancel = True
+
+    MsgBox _
+        "The goods-receipt line could not be validated." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Goods Receipt Item"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_Delete(Cancel As Integer)
+
+    If Not ReceiptCanBeEdited() Then
+
+        Cancel = True
+
+        MsgBox _
+            "Posted or cancelled receipt lines cannot be deleted.", _
+            vbExclamation, _
+            "Receipt Locked"
+
+    End If
+
+End Sub
+
+
+Private Sub Form_AfterUpdate()
+
+    On Error Resume Next
+
+    Me.Recalc
+    RefreshParentReceipt
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub Form_AfterDelConfirm(Status As Integer)
+
+    On Error Resume Next
+
+    Me.Recalc
+    RefreshParentReceipt
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub Form_Error(DataErr As Integer, Response As Integer)
+
+    Select Case DataErr
+
+        Case 3314
+
+            MsgBox _
+                "A required receipt-line field is missing.", _
+                vbExclamation, _
+                "Incomplete Receipt Line"
+
+            Response = acDataErrContinue
+
+        Case Else
+
+            Response = acDataErrDisplay
+
+    End Select
+
+End Sub
+
+
+'=============================================================
+' CONTROL CONFIGURATION
+'=============================================================
+
+Private Sub ConfigureControls()
+
+    '---------------------------------------------------------
+    ' Item display
+    '---------------------------------------------------------
+    With Me.cboItemID
+
+        .RowSourceType = "Table/Query"
+
+        .RowSource = _
+            "SELECT ItemID, InternalSKU, ItemName, " & _
+            "IIf(Nz([RequiresSerial],False)," & _
+            "'Serialized','Bulk') AS TrackingType " & _
+            "FROM T_Items " & _
+            "ORDER BY InternalSKU, ItemName;"
+
+        .BoundColumn = 1
+        .ColumnCount = 4
+        .ColumnWidths = "0cm;3cm;7cm;2.5cm"
+        .LimitToList = True
+        .AutoExpand = True
+        .Locked = True
+        .TabStop = False
+
+    End With
+
+    '---------------------------------------------------------
+    ' Unit display
+    '---------------------------------------------------------
+    With Me.cboUnitID
+
+        .RowSourceType = "Table/Query"
+
+        .RowSource = _
+            "SELECT UnitID, UnitCode, UnitName " & _
+            "FROM T_Units " & _
+            "ORDER BY UnitCode, UnitName;"
+
+        .BoundColumn = 1
+        .ColumnCount = 3
+        .ColumnWidths = "0cm;2cm;4cm"
+        .LimitToList = True
+        .AutoExpand = True
+        .Locked = True
+        .TabStop = False
+
+    End With
+
+    '---------------------------------------------------------
+    ' Receiving location
+    '---------------------------------------------------------
+    With Me.cboLocationID
+
+        .RowSourceType = "Table/Query"
+
+        .RowSource = _
+            "SELECT L.LocationID, L.LocationCode, " & _
+            "L.LocationName, W.WarehouseName " & _
+            "FROM T_Locations AS L " & _
+            "LEFT JOIN T_Warehouses AS W " & _
+            "ON L.WarehouseID = W.WarehouseID " & _
+            "ORDER BY W.WarehouseName, " & _
+            "L.LocationName, L.LocationCode;"
+
+        .BoundColumn = 1
+        .ColumnCount = 4
+        .ColumnWidths = "0cm;2.5cm;4cm;4cm"
+        .LimitToList = True
+        .AutoExpand = True
+
+    End With
+
+    '---------------------------------------------------------
+    ' Calculated display columns
+    '---------------------------------------------------------
+    Me.txtOrderedQuantity.ControlSource = _
+        "=Nz(DLookUp(""OrderedQuantity""," & _
+        """T_SupplierPOLines""," & _
+        """SupplierPOLineID="" & " & _
+        "Nz([SupplierPOLineID],0)),0)"
+
+    Me.txtPreviouslyReceived.ControlSource = _
+        "=Nz(DLookUp(""QuantityReceivedToDate""," & _
+        """Q_SupplierPOLineReceived""," & _
+        """SupplierPOLineID="" & " & _
+        "Nz([SupplierPOLineID],0)),0)"
+
+    Me.txtRemainingBefore.ControlSource = _
+        "=Nz([txtOrderedQuantity],0)-" & _
+        "Nz([txtPreviouslyReceived],0)"
+
+    Me.txtRemainingAfter.ControlSource = _
+        "=Nz([txtRemainingBefore],0)-" & _
+        "Nz(DSum(""QuantityReceived""," & _
+        """T_GoodsReceiptItems""," & _
+        """GoodsReceiptID="" & Nz([GoodsReceiptID],0) & " & _
+        """ AND SupplierPOLineID="" & " & _
+        "Nz([SupplierPOLineID],0)),0)"
+
+    Me.txtOrderedQuantity.Locked = True
+    Me.txtOrderedQuantity.TabStop = False
+
+    Me.txtPreviouslyReceived.Locked = True
+    Me.txtPreviouslyReceived.TabStop = False
+
+    Me.txtRemainingBefore.Locked = True
+    Me.txtRemainingBefore.TabStop = False
+
+    Me.txtRemainingAfter.Locked = True
+    Me.txtRemainingAfter.TabStop = False
+
+    '---------------------------------------------------------
+    ' Hide system fields
+    '---------------------------------------------------------
+    HideControl "txtSupplierPOLineID"
+    HideControl "txtItemInstanceID"
+    HideControl "txtStockMovementID"
+    HideControl "txtCreatedOn"
+    HideControl "txtUpdatedOn"
+
+End Sub
+
+
+Private Sub ApplyEditState()
+
+    Dim canEdit As Boolean
+
+    canEdit = ReceiptCanBeEdited()
+
+    Me.AllowEdits = canEdit
+    Me.AllowDeletions = canEdit
+
+    'Rows must only be loaded from a Supplier PO.
+    Me.AllowAdditions = False
+
+    Me.cboItemID.Locked = True
+    Me.cboUnitID.Locked = True
+
+    Me.txtQuantityReceived.Locked = Not canEdit
+    Me.txtUnitCost.Locked = Not canEdit
+    Me.cboLocationID.Locked = Not canEdit
+    Me.txtBatchNumber.Locked = Not canEdit
+    Me.txtSerialNumber.Locked = Not canEdit
+    Me.txtNOtes.Locked = Not canEdit
+
+End Sub
+
+
+'=============================================================
+' RECEIPT STATUS
+'=============================================================
+
+Private Function ReceiptCanBeEdited() As Boolean
+
+    Dim ReceiptStatus As String
+
+    ReceiptStatus = ParentReceiptStatus()
+
+    ReceiptCanBeEdited = _
+        (StrComp( _
+            ReceiptStatus, _
+            RECEIPT_STATUS_DRAFT, _
+            vbTextCompare) = 0)
+
+End Function
+
+
+Private Function ParentReceiptStatus() As String
+
+    On Error GoTo Default_Value
+
+    Dim statusValue As String
+
+    statusValue = Trim$(Nz( _
+        Me.Parent.Recordset.Fields("ReceiptStatus").value, _
+        vbNullString))
+
+    If Len(statusValue) = 0 Then
+        statusValue = RECEIPT_STATUS_DRAFT
+    End If
+
+    ParentReceiptStatus = statusValue
+    Exit Function
+
+Default_Value:
+    ParentReceiptStatus = RECEIPT_STATUS_DRAFT
+
+End Function
+
+
+'=============================================================
+' QUANTITY HELPERS
+'=============================================================
+
+Private Function GetRemainingBefore( _
+    ByVal SupplierPOLineID As Long _
+) As Double
+
+    Dim OrderedQuantity As Double
+    Dim previouslyReceived As Double
+
+    OrderedQuantity = Nz(DLookup( _
+        "OrderedQuantity", _
+        "T_SupplierPOLines", _
+        "SupplierPOLineID=" & SupplierPOLineID), 0)
+
+    previouslyReceived = Nz(DLookup( _
+        "QuantityReceivedToDate", _
+        "Q_SupplierPOLineReceived", _
+        "SupplierPOLineID=" & SupplierPOLineID), 0)
+
+    GetRemainingBefore = OrderedQuantity - previouslyReceived
+
+    If GetRemainingBefore < 0 Then
+        GetRemainingBefore = 0
+    End If
+
+End Function
+
+
+Private Function GetOtherReceiptQuantity( _
+    ByVal GoodsReceiptID As Long, _
+    ByVal SupplierPOLineID As Long, _
+    ByVal currentGoodsReceiptItemID As Long _
+) As Double
+
+    Dim criteria As String
+    Dim resultValue As Variant
+
+    criteria = _
+        "GoodsReceiptID=" & GoodsReceiptID & _
+        " AND SupplierPOLineID=" & SupplierPOLineID
+
+    If currentGoodsReceiptItemID > 0 Then
+
+        criteria = criteria & _
+            " AND GoodsReceiptItemID<>" & _
+            currentGoodsReceiptItemID
+
+    End If
+
+    resultValue = DSum( _
+        "QuantityReceived", _
+        "T_GoodsReceiptItems", _
+        criteria)
+
+    GetOtherReceiptQuantity = Nz(resultValue, 0)
+
+End Function
+
+
+'=============================================================
+' SERIAL-NUMBER HELPERS
+'=============================================================
+
+Private Function ItemRequiresSerial( _
+    ByVal ItemID As Long _
+) As Boolean
+
+    ItemRequiresSerial = Nz(DLookup( _
+        "RequiresSerial", _
+        "T_Items", _
+        "ItemID=" & ItemID), False)
+
+End Function
+
+
+Private Function SerialExistsInStock( _
+    ByVal SerialNumber As String _
+) As Boolean
+
+    SerialExistsInStock = _
+        (DCount( _
+            "*", _
+            "T_ItemInstances", _
+            "SerialNumber=" & SqlText(SerialNumber)) > 0)
+
+End Function
+
+
+Private Function SerialExistsInAnotherReceipt( _
+    ByVal SerialNumber As String, _
+    ByVal currentGoodsReceiptItemID As Long _
+) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim db As DAO.Database
+    Dim rs As DAO.Recordset
+    Dim sqlTextValue As String
+
+    sqlTextValue = _
+        "SELECT TOP 1 RI.GoodsReceiptItemID " & _
+        "FROM T_GoodsReceiptItems AS RI " & _
+        "INNER JOIN T_GoodsReceipts AS RH " & _
+        "ON RI.GoodsReceiptID = RH.GoodsReceiptID " & _
+        "WHERE Nz(RH.ReceiptStatus,'Draft') " & _
+        "<> 'Cancelled' " & _
+        "AND RI.SerialNumber = " & _
+        SqlText(SerialNumber) & " "
+
+    If currentGoodsReceiptItemID > 0 Then
+
+        sqlTextValue = sqlTextValue & _
+            "AND RI.GoodsReceiptItemID <> " & _
+            currentGoodsReceiptItemID & " "
+
+    End If
+
+    sqlTextValue = sqlTextValue & ";"
+
+    Set db = CurrentDb
+
+    Set rs = db.OpenRecordset( _
+        sqlTextValue, _
+        dbOpenSnapshot)
+
+    SerialExistsInAnotherReceipt = Not rs.EOF
+
+Exit_Handler:
+    On Error Resume Next
+
+    If Not rs Is Nothing Then
+        rs.close
+    End If
+
+    Set rs = Nothing
+    Set db = Nothing
+
+    On Error GoTo 0
+    Exit Function
+
+Err_Handler:
+    SerialExistsInAnotherReceipt = False
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' PARENT REFRESH
+'=============================================================
+
+Private Sub RefreshParentReceipt()
+
+    On Error Resume Next
+
+    CallByName _
+        Me.Parent, _
+        "RecalculateReceiptSummary", _
+        VbMethod
+
+    On Error GoTo 0
+
+End Sub
+
+
+'=============================================================
+' SAFE CONTROL HELPERS
+'=============================================================
+
+Private Sub HideControl(ByVal controlName As String)
+
+    If ControlExists(controlName) Then
+        Me.Controls(controlName).Visible = False
+    End If
+
+End Sub
+
+
+Private Function ControlExists( _
+    ByVal controlName As String _
+) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim controlObject As Control
+
+    Set controlObject = Me.Controls(controlName)
+    ControlExists = True
+
+Exit_Handler:
+    Set controlObject = Nothing
+    Exit Function
+
+Err_Handler:
+    ControlExists = False
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function SqlText( _
+    ByVal textValue As String _
+) As String
+
+    SqlText = _
+        "'" & Replace(textValue, "'", "''") & "'"
+
+End Function

@@ -1,0 +1,43 @@
+﻿Option Compare Database
+Option Explicit
+
+Public Function OpenSelectedRecord() As Boolean
+
+    On Error GoTo Err_Handler
+
+    If Nz(Me!SalesOrderID, 0) > 0 Then
+        DoCmd.OpenForm "F_SalesOrders", acNormal, , "SalesOrderID = " & CLng(Me!SalesOrderID)
+        OpenSelectedRecord = True
+        Exit Function
+    End If
+
+    If Nz(Me!InvoiceID, 0) > 0 Then
+        DoCmd.OpenForm "F_Invoices", acNormal, , "InvoiceID = " & CLng(Me!InvoiceID)
+        OpenSelectedRecord = True
+        Exit Function
+    End If
+
+    If Nz(Me!CustomerPOID, 0) > 0 Then
+        DoCmd.OpenForm "F_CustomerPO", acNormal, , "CustomerPOID = " & CLng(Me!CustomerPOID)
+        OpenSelectedRecord = True
+        Exit Function
+    End If
+
+    If Nz(Me!ItemID, 0) > 0 Then
+        DoCmd.OpenForm "F_ItemSetup", acNormal, , "ItemID = " & CLng(Me!ItemID)
+        OpenSelectedRecord = True
+        Exit Function
+    End If
+
+    MsgBox "No linked document was found for this movement.", vbInformation, "Open Movement Source"
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    MsgBox "The selected movement source could not be opened." & vbCrLf & vbCrLf & _
+           "Error Number: " & Err.Number & vbCrLf & _
+           "Details: " & Err.Description, vbExclamation, "Open Movement Source"
+    Resume Exit_Handler
+
+End Function

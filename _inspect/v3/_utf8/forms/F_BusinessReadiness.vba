@@ -1,0 +1,830 @@
+﻿Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+
+
+'====================================================
+' FORM EVENTS
+'====================================================
+
+Private Sub Form_Load()
+
+    RefreshBusiness
+
+End Sub
+
+
+Private Sub Form_Activate()
+
+    RefreshBusiness
+
+End Sub
+
+
+Private Sub cmdDirectSale_Click()
+
+    On Error GoTo Err_Handler
+
+    Const SALES_ORDER_FORM As String = "F_SalesOrders"
+
+    Dim failedStep As String
+
+    If CurrentProject.AllForms(SALES_ORDER_FORM).IsLoaded Then
+
+        'Start Direct Sale before moving focus to the open form.
+        'Do not use DoCmd.SelectObject here because it triggers
+        'the sales-line subform Enter event too early.
+        failedStep = "Starting Direct Sale in the open form"
+
+        Form_F_SalesOrders.StartDirectSale
+
+        failedStep = "Activating the Direct Sale form"
+
+        Forms(SALES_ORDER_FORM).SetFocus
+
+    Else
+
+        failedStep = "Opening the Direct Sale form"
+
+        DoCmd.OpenForm _
+            formName:=SALES_ORDER_FORM, _
+            View:=acNormal, _
+            DataMode:=acFormAdd, _
+            OpenArgs:="EntryMode=DirectSale"
+
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+
+    MsgBox _
+        "The Direct Sale screen could not be opened." & _
+        vbCrLf & vbCrLf & _
+        "Failed Step: " & failedStep & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Direct Sale"
+
+    Resume Exit_Handler
+
+End Sub
+'====================================================
+' MAIN REFRESH
+'====================================================
+
+Private Sub RefreshBusiness()
+
+
+    UpdateProjects
+
+    UpdateProcurement
+
+    UpdateSales
+
+    UpdateInventoryOperations
+
+    UpdateProduction
+
+
+    UpdateCardColors
+
+
+    UpdateNextAction
+
+
+End Sub
+
+
+
+
+'====================================================
+' PROJECTS
+'====================================================
+
+Private Sub UpdateProjects()
+
+
+Dim projects As Long
+Dim activeProjects As Long
+Dim customers As Long
+
+
+projects = SafeCount("T_Projects")
+
+
+activeProjects = SafeCountWhere( _
+"T_Projects", _
+"Status='Active'")
+
+
+customers = SafeCount("T_Customers")
+
+
+
+
+Me.lblProjectCount.Caption = _
+projects & " project(s)"
+
+
+
+Me.lblActiveProjectCount.Caption = _
+activeProjects & " active"
+
+
+
+Me.lblProjectCustomerCount.Caption = _
+customers & " customers"
+
+
+
+
+If projects = 0 Then
+
+
+    Me.cmdProjectSetup.Caption = _
+    "Create Projects"
+
+
+
+Else
+
+
+    Me.cmdProjectSetup.Caption = _
+    "Manage Projects"
+
+
+
+End If
+
+
+End Sub
+
+
+
+
+
+
+
+'====================================================
+' PROCUREMENT
+'====================================================
+
+Private Sub UpdateProcurement()
+
+
+Dim suppliers As Long
+Dim PO As Long
+Dim receipts As Long
+Dim returns As Long
+
+
+
+suppliers = SafeCount("T_Suppliers")
+
+PO = SafeCount("T_PurchaseOrders")
+
+receipts = SafeCount("T_StockReceipts")
+
+returns = SafeCount("T_SupplierReturns")
+
+
+
+Me.lblSupplierCount.Caption = _
+suppliers & " suppliers"
+
+
+
+Me.lblPurchaseOrderCount.Caption = _
+PO & " purchase orders"
+
+
+
+Me.lblReceiptCount.Caption = _
+receipts & " receipts"
+
+
+
+Me.lblSupplierReturnCount.Caption = _
+returns & " returns"
+
+
+
+
+If PO = 0 Then
+
+    Me.cmdProcurement.Caption = _
+    "Manage Purchase Orders"
+
+Else
+
+    Me.cmdProcurement.Caption = _
+    "Manage Procurement"
+
+End If
+
+
+End Sub
+
+
+
+
+
+
+
+
+'====================================================
+' SALES
+'====================================================
+
+Private Sub UpdateSales()
+
+
+Dim customers As Long
+Dim orders As Long
+Dim invoices As Long
+Dim payments As Long
+
+
+
+customers = SafeCount("T_Customers")
+
+orders = SafeCount("T_SalesOrders")
+
+invoices = SafeCount("T_Invoices")
+
+payments = SafeCount("T_Payments")
+
+
+
+Me.lblSalesCustomerCount.Caption = _
+customers & " customers"
+
+
+
+Me.lblSalesOrderCount.Caption = _
+orders & " sales orders"
+
+
+
+Me.lblInvoiceCount.Caption = _
+invoices & " invoices"
+
+
+
+Me.lblPaymentCount.Caption = _
+payments & " payments"
+
+
+
+
+If orders = 0 Then
+
+
+    Me.cmdSales.Caption = _
+    "Create Sales Order"
+
+
+
+Else
+
+
+    Me.cmdSales.Caption = _
+    "Manage Sales"
+
+
+
+End If
+
+
+End Sub
+
+
+
+
+
+
+
+
+
+'====================================================
+' INVENTORY OPERATIONS
+'====================================================
+
+Private Sub UpdateInventoryOperations()
+
+
+Dim items As Long
+Dim lowStock As Long
+Dim movements As Long
+
+
+
+items = SafeCount("T_Items")
+
+
+
+lowStock = SafeCountWhere( _
+"T_Stock", _
+"Quantity<=MinimumStock")
+
+
+
+movements = SafeCount("T_StockMovements")
+
+
+
+
+Me.lblStockItems.Caption = _
+items & " stock items"
+
+
+
+Me.lblLowStock.Caption = _
+lowStock & " low stock"
+
+
+
+Me.lblStockMovement.Caption = _
+movements & " movements"
+
+
+
+
+If movements = 0 Then
+
+
+    Me.cmdInventory.Caption = _
+    "Start Stock Movement"
+
+
+
+Else
+
+
+    Me.cmdInventory.Caption = _
+    "Manage Inventory"
+
+
+
+End If
+
+
+End Sub
+
+
+
+
+
+
+
+'====================================================
+' PRODUCTION
+'====================================================
+
+Private Sub UpdateProduction()
+
+
+Dim templates As Long
+Dim materials As Long
+Dim finished As Long
+
+
+
+templates = SafeCount("T_AssemblyTemplates")
+
+materials = SafeCount("T_AssemblyTemplateItems")
+
+finished = SafeCountWhere( _
+"T_Items", _
+"ItemType='Finished Goods'")
+
+
+
+
+Me.lblTemplateCount.Caption = _
+templates & " templates"
+
+
+
+Me.lblMaterialCount.Caption = _
+materials & " materials"
+
+
+
+Me.lblFinishedGoods.Caption = _
+finished & " finished goods"
+
+
+
+
+
+If templates = 0 Then
+
+
+    Me.cmdProduction.Caption = _
+    "Create Template"
+
+
+
+Else
+
+
+    Me.cmdProduction.Caption = _
+    "Manage Production"
+
+
+
+End If
+
+
+
+End Sub
+
+
+
+
+
+
+
+'====================================================
+' CARD COLOURS
+'====================================================
+
+Private Sub UpdateCardColors()
+
+
+UpdateProjectsCard
+
+UpdateProcurementCard
+
+UpdateSalesCard
+
+UpdateInventoryCard
+
+UpdateProductionCard
+
+
+End Sub
+
+
+
+
+
+
+
+Private Sub SetCardColor(ctrl As Control, clr As Long)
+
+
+On Error Resume Next
+
+ctrl.BackStyle = 1
+
+ctrl.BackColor = clr
+
+
+End Sub
+
+
+
+
+
+
+
+Private Sub UpdateProjectsCard()
+
+
+Dim p As Long
+
+p = SafeCount("T_Projects")
+
+
+If p = 0 Then
+
+SetCardColor Me.rectProjectsCard, RGB(255, 220, 220)
+
+
+Else
+
+SetCardColor Me.rectProjectsCard, RGB(220, 240, 220)
+
+
+End If
+
+
+End Sub
+
+
+
+
+
+
+
+
+Private Sub UpdateProcurementCard()
+
+
+Dim PO As Long
+
+
+PO = SafeCount("T_PurchaseOrders")
+
+
+
+If PO = 0 Then
+
+SetCardColor Me.rectProcurementCard, RGB(255, 220, 220)
+
+
+Else
+
+SetCardColor Me.rectProcurementCard, RGB(220, 240, 220)
+
+
+End If
+
+
+End Sub
+
+
+
+
+
+
+
+
+Private Sub UpdateSalesCard()
+
+
+Dim Sales As Long
+
+
+Sales = SafeCount("T_SalesOrders")
+
+
+
+If Sales = 0 Then
+
+SetCardColor Me.rectSalesCard, RGB(255, 220, 220)
+
+
+Else
+
+SetCardColor Me.rectSalesCard, RGB(220, 240, 220)
+
+
+End If
+
+
+End Sub
+
+
+
+
+
+
+
+
+Private Sub UpdateInventoryCard()
+
+
+Dim movements As Long
+
+
+movements = SafeCount("T_StockMovements")
+
+
+
+If movements = 0 Then
+
+SetCardColor Me.rectInventoryOpsCard, RGB(255, 220, 220)
+
+
+Else
+
+SetCardColor Me.rectInventoryOpsCard, RGB(220, 240, 220)
+
+
+End If
+
+
+End Sub
+
+
+
+
+
+
+
+Private Sub UpdateProductionCard()
+
+
+Dim templates As Long
+
+
+templates = SafeCount("T_AssemblyTemplates")
+
+
+
+If templates = 0 Then
+
+SetCardColor Me.rectProductionCard, RGB(255, 220, 220)
+
+
+Else
+
+SetCardColor Me.rectProductionCard, RGB(220, 240, 220)
+
+
+End If
+
+
+End Sub
+
+
+
+
+
+
+
+'====================================================
+' NEXT ACTION
+'====================================================
+
+Private Sub UpdateNextAction()
+
+
+
+If SafeCount("T_Projects") = 0 Then
+
+
+Me.lblBusinessNextAction.Caption = _
+"Create your first project."
+
+Me.cmdBusinessNext.Caption = _
+"Create Project"
+
+
+Exit Sub
+
+End If
+
+
+
+
+If SafeCount("T_PurchaseOrders") = 0 Then
+
+
+Me.lblBusinessNextAction.Caption = _
+"Create your first purchase order."
+
+Me.cmdBusinessNext.Caption = _
+"Create Purchase Order"
+
+
+Exit Sub
+
+
+End If
+
+
+
+
+
+If SafeCount("T_SalesOrders") = 0 Then
+
+
+Me.lblBusinessNextAction.Caption = _
+"Create your first sales order."
+
+Me.cmdBusinessNext.Caption = _
+"Create Sales Order"
+
+
+Exit Sub
+
+
+End If
+
+
+
+
+
+Me.lblBusinessNextAction.Caption = _
+"Business operations are ready."
+
+Me.cmdBusinessNext.Caption = _
+"Completed"
+
+
+
+End Sub
+
+
+
+
+
+
+
+'====================================================
+' SAFE FUNCTIONS
+'====================================================
+
+Private Function SafeCount(tbl As String) As Long
+
+On Error GoTo ErrHandler
+
+SafeCount = DCount("*", tbl)
+
+Exit Function
+
+
+ErrHandler:
+
+SafeCount = 0
+
+
+End Function
+
+
+
+
+
+Private Function SafeCountWhere(tbl As String, condition As String) As Long
+
+On Error GoTo ErrHandler
+
+SafeCountWhere = DCount("*", tbl, condition)
+
+Exit Function
+
+
+ErrHandler:
+
+SafeCountWhere = 0
+
+
+End Function
+
+
+
+
+
+
+
+'====================================================
+' BUTTONS
+'====================================================
+
+
+Private Sub cmdProjectSetup_Click()
+
+DoCmd.OpenForm "F_ProjectList"
+
+End Sub
+
+
+
+Private Sub cmdProcurement_Click()
+
+DoCmd.OpenForm "F_CustomerPOList"
+
+End Sub
+
+
+
+Private Sub cmdSales_Click()
+
+DoCmd.OpenForm "F_SalesOrderList"
+
+End Sub
+
+Private Sub cmdInventory_Click()
+
+DoCmd.OpenForm "F_InventoryList"
+
+End Sub
+
+
+
+Private Sub cmdProduction_Click()
+
+DoCmd.OpenForm "F_TemplateList"
+
+End Sub
+
+
+
+Private Sub cmdBusinessNext_Click()
+
+MsgBox Me.lblBusinessNextAction.Caption, _
+vbInformation, _
+"Next Action"
+
+End Sub

@@ -1,0 +1,671 @@
+﻿Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+'=============================================================
+' FORM: SF_AssemblyTemplateTools
+' PURPOSE:
+'   Maintains reusable tool/equipment requirements for one
+'   assembly template and supports direct item creation from
+'   the tool combo or the Add button.
+'=============================================================
+
+Private Const ITEM_SETUP_FORM As String = "F_ItemSetup"
+
+Private Sub Form_Load()
+
+    On Error GoTo Err_Handler
+
+    ConfigureToolControls
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The assembly-tool subform could not be configured." & _
+        vbCrLf & vbCrLf & Err.Description, _
+        vbExclamation, _
+        "Assembly Tools"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_BeforeInsert(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    'The parent header is saved before focus enters this subform.
+    'Link Master/Child Fields supplies AssemblyTemplateID.
+    If ParentTemplateID() <= 0 Then
+        Cancel = True
+        Exit Sub
+    End If
+
+    If IsNull(Me!SortOrder) Then
+        Me!SortOrder = GetNextSortOrder()
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Cancel = True
+    MsgBox _
+        "The tool line could not be started." & vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Assembly Tool"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_BeforeUpdate(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    'Do not save the parent or rewrite AssemblyTemplateID during
+    'child validation. The subform link supplies the parent key.
+    If Nz(Me!AssemblyTemplateID, 0) <= 0 Then
+        MsgBox _
+            "The tool row is not linked to a saved template." & vbCrLf & vbCrLf & _
+            "Set Link Master Fields to txtAssemblyTemplateID and " & _
+            "Link Child Fields to AssemblyTemplateID.", _
+            vbExclamation, _
+            "Template Link Required"
+        Cancel = True
+        Exit Sub
+    End If
+
+    If IsNull(Me.cboToolItemID) Then
+        MsgBox _
+            "Select the required tool or equipment.", _
+            vbExclamation, _
+            "Tool Required"
+        Me.cboToolItemID.SetFocus
+        Cancel = True
+        Exit Sub
+    End If
+
+    If Not IsPositiveNumber(Me.txtQuantityRequired) Then
+
+        MsgBox _
+            "Tool quantity must be a number greater than zero.", _
+            vbExclamation, _
+            "Invalid Tool Quantity"
+        Me.txtQuantityRequired.SetFocus
+        Cancel = True
+        Exit Sub
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Cancel = True
+    MsgBox _
+        "The tool line could not be validated." & vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Assembly Tool"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_Error(DataErr As Integer, Response As Integer)
+
+    If DataErr = 2115 Then
+        MsgBox _
+            "Access rejected a tool field while validating the row." & _
+            vbCrLf & vbCrLf & _
+            "Confirm the subform link fields, then clear any old " & _
+            "Validation Rule or control Before Update macro that is " & _
+            "still attached to the tool controls.", _
+            vbExclamation, _
+            "Assembly Tool"
+        Response = acDataErrContinue
+    Else
+        Response = acDataErrDisplay
+    End If
+
+End Sub
+
+'=============================================================
+' TOOL COMBO EVENTS
+'=============================================================
+
+Private Sub cboToolItemID_NotInList( _
+    NewData As String, _
+    Response As Integer _
+)
+
+    Response = acDataErrContinue
+
+    If CreateTypedToolItem(NewData) Then
+        'Do not requery or assign the combo in NotInList.
+        'Access refreshes and selects the saved row after this
+        'event finishes.
+        Response = acDataErrAdded
+    Else
+        On Error Resume Next
+        Me.cboToolItemID.Undo
+        On Error GoTo 0
+    End If
+
+End Sub
+
+
+Private Sub cboToolItemID_DblClick(Cancel As Integer)
+
+    Cancel = True
+
+    If Nz(Me.cboToolItemID, 0) > 0 Then
+        EditSelectedToolItem Me.cboToolItemID
+    Else
+        AddNewToolItem Me.cboToolItemID
+    End If
+
+End Sub
+
+
+'=============================================================
+' ADD BUTTON
+'=============================================================
+
+Private Sub cmdAddToolItem_Click()
+
+    AddNewToolFromTemplate
+
+End Sub
+
+
+Public Sub AddNewToolFromTemplate()
+
+    AddNewToolItem Me.cboToolItemID
+
+End Sub
+
+'=============================================================
+' CONFIGURATION
+'=============================================================
+
+Private Sub ConfigureToolControls()
+
+    With Me.cboToolItemID
+        .RowSourceType = "Table/Query"
+        .RowSource = _
+            "SELECT ItemID, ItemName, InternalSKU, ItemClass " & _
+            "FROM T_Items " & _
+            "WHERE Nz([ItemClass],'') In ('Tool','Equipment','Other') " & _
+            "ORDER BY ItemName, InternalSKU;"
+        .BoundColumn = 1
+        .ColumnCount = 4
+        .ColumnWidths = "0cm;7cm;3cm;3cm"
+        .LimitToList = True
+        .AutoExpand = True
+    End With
+
+    If ControlExists("cmdAddToolItem") Then
+        Me.Controls("cmdAddToolItem").Caption = _
+            "+ New Tool / Equipment"
+        Me.Controls("cmdAddToolItem").Enabled = True
+    End If
+
+    If ControlExists("txtAssemblyTemplateID") Then
+        Me.Controls("txtAssemblyTemplateID").Visible = False
+        Me.Controls("txtAssemblyTemplateID").Enabled = False
+        Me.Controls("txtAssemblyTemplateID").Locked = True
+    End If
+
+End Sub
+
+'=============================================================
+' ITEM CREATION / EDITING FROM THE TEMPLATE SUBFORM
+'=============================================================
+
+Private Function CreateTypedToolItem( _
+    ByVal NewData As String _
+) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim enteredName As String
+    Dim savedItemID As Long
+    Dim oldMaximumID As Long
+    Dim newMaximumID As Long
+    Dim savedItemName As String
+
+    CreateTypedToolItem = False
+    enteredName = Trim$(Nz(NewData, vbNullString))
+
+    If Len(enteredName) = 0 Then
+        Exit Function
+    End If
+
+    If MsgBox( _
+        "'" & enteredName & "' is not in the tool list." & _
+        vbCrLf & vbCrLf & _
+        "Would you like to create it as a new tool or equipment item?" & _
+        vbCrLf & vbCrLf & _
+        "In Item Setup, select Item Class Tool, Equipment, or Other.", _
+        vbQuestion + vbYesNo, _
+        "Create New Tool") <> vbYes Then
+
+        Exit Function
+    End If
+
+    If Not PrepareItemSetupForm Then
+        Exit Function
+    End If
+
+    oldMaximumID = Nz(DMax("ItemID", "T_Items"), 0)
+
+    DoCmd.OpenForm _
+        FormName:=ITEM_SETUP_FORM, _
+        View:=acNormal, _
+        DataMode:=acFormAdd, _
+        WindowMode:=acDialog, _
+        OpenArgs:=BuildItemOpenArgs(enteredName)
+
+    newMaximumID = Nz(DMax("ItemID", "T_Items"), 0)
+
+    If newMaximumID <= oldMaximumID Then
+        MsgBox _
+            "The new item was not found after Item Setup closed." & _
+            vbCrLf & _
+            "Save it using the same item name that you typed.", _
+            vbInformation, _
+            "Tool Not Added"
+        Exit Function
+    End If
+
+    savedItemID = newMaximumID
+    savedItemName = Trim$(Nz(DLookup( _
+        "ItemName", _
+        "T_Items", _
+        "ItemID=" & CStr(savedItemID)), vbNullString))
+
+    If StrComp(savedItemName, enteredName, vbTextCompare) <> 0 Then
+        MsgBox _
+            "The item was saved with a different name." & _
+            vbCrLf & _
+            "To fill the typed combo value automatically, save it " & _
+            "using the same name: " & enteredName, _
+            vbInformation, _
+            "Item Name Changed"
+        Exit Function
+    End If
+
+    If Not ItemIsVisibleForThisSubform(savedItemID) Then
+        MsgBox _
+            "The item was saved, but its Item Class is not Tool, " & _
+            "Equipment, or Other, so it cannot appear in Tools." & _
+            vbCrLf & vbCrLf & _
+            "Open Item Setup and select Tool, Equipment, or Other " & _
+            "as its Item Class.", _
+            vbExclamation, _
+            "Tool Item Class"
+        Exit Function
+    End If
+
+    CreateTypedToolItem = True
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    If Err.Number <> 2501 Then
+        MsgBox _
+            "The new tool/equipment item could not be created." & _
+            vbCrLf & vbCrLf & _
+            "Error Number: " & Err.Number & vbCrLf & _
+            "Details: " & Err.Description, _
+            vbExclamation, _
+            "Create Tool / Equipment"
+    End If
+
+    Resume Exit_Handler
+
+End Function
+
+
+Private Sub AddNewToolItem( _
+    ByVal targetCombo As Access.ComboBox _
+)
+
+    On Error GoTo Err_Handler
+
+    Dim oldMaximumID As Long
+    Dim newMaximumID As Long
+
+    If Not PrepareItemSetupForm Then
+        Exit Sub
+    End If
+
+    oldMaximumID = Nz(DMax("ItemID", "T_Items"), 0)
+
+    DoCmd.OpenForm _
+        FormName:=ITEM_SETUP_FORM, _
+        View:=acNormal, _
+        DataMode:=acFormAdd, _
+        WindowMode:=acDialog, _
+        OpenArgs:=BuildItemOpenArgs(vbNullString)
+
+    newMaximumID = Nz(DMax("ItemID", "T_Items"), 0)
+
+    targetCombo.Requery
+
+    If newMaximumID > oldMaximumID Then
+        If ItemIsVisibleForThisSubform(newMaximumID) Then
+            targetCombo.value = newMaximumID
+        Else
+            MsgBox _
+                "The item was saved, but its Item Class does not " & _
+                "belong in the Tools list.", _
+                vbExclamation, _
+                "Tool Item Class"
+        End If
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    If Err.Number <> 2501 Then
+        MsgBox _
+            "Item Setup could not create the new tool/equipment item." & _
+            vbCrLf & vbCrLf & _
+            "Error Number: " & Err.Number & vbCrLf & _
+            "Details: " & Err.Description, _
+            vbExclamation, _
+            "New Tool / Equipment"
+    End If
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub EditSelectedToolItem( _
+    ByVal targetCombo As Access.ComboBox _
+)
+
+    On Error GoTo Err_Handler
+
+    Dim selectedItemID As Long
+
+    selectedItemID = Nz(targetCombo.value, 0)
+
+    If selectedItemID <= 0 Then
+        AddNewToolItem targetCombo
+        Exit Sub
+    End If
+
+    If Not PrepareItemSetupForm Then
+        Exit Sub
+    End If
+
+    DoCmd.OpenForm _
+        FormName:=ITEM_SETUP_FORM, _
+        View:=acNormal, _
+        WhereCondition:="[ItemID]=" & CStr(selectedItemID), _
+        DataMode:=acFormEdit, _
+        WindowMode:=acDialog
+
+    targetCombo.Requery
+
+    If DCount( _
+        "*", _
+        "T_Items", _
+        "ItemID=" & CStr(selectedItemID)) = 0 Then
+
+        targetCombo.value = Null
+    ElseIf ItemIsVisibleForThisSubform(selectedItemID) Then
+        targetCombo.value = selectedItemID
+    Else
+        targetCombo.value = Null
+        MsgBox _
+            "The edited item's class no longer belongs in Tools, " & _
+            "so it was cleared from this line.", _
+            vbInformation, _
+            "Tool Item Class Changed"
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    If Err.Number <> 2501 Then
+        MsgBox _
+            "The selected tool/equipment item could not be opened." & _
+            vbCrLf & vbCrLf & _
+            "Error Number: " & Err.Number & vbCrLf & _
+            "Details: " & Err.Description, _
+            vbExclamation, _
+            "Edit Tool / Equipment"
+    End If
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Function PrepareItemSetupForm() As Boolean
+
+    On Error GoTo Err_Handler
+
+    PrepareItemSetupForm = False
+
+    If Not FormExists(ITEM_SETUP_FORM) Then
+        MsgBox _
+            "The form '" & ITEM_SETUP_FORM & "' does not exist.", _
+            vbExclamation, _
+            "Item Setup Missing"
+        Exit Function
+    End If
+
+    If IsFormLoaded(ITEM_SETUP_FORM) Then
+        If Forms(ITEM_SETUP_FORM).Dirty Then
+            MsgBox _
+                "Finish or cancel the current record in Item Setup, " & _
+                "then try again.", _
+                vbInformation, _
+                "Item Setup Already Open"
+            Exit Function
+        End If
+
+        DoCmd.close acForm, ITEM_SETUP_FORM, acSaveNo
+    End If
+
+    PrepareItemSetupForm = True
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    MsgBox _
+        "Item Setup could not be prepared." & _
+        vbCrLf & vbCrLf & Err.Description, _
+        vbExclamation, _
+        "Item Setup"
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function BuildItemOpenArgs( _
+    ByVal requestedItemName As String _
+) As String
+
+    'Use the existing Quick Add contract already supported by
+    'F_ItemSetup. No change to F_ItemSetup is required.
+    BuildItemOpenArgs = _
+        "QUICKADD|" & requestedItemName
+
+End Function
+
+
+Private Function ItemIsVisibleForThisSubform( _
+    ByVal ItemID As Long _
+) As Boolean
+
+    Dim itemClass As String
+
+    If DCount( _
+        "*", _
+        "T_Items", _
+        "ItemID=" & CStr(ItemID)) = 0 Then
+
+        Exit Function
+    End If
+
+    itemClass = Trim$(Nz(DLookup( _
+        "ItemClass", _
+        "T_Items", _
+        "ItemID=" & CStr(ItemID)), vbNullString))
+
+    ItemIsVisibleForThisSubform = _
+        (StrComp(itemClass, "Tool", vbTextCompare) = 0) Or _
+        (StrComp(itemClass, "Equipment", vbTextCompare) = 0) Or _
+        (StrComp(itemClass, "Other", vbTextCompare) = 0)
+
+End Function
+
+'=============================================================
+' PARENT AND SORT HELPERS
+'=============================================================
+
+Private Function ParentTemplateID() As Long
+
+    On Error GoTo Err_Handler
+
+    If Me.Parent Is Nothing Then
+        Err.Raise _
+            vbObjectError + 5401, _
+            "ParentTemplateID", _
+            "This subform must be opened inside F_AssemblyTemplate."
+    End If
+
+    ParentTemplateID = Nz( _
+        Me.Parent.Recordset.Fields("AssemblyTemplateID").value, _
+        0)
+
+    If ParentTemplateID <= 0 Then
+        Err.Raise _
+            vbObjectError + 5402, _
+            "ParentTemplateID", _
+            "Save the template header before adding tools."
+    End If
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    ParentTemplateID = 0
+    Err.Raise Err.Number, Err.Source, Err.Description
+
+End Function
+
+
+Private Function GetNextSortOrder() As Long
+
+    Dim templateID As Long
+    Dim currentMaximum As Variant
+
+    templateID = ParentTemplateID()
+
+    currentMaximum = DMax( _
+        "SortOrder", _
+        "T_AssemblyTemplateTools", _
+        "AssemblyTemplateID=" & templateID)
+
+    If IsNull(currentMaximum) Then
+        GetNextSortOrder = 10
+    Else
+        GetNextSortOrder = CLng(currentMaximum) + 10
+    End If
+
+End Function
+
+'=============================================================
+' SAFE HELPER
+'=============================================================
+
+Private Function ControlExists(ByVal controlName As String) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim controlObject As Control
+
+    Set controlObject = Me.Controls(controlName)
+    ControlExists = True
+
+Exit_Handler:
+    Set controlObject = Nothing
+    Exit Function
+
+Err_Handler:
+    ControlExists = False
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function FormExists(ByVal FormName As String) As Boolean
+
+    On Error GoTo Not_Found
+
+    Dim formObject As AccessObject
+
+    Set formObject = CurrentProject.AllForms(FormName)
+    FormExists = True
+
+Exit_Function:
+    Set formObject = Nothing
+    Exit Function
+
+Not_Found:
+    FormExists = False
+    Resume Exit_Function
+
+End Function
+
+
+Private Function IsFormLoaded(ByVal FormName As String) As Boolean
+
+    On Error GoTo Not_Loaded
+
+    IsFormLoaded = CurrentProject.AllForms(FormName).IsLoaded
+    Exit Function
+
+Not_Loaded:
+    IsFormLoaded = False
+
+End Function
+
+
+Private Function IsPositiveNumber(ByVal fieldValue As Variant) As Boolean
+
+    If IsNull(fieldValue) Then
+        Exit Function
+    End If
+
+    If Len(Trim$(CStr(fieldValue))) = 0 Then
+        Exit Function
+    End If
+
+    If Not IsNumeric(fieldValue) Then
+        Exit Function
+    End If
+
+    IsPositiveNumber = (CDbl(fieldValue) > 0)
+
+End Function

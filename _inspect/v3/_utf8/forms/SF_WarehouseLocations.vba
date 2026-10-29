@@ -1,0 +1,32 @@
+﻿Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+
+' UX-LOCATION-ROW
+Private Sub Form_BeforeInsert(Cancel As Integer)
+    On Error Resume Next
+    If Nz(Me!WarehouseID, 0) = 0 Then
+        Me!WarehouseID = Nz(Me.Parent!WarehouseID, 0)
+    End If
+End Sub
+
+Private Sub Form_BeforeUpdate(Cancel As Integer)
+    On Error GoTo Err_Handler
+    If Len(Trim$(Nz(Me!LocationName, ""))) = 0 Then
+        MsgBox "Type the location name in this row.", vbExclamation, "Location"
+        Cancel = True
+        Exit Sub
+    End If
+    If Len(Trim$(Nz(Me!LocationCode, ""))) = 0 Then
+        Me!LocationCode = UCase$(Left$(Replace(Trim$(Me!LocationName), " ", ""), 8))
+    End If
+    If Nz(Me!WarehouseID, 0) = 0 Then
+        Me!WarehouseID = Nz(Me.Parent!WarehouseID, 0)
+    End If
+    Exit Sub
+Err_Handler:
+    Cancel = True
+    MsgBox Err.Description, vbExclamation, "Location"
+End Sub

@@ -1,0 +1,563 @@
+﻿Version =21
+VersionRequired =20
+PublishOption =1
+Checksum =-208274557
+Begin Form
+    DividingLines = NotDefault
+    AllowDesignChanges = NotDefault
+    DefaultView =0
+    PictureAlignment =2
+    DatasheetGridlinesBehavior =3
+    GridX =24
+    GridY =24
+    Width =12000
+    DatasheetFontHeight =11
+    ItemSuffix =16
+    Right =15090
+    Bottom =4695
+    DatasheetGridlinesColor =15263976
+    RecSrcDt = Begin
+        0x9eb830b2749ce640
+    End
+    GUID = Begin
+        0xf88edbaf980e514d8b0bc43200f1707e
+    End
+    Caption ="Expenses"
+    DatasheetFontName ="Aptos"
+    FilterOnLoad =0
+    ShowPageMargins =0
+    DisplayOnSharePointSite =1
+    DatasheetAlternateBackColor =15921906
+    DatasheetGridlinesColor12 =0
+    FitToScreen =1
+    DatasheetBackThemeColorIndex =1
+    BorderThemeColorIndex =3
+    ThemeFontIndex =1
+    ForeThemeColorIndex =0
+    AlternateBackThemeColorIndex =1
+    AlternateBackShade =95.0
+    NoSaveCTIWhenDisabled =1
+    Begin
+        Begin Label
+            BackStyle =0
+            FontSize =11
+            BorderColor =8355711
+            ForeColor =6710886
+            FontName ="Aptos"
+            GridlineColor =10921638
+            ThemeFontIndex =1
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =0
+            BorderTint =50.0
+            ForeThemeColorIndex =0
+            ForeTint =60.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin CommandButton
+            FontSize =11
+            FontWeight =400
+            ForeColor =4210752
+            FontName ="Aptos"
+            GridlineColor =10921638
+            ForeThemeColorIndex =0
+            ForeTint =75.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+            UseTheme =1
+            Shape =1
+            Gradient =12
+            BackColor =14790982
+            BackThemeColorIndex =4
+            BackTint =60.0
+            BorderLineStyle =0
+            BorderColor =14790982
+            BorderThemeColorIndex =4
+            BorderTint =60.0
+            ThemeFontIndex =1
+            HoverColor =15453059
+            HoverThemeColorIndex =4
+            HoverTint =40.0
+            PressedColor =6440976
+            PressedThemeColorIndex =4
+            PressedShade =75.0
+            HoverForeColor =4210752
+            HoverForeThemeColorIndex =0
+            HoverForeTint =75.0
+            PressedForeColor =4210752
+            PressedForeThemeColorIndex =0
+            PressedForeTint =75.0
+        End
+        Begin TextBox
+            AddColon = NotDefault
+            FELineBreak = NotDefault
+            BorderLineStyle =0
+            LabelX =-1800
+            FontSize =11
+            BorderColor =10921638
+            ForeColor =4210752
+            FontName ="Aptos"
+            AsianLineBreak =1
+            GridlineColor =10921638
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            ThemeFontIndex =1
+            ForeThemeColorIndex =0
+            ForeTint =75.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin ComboBox
+            AddColon = NotDefault
+            BorderLineStyle =0
+            LabelX =-1800
+            FontSize =11
+            BorderColor =10921638
+            ForeColor =2102279
+            FontName ="Aptos"
+            GridlineColor =10921638
+            AllowValueListEdits =1
+            InheritValueList =1
+            ThemeFontIndex =1
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            ForeThemeColorIndex =2
+            ForeShade =50.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin Subform
+            BorderLineStyle =0
+            BorderColor =10921638
+            GridlineColor =10921638
+            BorderThemeColorIndex =1
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+            BorderShade =65.0
+            ShowPageHeaderAndPageFooter =1
+        End
+        Begin Section
+            Height =7200
+            BackColor =14482166
+            Name ="Detail"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x7f56a7c8cbab8440a2362e08006ec9a9
+            End
+            AutoHeight =1
+            AlternateBackColor =14482166
+            AlternateBackShade =95.0
+            Begin
+                Begin Label
+                    OverlapFlags =85
+                    Left =300
+                    Top =160
+                    Width =4000
+                    Height =400
+                    FontSize =20
+                    FontWeight =700
+                    ForeColor =3947580
+                    Name ="lblTitle"
+                    Caption ="Expenses"
+                    GUID = Begin
+                        0xa1f0fdf4a300b1428381291cfb1fec26
+                    End
+                    LayoutCachedLeft =300
+                    LayoutCachedTop =160
+                    LayoutCachedWidth =4300
+                    LayoutCachedHeight =560
+                    ForeThemeColorIndex =-1
+                End
+                Begin Label
+                    OverlapFlags =85
+                    Left =300
+                    Top =700
+                    Width =1200
+                    Height =280
+                    FontSize =10
+                    FontWeight =700
+                    ForeColor =3947580
+                    Name ="lblDate"
+                    Caption ="Date"
+                    GUID = Begin
+                        0xe51c6421a6783c4ba654285d74ec5ad6
+                    End
+                    LayoutCachedLeft =300
+                    LayoutCachedTop =700
+                    LayoutCachedWidth =1500
+                    LayoutCachedHeight =980
+                    ForeThemeColorIndex =-1
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =1600
+                    Top =680
+                    Width =1800
+                    Height =300
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtExpenseDate"
+                    DefaultValue ="=Date()"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xbdc8dd56215a1044b8005d7f56779f7d
+                    End
+
+                    LayoutCachedLeft =1600
+                    LayoutCachedTop =680
+                    LayoutCachedWidth =3400
+                    LayoutCachedHeight =980
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                End
+                Begin Label
+                    OverlapFlags =85
+                    Left =3600
+                    Top =700
+                    Width =1400
+                    Height =280
+                    FontSize =10
+                    FontWeight =700
+                    ForeColor =3947580
+                    Name ="lblCat"
+                    Caption ="Category"
+                    GUID = Begin
+                        0x31ea90ec98ed874d9bdb67ff1cc03d0c
+                    End
+                    LayoutCachedLeft =3600
+                    LayoutCachedTop =700
+                    LayoutCachedWidth =5000
+                    LayoutCachedHeight =980
+                    ForeThemeColorIndex =-1
+                End
+                Begin ComboBox
+                    RowSourceTypeInt =1
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =5100
+                    Top =680
+                    Width =2800
+                    Height =300
+                    TabIndex =1
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    GUID = Begin
+                        0xb4443ca654cf174bb92b7ccb4febc8e7
+                    End
+                    Name ="cboCategory"
+                    RowSourceType ="Value List"
+                    RowSource ="Rent;Utilities;Salaries;Supplies;Transport;Other"
+                    ColumnWidths ="3402"
+                    DefaultValue ="\"Supplies\""
+                    FontName ="Segoe UI"
+
+                    LayoutCachedLeft =5100
+                    LayoutCachedTop =680
+                    LayoutCachedWidth =7900
+                    LayoutCachedHeight =980
+                    ThemeFontIndex =-1
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ForeThemeColorIndex =-1
+                End
+                Begin Label
+                    OverlapFlags =85
+                    Left =300
+                    Top =1120
+                    Width =1400
+                    Height =280
+                    FontSize =10
+                    FontWeight =700
+                    ForeColor =3947580
+                    Name ="lblDesc"
+                    Caption ="Description"
+                    GUID = Begin
+                        0xf0ffffc98f91664b857db6b07e9fb92b
+                    End
+                    LayoutCachedLeft =300
+                    LayoutCachedTop =1120
+                    LayoutCachedWidth =1700
+                    LayoutCachedHeight =1400
+                    ForeThemeColorIndex =-1
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =1800
+                    Top =1100
+                    Width =6100
+                    Height =300
+                    TabIndex =2
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtDescription"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xd3666972434a4a4a8fd1af34cbd93724
+                    End
+
+                    LayoutCachedLeft =1800
+                    LayoutCachedTop =1100
+                    LayoutCachedWidth =7900
+                    LayoutCachedHeight =1400
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                End
+                Begin Label
+                    OverlapFlags =85
+                    Left =300
+                    Top =1540
+                    Width =1400
+                    Height =280
+                    FontSize =10
+                    FontWeight =700
+                    ForeColor =3947580
+                    Name ="lblAmt"
+                    Caption ="Amount"
+                    GUID = Begin
+                        0x678153eb1bf3624cbc85ae27af7276ea
+                    End
+                    LayoutCachedLeft =300
+                    LayoutCachedTop =1540
+                    LayoutCachedWidth =1700
+                    LayoutCachedHeight =1820
+                    ForeThemeColorIndex =-1
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =1800
+                    Top =1520
+                    Width =1800
+                    Height =300
+                    TabIndex =3
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtAmount"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xdb9751237850ea4b9370c3be67b91da9
+                    End
+
+                    LayoutCachedLeft =1800
+                    LayoutCachedTop =1520
+                    LayoutCachedWidth =3600
+                    LayoutCachedHeight =1820
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                End
+                Begin Label
+                    OverlapFlags =93
+                    Left =3800
+                    Top =1540
+                    Width =1200
+                    Height =280
+                    FontSize =10
+                    FontWeight =700
+                    ForeColor =3947580
+                    Name ="lblPaid"
+                    Caption ="Paid to"
+                    GUID = Begin
+                        0xf2581348945d1d4b89d38f37610cdc92
+                    End
+                    LayoutCachedLeft =3800
+                    LayoutCachedTop =1540
+                    LayoutCachedWidth =5000
+                    LayoutCachedHeight =1820
+                    ForeThemeColorIndex =-1
+                End
+                Begin TextBox
+                    OverlapFlags =87
+                    IMESentenceMode =3
+                    Left =5000
+                    Top =1520
+                    Width =2900
+                    Height =300
+                    TabIndex =4
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtPaidTo"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x46f6b08cccb63140bb837cbe5add990d
+                    End
+
+                    LayoutCachedLeft =5000
+                    LayoutCachedTop =1520
+                    LayoutCachedWidth =7900
+                    LayoutCachedHeight =1820
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                End
+                Begin Label
+                    OverlapFlags =85
+                    Left =300
+                    Top =1960
+                    Width =1400
+                    Height =280
+                    FontSize =10
+                    FontWeight =700
+                    ForeColor =3947580
+                    Name ="lblNotes"
+                    Caption ="Notes"
+                    GUID = Begin
+                        0x33bc9d7f2c923948bf86cb80b16a3949
+                    End
+                    LayoutCachedLeft =300
+                    LayoutCachedTop =1960
+                    LayoutCachedWidth =1700
+                    LayoutCachedHeight =2240
+                    ForeThemeColorIndex =-1
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =1800
+                    Top =1940
+                    Width =6100
+                    Height =300
+                    TabIndex =5
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtNotes"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x4d8d45c9adfd814389d05526a8762137
+                    End
+
+                    LayoutCachedLeft =1800
+                    LayoutCachedTop =1940
+                    LayoutCachedWidth =7900
+                    LayoutCachedHeight =2240
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =1800
+                    Top =2380
+                    Width =2000
+                    Height =380
+                    FontWeight =700
+                    TabIndex =6
+                    ForeColor =16777215
+                    Name ="cmdSaveExpense"
+                    Caption ="Save Expense"
+                    OnClick ="=UX_SaveExpense()"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdSaveExpense\")"
+                    GUID = Begin
+                        0x9c6ef4d220b15c478b96b2df5b5243eb
+                    End
+
+                    LayoutCachedLeft =1800
+                    LayoutCachedTop =2380
+                    LayoutCachedWidth =3800
+                    LayoutCachedHeight =2760
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =5600
+                    Top =180
+                    Width =1500
+                    Height =400
+                    FontWeight =700
+                    TabIndex =7
+                    ForeColor =16777215
+                    Name ="cmdUXBack"
+                    Caption ="Back"
+                    OnClick ="=UX_GoBack()"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdUXBack\")"
+                    GUID = Begin
+                        0x850e43f0d563234985a30cc5ac1debb4
+                    End
+
+                    LayoutCachedLeft =5600
+                    LayoutCachedTop =180
+                    LayoutCachedWidth =7100
+                    LayoutCachedHeight =580
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                End
+                Begin Subform
+                    OverlapFlags =85
+                    Left =300
+                    Top =3000
+                    Width =11000
+                    Height =3800
+                    TabIndex =8
+                    Name ="SF_ExpenseList"
+                    SourceObject ="Form.SF_ExpenseList"
+                    GUID = Begin
+                        0x11a12940f5cb1b47b976e9aaf1ab7cf9
+                    End
+
+                    LayoutCachedLeft =300
+                    LayoutCachedTop =3000
+                    LayoutCachedWidth =11300
+                    LayoutCachedHeight =6800
+                End
+            End
+        End
+    End
+End

@@ -1,0 +1,79 @@
+﻿dbMemo "SQL" ="SELECT L.InvoiceLineID, L.InvoiceID, L.ItemID, L.ItemCode, L.LineDescription, L."
+    "Quantity, L.UnitID, IIf(Len(Trim(Nz(U.UnitCode,'')))=0,Nz(U.UnitName,''),U.UnitC"
+    "ode) AS UnitCode, L.UnitPrice, L.Taxable, L.LineSubtotal, IIf(Len(Trim(Nz(I.Item"
+    "Name,'')))=0,Nz(L.LineDescription,L.ItemCode),IIf(Len(Trim(Nz(I.InternalSKU,L.It"
+    "emCode)))=0,I.ItemName,Nz(I.InternalSKU,L.ItemCode) & ' - ' & I.ItemName)) AS Re"
+    "portItem, Nz(I.ItemName,L.LineDescription) AS ReportDescription, IIf(Len(Trim(Nz"
+    "(U.UnitCode,'')))=0,Nz(U.UnitName,''),U.UnitCode) AS ReportUnit\015\012FROM (T_I"
+    "nvoiceLines AS L LEFT JOIN T_Items AS I ON L.ItemID = I.ItemID) LEFT JOIN T_Unit"
+    "s AS U ON L.UnitID = U.UnitID\015\012ORDER BY L.InvoiceLineID;\015\012"
+dbMemo "Connect" =""
+dbBoolean "ReturnsRecords" ="-1"
+dbInteger "ODBCTimeout" ="60"
+dbBoolean "OrderByOn" ="0"
+dbByte "Orientation" ="0"
+dbByte "DefaultView" ="2"
+dbBinary "GUID" = Begin
+    0x31165f2087418747b612a6c605697c77
+End
+dbBoolean "FilterOnLoad" ="0"
+dbBoolean "OrderByOnLoad" ="-1"
+dbByte "PublishToWeb" ="1"
+Begin
+    Begin
+        dbText "Name" ="L.InvoiceID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="L.InvoiceLineID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="L.LineDescription"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="L.ItemCode"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="L.ItemID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="U.UnitCode"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="L.UnitID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="L.Quantity"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="L.UnitPrice"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="L.Taxable"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="L.LineSubtotal"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="ReportItem"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="ReportDescription"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="ReportUnit"
+        dbLong "AggregateType" ="-1"
+    End
+End

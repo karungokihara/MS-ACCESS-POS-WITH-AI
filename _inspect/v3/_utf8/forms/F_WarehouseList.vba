@@ -1,0 +1,548 @@
+﻿Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+'=============================================================
+' FORM: F_WarehouseList
+'
+' PURPOSE:
+'   Main holder form for warehouse list.
+'
+' FEATURES:
+'   - Filters the warehouse datasheet subform using txtSearch
+'   - Opens a new warehouse detail record
+'   - Opens warehouse detail form safely
+'
+' MAIN FORM:
+'   F_WarehouseList
+'
+' SUBFORM:
+'   SF_WarehouseList
+'
+' POSSIBLE SUBFORM CONTROL NAMES:
+'   subWarehouseList
+'   SF_WarehouseList
+'
+' SEARCH TEXTBOX:
+'   txtSearch
+'
+' ADD NEW BUTTON NAMES SUPPORTED:
+'   cmdNewWarehouse
+'   cmdNew
+'   btnNew
+'
+' CLEAR FILTER BUTTON NAMES SUPPORTED:
+'   cmdClearFilter
+'   btnClearFilter
+'
+' REFRESH BUTTON NAMES SUPPORTED:
+'   cmdRefresh
+'   btnRefresh
+'=============================================================
+
+
+'=============================================================
+' FORM EVENTS
+'=============================================================
+
+Private Sub Form_Load()
+
+    On Error Resume Next
+
+    ClearWarehouseFilter
+    ApplyWarehouseFilter
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub Form_Activate()
+
+    On Error Resume Next
+
+    RequeryWarehouseList
+
+    On Error GoTo 0
+
+End Sub
+
+
+'=============================================================
+' SEARCH EVENTS
+'=============================================================
+
+Private Sub txtSearch_AfterUpdate()
+
+    ApplyWarehouseFilter
+
+End Sub
+
+
+Private Sub txtSearch_KeyDown(KeyCode As Integer, Shift As Integer)
+
+    If KeyCode = vbKeyReturn Then
+        KeyCode = 0
+        ApplyWarehouseFilter
+    End If
+
+End Sub
+
+
+'=============================================================
+' BUTTON EVENTS
+'=============================================================
+
+Private Sub cmdNewWarehouse_Click()
+
+    OpenNewWarehouseRecord
+
+End Sub
+
+
+Private Sub cmdNew_Click()
+
+    OpenNewWarehouseRecord
+
+End Sub
+
+
+Private Sub btnNew_Click()
+
+    OpenNewWarehouseRecord
+
+End Sub
+
+
+Private Sub cmdClearFilter_Click()
+
+    ClearWarehouseFilter
+
+End Sub
+
+
+Private Sub btnClearFilter_Click()
+
+    ClearWarehouseFilter
+
+End Sub
+
+
+Private Sub cmdRefresh_Click()
+
+    RequeryWarehouseList
+
+End Sub
+
+
+Private Sub btnRefresh_Click()
+
+    RequeryWarehouseList
+
+End Sub
+
+
+Private Sub cmdClose_Click()
+
+    DoCmd.close acForm, Me.Name
+
+End Sub
+
+
+Private Sub btnClose_Click()
+
+    DoCmd.close acForm, Me.Name
+
+End Sub
+
+
+'=============================================================
+' APPLY FILTER
+'=============================================================
+
+Private Sub ApplyWarehouseFilter()
+
+    On Error GoTo Err_Handler
+
+    Dim frmSub As Form
+    Dim searchText As String
+    Dim filterText As String
+
+    Set frmSub = GetWarehouseSubform()
+
+    If frmSub Is Nothing Then
+        MsgBox _
+            "The warehouse list subform could not be found." & vbCrLf & vbCrLf & _
+            "Expected subform control name:" & vbCrLf & _
+            "subWarehouseList or SF_WarehouseList", _
+            vbExclamation, _
+            "Warehouse List"
+        Exit Sub
+    End If
+
+    searchText = Trim$(Nz(GetControlValue("txtSearch"), vbNullString))
+
+    If Len(searchText) = 0 Then
+
+        frmSub.FilterOn = False
+        frmSub.Filter = vbNullString
+        frmSub.Requery
+        Exit Sub
+
+    End If
+
+    searchText = Replace(searchText, "'", "''")
+
+    filterText = BuildWarehouseSearchFilter(frmSub, searchText)
+
+    If Len(filterText) = 0 Then
+
+        frmSub.FilterOn = False
+        frmSub.Filter = vbNullString
+
+    Else
+
+        frmSub.Filter = filterText
+        frmSub.FilterOn = True
+
+    End If
+
+    frmSub.Requery
+
+Exit_Handler:
+    Set frmSub = Nothing
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The warehouse list filter could not be applied." & vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Warehouse List Filter"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Function BuildWarehouseSearchFilter( _
+    ByVal frmSub As Form, _
+    ByVal searchText As String _
+) As String
+
+    On Error GoTo Err_Handler
+
+    Dim filterText As String
+
+    AddSearchField frmSub, filterText, "WarehouseCode", searchText
+    AddSearchField frmSub, filterText, "WarehouseName", searchText
+    AddSearchField frmSub, filterText, "Address", searchText
+    AddSearchField frmSub, filterText, "ContactPerson", searchText
+
+    AddSearchField frmSub, filterText, "LocationCode", searchText
+    AddSearchField frmSub, filterText, "LocationName", searchText
+    AddSearchField frmSub, filterText, "BinNumber", searchText
+    AddSearchField frmSub, filterText, "ShelfNumber", searchText
+
+    AddSearchField frmSub, filterText, "Phone", searchText
+    AddSearchField frmSub, filterText, "Email", searchText
+
+    BuildWarehouseSearchFilter = filterText
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    BuildWarehouseSearchFilter = vbNullString
+    Resume Exit_Handler
+
+End Function
+
+
+Private Sub AddSearchField( _
+    ByVal frmSub As Form, _
+    ByRef filterText As String, _
+    ByVal fieldName As String, _
+    ByVal searchText As String _
+)
+
+    On Error GoTo Err_Handler
+
+    If SubformFieldExists(frmSub, fieldName) = False Then
+        Exit Sub
+    End If
+
+    If Len(filterText) > 0 Then
+        filterText = filterText & " OR "
+    End If
+
+    filterText = filterText & _
+        "Nz([" & fieldName & "],'') Like '*" & searchText & "*'"
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' CLEAR FILTER
+'=============================================================
+
+Private Sub ClearWarehouseFilter()
+
+    On Error GoTo Err_Handler
+
+    Dim frmSub As Form
+
+    SetControlValueIfExists "txtSearch", Null
+
+    Set frmSub = GetWarehouseSubform()
+
+    If Not frmSub Is Nothing Then
+        frmSub.FilterOn = False
+        frmSub.Filter = vbNullString
+        frmSub.Requery
+    End If
+
+Exit_Handler:
+    Set frmSub = Nothing
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The warehouse list filter could not be cleared." & vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Clear Warehouse Filter"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' REFRESH LIST
+'=============================================================
+
+Private Sub RequeryWarehouseList()
+
+    On Error Resume Next
+
+    Dim frmSub As Form
+
+    Set frmSub = GetWarehouseSubform()
+
+    If Not frmSub Is Nothing Then
+        frmSub.Requery
+    End If
+
+    Set frmSub = Nothing
+
+    On Error GoTo 0
+
+End Sub
+
+
+'=============================================================
+' ADD NEW WAREHOUSE
+'=============================================================
+
+Private Sub OpenNewWarehouseRecord()
+
+    On Error GoTo Err_Handler
+
+    Dim detailFormName As String
+
+    detailFormName = GetWarehouseDetailFormName()
+
+    If Len(detailFormName) = 0 Then
+
+        MsgBox _
+            "No warehouse detail form was found." & vbCrLf & vbCrLf & _
+            "Expected one of these forms:" & vbCrLf & _
+            "F_WarehouseSetup" & vbCrLf & _
+            "F_Warehouse" & vbCrLf & _
+            "F_Warehouses", _
+            vbExclamation, _
+            "Warehouse Form Missing"
+
+        Exit Sub
+
+    End If
+
+    If CurrentProject.AllForms(detailFormName).IsLoaded Then
+        DoCmd.close acForm, detailFormName, acSaveNo
+    End If
+
+    DoCmd.OpenForm _
+        detailFormName, _
+        acNormal, _
+        , _
+        , _
+        acFormAdd
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "A new warehouse record could not be opened." & vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "New Warehouse"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Function GetWarehouseDetailFormName() As String
+
+    If FormExists("F_WarehouseSetup") Then
+        GetWarehouseDetailFormName = "F_WarehouseSetup"
+    ElseIf FormExists("F_Warehouse") Then
+        GetWarehouseDetailFormName = "F_Warehouse"
+    ElseIf FormExists("F_Warehouses") Then
+        GetWarehouseDetailFormName = "F_Warehouses"
+    Else
+        GetWarehouseDetailFormName = vbNullString
+    End If
+
+End Function
+
+
+'=============================================================
+' SUBFORM HELPERS
+'=============================================================
+
+Private Function GetWarehouseSubform() As Form
+
+    On Error Resume Next
+
+    Set GetWarehouseSubform = Nothing
+
+    If ControlExists("subWarehouseList") Then
+        Set GetWarehouseSubform = Me.Controls("subWarehouseList").Form
+        Exit Function
+    End If
+
+    If ControlExists("SF_WarehouseList") Then
+        Set GetWarehouseSubform = Me.Controls("SF_WarehouseList").Form
+        Exit Function
+    End If
+
+    If ControlExists("subList") Then
+        Set GetWarehouseSubform = Me.Controls("subList").Form
+        Exit Function
+    End If
+
+    On Error GoTo 0
+
+End Function
+
+
+Private Function SubformFieldExists( _
+    ByVal frmSub As Form, _
+    ByVal fieldName As String _
+) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim tmp As String
+
+    tmp = frmSub.RecordsetClone.Fields(fieldName).Name
+
+    SubformFieldExists = True
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    SubformFieldExists = False
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' SAFE CONTROL HELPERS
+'=============================================================
+
+Private Function GetControlValue(ByVal controlName As String) As Variant
+
+    On Error GoTo Err_Handler
+
+    GetControlValue = Me.Controls(controlName).value
+    Exit Function
+
+Err_Handler:
+    GetControlValue = Null
+
+End Function
+
+
+Private Sub SetControlValueIfExists( _
+    ByVal controlName As String, _
+    ByVal controlValue As Variant _
+)
+
+    On Error Resume Next
+
+    If ControlExists(controlName) Then
+        Me.Controls(controlName).value = controlValue
+    End If
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Function ControlExists(ByVal controlName As String) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim ctl As Control
+
+    Set ctl = Me.Controls(controlName)
+
+    ControlExists = True
+
+Exit_Handler:
+    Set ctl = Nothing
+    Exit Function
+
+Err_Handler:
+    ControlExists = False
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function FormExists(ByVal formName As String) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim tmp As String
+
+    tmp = CurrentProject.AllForms(formName).Name
+
+    FormExists = True
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    FormExists = False
+    Resume Exit_Handler
+
+End Function

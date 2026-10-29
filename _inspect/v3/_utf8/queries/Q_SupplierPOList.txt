@@ -1,0 +1,137 @@
+﻿dbMemo "SQL" ="SELECT P.SupplierPOID, P.PONumber, P.PODate, P.ExpectedDeliveryDate, P.SupplierI"
+    "D, S.SupplierCode, S.CompanyName, S.ContactPerson, S.Email, S.Phone, P.POType, P"
+    ".POStatus, P.CurrencyID, P.PaymentTerms, P.ShipVia, P.SentOn, Nz(T.LineCount,0) "
+    "AS LineCount, Nz(T.GrossAmount,0) AS GrossAmount, Nz(T.DiscountTotal,0) AS Disco"
+    "untTotal, Nz(T.CalculatedSubtotal,0) AS CalculatedSubtotal, Nz(T.CalculatedTax,0"
+    ") AS CalculatedTax, Nz(P.FreightAmount,0) AS FreightAmount, Nz(T.CalculatedSubto"
+    "tal,0)\015\012        + Nz(T.CalculatedTax,0)\015\012        + Nz(P.FreightAmoun"
+    "t,0) AS CalculatedTotal, P.TotalAmount, P.CreatedOn, P.UpdatedOn\015\012FROM (T_"
+    "SupplierPOs AS P INNER JOIN T_Suppliers AS S ON P.SupplierID = S.SupplierID) LEF"
+    "T JOIN Q_SupplierPOLineTotals AS T ON P.SupplierPOID = T.SupplierPOID\015\012ORD"
+    "ER BY P.PODate DESC , P.SupplierPOID DESC;\015\012"
+dbMemo "Connect" =""
+dbBoolean "ReturnsRecords" ="-1"
+dbInteger "ODBCTimeout" ="60"
+dbBoolean "OrderByOn" ="0"
+dbByte "Orientation" ="0"
+dbByte "DefaultView" ="2"
+dbBinary "GUID" = Begin
+    0xa3626a26120f874d8b3d8056479743b0
+End
+dbBoolean "FilterOnLoad" ="0"
+dbBoolean "OrderByOnLoad" ="-1"
+dbByte "PublishToWeb" ="1"
+Begin
+    Begin
+        dbText "Name" ="P.SupplierPOID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.ExpectedDeliveryDate"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.PODate"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.PONumber"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="S.CompanyName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="S.SupplierCode"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.SupplierID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="S.ContactPerson"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="S.Email"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="S.Phone"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.POType"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.POStatus"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.CurrencyID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.PaymentTerms"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.ShipVia"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.SentOn"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="LineCount"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="GrossAmount"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="DiscountTotal"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="CalculatedSubtotal"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="CalculatedTax"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="FreightAmount"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="CalculatedTotal"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.TotalAmount"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.CreatedOn"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.UpdatedOn"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="RI.SupplierPOLineID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="QuantityReceivedToDate"
+        dbLong "AggregateType" ="-1"
+    End
+End

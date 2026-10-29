@@ -1,0 +1,145 @@
+﻿Option Compare Database
+Option Explicit
+
+'=============================================================
+' MODULE: M_ItemHelpers
+'
+' PURPOSE:
+'   Shared, reusable item lookups so this logic lives in one
+'   place instead of being copy-pasted across F_StockIn,
+'   SF_AssemblyTemplateMaterials, and F_ProjectIssue.
+'
+' THIS IS A STANDARD MODULE, NOT A FORM MODULE.
+'   In the VBA editor: Insert -> Module, paste this in, and
+'   name the module M_ItemHelpers (Properties window).
+'=============================================================
+
+
+'-------------------------------------------------------------
+' Does this item require serial-number tracking?
+' Reads T_Items.RequiresSerial directly (matches the fix
+' already applied in F_StockIn).
+'-------------------------------------------------------------
+Public Function ItemRequiresSerial(ByVal ItemID As Long) As Boolean
+
+    Dim db As DAO.Database
+    Dim rs As DAO.Recordset
+
+    Set db = CurrentDb
+
+    Set rs = db.OpenRecordset( _
+        "SELECT RequiresSerial " & _
+        "FROM T_Items " & _
+        "WHERE ItemID = " & ItemID & ";", _
+        dbOpenSnapshot _
+    )
+
+    If rs.EOF Then
+
+        rs.close
+        Set rs = Nothing
+        Set db = Nothing
+
+        Err.Raise _
+            vbObjectError + 1100, _
+            "ItemRequiresSerial", _
+            "The selected item could not be found in T_Items."
+
+    End If
+
+    ItemRequiresSerial = Nz(rs!RequiresSerial, False)
+
+    rs.close
+    Set rs = Nothing
+    Set db = Nothing
+
+End Function
+
+
+'-------------------------------------------------------------
+' Latest known unit cost for an item, taken from the most
+' recent T_StockMovements row that actually carries a cost
+' (stock-out/issue movements typically leave UnitCost blank,
+' so this naturally lands on the last stock-in).
+'
+' ASSUMPTION: ties on MovementDate are not broken by a
+' secondary key (e.g. an autonumber PK), since that column's
+' name wasn't confirmed. Fine for a single-user desktop app;
+' tell me your movement table's PK name if you want a
+' deterministic tie-break added.
+'-------------------------------------------------------------
+Public Function GetLatestUnitCost(ByVal ItemID As Long) As Currency
+
+    Dim db As DAO.Database
+    Dim rs As DAO.Recordset
+
+    Set db = CurrentDb
+
+    Set rs = db.OpenRecordset( _
+        "SELECT TOP 1 UnitCost " & _
+        "FROM T_StockMovements " & _
+        "WHERE ItemID = " & ItemID & _
+        " AND UnitCost Is Not Null " & _
+        "ORDER BY MovementDate DESC;", _
+        dbOpenSnapshot _
+    )
+
+    If rs.EOF Then
+        GetLatestUnitCost = 0
+    Else
+        GetLatestUnitCost = Nz(rs!UnitCost, 0)
+    End If
+
+    rs.close
+    Set rs = Nothing
+    Set db = Nothing
+
+End Function
+
+
+'-------------------------------------------------------------
+' Current available quantity for an item - bulk items look at
+' T_StockBalances, serialized items count in-stock instances.
+'-------------------------------------------------------------
+Public Function GetAvailableQty( _
+    ByVal ItemID As Long, _
+    ByVal RequiresSerial As Boolean _
+) As Double
+
+    Dim db As DAO.Database
+    Dim rs As DAO.Recordset
+
+    If RequiresSerial Then
+
+        GetAvailableQty = DCount( _
+            "*", _
+            "T_ItemInstances", _
+            "ItemID = " & ItemID & _
+            " AND CurrentLocationID Is Not Null" & _
+            " AND CurrentStatus = 'In Stock'" _
+        )
+
+    Else
+
+        Set db = CurrentDb
+
+        Set rs = db.OpenRecordset( _
+            "SELECT QuantityOnHand " & _
+            "FROM T_StockBalances " & _
+            "WHERE ItemID = " & ItemID & ";", _
+            dbOpenSnapshot _
+        )
+
+        If rs.EOF Then
+            GetAvailableQty = 0
+        Else
+            GetAvailableQty = Nz(rs!QuantityOnHand, 0)
+        End If
+
+        rs.close
+        Set rs = Nothing
+        Set db = Nothing
+
+    End If
+
+End Function

@@ -1,0 +1,40 @@
+﻿Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+Public Function OpenSelectedRecord() As Boolean
+
+    On Error GoTo Err_Handler
+
+    If Nz(Me!ItemID, 0) > 0 Then
+
+        DoCmd.OpenForm "F_ItemSetup", acNormal, , "ItemID = " & CLng(Me!ItemID)
+
+        OpenSelectedRecord = True
+        Exit Function
+
+    End If
+
+    MsgBox _
+        "No item record was found for this notification.", _
+        vbInformation, _
+        "Open Tool Return Alert"
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    MsgBox _
+        "The selected tool-return alert could not be opened." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Open Tool Return Alert"
+
+    Resume Exit_Handler
+
+End Function

@@ -1,0 +1,623 @@
+﻿Version =21
+VersionRequired =20
+PublishOption =1
+Checksum =-846259250
+Begin Form
+    AutoCenter = NotDefault
+    DividingLines = NotDefault
+    AllowDesignChanges = NotDefault
+    DefaultView =2
+    PictureSizeMode =1
+    DatasheetGridlinesBehavior =3
+    PictureType =1
+    GridX =24
+    GridY =24
+    Width =10206
+    DatasheetFontHeight =11
+    ItemSuffix =14
+    Right =15090
+    Bottom =4695
+    DatasheetGridlinesColor =15263976
+    RecSrcDt = Begin
+        0xb9cd7cd6fa91e640
+    End
+    GUID = Begin
+        0x4f6d8f2a7de45644ad15a8f164dda0d3
+    End
+    RecordSource ="T_Categories"
+    Caption ="F_CategoriesList"
+    DatasheetFontName ="Aptos"
+    PrtMip = Begin
+        0x6801000068010000680100006801000000000000201c0000e010000001000000 ,
+        0x010000006801000000000000a10700000100000001000000
+    End
+    PrtDevMode = Begin
+        0x0000000000000000308490d58b0200000000000000000000e70a7e35f77f0000 ,
+        0x010403069c004003032d000001000100ea0a6f08640001000f00580202000100 ,
+        0x5802030001004c657474657200000000030000000000c8420000c842e8e8e800 ,
+        0x80ea73d58b020000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000ffffffff4749533400000000000000000000000044494e55 ,
+        0x2200c80024031c00ac13d8c00000000000000000000000000000000000000000 ,
+        0x0000000000000000050000000000070000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000100000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000c8000000534d544a ,
+        0x000000001000b8007b00330045004500330039003100310034002d0033003000 ,
+        0x420034002d0034003500610034002d0041003100300039002d00310039004400 ,
+        0x3400410034003000460043004300320032007d000000524553444c4c00556e69 ,
+        0x726573444c4c00506170657253697a65004c4554544552004f7269656e746174 ,
+        0x696f6e00504f525452414954005265736f6c7574696f6e004450493630300043 ,
+        0x6f6c6f724d6f6465003234627070000000000000000000000000000000000000 ,
+        0x1c0000005634444d0100000000000000000000000000000000000000
+    End
+    PrtDevNames = Begin
+        0x08002c003f000100000000000000000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000000000000000006e ,
+        0x756c3a00000000000000000000000000000000000000000000000000
+    End
+    OnClick ="=UX_ButtonOut()"
+    FilterOnLoad =0
+    ShowPageMargins =0
+    DisplayOnSharePointSite =1
+    DatasheetAlternateBackColor =15921906
+    PictureSizeMode =1
+    DatasheetGridlinesColor12 =0
+    FitToScreen =1
+    DatasheetBackThemeColorIndex =1
+    BorderThemeColorIndex =3
+    ThemeFontIndex =1
+    ForeThemeColorIndex =0
+    AlternateBackThemeColorIndex =1
+    AlternateBackShade =95.0
+    PrtDevModeW = Begin
+        0x000037c78b02000021000000f77f000030bafbd48b0200002100000000000000 ,
+        0x80befbd48b0200005fed3db5f97f0000000008c48b020000796d2ff7f1000000 ,
+        0x01040306dc004003032d000001000100ea0a6f08640001000f00580202000100 ,
+        0x5802030001004c006500740074006500720000000000000040bafbd48b020000 ,
+        0x0000000000000000000000000000000030bafbd48b02000065000000f1000000 ,
+        0x2100000000000000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000ffffffff4749533400000000000000000000000044494e55 ,
+        0x2200c80024031c00ac13d8c00000000000000000000000000000000000000000 ,
+        0x0000000000000000050000000000070000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000100000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000c8000000534d544a ,
+        0x000000001000b8007b00330045004500330039003100310034002d0033003000 ,
+        0x420034002d0034003500610034002d0041003100300039002d00310039004400 ,
+        0x3400410034003000460043004300320032007d000000524553444c4c00556e69 ,
+        0x726573444c4c00506170657253697a65004c4554544552004f7269656e746174 ,
+        0x696f6e00504f525452414954005265736f6c7574696f6e004450493630300043 ,
+        0x6f6c6f724d6f6465003234627070000000000000000000000000000000000000 ,
+        0x1c0000005634444d0100000000000000000000000000000000000000
+    End
+    PrtDevNamesW = Begin
+        0x040028003b000100000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000006e0075006c003a000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x00000000000000000000000000000000
+    End
+    NoSaveCTIWhenDisabled =1
+    Begin
+        Begin Label
+            BackStyle =0
+            FontSize =11
+            BorderColor =8355711
+            ForeColor =6710886
+            FontName ="Aptos"
+            GridlineColor =10921638
+            ThemeFontIndex =1
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =0
+            BorderTint =50.0
+            ForeThemeColorIndex =0
+            ForeTint =60.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin CommandButton
+            FontSize =11
+            FontWeight =400
+            ForeColor =4210752
+            FontName ="Aptos"
+            GridlineColor =10921638
+            ForeThemeColorIndex =0
+            ForeTint =75.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+            UseTheme =1
+            Shape =1
+            Gradient =12
+            BackColor =14790982
+            BackThemeColorIndex =4
+            BackTint =60.0
+            BorderLineStyle =0
+            BorderColor =14790982
+            BorderThemeColorIndex =4
+            BorderTint =60.0
+            ThemeFontIndex =1
+            HoverColor =15453059
+            HoverThemeColorIndex =4
+            HoverTint =40.0
+            PressedColor =6440976
+            PressedThemeColorIndex =4
+            PressedShade =75.0
+            HoverForeColor =4210752
+            HoverForeThemeColorIndex =0
+            HoverForeTint =75.0
+            PressedForeColor =4210752
+            PressedForeThemeColorIndex =0
+            PressedForeTint =75.0
+        End
+        Begin CheckBox
+            BorderLineStyle =0
+            LabelX =230
+            LabelY =-30
+            BorderColor =10921638
+            GridlineColor =10921638
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin TextBox
+            AddColon = NotDefault
+            FELineBreak = NotDefault
+            BorderLineStyle =0
+            LabelX =-1800
+            FontSize =11
+            BorderColor =10921638
+            ForeColor =4210752
+            FontName ="Aptos"
+            AsianLineBreak =1
+            GridlineColor =10921638
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            ThemeFontIndex =1
+            ForeThemeColorIndex =0
+            ForeTint =75.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin FormHeader
+            Height =1080
+            BackColor =14482166
+            Name ="FormHeader"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0xf8969568ccde274cbd72ed8e88497148
+            End
+            AutoHeight =1
+            AlternateBackShade =95.0
+            BackTint =20.0
+            Begin
+                Begin Label
+                    OverlapFlags =93
+                    Left =60
+                    Top =60
+                    Width =3542
+                    Height =1020
+                    FontSize =20
+                    Name ="Label12"
+                    Caption ="F_CategoriesList"
+                    GUID = Begin
+                        0xca6eb3ed347c3c4481feed64c68ae525
+                    End
+                    LayoutCachedLeft =60
+                    LayoutCachedTop =60
+                    LayoutCachedWidth =3602
+                    LayoutCachedHeight =1080
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                End
+                Begin CommandButton
+                    OverlapFlags =215
+                    Left =200
+                    Top =60
+                    Width =1400
+                    Height =340
+                    FontWeight =700
+                    ForeColor =16777215
+                    Name ="cmdUXBack"
+                    Caption ="Back"
+                    OnClick ="=UX_GoBack()"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdUXBack\")"
+                    GUID = Begin
+                        0xbc911038787d3b4887aae2f44667add1
+                    End
+
+                    LayoutCachedLeft =200
+                    LayoutCachedTop =60
+                    LayoutCachedWidth =1600
+                    LayoutCachedHeight =400
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                    Overlaps =1
+                End
+            End
+        End
+        Begin Section
+            Height =4044
+            BackColor =14482166
+            Name ="Detail"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x3024835863de4447b66794735e991704
+            End
+            AutoHeight =1
+            AlternateBackColor =14482166
+            AlternateBackShade =95.0
+            Begin
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =2898
+                    Top =360
+                    Height =312
+                    ColumnWidth =1440
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="CategoryID"
+                    ControlSource ="CategoryID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xd0f499f25743934fb4c8e5231cbaadff
+                    End
+
+                    LayoutCachedLeft =2898
+                    LayoutCachedTop =360
+                    LayoutCachedWidth =4338
+                    LayoutCachedHeight =672
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =360
+                            Width =2448
+                            Height =324
+                            Name ="CategoryID_Label"
+                            Caption ="CategoryID"
+                            GUID = Begin
+                                0xc89da8365704ff4e891f58b4003dfa46
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =360
+                            LayoutCachedWidth =2808
+                            LayoutCachedHeight =684
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =2898
+                    Top =780
+                    Width =1488
+                    Height =324
+                    ColumnWidth =1488
+                    TabIndex =1
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="ItemTypeID"
+                    ControlSource ="ItemTypeID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x323008e57fffae499898e6124a314eda
+                    End
+
+                    LayoutCachedLeft =2898
+                    LayoutCachedTop =780
+                    LayoutCachedWidth =4386
+                    LayoutCachedHeight =1104
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =780
+                            Width =2448
+                            Height =324
+                            Name ="ItemTypeID_Label"
+                            Caption ="ItemTypeID"
+                            GUID = Begin
+                                0x596fa5479f2f864eba5e5fbb02f3e33d
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =780
+                            LayoutCachedWidth =2808
+                            LayoutCachedHeight =1104
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =2898
+                    Top =1200
+                    Width =7248
+                    Height =600
+                    ColumnWidth =3000
+                    TabIndex =2
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="CategoryName"
+                    ControlSource ="CategoryName"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xccf3ca0eb8a6194180cb46ba323dabb4
+                    End
+
+                    LayoutCachedLeft =2898
+                    LayoutCachedTop =1200
+                    LayoutCachedWidth =10146
+                    LayoutCachedHeight =1800
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =1200
+                            Width =2448
+                            Height =324
+                            Name ="CategoryName_Label"
+                            Caption ="CategoryName"
+                            GUID = Begin
+                                0xd62fe2336e867549ae8bf816fecd67f6
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =1200
+                            LayoutCachedWidth =2808
+                            LayoutCachedHeight =1524
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =2898
+                    Top =1920
+                    Width =7248
+                    Height =1152
+                    ColumnWidth =3000
+                    TabIndex =3
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="Description"
+                    ControlSource ="Description"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x1b6464fe4cfc1d4f80f4f7955d356d38
+                    End
+
+                    LayoutCachedLeft =2898
+                    LayoutCachedTop =1920
+                    LayoutCachedWidth =10146
+                    LayoutCachedHeight =3072
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =1920
+                            Width =2448
+                            Height =324
+                            Name ="Description_Label"
+                            Caption ="Description"
+                            GUID = Begin
+                                0x4c0b41f15fa1e044bad92512700b8a0c
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =1920
+                            LayoutCachedWidth =2808
+                            LayoutCachedHeight =2244
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin CheckBox
+                    OverlapFlags =85
+                    Left =2898
+                    Top =3180
+                    ColumnWidth =2172
+                    TabIndex =4
+                    Name ="RequiresSerial"
+                    ControlSource ="RequiresSerial"
+                    GUID = Begin
+                        0x052876e3878d04489999cd5dcdd0d937
+                    End
+
+                    LayoutCachedLeft =2898
+                    LayoutCachedTop =3180
+                    LayoutCachedWidth =3158
+                    LayoutCachedHeight =3420
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =3180
+                            Width =2448
+                            Height =324
+                            Name ="RequiresSerial_Label"
+                            Caption ="RequiresSerial"
+                            GUID = Begin
+                                0xdfb997665b091a4cb35498e0f0307728
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =3180
+                            LayoutCachedWidth =2808
+                            LayoutCachedHeight =3504
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin CheckBox
+                    OverlapFlags =85
+                    Left =2898
+                    Top =3600
+                    ColumnWidth =1716
+                    TabIndex =5
+                    Name ="RequiresExpiry"
+                    ControlSource ="RequiresExpiry"
+                    GUID = Begin
+                        0x10ba71cbe8cb074987b0a546dbac83a6
+                    End
+
+                    LayoutCachedLeft =2898
+                    LayoutCachedTop =3600
+                    LayoutCachedWidth =3158
+                    LayoutCachedHeight =3840
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =3600
+                            Width =2448
+                            Height =324
+                            Name ="RequiresExpiry_Label"
+                            Caption ="RequiresExpiry"
+                            GUID = Begin
+                                0xa49a6b5e8480964a909f02ee99f24dc6
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =3600
+                            LayoutCachedWidth =2808
+                            LayoutCachedHeight =3924
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =14482166
+            Name ="FormFooter"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0xf689453043506e4da5211d5448df0758
+            End
+            AutoHeight =1
+            AlternateBackShade =95.0
+        End
+    End
+End

@@ -1,0 +1,733 @@
+﻿=== TABLES ===
+TABLE: T_AssemblyJobMaterials  Records~0
+  AssemblyJobMaterialID | Type=4 | Size=4 | Required=False
+  AssemblyJobID | Type=4 | Size=4 | Required=False
+  TemplateMaterialID | Type=4 | Size=4 | Required=False
+  ComponentItemID | Type=4 | Size=4 | Required=False
+  PlannedQuantity | Type=7 | Size=8 | Required=False
+  IssuedQuantity | Type=7 | Size=8 | Required=False
+  UnitCost | Type=5 | Size=8 | Required=False
+  SourceLocationID | Type=4 | Size=4 | Required=False
+  IssueMovementID | Type=4 | Size=4 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+TABLE: T_AssemblyJobs  Records~0
+  AssemblyJobID | Type=4 | Size=4 | Required=False
+  AssemblyJobCode | Type=10 | Size=50 | Required=False
+  AssemblyTemplateID | Type=4 | Size=4 | Required=False
+  CustomerID | Type=4 | Size=4 | Required=False
+  ProjectID | Type=4 | Size=4 | Required=False
+  SalesOrderID | Type=4 | Size=4 | Required=False
+  SalesOrderLineID | Type=4 | Size=4 | Required=False
+  FinishedItemID | Type=4 | Size=4 | Required=False
+  BuildQuantity | Type=7 | Size=8 | Required=False
+  OutputLocationID | Type=4 | Size=4 | Required=False
+  Status | Type=10 | Size=30 | Required=False
+  PlannedStartDate | Type=8 | Size=8 | Required=False
+  StartedOn | Type=8 | Size=8 | Required=False
+  CompletedOn | Type=8 | Size=8 | Required=False
+  CreatedByUserID | Type=4 | Size=4 | Required=False
+  CompletedByUserID | Type=4 | Size=4 | Required=False
+  EstimatedMaterialCost | Type=5 | Size=8 | Required=False
+  ActualMaterialCost | Type=5 | Size=8 | Required=False
+  ActualTotalCost | Type=5 | Size=8 | Required=False
+  FinishedUnitCost | Type=5 | Size=8 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  CreatedOn | Type=8 | Size=8 | Required=False
+  UpdatedOn | Type=8 | Size=8 | Required=False
+TABLE: T_AssemblyJobTools  Records~0
+  AssemblyJobToolID | Type=4 | Size=4 | Required=False
+  AssemblyJobID | Type=4 | Size=4 | Required=False
+  TemplateToolID | Type=4 | Size=4 | Required=False
+  ToolItemID | Type=4 | Size=4 | Required=False
+  ItemInstanceID | Type=4 | Size=4 | Required=False
+  QuantityRequired | Type=7 | Size=8 | Required=False
+  ToolStatus | Type=10 | Size=30 | Required=False
+  IssuedTo | Type=10 | Size=255 | Required=False
+  IssuedOn | Type=8 | Size=8 | Required=False
+  ReturnedOn | Type=8 | Size=8 | Required=False
+  IssueMovementID | Type=4 | Size=4 | Required=False
+  ReturnMovementID | Type=4 | Size=4 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+TABLE: T_AssemblyTemplateMaterials  Records~14
+  TemplateMaterialID | Type=4 | Size=4 | Required=False
+  AssemblyTemplateID | Type=4 | Size=4 | Required=False
+  ComponentItemID | Type=4 | Size=4 | Required=False
+  QuantityPerOutput | Type=7 | Size=8 | Required=False
+  EstimatedUnitCost | Type=5 | Size=8 | Required=False
+  SortOrder | Type=4 | Size=4 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+TABLE: T_AssemblyTemplates  Records~16
+  AssemblyTemplateID | Type=4 | Size=4 | Required=False
+  TemplateCode | Type=10 | Size=50 | Required=False
+  TemplateName | Type=10 | Size=255 | Required=False
+  FinishedItemID | Type=4 | Size=4 | Required=False
+  CustomerID | Type=4 | Size=4 | Required=False
+  CustomerPartNumber | Type=10 | Size=100 | Required=False
+  OutputQuantity | Type=7 | Size=8 | Required=False
+  RevisionNo | Type=10 | Size=50 | Required=False
+  Status | Type=10 | Size=30 | Required=False
+  EstimatedLaborHours | Type=7 | Size=8 | Required=False
+  EstimatedMaterialCost | Type=5 | Size=8 | Required=False
+  EstimatedTotalCost | Type=5 | Size=8 | Required=False
+  Instructions | Type=12 | Size=0 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  CreatedOn | Type=8 | Size=8 | Required=False
+  UpdatedOn | Type=8 | Size=8 | Required=False
+  WorkInstructionID | Type=4 | Size=4 | Required=False
+TABLE: T_AssemblyTemplateSteps  Records~0
+  AssemblyStepID | Type=4 | Size=4 | Required=False
+  AssemblyTemplateID | Type=4 | Size=4 | Required=False
+  StepNumber | Type=4 | Size=4 | Required=False
+  StepTitle | Type=10 | Size=255 | Required=False
+  StepInstructions | Type=12 | Size=0 | Required=False
+  SafetyNotes | Type=12 | Size=0 | Required=False
+  QualityCheckNotes | Type=12 | Size=0 | Required=False
+TABLE: T_AssemblyTemplateTools  Records~8
+  TemplateToolID | Type=4 | Size=4 | Required=False
+  AssemblyTemplateID | Type=4 | Size=4 | Required=False
+  ToolItemID | Type=4 | Size=4 | Required=False
+  QuantityRequired | Type=7 | Size=8 | Required=False
+  SortOrder | Type=4 | Size=4 | Required=False
+  ToolUseNotes | Type=12 | Size=0 | Required=False
+TABLE: T_Categories  Records~14
+  CategoryID | Type=4 | Size=4 | Required=False
+  ItemTypeID | Type=4 | Size=4 | Required=False
+  CategoryName | Type=10 | Size=100 | Required=False
+  Description | Type=12 | Size=0 | Required=False
+  RequiresSerial | Type=1 | Size=1 | Required=False
+  RequiresExpiry | Type=1 | Size=1 | Required=False
+TABLE: T_Currencies  Records~3
+  CurrencyID | Type=4 | Size=4 | Required=False
+  CurrencyCode | Type=10 | Size=3 | Required=False
+  CurrencyName | Type=10 | Size=50 | Required=False
+  CurrencySymbol | Type=10 | Size=10 | Required=False
+TABLE: T_CustomerPOLines  Records~1
+  CustomerPOLineID | Type=4 | Size=4 | Required=False
+  CustomerPOID | Type=4 | Size=4 | Required=False
+  LineNo | Type=4 | Size=4 | Required=False
+  CustomerPartNumber | Type=10 | Size=100 | Required=False
+  CustomerRevision | Type=10 | Size=50 | Required=False
+  ItemID | Type=4 | Size=4 | Required=False
+  LineDescription | Type=12 | Size=0 | Required=False
+  QuantityOrdered | Type=7 | Size=8 | Required=False
+  UnitID | Type=4 | Size=4 | Required=False
+  UnitPrice | Type=5 | Size=8 | Required=False
+  LineSubtotal | Type=5 | Size=8 | Required=False
+  Taxable | Type=1 | Size=1 | Required=False
+  LineStatus | Type=10 | Size=50 | Required=False
+  LineNotes | Type=12 | Size=0 | Required=False
+  CreatedOn | Type=8 | Size=8 | Required=False
+  UpdatedOn | Type=8 | Size=8 | Required=False
+TABLE: T_CustomerPOReleases  Records~0
+  CustomerPOReleaseID | Type=4 | Size=4 | Required=False
+  CustomerPOLineID | Type=4 | Size=4 | Required=False
+  DueDate | Type=8 | Size=8 | Required=False
+  ReleaseQuantity | Type=7 | Size=8 | Required=False
+  UnitID | Type=4 | Size=4 | Required=False
+  ReleaseStatus | Type=10 | Size=50 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  CreatedOn | Type=8 | Size=8 | Required=False
+  UpdatedOn | Type=8 | Size=8 | Required=False
+TABLE: T_CustomerPOs  Records~1
+  CustomerPOID | Type=4 | Size=4 | Required=False
+  CustomerID | Type=4 | Size=4 | Required=False
+  PONumber | Type=10 | Size=50 | Required=False
+  PODate | Type=8 | Size=8 | Required=False
+  PORevisionDate | Type=8 | Size=8 | Required=False
+  POType | Type=10 | Size=50 | Required=False
+  PaymentTerms | Type=10 | Size=100 | Required=False
+  ShipVia | Type=10 | Size=100 | Required=False
+  PrepaidFreight | Type=1 | Size=1 | Required=False
+  ResaleNo | Type=10 | Size=100 | Required=False
+  ShipToName | Type=10 | Size=255 | Required=False
+  ShipToAddress | Type=12 | Size=0 | Required=False
+  ShipToContactName | Type=10 | Size=255 | Required=False
+  ShipToPhone | Type=10 | Size=100 | Required=False
+  ShipToEmail | Type=10 | Size=255 | Required=False
+  AuthorizedBy | Type=10 | Size=255 | Required=False
+  AuthorizedByEmail | Type=10 | Size=255 | Required=False
+  SubtotalAmount | Type=5 | Size=8 | Required=False
+  MiscChargeAmount | Type=5 | Size=8 | Required=False
+  TaxAmount | Type=5 | Size=8 | Required=False
+  TotalAmount | Type=5 | Size=8 | Required=False
+  POStatus | Type=10 | Size=50 | Required=False
+  GoodsConfirmed | Type=1 | Size=1 | Required=False
+  GoodsConfirmedOn | Type=8 | Size=8 | Required=False
+  SalesOrderID | Type=4 | Size=4 | Required=False
+  InvoiceID | Type=4 | Size=4 | Required=False
+  SourceFilePath | Type=12 | Size=0 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  CreatedOn | Type=8 | Size=8 | Required=False
+  UpdatedOn | Type=8 | Size=8 | Required=False
+TABLE: T_Customers  Records~7
+  CustomerID | Type=4 | Size=4 | Required=False
+  CustomerCode | Type=10 | Size=50 | Required=False
+  CustomerName | Type=10 | Size=255 | Required=False
+  CustomerType | Type=10 | Size=255 | Required=False
+  ContactPerson | Type=10 | Size=255 | Required=False
+  Phone | Type=10 | Size=100 | Required=False
+  Email | Type=10 | Size=255 | Required=False
+  BillingAddress | Type=12 | Size=0 | Required=False
+  ShippingAddress | Type=12 | Size=0 | Required=False
+  Status | Type=10 | Size=30 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  CreatedOn | Type=8 | Size=8 | Required=False
+  UpdatedOn | Type=8 | Size=8 | Required=False
+  BillingName | Type=10 | Size=255 | Required=False
+  BillingCity | Type=10 | Size=100 | Required=False
+  BillingAddress2 | Type=10 | Size=255 | Required=False
+  BillingAddress1 | Type=10 | Size=255 | Required=False
+  BillingState | Type=10 | Size=100 | Required=False
+  BillingPostalCode | Type=10 | Size=50 | Required=False
+  BillingCountry | Type=10 | Size=100 | Required=False
+  MainContactName | Type=10 | Size=255 | Required=False
+  MainContactEmail | Type=10 | Size=255 | Required=False
+  MainContactPhone | Type=10 | Size=100 | Required=False
+  DefaultPaymentTerms | Type=10 | Size=100 | Required=False
+  DefaultShipVia | Type=10 | Size=100 | Required=False
+  TaxExempt | Type=1 | Size=1 | Required=False
+TABLE: T_DocumentAttachments  Records~0
+  DocumentAttachmentID | Type=4 | Size=4 | Required=False
+  DocumentType | Type=10 | Size=50 | Required=False
+  DocumentID | Type=4 | Size=4 | Required=False
+  FileName | Type=10 | Size=255 | Required=False
+  FilePath | Type=12 | Size=0 | Required=False
+  AttachmentNotes | Type=12 | Size=0 | Required=False
+  CreatedOn | Type=8 | Size=8 | Required=False
+TABLE: T_DocumentNumbers  Records~4
+  DocumentNumberID | Type=4 | Size=4 | Required=False
+  DocumentType | Type=10 | Size=50 | Required=False
+  Prefix | Type=10 | Size=20 | Required=False
+  NextNumber | Type=4 | Size=4 | Required=False
+  NumberLength | Type=4 | Size=4 | Required=False
+  LastUpdatedOn | Type=8 | Size=8 | Required=False
+TABLE: T_GoodsReceiptItems  Records~0
+  GoodsReceiptItemID | Type=4 | Size=4 | Required=False
+  GoodsReceiptID | Type=4 | Size=4 | Required=False
+  PurchaseOrderItemID | Type=4 | Size=4 | Required=False
+  QuantityReceived | Type=7 | Size=8 | Required=False
+  LocationID | Type=4 | Size=4 | Required=False
+  BatchNumber | Type=10 | Size=100 | Required=False
+  UnitCost | Type=5 | Size=8 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  SupplierPOLineID | Type=4 | Size=4 | Required=False
+  ItemID | Type=4 | Size=4 | Required=False
+  UnitID | Type=4 | Size=4 | Required=False
+  SerialNumber | Type=10 | Size=100 | Required=False
+  ItemInstanceID | Type=4 | Size=4 | Required=False
+  StockMovementID | Type=4 | Size=4 | Required=False
+  CreatedOn | Type=8 | Size=8 | Required=False
+  UpdatedOn | Type=8 | Size=8 | Required=False
+TABLE: T_GoodsReceipts  Records~0
+  GoodsReceiptID | Type=4 | Size=4 | Required=False
+  ReceiptNumber | Type=10 | Size=50 | Required=False
+  PurchaseOrderID | Type=4 | Size=4 | Required=False
+  ReceiptDate | Type=8 | Size=8 | Required=False
+  SupplierDeliveryNote | Type=10 | Size=100 | Required=False
+  ReceivedByUserID | Type=4 | Size=4 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  SupplierPOID | Type=4 | Size=4 | Required=False
+  SupplierInvoiceNumber | Type=10 | Size=100 | Required=False
+  ReceiptStatus | Type=10 | Size=30 | Required=False
+  PostedOn | Type=8 | Size=8 | Required=False
+  PostedByUserID | Type=4 | Size=4 | Required=False
+  CreatedOn | Type=8 | Size=8 | Required=False
+  UpdatedOn | Type=8 | Size=8 | Required=False
+TABLE: T_InvoiceLines  Records~6
+  InvoiceLineID | Type=4 | Size=4 | Required=False
+  InvoiceID | Type=4 | Size=4 | Required=False
+  SalesOrderLineID | Type=4 | Size=4 | Required=False
+  CustomerPOLineID | Type=4 | Size=4 | Required=False
+  ItemID | Type=4 | Size=4 | Required=False
+  ItemCode | Type=10 | Size=100 | Required=False
+  LineDescription | Type=12 | Size=0 | Required=False
+  Quantity | Type=7 | Size=8 | Required=False
+  UnitID | Type=4 | Size=4 | Required=False
+  UnitPrice | Type=5 | Size=8 | Required=False
+  Taxable | Type=1 | Size=1 | Required=False
+  LineSubtotal | Type=5 | Size=8 | Required=False
+  CreatedOn | Type=8 | Size=8 | Required=False
+  UpdatedOn | Type=8 | Size=8 | Required=False
+TABLE: T_Invoices  Records~5
+  InvoiceID | Type=4 | Size=4 | Required=False
+  InvoiceNo | Type=10 | Size=50 | Required=False
+  CustomerID | Type=4 | Size=4 | Required=False
+  CustomerPOID | Type=4 | Size=4 | Required=False
+  SalesOrderID | Type=4 | Size=4 | Required=False
+  InvoiceDate | Type=8 | Size=8 | Required=False
+  InvoiceType | Type=10 | Size=50 | Required=False
+  PaymentTerms | Type=10 | Size=100 | Required=False
+  BillToName | Type=10 | Size=255 | Required=False
+  BillToAddress | Type=12 | Size=0 | Required=False
+  SubtotalAmount | Type=5 | Size=8 | Required=False
+  TaxAmount | Type=5 | Size=8 | Required=False
+  GrandTotalAmount | Type=5 | Size=8 | Required=False
+  InvoiceStatus | Type=10 | Size=50 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  CreatedOn | Type=8 | Size=8 | Required=False
+  UpdatedOn | Type=8 | Size=8 | Required=False
+TABLE: T_ItemInstances  Records~7
+  ItemInstanceID | Type=4 | Size=4 | Required=False
+  ItemID | Type=4 | Size=4 | Required=False
+  SerialNumber | Type=10 | Size=100 | Required=False
+  CurrentLocationID | Type=4 | Size=4 | Required=False
+  CurrentStatus | Type=10 | Size=30 | Required=False
+  AcquisitionDate | Type=8 | Size=8 | Required=False
+  WarrantyExpiry | Type=8 | Size=8 | Required=False
+  UnitCost | Type=5 | Size=8 | Required=False
+  SourceGoodsReceiptItemID | Type=4 | Size=4 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+TABLE: T_ItemPartNumbers  Records~7
+  ItemPartNumberID | Type=4 | Size=4 | Required=False
+  ItemID | Type=4 | Size=4 | Required=False
+  PartNumberTypeID | Type=4 | Size=4 | Required=False
+  PartNumber | Type=10 | Size=100 | Required=False
+  SupplierID | Type=4 | Size=4 | Required=False
+  ManufacturerID | Type=4 | Size=4 | Required=False
+  IsPrimary | Type=1 | Size=1 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  CustomerID | Type=4 | Size=4 | Required=False
+  PartDescription | Type=12 | Size=0 | Required=False
+  IsCustomerPartNumber | Type=1 | Size=1 | Required=False
+  IsVendorPartNumber | Type=1 | Size=1 | Required=False
+  IsActive | Type=1 | Size=1 | Required=False
+  UpdatedOn | Type=8 | Size=8 | Required=False
+TABLE: T_Items  Records~17
+  ItemID | Type=4 | Size=4 | Required=False
+  InternalSKU | Type=10 | Size=50 | Required=False
+  ItemName | Type=10 | Size=150 | Required=False
+  Description | Type=12 | Size=0 | Required=False
+  CategoryID | Type=4 | Size=4 | Required=False
+  BaseUnitID | Type=4 | Size=4 | Required=False
+  ReorderLevel | Type=7 | Size=8 | Required=False
+  MinStockLevel | Type=7 | Size=8 | Required=False
+  MaxStockLevel | Type=7 | Size=8 | Required=False
+  DefaultLocationID | Type=4 | Size=4 | Required=False
+  RequiresSerial | Type=1 | Size=1 | Required=False
+  SerialNumber | Type=10 | Size=255 | Required=False
+  CreatedOn | Type=8 | Size=8 | Required=False
+  UpdatedOn | Type=8 | Size=8 | Required=False
+  ItemClass | Type=10 | Size=50 | Required=False
+  ItemType | Type=10 | Size=50 | Required=False
+  IsSellable | Type=1 | Size=1 | Required=False
+  DefaultSalesPrice | Type=5 | Size=8 | Required=False
+  DefaultTaxable | Type=1 | Size=1 | Required=False
+  SalesDescription | Type=12 | Size=0 | Required=False
+TABLE: T_ItemSuppliers  Records~3
+  ItemSupplierID | Type=4 | Size=4 | Required=False
+  ItemID | Type=4 | Size=4 | Required=False
+  SupplierID | Type=4 | Size=4 | Required=False
+  PreferredSupplier | Type=1 | Size=1 | Required=False
+  LastUnitPrice | Type=5 | Size=8 | Required=False
+  CurrencyID | Type=4 | Size=4 | Required=False
+  LeadTimeDays | Type=4 | Size=4 | Required=False
+  IsActive | Type=1 | Size=1 | Required=False
+TABLE: T_ItemTypes  Records~5
+  ItemTypeID | Type=4 | Size=4 | Required=False
+  ItemTypeName | Type=10 | Size=50 | Required=False
+  Description | Type=12 | Size=0 | Required=False
+TABLE: T_Locations  Records~9
+  LocationID | Type=4 | Size=4 | Required=False
+  WarehouseID | Type=4 | Size=4 | Required=False
+  LocationCode | Type=10 | Size=30 | Required=False
+  LocationName | Type=10 | Size=120 | Required=False
+  BinNumber | Type=10 | Size=30 | Required=False
+  ShelfNumber | Type=10 | Size=30 | Required=False
+TABLE: T_Manufacturers  Records~2
+  ManufacturerID | Type=4 | Size=4 | Required=False
+  ManufacturerName | Type=10 | Size=150 | Required=False
+  Website | Type=10 | Size=255 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+TABLE: T_PartNumberTypes  Records~5
+  PartNumberTypeID | Type=4 | Size=4 | Required=False
+  PartNumberTypeName | Type=10 | Size=50 | Required=False
+  Description | Type=12 | Size=0 | Required=False
+TABLE: T_Permissions  Records~15
+  PermissionID | Type=4 | Size=4 | Required=False
+  PermissionName | Type=10 | Size=255 | Required=False
+  Description | Type=12 | Size=0 | Required=False
+TABLE: T_POStatuses  Records~5
+  POStatusID | Type=4 | Size=4 | Required=False
+  StatusName | Type=10 | Size=50 | Required=False
+  Description | Type=12 | Size=0 | Required=False
+TABLE: T_ProjectIssueStaging  Records~2
+  ProjectIssueStagingID | Type=4 | Size=4 | Required=False
+  ProjectID | Type=4 | Size=4 | Required=True
+  IssueType | Type=10 | Size=20 | Required=True
+  ItemID | Type=4 | Size=4 | Required=True
+  RequiredQty | Type=7 | Size=8 | Required=True
+  AvailableQty | Type=7 | Size=8 | Required=True
+  IssueQty | Type=7 | Size=8 | Required=True
+  Selected | Type=1 | Size=1 | Required=True
+  Notes | Type=12 | Size=0 | Required=False
+  ItemInstanceID | Type=4 | Size=4 | Required=False
+  FromLocationID | Type=4 | Size=4 | Required=False
+  ToLocationID | Type=4 | Size=4 | Required=False
+  SourceMovementID | Type=4 | Size=4 | Required=False
+TABLE: T_Projects  Records~13
+  ProjectID | Type=4 | Size=4 | Required=False
+  ProjectCode | Type=10 | Size=30 | Required=False
+  ProjectName | Type=10 | Size=150 | Required=False
+  StartDate | Type=8 | Size=8 | Required=False
+  EndDate | Type=8 | Size=8 | Required=False
+  Status | Type=10 | Size=30 | Required=False
+  Budget | Type=5 | Size=8 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  IsActive | Type=1 | Size=1 | Required=False
+  CustomerID | Type=4 | Size=4 | Required=False
+  FinishedItemID | Type=4 | Size=4 | Required=False
+  AssemblyTemplateID | Type=4 | Size=4 | Required=False
+  BuildQuantity | Type=7 | Size=8 | Required=False
+  OutputLocationID | Type=4 | Size=4 | Required=False
+  CustomerPOReference | Type=10 | Size=100 | Required=False
+  ShippedDate | Type=8 | Size=8 | Required=False
+  ShippedByUserID | Type=4 | Size=4 | Required=False
+  SaleMovementID | Type=4 | Size=4 | Required=False
+  QuantityShipped | Type=7 | Size=8 | Required=False
+  WorkInstructions | Type=12 | Size=0 | Required=False
+  SalesOrderID | Type=4 | Size=4 | Required=False
+  CustomerPOLineID | Type=4 | Size=4 | Required=False
+  CustomerPOID | Type=4 | Size=4 | Required=False
+  RequiredCompletionDate | Type=8 | Size=8 | Required=False
+  WorkflowStatus | Type=10 | Size=30 | Required=False
+TABLE: T_PurchaseOrderItems  Records~0
+  PurchaseOrderItemID | Type=4 | Size=4 | Required=False
+  PurchaseOrderID | Type=4 | Size=4 | Required=False
+  LineNumber | Type=4 | Size=4 | Required=False
+  ItemID | Type=4 | Size=4 | Required=False
+  SupplierPartNumberSnapshot | Type=10 | Size=100 | Required=False
+  DescriptionSnapshot | Type=12 | Size=0 | Required=False
+  QuantityOrdered | Type=7 | Size=8 | Required=False
+  UnitPrice | Type=5 | Size=8 | Required=False
+  TariffAmount | Type=5 | Size=8 | Required=False
+  FreightAmount | Type=5 | Size=8 | Required=False
+  OtherCharges | Type=5 | Size=8 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+TABLE: T_PurchaseOrders  Records~0
+  PurchaseOrderID | Type=4 | Size=4 | Required=False
+  PONumber | Type=10 | Size=50 | Required=False
+  SupplierID | Type=4 | Size=4 | Required=False
+  OrderDate | Type=8 | Size=8 | Required=False
+  ExpectedDeliveryDate | Type=8 | Size=8 | Required=False
+  CurrencyID | Type=4 | Size=4 | Required=False
+  POStatusID | Type=4 | Size=4 | Required=False
+  CreatedByUserID | Type=4 | Size=4 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  CreatedOn | Type=8 | Size=8 | Required=False
+TABLE: T_RolePermissions  Records~29
+  RolePermissionID | Type=4 | Size=4 | Required=False
+  RoleID | Type=4 | Size=4 | Required=False
+  PermissionID | Type=4 | Size=4 | Required=False
+  CanView | Type=1 | Size=1 | Required=False
+  CanAdd | Type=1 | Size=1 | Required=False
+  CanEdit | Type=1 | Size=1 | Required=False
+  CanDelete | Type=1 | Size=1 | Required=False
+TABLE: T_Roles  Records~4
+  RoleID | Type=4 | Size=4 | Required=False
+  RoleName | Type=10 | Size=50 | Required=False
+  Description | Type=12 | Size=0 | Required=False
+TABLE: T_SalesOrderLines  Records~5
+  SalesOrderLineID | Type=4 | Size=4 | Required=False
+  SalesOrderID | Type=4 | Size=4 | Required=False
+  CustomerPOLineID | Type=4 | Size=4 | Required=False
+  ItemID | Type=4 | Size=4 | Required=False
+  LineDescription | Type=12 | Size=0 | Required=False
+  AssemblyTemplateID | Type=4 | Size=4 | Required=False
+  CustomerPartNumber | Type=10 | Size=100 | Required=False
+  QuantityOrdered | Type=7 | Size=8 | Required=False
+  QuantityShipped | Type=7 | Size=8 | Required=False
+  UnitPrice | Type=5 | Size=8 | Required=False
+  LineNotes | Type=12 | Size=0 | Required=False
+  CustomerPO | Type=4 | Size=4 | Required=False
+  QuantityAllocated | Type=7 | Size=8 | Required=False
+  UnitID | Type=4 | Size=4 | Required=False
+  LineSubtotal | Type=5 | Size=8 | Required=False
+  Taxable | Type=1 | Size=1 | Required=False
+  LineStatus | Type=10 | Size=50 | Required=False
+TABLE: T_SalesOrders  Records~6
+  SalesOrderID | Type=4 | Size=4 | Required=False
+  SalesOrderNo | Type=10 | Size=50 | Required=False
+  CustomerID | Type=4 | Size=4 | Required=False
+  CustomerPOID | Type=4 | Size=4 | Required=False
+  OrderDate | Type=8 | Size=8 | Required=False
+  RequiredDate | Type=8 | Size=8 | Required=False
+  PaymentTerms | Type=10 | Size=100 | Required=False
+  ShipVia | Type=10 | Size=100 | Required=False
+  ShipToName | Type=10 | Size=255 | Required=False
+  ShipToAddress | Type=12 | Size=0 | Required=False
+  ShipDate | Type=8 | Size=8 | Required=False
+  SalesOrderStatus | Type=10 | Size=50 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  CreatedOn | Type=8 | Size=8 | Required=False
+  UpdatedOn | Type=8 | Size=8 | Required=False
+TABLE: T_StockBalances  Records~5
+  StockBalanceID | Type=4 | Size=4 | Required=False
+  ItemID | Type=4 | Size=4 | Required=False
+  CurrentLocationID | Type=4 | Size=4 | Required=False
+  QuantityOnHand | Type=7 | Size=8 | Required=False
+  QuantityReserved | Type=7 | Size=8 | Required=False
+  LastUpdated | Type=8 | Size=8 | Required=False
+TABLE: T_StockMovements  Records~15
+  StockMovementID | Type=4 | Size=4 | Required=False
+  MovementDate | Type=8 | Size=8 | Required=False
+  ItemID | Type=4 | Size=4 | Required=False
+  ItemInstanceID | Type=4 | Size=4 | Required=False
+  MovementTypeID | Type=4 | Size=4 | Required=False
+  Quantity | Type=7 | Size=8 | Required=False
+  FromLocationID | Type=4 | Size=4 | Required=False
+  ToLocationID | Type=4 | Size=4 | Required=False
+  ProjectID | Type=4 | Size=4 | Required=False
+  ReferenceDocument | Type=10 | Size=100 | Required=False
+  PerformedByUserID | Type=4 | Size=4 | Required=False
+  Reason | Type=10 | Size=255 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  UnitCost | Type=5 | Size=8 | Required=False
+  CustomerID | Type=4 | Size=4 | Required=False
+  AssemblyTemplateID | Type=4 | Size=4 | Required=False
+  AssemblyJobID | Type=4 | Size=4 | Required=False
+  SalesOrderID | Type=4 | Size=4 | Required=False
+  SalesOrderLineID | Type=4 | Size=4 | Required=False
+  CustomerPOID | Type=4 | Size=4 | Required=False
+  CustomerPOLineID | Type=4 | Size=4 | Required=False
+  InvoiceID | Type=4 | Size=4 | Required=False
+  InvoiceLineID | Type=4 | Size=4 | Required=False
+  ExpectedReturnDate | Type=8 | Size=8 | Required=False
+  SourceDocumentType | Type=10 | Size=50 | Required=False
+  MovementNotes | Type=12 | Size=0 | Required=False
+  ActualReturnDate | Type=8 | Size=8 | Required=False
+  IssuedToStaffID | Type=4 | Size=4 | Required=False
+TABLE: T_StockMovementTypes  Records~12
+  MovementTypeID | Type=4 | Size=4 | Required=False
+  MovementTypeCode | Type=10 | Size=30 | Required=False
+  MovementTypeName | Type=10 | Size=100 | Required=False
+  StockEffect | Type=4 | Size=4 | Required=False
+  Description | Type=12 | Size=0 | Required=False
+TABLE: T_SupplierPOLines  Records~0
+  SupplierPOLineID | Type=4 | Size=4 | Required=False
+  SupplierPOID | Type=4 | Size=4 | Required=True
+  LineNumber | Type=4 | Size=4 | Required=True
+  ItemID | Type=4 | Size=4 | Required=True
+  SupplierPartNumber | Type=10 | Size=100 | Required=False
+  ItemDescription | Type=10 | Size=255 | Required=False
+  OrderedQuantity | Type=7 | Size=8 | Required=True
+  UnitID | Type=4 | Size=4 | Required=True
+  UnitPrice | Type=5 | Size=8 | Required=True
+  DiscountAmount | Type=5 | Size=8 | Required=False
+  TaxPercent | Type=7 | Size=8 | Required=False
+  RequiredDate | Type=8 | Size=8 | Required=False
+  LineStatus | Type=10 | Size=30 | Required=True
+  CreatedOn | Type=8 | Size=8 | Required=False
+  UpdatedOn | Type=8 | Size=8 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+TABLE: T_SupplierPOs  Records~0
+  SupplierPOID | Type=4 | Size=4 | Required=False
+  PONumber | Type=10 | Size=30 | Required=True
+  SupplierID | Type=4 | Size=4 | Required=True
+  PODate | Type=8 | Size=8 | Required=True
+  PORevisionDate | Type=8 | Size=8 | Required=False
+  POType | Type=10 | Size=30 | Required=False
+  ExpectedDeliveryDate | Type=8 | Size=8 | Required=False
+  DeliveryLocationID | Type=4 | Size=4 | Required=False
+  CurrencyID | Type=4 | Size=4 | Required=False
+  PaymentTerms | Type=10 | Size=100 | Required=False
+  ShipVia | Type=10 | Size=100 | Required=False
+  PrepaidFreight | Type=1 | Size=1 | Required=False
+  ResaleNo | Type=10 | Size=50 | Required=False
+  SupplierQuoteReference | Type=10 | Size=100 | Required=False
+  ShipToName | Type=10 | Size=150 | Required=False
+  ShipToAddress | Type=12 | Size=0 | Required=False
+  ShipToContactName | Type=10 | Size=100 | Required=False
+  ShipToPhone | Type=10 | Size=50 | Required=False
+  ShipToEmail | Type=10 | Size=150 | Required=False
+  AuthorizedBy | Type=10 | Size=100 | Required=False
+  AuthorizedByEmail | Type=10 | Size=150 | Required=False
+  SubtotalAmount | Type=5 | Size=8 | Required=False
+  FreightAmount | Type=5 | Size=8 | Required=False
+  TaxAmount | Type=5 | Size=8 | Required=False
+  TotalAmount | Type=5 | Size=8 | Required=False
+  POStatus | Type=10 | Size=30 | Required=True
+  SentOn | Type=8 | Size=8 | Required=False
+  CreatedByUserID | Type=4 | Size=4 | Required=False
+  CreatedOn | Type=8 | Size=8 | Required=False
+  UpdatedOn | Type=8 | Size=8 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+TABLE: T_Suppliers  Records~4
+  SupplierID | Type=4 | Size=4 | Required=False
+  SupplierCode | Type=10 | Size=30 | Required=False
+  CompanyName | Type=10 | Size=150 | Required=False
+  ContactPerson | Type=10 | Size=120 | Required=False
+  Phone | Type=10 | Size=50 | Required=False
+  Email | Type=10 | Size=120 | Required=False
+  Address | Type=12 | Size=0 | Required=False
+  PaymentTerms | Type=10 | Size=100 | Required=False
+TABLE: T_SystemInfo  Records~3
+  SystemInfoID | Type=4 | Size=4 | Required=False
+  SettingName | Type=10 | Size=100 | Required=False
+  SettingValue | Type=10 | Size=255 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+TABLE: T_TransferItems  Records~0
+  TransferItemID | Type=4 | Size=4 | Required=False
+  TransferID | Type=4 | Size=4 | Required=False
+  ItemID | Type=4 | Size=4 | Required=False
+  ItemInstanceID | Type=4 | Size=4 | Required=False
+  Quantity | Type=7 | Size=8 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+TABLE: T_Transfers  Records~0
+  TransferID | Type=4 | Size=4 | Required=False
+  TransferNumber | Type=10 | Size=50 | Required=False
+  FromLocationID | Type=4 | Size=4 | Required=False
+  ToLocationID | Type=4 | Size=4 | Required=False
+  RequestedByUserID | Type=4 | Size=4 | Required=False
+  ApprovedByUserID | Type=4 | Size=4 | Required=False
+  TransferStatusID | Type=4 | Size=4 | Required=False
+  RequestDate | Type=8 | Size=8 | Required=False
+  ApprovalDate | Type=8 | Size=8 | Required=False
+  DispatchDate | Type=8 | Size=8 | Required=False
+  ReceivedDate | Type=8 | Size=8 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+TABLE: T_TransferStatuses  Records~7
+  TransferStatusID | Type=4 | Size=4 | Required=False
+  StatusName | Type=10 | Size=50 | Required=False
+  Description | Type=12 | Size=0 | Required=False
+TABLE: T_Units  Records~7
+  UnitID | Type=4 | Size=4 | Required=False
+  UnitCode | Type=10 | Size=20 | Required=False
+  UnitName | Type=10 | Size=50 | Required=False
+  Description | Type=12 | Size=0 | Required=False
+TABLE: T_Users  Records~3
+  UserID | Type=4 | Size=4 | Required=False
+  Username | Type=10 | Size=50 | Required=False
+  PasswordHash | Type=10 | Size=255 | Required=False
+  FullName | Type=10 | Size=120 | Required=False
+  RoleID | Type=4 | Size=4 | Required=False
+  Department | Type=10 | Size=100 | Required=False
+  Email | Type=10 | Size=120 | Required=False
+  CreatedOn | Type=8 | Size=8 | Required=False
+TABLE: T_Warehouses  Records~1
+  WarehouseID | Type=4 | Size=4 | Required=False
+  WarehouseCode | Type=10 | Size=20 | Required=False
+  WarehouseName | Type=10 | Size=120 | Required=False
+  Address | Type=12 | Size=0 | Required=False
+  ContactPerson | Type=10 | Size=120 | Required=False
+TABLE: T_WorkInstructions  Records~1
+  WorkInstructionID | Type=4 | Size=4 | Required=False
+  InstructionName | Type=10 | Size=255 | Required=False
+  Description | Type=12 | Size=0 | Required=False
+  FilePath | Type=12 | Size=0 | Required=False
+  CreatedOn | Type=8 | Size=8 | Required=False
+  Active | Type=1 | Size=1 | Required=False
+
+=== QUERIES ===
+QUERY: Q _Check Stock level
+QUERY: Q_CustomerList
+QUERY: Q_CustomerPOList
+QUERY: Q_InventoryListAll
+QUERY: Q_InvoiceList
+QUERY: Q_InvoiceReportHeader
+QUERY: Q_InvoiceReportLines
+QUERY: Q_ItemSetupList
+QUERY: Q_Notify_LowStock
+QUERY: Q_Notify_ToolReturns
+QUERY: Q_Notify_ToolReturns_Base
+QUERY: Q_ProjectIssueStagingItems
+QUERY: Q_ProjectList
+QUERY: Q_RecentStockInMovements
+QUERY: Q_RecentStockOutMovements
+QUERY: Q_SalesOrderList
+QUERY: Q_StockMovementList
+QUERY: Q_SupplierList
+QUERY: Q_SupplierPOLineReceived
+QUERY: Q_SupplierPOLineTotals
+QUERY: Q_SupplierPOList
+QUERY: Q_SupplierPOOutstandingLines
+QUERY: Q_TemplateList
+QUERY: Q_TemplateNotesReport
+QUERY: Q_WarehouseList
+
+=== FORMS ===
+FORM: SF_ProjectList
+FORM: F_ProjectList
+FORM: F_CategoriesList
+FORM: F_Warehouses
+FORM: F_InventoryList
+FORM: SF_InventoryList
+FORM: F_StockIn
+FORM: SF_ItemPartNumbers
+FORM: SF_CustomerPartNumbers
+FORM: SF_WarehouseLocations
+FORM: SF_SalesOrderLines
+FORM: F_ItemSetup
+FORM: F_CustomerSetup
+FORM: F_UnitSetup
+FORM: F_CustomerPO
+FORM: F_SupplierSetup
+FORM: F_Invoices
+FORM: SF_ItemSuppliers
+FORM: F_GoodsReceipts
+FORM: F_Projects
+FORM: F_SystemSettings
+FORM: F_CategorySetup
+FORM: F_CurrencySetup
+FORM: F_SalesOrders
+FORM: SF_RecentStockIn
+FORM: Dashboard
+FORM: F_AssemblyTemplate
+FORM: F_PartNumberTypeSetup
+FORM: SF_CustomerPOLines
+FORM: F_StockOut
+FORM: SF_TemplateList
+FORM: SF_WarehouseList
+FORM: F_WarehouseList
+FORM: F_TemplateList
+FORM: SF_SupplierList
+FORM: F_SupplierList
+FORM: SF_InvoiceList
+FORM: F_InvoiceList
+FORM: SF_RecentStockOut
+FORM: SF_CustomerList
+FORM: F_CustomerList
+FORM: SF_AssemblyTemplateMaterials
+FORM: F_WorkInstructions
+FORM: F_BusinessReadiness
+FORM: SF_GoodsReceiptItems
+FORM: SF_ProjectIssueItems
+FORM: F_LocationSetup
+FORM: SF_SalesOrderList
+FORM: F_SalesOrderList
+FORM: SF_AssemblyTemplateTools
+FORM: SF_InvoiceLines
+FORM: F_ManufacturerSetup
+FORM: SF_SupplierPOLines
+FORM: SF_ItemSetupList
+FORM: SF_StockMovementList
+FORM: F_ItemSetupList
+FORM: F_StockMovementList
+FORM: F_SupplerProcurement
+FORM: SF_CustomerPOList
+FORM: F_CustomerPOList
+FORM: SF_NotifyLowStock
+FORM: SF_NotifyToolReturns
+FORM: F_NotificationCenter
+FORM: F_Login
+FORM: F_SendPO
+FORM: F_ProjectIssue
+FORM: F_UserManagement
+FORM: F_Reports
+
+=== REPORTS ===
+REPORT: R_InvoiceLines
+REPORT: R_Invoice
+REPORT: R_TemplateNotes
+REPORT: R_WarehouseLocations
+REPORT: R_InventoryList
+REPORT: R_ProjectList
+
+=== MODULES ===
+MODULE: M_Notifications
+MODULE: M_QuickAdd
+MODULE: M_ItemHelpers
+MODULE: M_ProjectIssueSetup
+MODULE: M_Security
+
+=== MACROS ===
+

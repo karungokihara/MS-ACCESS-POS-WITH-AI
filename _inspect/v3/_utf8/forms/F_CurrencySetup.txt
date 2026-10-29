@@ -1,0 +1,559 @@
+﻿Version =21
+VersionRequired =20
+PublishOption =1
+Checksum =-186192997
+Begin Form
+    PopUp = NotDefault
+    Modal = NotDefault
+    RecordSelectors = NotDefault
+    AutoCenter = NotDefault
+    NavigationButtons = NotDefault
+    DividingLines = NotDefault
+    AllowDesignChanges = NotDefault
+    DefaultView =0
+    ScrollBars =0
+    ViewsAllowed =1
+    TabularFamily =0
+    PictureAlignment =2
+    DatasheetGridlinesBehavior =3
+    GridX =24
+    GridY =24
+    Width =6606
+    DatasheetFontHeight =11
+    ItemSuffix =9
+    Left =2655
+    Top =4065
+    Right =17745
+    Bottom =8760
+    DatasheetGridlinesColor =15263976
+    RecSrcDt = Begin
+        0x3728d6409391e640
+    End
+    GUID = Begin
+        0xf0cce71aca80ff4ebcef523b7f17d47a
+    End
+    RecordSource ="T_Currencies"
+    Caption ="F_CurrencySetup"
+    DatasheetFontName ="Aptos"
+    PrtMip = Begin
+        0x6801000068010000680100006801000000000000201c0000e010000001000000 ,
+        0x010000006801000000000000a10700000100000001000000
+    End
+    PrtDevMode = Begin
+        0x0000000000000000308490d58b0200000000000000000000e70a7e35f77f0000 ,
+        0x010403069c004003032d000001000100ea0a6f08640001000f00580202000100 ,
+        0x5802030001004c657474657200000000030000000000c8420000c842e8e8e800 ,
+        0xc07d4ae28b020000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000ffffffff4749533400000000000000000000000044494e55 ,
+        0x2200c80024031c00ac13d8c00000000000000000000000000000000000000000 ,
+        0x0000000000000000050000000000070000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000100000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000c8000000534d544a ,
+        0x000000001000b8007b00330045004500330039003100310034002d0033003000 ,
+        0x420034002d0034003500610034002d0041003100300039002d00310039004400 ,
+        0x3400410034003000460043004300320032007d000000524553444c4c00556e69 ,
+        0x726573444c4c00506170657253697a65004c4554544552004f7269656e746174 ,
+        0x696f6e00504f525452414954005265736f6c7574696f6e004450493630300043 ,
+        0x6f6c6f724d6f6465003234627070000000000000000000000000000000000000 ,
+        0x1c0000005634444d0100000000000000000000000000000000000000
+    End
+    PrtDevNames = Begin
+        0x08002c003f000100000000000000000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000000000000000006e ,
+        0x756c3a000000000000000000000000000000000000000000
+    End
+    OnLoad ="[Event Procedure]"
+    AllowDatasheetView =0
+    FilterOnLoad =0
+    ShowPageMargins =0
+    DisplayOnSharePointSite =1
+    DatasheetAlternateBackColor =15921906
+    DatasheetGridlinesColor12 =0
+    FitToScreen =1
+    DatasheetBackThemeColorIndex =1
+    BorderThemeColorIndex =3
+    ThemeFontIndex =1
+    ForeThemeColorIndex =0
+    AlternateBackThemeColorIndex =1
+    AlternateBackShade =95.0
+    PrtDevModeW = Begin
+        0x000007d58b02000019000000f77f000060a945e28b0200001900000000000000 ,
+        0xb0ad45e28b0200005fed3db5f97f0000000008c48b020000796d2ff7f1000000 ,
+        0x01040306dc004003032d000001000100ea0a6f08640001000f00580202000100 ,
+        0x5802030001004c006500740074006500720000000000000070a945e28b020000 ,
+        0x0000000000000000000000000000000060a945e28b0200005d000000f1000000 ,
+        0x1900000000000000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000ffffffff4749533400000000000000000000000044494e55 ,
+        0x2200c80024031c00ac13d8c00000000000000000000000000000000000000000 ,
+        0x0000000000000000050000000000070000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000100000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000c8000000534d544a ,
+        0x000000001000b8007b00330045004500330039003100310034002d0033003000 ,
+        0x420034002d0034003500610034002d0041003100300039002d00310039004400 ,
+        0x3400410034003000460043004300320032007d000000524553444c4c00556e69 ,
+        0x726573444c4c00506170657253697a65004c4554544552004f7269656e746174 ,
+        0x696f6e00504f525452414954005265736f6c7574696f6e004450493630300043 ,
+        0x6f6c6f724d6f6465003234627070000000000000000000000000000000000000 ,
+        0x1c0000005634444d0100000000000000000000000000000000000000
+    End
+    PrtDevNamesW = Begin
+        0x040028003b000100000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000006e0075006c003a000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000
+    End
+    NoSaveCTIWhenDisabled =1
+    Begin
+        Begin Label
+            BackStyle =0
+            TextFontFamily =0
+            FontSize =11
+            BorderColor =8355711
+            ForeColor =6710886
+            FontName ="Aptos"
+            GridlineColor =10921638
+            ThemeFontIndex =1
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =0
+            BorderTint =50.0
+            ForeThemeColorIndex =0
+            ForeTint =60.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin CommandButton
+            TextFontFamily =0
+            FontSize =11
+            FontWeight =400
+            ForeColor =4210752
+            FontName ="Aptos"
+            GridlineColor =10921638
+            ForeThemeColorIndex =0
+            ForeTint =75.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+            UseTheme =1
+            Shape =1
+            Gradient =12
+            BackColor =14790982
+            BackThemeColorIndex =4
+            BackTint =60.0
+            BorderLineStyle =0
+            BorderColor =14790982
+            BorderThemeColorIndex =4
+            BorderTint =60.0
+            ThemeFontIndex =1
+            HoverColor =15453059
+            HoverThemeColorIndex =4
+            HoverTint =40.0
+            PressedColor =6440976
+            PressedThemeColorIndex =4
+            PressedShade =75.0
+            HoverForeColor =4210752
+            HoverForeThemeColorIndex =0
+            HoverForeTint =75.0
+            PressedForeColor =4210752
+            PressedForeThemeColorIndex =0
+            PressedForeTint =75.0
+        End
+        Begin TextBox
+            AddColon = NotDefault
+            FELineBreak = NotDefault
+            TextFontFamily =0
+            BorderLineStyle =0
+            LabelX =-1800
+            FontSize =11
+            BorderColor =10921638
+            ForeColor =4210752
+            FontName ="Aptos"
+            AsianLineBreak =1
+            GridlineColor =10921638
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            ThemeFontIndex =1
+            ForeThemeColorIndex =0
+            ForeTint =75.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin FormHeader
+            Height =1080
+            BackColor =14482166
+            Name ="FormHeader"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x6c4d85adcdfb7749b5e2307c6f0f9dc2
+            End
+            AutoHeight =1
+            AlternateBackShade =95.0
+            BackTint =20.0
+            Begin
+                Begin Label
+                    OverlapFlags =93
+                    Left =960
+                    Top =360
+                    Width =3658
+                    Height =480
+                    FontSize =20
+                    FontWeight =700
+                    ForeColor =4272139
+                    Name ="Label6"
+                    Caption ="Currency Setup"
+                    GUID = Begin
+                        0xe92857ac65f0bf4e8aba6a16b3db5014
+                    End
+                    LayoutCachedLeft =960
+                    LayoutCachedTop =360
+                    LayoutCachedWidth =4618
+                    LayoutCachedHeight =840
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    ForeShade =50.0
+                End
+                Begin CommandButton
+                    OverlapFlags =215
+                    TextFontFamily =34
+                    Left =200
+                    Top =60
+                    Width =1400
+                    Height =340
+                    FontWeight =700
+                    ForeColor =16777215
+                    Name ="cmdUXBack"
+                    Caption ="Back"
+                    OnClick ="=UX_GoBack()"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdUXBack\")"
+                    GUID = Begin
+                        0x330afa1063b0884bb65c2abc3a8c7614
+                    End
+
+                    LayoutCachedLeft =200
+                    LayoutCachedTop =60
+                    LayoutCachedWidth =1600
+                    LayoutCachedHeight =400
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                    Overlaps =1
+                End
+            End
+        End
+        Begin Section
+            Height =2340
+            BackColor =14482166
+            Name ="Detail"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0xe1484fca66b823488a650a4957b12846
+            End
+            AlternateBackColor =14482166
+            AlternateBackShade =95.0
+            Begin
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =2898
+                    Top =360
+                    Width =888
+                    Height =324
+                    ColumnWidth =888
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="CurrencyCode"
+                    ControlSource ="CurrencyCode"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x96511b9772b2904f8a0519dadf27c2cd
+                    End
+
+                    LayoutCachedLeft =2898
+                    LayoutCachedTop =360
+                    LayoutCachedWidth =3786
+                    LayoutCachedHeight =684
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =360
+                            Top =360
+                            Width =2448
+                            Height =324
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="CurrencyCode_Label"
+                            Caption ="CurrencyCode"
+                            GUID = Begin
+                                0xc0dbe387dbd2114584e398588f9a55c1
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =360
+                            LayoutCachedWidth =2808
+                            LayoutCachedHeight =684
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =2898
+                    Top =780
+                    Width =1416
+                    Height =324
+                    ColumnWidth =3000
+                    TabIndex =1
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="CurrencyName"
+                    ControlSource ="CurrencyName"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xdf1eef998ed1a74da0186cb957aebc36
+                    End
+
+                    LayoutCachedLeft =2898
+                    LayoutCachedTop =780
+                    LayoutCachedWidth =4314
+                    LayoutCachedHeight =1104
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =360
+                            Top =780
+                            Width =2448
+                            Height =324
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="CurrencyName_Label"
+                            Caption ="CurrencyName"
+                            GUID = Begin
+                                0xb423f592899a5243bbf4ac210104e8da
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =780
+                            LayoutCachedWidth =2808
+                            LayoutCachedHeight =1104
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =2898
+                    Top =1200
+                    Width =1488
+                    Height =324
+                    ColumnWidth =1488
+                    TabIndex =2
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="CurrencySymbol"
+                    ControlSource ="CurrencySymbol"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xa6c5d4789bcd5842a012e907dbda695d
+                    End
+
+                    LayoutCachedLeft =2898
+                    LayoutCachedTop =1200
+                    LayoutCachedWidth =4386
+                    LayoutCachedHeight =1524
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =360
+                            Top =1200
+                            Width =2448
+                            Height =324
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="CurrencySymbol_Label"
+                            Caption ="CurrencySymbol"
+                            GUID = Begin
+                                0x396f9ef76ace01409e702c6729f8e2a7
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =1200
+                            LayoutCachedWidth =2808
+                            LayoutCachedHeight =1524
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    Left =1860
+                    Top =1920
+                    Width =1800
+                    Height =300
+                    FontWeight =700
+                    TabIndex =3
+                    ForeColor =16777215
+                    Name ="cmdSaveClose"
+                    Caption ="Save"
+                    OnClick ="[Event Procedure]"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdSaveClose\")"
+                    GUID = Begin
+                        0x02b818e5305a3a4298738184d7da7812
+                    End
+
+                    LayoutCachedLeft =1860
+                    LayoutCachedTop =1920
+                    LayoutCachedWidth =3660
+                    LayoutCachedHeight =2220
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    HoverForeTint =100.0
+                    HoverForeShade =50.0
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    PressedForeTint =100.0
+                    PressedForeShade =50.0
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =14482166
+            Name ="FormFooter"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x099ccdb98e0bc341a68d46b670a94de8
+            End
+            AutoHeight =1
+            AlternateBackShade =95.0
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+Private Sub Form_Load()
+
+    SeedQuickAddField Me, "CurrencyCode"
+
+End Sub
+Private Sub cmdSaveClose_Click()
+
+    On Error GoTo ErrorHandler
+
+    If Me.Dirty Then
+        Me.Dirty = False
+    End If
+
+    DoCmd.close acForm, Me.Name
+    Exit Sub
+
+ErrorHandler:
+
+    MsgBox _
+        "The entry could not be saved." & _
+        vbCrLf & vbCrLf & Err.Description, _
+        vbExclamation, _
+        "Save Entry"
+
+End Sub

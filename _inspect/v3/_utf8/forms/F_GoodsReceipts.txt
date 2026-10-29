@@ -1,0 +1,4246 @@
+﻿Version =21
+VersionRequired =20
+PublishOption =1
+Checksum =1008670236
+Begin Form
+    RecordSelectors = NotDefault
+    AutoCenter = NotDefault
+    DividingLines = NotDefault
+    AllowDesignChanges = NotDefault
+    DefaultView =0
+    ViewsAllowed =1
+    PictureAlignment =2
+    DatasheetGridlinesBehavior =3
+    GridX =24
+    GridY =24
+    Width =18660
+    DatasheetFontHeight =11
+    ItemSuffix =52
+    Right =15090
+    Bottom =4695
+    DatasheetGridlinesColor =15263976
+    RecSrcDt = Begin
+        0xd2ea82dd7092e640
+    End
+    GUID = Begin
+        0xfeee60f4e846974889b5b23ca669ffb7
+    End
+    RecordSource ="T_GoodsReceipts"
+    Caption ="F_GoodsReceipts"
+    OnCurrent ="[Event Procedure]"
+    BeforeInsert ="[Event Procedure]"
+    BeforeUpdate ="[Event Procedure]"
+    DatasheetFontName ="Aptos"
+    PrtMip = Begin
+        0x6801000068010000680100006801000000000000201c0000e010000001000000 ,
+        0x010000006801000000000000a10700000100000001000000
+    End
+    PrtDevMode = Begin
+        0x0000000000000000308490d58b0200000000000000000000e70a7e35f77f0000 ,
+        0x010403069c004003032d000001000100ea0a6f08640001000f00580202000100 ,
+        0x5802030001004c657474657200000000030000000000c8420000c842e8e8e800 ,
+        0xc0c449e28b020000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000ffffffff4749533400000000000000000000000044494e55 ,
+        0x2200c80024031c00ac13d8c00000000000000000000000000000000000000000 ,
+        0x0000000000000000050000000000070000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000100000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000c8000000534d544a ,
+        0x000000001000b8007b00330045004500330039003100310034002d0033003000 ,
+        0x420034002d0034003500610034002d0041003100300039002d00310039004400 ,
+        0x3400410034003000460043004300320032007d000000524553444c4c00556e69 ,
+        0x726573444c4c00506170657253697a65004c4554544552004f7269656e746174 ,
+        0x696f6e00504f525452414954005265736f6c7574696f6e004450493630300043 ,
+        0x6f6c6f724d6f6465003234627070000000000000000000000000000000000000 ,
+        0x1c0000005634444d0100000000000000000000000000000000000000
+    End
+    PrtDevNames = Begin
+        0x08002c003f000100000000000000000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000000000000000006e ,
+        0x756c3a00000000000000000000000000000000000000000000000000
+    End
+    OnLoad ="[Event Procedure]"
+    AllowDatasheetView =0
+    FilterOnLoad =0
+    ShowPageMargins =0
+    DisplayOnSharePointSite =1
+    DatasheetAlternateBackColor =15921906
+    DatasheetGridlinesColor12 =0
+    FitToScreen =1
+    DatasheetBackThemeColorIndex =1
+    BorderThemeColorIndex =3
+    ThemeFontIndex =1
+    ForeThemeColorIndex =0
+    AlternateBackThemeColorIndex =1
+    AlternateBackShade =95.0
+    PrtDevModeW = Begin
+        0x000074e28b020000b88a2636f77f0000704adc35f77f00000900000000000000 ,
+        0x08000000000000005fed3db5f97f000050000000000000004000000000000000 ,
+        0x01040306dc004003032d000001000100ea0a6f08640001000f00580202000100 ,
+        0x5802030001004c0065007400740065007200000000000000001f50c78b020000 ,
+        0x00000000000000000000000000000000f01e50c78b02000044000000f1000000 ,
+        0x4400000000000000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000ffffffff4749533400000000000000000000000044494e55 ,
+        0x2200c80024031c00ac13d8c00000000000000000000000000000000000000000 ,
+        0x0000000000000000050000000000070000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000100000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000c8000000534d544a ,
+        0x000000001000b8007b00330045004500330039003100310034002d0033003000 ,
+        0x420034002d0034003500610034002d0041003100300039002d00310039004400 ,
+        0x3400410034003000460043004300320032007d000000524553444c4c00556e69 ,
+        0x726573444c4c00506170657253697a65004c4554544552004f7269656e746174 ,
+        0x696f6e00504f525452414954005265736f6c7574696f6e004450493630300043 ,
+        0x6f6c6f724d6f6465003234627070000000000000000000000000000000000000 ,
+        0x1c0000005634444d0100000000000000000000000000000000000000
+    End
+    PrtDevNamesW = Begin
+        0x040028003b000100000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000006e0075006c003a000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x00000000000000000000000000000000
+    End
+    NoSaveCTIWhenDisabled =1
+    Begin
+        Begin Label
+            BackStyle =0
+            FontSize =11
+            BorderColor =8355711
+            ForeColor =6710886
+            FontName ="Aptos"
+            GridlineColor =10921638
+            ThemeFontIndex =1
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =0
+            BorderTint =50.0
+            ForeThemeColorIndex =0
+            ForeTint =60.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin CommandButton
+            FontSize =11
+            FontWeight =400
+            ForeColor =4210752
+            FontName ="Aptos"
+            GridlineColor =10921638
+            ForeThemeColorIndex =0
+            ForeTint =75.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+            UseTheme =1
+            Shape =1
+            Gradient =12
+            BackColor =14790982
+            BackThemeColorIndex =4
+            BackTint =60.0
+            BorderLineStyle =0
+            BorderColor =14790982
+            BorderThemeColorIndex =4
+            BorderTint =60.0
+            ThemeFontIndex =1
+            HoverColor =15453059
+            HoverThemeColorIndex =4
+            HoverTint =40.0
+            PressedColor =6440976
+            PressedThemeColorIndex =4
+            PressedShade =75.0
+            HoverForeColor =4210752
+            HoverForeThemeColorIndex =0
+            HoverForeTint =75.0
+            PressedForeColor =4210752
+            PressedForeThemeColorIndex =0
+            PressedForeTint =75.0
+        End
+        Begin TextBox
+            AddColon = NotDefault
+            FELineBreak = NotDefault
+            BorderLineStyle =0
+            LabelX =-1800
+            FontSize =11
+            BorderColor =10921638
+            ForeColor =4210752
+            FontName ="Aptos"
+            AsianLineBreak =1
+            GridlineColor =10921638
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            ThemeFontIndex =1
+            ForeThemeColorIndex =0
+            ForeTint =75.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin ComboBox
+            AddColon = NotDefault
+            BorderLineStyle =0
+            LabelX =-1800
+            FontSize =11
+            BorderColor =10921638
+            ForeColor =2102279
+            FontName ="Aptos"
+            GridlineColor =10921638
+            AllowValueListEdits =1
+            InheritValueList =1
+            ThemeFontIndex =1
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            ForeThemeColorIndex =2
+            ForeShade =50.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin Subform
+            BorderLineStyle =0
+            BorderColor =10921638
+            GridlineColor =10921638
+            BorderThemeColorIndex =1
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+            BorderShade =65.0
+            ShowPageHeaderAndPageFooter =1
+        End
+        Begin FormHeader
+            Height =1080
+            BackColor =14482166
+            Name ="FormHeader"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x5fd5c521dfde8b438c6e380c850f98e2
+            End
+            AutoHeight =1
+            AlternateBackShade =95.0
+            BackTint =20.0
+            Begin
+                Begin Label
+                    OverlapFlags =85
+                    TextAlign =2
+                    Left =4320
+                    Top =180
+                    Width =3730
+                    Height =480
+                    FontSize =20
+                    FontWeight =700
+                    ForeColor =4272139
+                    Name ="Label28"
+                    Caption ="Goods Receipts"
+                    GUID = Begin
+                        0xae5eb441cdc11c40a79c54dee848b6c6
+                    End
+                    LayoutCachedLeft =4320
+                    LayoutCachedTop =180
+                    LayoutCachedWidth =8050
+                    LayoutCachedHeight =660
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    ForeShade =50.0
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =200
+                    Top =60
+                    Width =1400
+                    Height =340
+                    FontWeight =700
+                    ForeColor =16777215
+                    Name ="cmdUXBack"
+                    Caption ="Back"
+                    OnClick ="=UX_GoBack()"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdUXBack\")"
+                    GUID = Begin
+                        0x354939731294ba41ac8b4fde7a825b54
+                    End
+
+                    LayoutCachedLeft =200
+                    LayoutCachedTop =60
+                    LayoutCachedWidth =1600
+                    LayoutCachedHeight =400
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                End
+            End
+        End
+        Begin Section
+            CanGrow = NotDefault
+            Height =18432
+            BackColor =14482166
+            Name ="Detail"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x68f9d6ca600f9546986747e852a1c491
+            End
+            AlternateBackColor =14482166
+            AlternateBackShade =95.0
+            Begin
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =2898
+                    Top =360
+                    Height =300
+                    ColumnWidth =1440
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtGoodsReceiptID"
+                    ControlSource ="GoodsReceiptID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xf783df75752cec4a8d3a622d9c3f7cc9
+                    End
+
+                    LayoutCachedLeft =2898
+                    LayoutCachedTop =360
+                    LayoutCachedWidth =4338
+                    LayoutCachedHeight =660
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =360
+                            Top =360
+                            Width =2448
+                            Height =324
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="GoodsReceiptID_Label"
+                            Caption ="GoodsReceiptID"
+                            GUID = Begin
+                                0x9afaf8387ddd114e9b6f2eabf2fe9cc8
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =360
+                            LayoutCachedWidth =2808
+                            LayoutCachedHeight =684
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =2898
+                    Top =780
+                    Width =3648
+                    Height =324
+                    ColumnWidth =3000
+                    TabIndex =1
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtReceiptNumber"
+                    ControlSource ="ReceiptNumber"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x4fe83e6e33fb734c890e30d94bf225d5
+                    End
+
+                    LayoutCachedLeft =2898
+                    LayoutCachedTop =780
+                    LayoutCachedWidth =6546
+                    LayoutCachedHeight =1104
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =360
+                            Top =780
+                            Width =2448
+                            Height =324
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="ReceiptNumber_Label"
+                            Caption ="ReceiptNumber"
+                            GUID = Begin
+                                0xd7e6392207813543a4c0cd3a071e2027
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =780
+                            LayoutCachedWidth =2808
+                            LayoutCachedHeight =1104
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =2898
+                    Top =1620
+                    Width =1608
+                    Height =324
+                    ColumnWidth =1608
+                    TabIndex =2
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtReceiptDate"
+                    ControlSource ="ReceiptDate"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xd71b1060608ba645aec4babffee15478
+                    End
+
+                    LayoutCachedLeft =2898
+                    LayoutCachedTop =1620
+                    LayoutCachedWidth =4506
+                    LayoutCachedHeight =1944
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =360
+                            Top =1620
+                            Width =2448
+                            Height =324
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="ReceiptDate_Label"
+                            Caption ="ReceiptDate"
+                            GUID = Begin
+                                0x47985b7571492e4780f0b54eb8c29ecb
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =1620
+                            LayoutCachedWidth =2808
+                            LayoutCachedHeight =1944
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =2898
+                    Top =2040
+                    Width =4776
+                    Height =360
+                    ColumnWidth =3000
+                    TabIndex =4
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtSupplierDeliveryNote"
+                    ControlSource ="SupplierDeliveryNote"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xb36d200e5257d44c96d5fd7a07aa9eff
+                    End
+
+                    LayoutCachedLeft =2898
+                    LayoutCachedTop =2040
+                    LayoutCachedWidth =7674
+                    LayoutCachedHeight =2400
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =360
+                            Top =2040
+                            Width =2448
+                            Height =324
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="SupplierDeliveryNote_Label"
+                            Caption ="SupplierDeliveryNote"
+                            GUID = Begin
+                                0xf35b78910020814187ee74e8c2014440
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =2040
+                            LayoutCachedWidth =2808
+                            LayoutCachedHeight =2364
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =2898
+                    Top =4680
+                    Width =5496
+                    Height =1152
+                    ColumnWidth =3000
+                    TabIndex =5
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtNotes"
+                    ControlSource ="Notes"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xa7370388fd00e74c97c119c4f0cebdeb
+                    End
+
+                    LayoutCachedLeft =2898
+                    LayoutCachedTop =4680
+                    LayoutCachedWidth =8394
+                    LayoutCachedHeight =5832
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =360
+                            Top =4680
+                            Width =2448
+                            Height =324
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Notes_Label"
+                            Caption ="Notes"
+                            GUID = Begin
+                                0xeffdd7137ec2984a9d8e945122185017
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =4680
+                            LayoutCachedWidth =2808
+                            LayoutCachedHeight =5004
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =2898
+                    Top =2520
+                    Width =4776
+                    Height =300
+                    ColumnWidth =3000
+                    TabIndex =6
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtSupplierInvoiceNumber"
+                    ControlSource ="SupplierInvoiceNumber"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xb8effa7dba1c204fbc6a98951401d905
+                    End
+
+                    LayoutCachedLeft =2898
+                    LayoutCachedTop =2520
+                    LayoutCachedWidth =7674
+                    LayoutCachedHeight =2820
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =360
+                            Top =2520
+                            Width =2448
+                            Height =324
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="SupplierInvoiceNumber_Label"
+                            Caption ="SupplierInvoiceNumber"
+                            GUID = Begin
+                                0x2bf72aaca469814e98191c9c82823afd
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =2520
+                            LayoutCachedWidth =2808
+                            LayoutCachedHeight =2844
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =2898
+                    Top =3780
+                    Width =1608
+                    Height =324
+                    ColumnWidth =1608
+                    TabIndex =7
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtPostedOn"
+                    ControlSource ="PostedOn"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x4f6a827c431e814d9b6f57795c762314
+                    End
+
+                    LayoutCachedLeft =2898
+                    LayoutCachedTop =3780
+                    LayoutCachedWidth =4506
+                    LayoutCachedHeight =4104
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =360
+                            Top =3780
+                            Width =2448
+                            Height =324
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="PostedOn_Label"
+                            Caption ="PostedOn"
+                            GUID = Begin
+                                0x9139f85c66796a438a776b8ad7f33933
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =3780
+                            LayoutCachedWidth =2808
+                            LayoutCachedHeight =4104
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =10578
+                    Top =2520
+                    Width =1608
+                    Height =324
+                    ColumnWidth =1608
+                    TabIndex =8
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtCreatedOn"
+                    ControlSource ="CreatedOn"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x53d50d61dff0f8449c4b3f34fba0548b
+                    End
+
+                    LayoutCachedLeft =10578
+                    LayoutCachedTop =2520
+                    LayoutCachedWidth =12186
+                    LayoutCachedHeight =2844
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =8040
+                            Top =2520
+                            Width =2448
+                            Height =324
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="CreatedOn_Label"
+                            Caption ="CreatedOn"
+                            GUID = Begin
+                                0xf978d5c6b4855044a558d6aa8a79f0af
+                            End
+                            LayoutCachedLeft =8040
+                            LayoutCachedTop =2520
+                            LayoutCachedWidth =10488
+                            LayoutCachedHeight =2844
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =10578
+                    Top =2940
+                    Width =1608
+                    Height =324
+                    ColumnWidth =1608
+                    TabIndex =9
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtUpdatedOn"
+                    ControlSource ="UpdatedOn"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xe7a94357d6b6a44d86db2691de721f68
+                    End
+
+                    LayoutCachedLeft =10578
+                    LayoutCachedTop =2940
+                    LayoutCachedWidth =12186
+                    LayoutCachedHeight =3264
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =8040
+                            Top =2940
+                            Width =2448
+                            Height =324
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="UpdatedOn_Label"
+                            Caption ="UpdatedOn"
+                            GUID = Begin
+                                0x897f8a7237666741b3376b6112f215ec
+                            End
+                            LayoutCachedLeft =8040
+                            LayoutCachedTop =2940
+                            LayoutCachedWidth =10488
+                            LayoutCachedHeight =3264
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin ComboBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =2880
+                    Top =1200
+                    Width =2340
+                    Height =300
+                    TabIndex =10
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    GUID = Begin
+                        0x7782c30f7295f64b95e7e98cdf33cb73
+                    End
+                    Name ="cboSupplierPOID"
+                    ControlSource ="SupplierPOID"
+                    RowSourceType ="Table/Query"
+                    BeforeUpdate ="[Event Procedure]"
+                    AfterUpdate ="[Event Procedure]"
+                    OnDblClick ="[Event Procedure]"
+                    FontName ="Segoe UI"
+
+                    LayoutCachedLeft =2880
+                    LayoutCachedTop =1200
+                    LayoutCachedWidth =5220
+                    LayoutCachedHeight =1500
+                    ThemeFontIndex =-1
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =1140
+                            Top =1200
+                            Width =1680
+                            Height =300
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label30"
+                            Caption ="Supplier POID"
+                            GUID = Begin
+                                0x6c61bf01bd58784180c06a13ded37549
+                            End
+                            LayoutCachedLeft =1140
+                            LayoutCachedTop =1200
+                            LayoutCachedWidth =2820
+                            LayoutCachedHeight =1500
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin ComboBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =2880
+                    Top =4200
+                    Width =2340
+                    Height =300
+                    TabIndex =11
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    GUID = Begin
+                        0xa46e3d0d39104f4faa6673ddef4b48a4
+                    End
+                    Name ="cboPostedByUserID"
+                    ControlSource ="PostedByUserID"
+                    RowSourceType ="Table/Query"
+                    FontName ="Segoe UI"
+
+                    LayoutCachedLeft =2880
+                    LayoutCachedTop =4200
+                    LayoutCachedWidth =5220
+                    LayoutCachedHeight =4500
+                    ThemeFontIndex =-1
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =1140
+                            Top =4200
+                            Width =1680
+                            Height =300
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label32"
+                            Caption ="Posted By"
+                            GUID = Begin
+                                0x7f95272ad4b4974394fff84061a9998d
+                            End
+                            LayoutCachedLeft =1140
+                            LayoutCachedTop =4200
+                            LayoutCachedWidth =2820
+                            LayoutCachedHeight =4500
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =10578
+                    Top =360
+                    Width =1836
+                    Height =300
+                    TabIndex =12
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtSupplierName"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xe9a9cc378f24cc49960f8b80fbf5252a
+                    End
+
+                    LayoutCachedLeft =10578
+                    LayoutCachedTop =360
+                    LayoutCachedWidth =12414
+                    LayoutCachedHeight =660
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =8040
+                            Top =360
+                            Width =2448
+                            Height =324
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label34"
+                            Caption ="Supplier Name"
+                            GUID = Begin
+                                0xe6b18004543b714f9f2c15f07a49156b
+                            End
+                            LayoutCachedLeft =8040
+                            LayoutCachedTop =360
+                            LayoutCachedWidth =10488
+                            LayoutCachedHeight =684
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =10578
+                    Top =744
+                    Width =1836
+                    Height =300
+                    TabIndex =13
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtPOStatusDisplay"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xfcae27529df9f14c8366a0dce6aa0e73
+                    End
+
+                    LayoutCachedLeft =10578
+                    LayoutCachedTop =744
+                    LayoutCachedWidth =12414
+                    LayoutCachedHeight =1044
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =8040
+                            Top =744
+                            Width =2448
+                            Height =324
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label36"
+                            Caption ="PO Status"
+                            GUID = Begin
+                                0xdcbfbccfa9e98840a33d8a772dd8ccec
+                            End
+                            LayoutCachedLeft =8040
+                            LayoutCachedTop =744
+                            LayoutCachedWidth =10488
+                            LayoutCachedHeight =1068
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =10578
+                    Top =1188
+                    Width =1836
+                    Height =300
+                    TabIndex =14
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtLineCount"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x3511ac1b5f31614aaf389b0b738146b7
+                    End
+
+                    LayoutCachedLeft =10578
+                    LayoutCachedTop =1188
+                    LayoutCachedWidth =12414
+                    LayoutCachedHeight =1488
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =8040
+                            Top =1188
+                            Width =2448
+                            Height =324
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label38"
+                            Caption ="Lines Recieving"
+                            GUID = Begin
+                                0x9a642767dd2fbb4da497952b2e752252
+                            End
+                            LayoutCachedLeft =8040
+                            LayoutCachedTop =1188
+                            LayoutCachedWidth =10488
+                            LayoutCachedHeight =1512
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =10578
+                    Top =1632
+                    Width =1836
+                    Height =300
+                    TabIndex =15
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtTotalQuantity"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x35e2472223e4df4ab56246a0b7d936db
+                    End
+
+                    LayoutCachedLeft =10578
+                    LayoutCachedTop =1632
+                    LayoutCachedWidth =12414
+                    LayoutCachedHeight =1932
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =8040
+                            Top =1632
+                            Width =2448
+                            Height =324
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label40"
+                            Caption ="Total Quantity"
+                            GUID = Begin
+                                0xa29ed42cf8b9a44c8f8fa3d356cd482e
+                            End
+                            LayoutCachedLeft =8040
+                            LayoutCachedTop =1632
+                            LayoutCachedWidth =10488
+                            LayoutCachedHeight =1956
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =10578
+                    Top =2076
+                    Width =1836
+                    Height =300
+                    TabIndex =16
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtReceiptValue"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x5d19d6fe7183bc4d8521692e04202b75
+                    End
+
+                    LayoutCachedLeft =10578
+                    LayoutCachedTop =2076
+                    LayoutCachedWidth =12414
+                    LayoutCachedHeight =2376
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =8040
+                            Top =2076
+                            Width =2448
+                            Height =324
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label42"
+                            Caption ="Receipt Value"
+                            GUID = Begin
+                                0xdbf37c49e8f52e44b9642ece78050a2d
+                            End
+                            LayoutCachedLeft =8040
+                            LayoutCachedTop =2076
+                            LayoutCachedWidth =10488
+                            LayoutCachedHeight =2400
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =3540
+                    Top =6120
+                    Width =2460
+                    FontWeight =700
+                    TabIndex =17
+                    ForeColor =16777215
+                    Name ="cmdLoadOutstanding"
+                    Caption ="Load Outstanding Lines"
+                    OnClick ="[Event Procedure]"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdLoadOutstanding\")"
+                    GUID = Begin
+                        0x3b04f2c9981f05428d845e11361c851e
+                    End
+
+                    LayoutCachedLeft =3540
+                    LayoutCachedTop =6120
+                    LayoutCachedWidth =6000
+                    LayoutCachedHeight =6480
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    HoverForeTint =100.0
+                    HoverForeShade =50.0
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    PressedForeTint =100.0
+                    PressedForeShade =50.0
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =6420
+                    Top =6120
+                    Width =1980
+                    FontWeight =700
+                    TabIndex =18
+                    ForeColor =16777215
+                    Name ="cmdSaveReceipt"
+                    Caption ="Save Draft"
+                    OnClick ="[Event Procedure]"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdSaveReceipt\")"
+                    GUID = Begin
+                        0x4373c9aa945dfd40983453618986a369
+                    End
+
+                    LayoutCachedLeft =6420
+                    LayoutCachedTop =6120
+                    LayoutCachedWidth =8400
+                    LayoutCachedHeight =6480
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    HoverForeTint =100.0
+                    HoverForeShade =50.0
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    PressedForeTint =100.0
+                    PressedForeShade =50.0
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =9240
+                    Top =6120
+                    Width =1980
+                    FontWeight =700
+                    TabIndex =19
+                    ForeColor =16777215
+                    Name ="cmdPostReceipt"
+                    Caption ="Post Outstanding"
+                    OnClick ="[Event Procedure]"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdPostReceipt\")"
+                    GUID = Begin
+                        0x491a94dce85c0e42aac7cb95b355211c
+                    End
+
+                    LayoutCachedLeft =9240
+                    LayoutCachedTop =6120
+                    LayoutCachedWidth =11220
+                    LayoutCachedHeight =6480
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    HoverForeTint =100.0
+                    HoverForeShade =50.0
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    PressedForeTint =100.0
+                    PressedForeShade =50.0
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =12600
+                    Top =6120
+                    Width =1620
+                    FontWeight =700
+                    TabIndex =20
+                    ForeColor =16777215
+                    Name ="cmdClose"
+                    Caption ="Close"
+                    OnClick ="[Event Procedure]"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdClose\")"
+                    GUID = Begin
+                        0xccbae8bd7c72964cac95ec6a5538e3ae
+                    End
+
+                    LayoutCachedLeft =12600
+                    LayoutCachedTop =6120
+                    LayoutCachedWidth =14220
+                    LayoutCachedHeight =6480
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    HoverForeTint =100.0
+                    HoverForeShade =50.0
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    PressedForeTint =100.0
+                    PressedForeShade =50.0
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                End
+                Begin Subform
+                    OverlapFlags =85
+                    Top =6780
+                    Width =18300
+                    Height =11652
+                    TabIndex =21
+                    Name ="SF_GoodsReceiptItems"
+                    SourceObject ="Form.SF_GoodsReceiptItems"
+                    LinkChildFields ="GoodsReceiptItemID"
+                    LinkMasterFields ="GoodsReceiptID"
+                    OnEnter ="[Event Procedure]"
+                    GUID = Begin
+                        0x8d7f1274f989cb4891d2414faeff236e
+                    End
+
+                    LayoutCachedTop =6780
+                    LayoutCachedWidth =18300
+                    LayoutCachedHeight =18432
+                End
+                Begin ComboBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =2880
+                    Top =3360
+                    Width =2340
+                    Height =300
+                    TabIndex =22
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    GUID = Begin
+                        0x832beed7fc4b594fb05fc4d861812878
+                    End
+                    Name ="cboReceiptStatus"
+                    ControlSource ="ReceiptStatus"
+                    RowSourceType ="Table/Query"
+                    FontName ="Segoe UI"
+
+                    LayoutCachedLeft =2880
+                    LayoutCachedTop =3360
+                    LayoutCachedWidth =5220
+                    LayoutCachedHeight =3660
+                    ThemeFontIndex =-1
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =1140
+                            Top =3360
+                            Width =1680
+                            Height =300
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label50"
+                            Caption ="Receipt Status"
+                            GUID = Begin
+                                0x62e0852471642c48859e528f9055d949
+                            End
+                            LayoutCachedLeft =1140
+                            LayoutCachedTop =3360
+                            LayoutCachedWidth =2820
+                            LayoutCachedHeight =3660
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin ComboBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =2898
+                    Top =2940
+                    Width =1488
+                    Height =300
+                    TabIndex =3
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    GUID = Begin
+                        0x27838e4c99486e498ae385ba7d2ab9de
+                    End
+                    Name ="cboReceivedByUserID"
+                    ControlSource ="ReceivedByUserID"
+                    RowSourceType ="Table/Query"
+                    FontName ="Segoe UI"
+
+                    LayoutCachedLeft =2898
+                    LayoutCachedTop =2940
+                    LayoutCachedWidth =4386
+                    LayoutCachedHeight =3240
+                    ThemeFontIndex =-1
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =75.0
+                    ForeShade =100.0
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =360
+                            Top =2940
+                            Width =2448
+                            Height =324
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="ReceivedByUserID_Label"
+                            Caption ="ReceivedByUserID"
+                            GUID = Begin
+                                0xe02f77a9318ae74a9f63b7535e8be215
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =2940
+                            LayoutCachedWidth =2808
+                            LayoutCachedHeight =3264
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =14482166
+            Name ="FormFooter"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x262e8e6ffd36a14eb390a2c00af61e08
+            End
+            AutoHeight =1
+            AlternateBackShade =95.0
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+Private Const RECEIPT_ITEM_SUBFORM As String = "SF_GoodsReceiptItems"
+Private Const SUPPLIER_PO_FORM As String = "F_SendPO"
+
+Private Const STATUS_DRAFT As String = "Draft"
+Private mLoadingForm As Boolean
+
+'=============================================================
+' FORM EVENTS
+'=============================================================
+
+Private Sub Form_Load()
+
+    On Error GoTo Err_Handler
+
+    Dim requestedSupplierPOID As Long
+    Dim loadStage As String
+
+    mLoadingForm = True
+
+    loadStage = "Configuring form controls"
+    ConfigureControls
+
+    loadStage = "Configuring the receipt-items subform"
+    ConfigureReceiptSubform
+
+    loadStage = "Reading Supplier PO information"
+    requestedSupplierPOID = _
+        ReadOpenArgLong("SupplierPOID")
+
+    If requestedSupplierPOID > 0 Then
+        loadStage = "Opening or creating the Draft receipt"
+        OpenOrCreateReceiptForPO requestedSupplierPOID
+    End If
+
+    loadStage = "Displaying Supplier PO information"
+    UpdateSupplierPODisplay
+
+    loadStage = "Calculating the receipt summary"
+    RecalculateReceiptSummary
+
+    loadStage = "Applying the receipt workflow state"
+    RefreshWorkflowState
+
+Exit_Handler:
+    mLoadingForm = False
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The Goods Receipt form could not be opened." & _
+        vbCrLf & vbCrLf & _
+        "Stage: " & loadStage & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Goods Receipt"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_Current()
+
+    On Error GoTo Err_Handler
+
+    If mLoadingForm Then
+        Exit Sub
+    End If
+
+    UpdateSupplierPODisplay
+    RecalculateReceiptSummary
+    RefreshWorkflowState
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The Goods Receipt record could not be displayed." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Goods Receipt"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_BeforeInsert(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    InitializeNewReceipt
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Cancel = True
+
+    MsgBox _
+        "The new Goods Receipt could not be initialized." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Goods Receipt"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_BeforeUpdate(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    Dim currentReceiptID As Long
+    Dim SupplierPOID As Long
+    Dim duplicateDraftID As Long
+
+    If Len(Trim$(Nz(Me.txtReceiptNumber, vbNullString))) = 0 Then
+        Me.txtReceiptNumber = NextReceiptNumber()
+    End If
+
+    SupplierPOID = Nz(Me.cboSupplierPOID, 0)
+
+    If SupplierPOID <= 0 Then
+        MsgBox _
+            "Select the Supplier Purchase Order being received.", _
+            vbExclamation, _
+            "Supplier PO Required"
+
+        Cancel = True
+        Exit Sub
+    End If
+
+    If IsNull(Me.txtReceiptDate) Or _
+       Not IsDate(Me.txtReceiptDate) Then
+
+        MsgBox _
+            "Enter a valid receipt date.", _
+            vbExclamation, _
+            "Receipt Date Required"
+
+        Cancel = True
+        Exit Sub
+    End If
+
+    If Len(Trim$(Nz(Me.cboReceiptStatus, vbNullString))) = 0 Then
+        Me.cboReceiptStatus = STATUS_DRAFT
+    End If
+
+    currentReceiptID = Nz(Me.txtGoodsReceiptID, 0)
+
+    duplicateDraftID = Nz(DMax( _
+        "GoodsReceiptID", _
+        "T_GoodsReceipts", _
+        "SupplierPOID=" & SupplierPOID & _
+        " AND ReceiptStatus='Draft'" & _
+        " AND GoodsReceiptID<>" & currentReceiptID), 0)
+
+    If duplicateDraftID > 0 Then
+        MsgBox _
+            "This Supplier PO already has an unfinished Draft receipt." & _
+            vbCrLf & vbCrLf & _
+            "Open receipt ID " & duplicateDraftID & _
+            " instead of creating another Draft receipt.", _
+            vbExclamation, _
+            "Existing Draft Receipt"
+
+        Cancel = True
+        Exit Sub
+    End If
+
+    If IsNull(Me.txtCreatedOn) Then
+        Me.txtCreatedOn = Now()
+    End If
+
+    Me.txtUpdatedOn = Now()
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Cancel = True
+
+    MsgBox _
+        "The Goods Receipt header could not be validated." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Goods Receipt"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub SF_GoodsReceiptItems_Enter()
+
+    On Error GoTo Err_Handler
+
+    If Not SaveReceiptHeader() Then
+        Exit Sub
+    End If
+
+    If DCount( _
+        "*", _
+        "T_GoodsReceiptItems", _
+        "GoodsReceiptID=" & CurrentGoodsReceiptID()) = 0 Then
+
+        LoadOutstandingPOLines False
+
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The receipt lines could not be opened." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Goods Receipt Items"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' SUPPLIER PO EVENTS
+'=============================================================
+
+Private Sub cboSupplierPOID_BeforeUpdate(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    Dim receiptID As Long
+
+    receiptID = CurrentGoodsReceiptID()
+
+    If receiptID > 0 Then
+        If DCount( _
+            "*", _
+            "T_GoodsReceiptItems", _
+            "GoodsReceiptID=" & receiptID) > 0 Then
+
+            MsgBox _
+                "The Supplier PO cannot be changed after receipt " & _
+                "lines have been loaded." & _
+                vbCrLf & vbCrLf & _
+                "Delete or cancel this Draft receipt and start a " & _
+                "new receipt if the wrong PO was selected.", _
+                vbExclamation, _
+                "Supplier PO Locked"
+
+            Cancel = True
+            Exit Sub
+
+        End If
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Cancel = True
+
+    MsgBox _
+        "The Supplier PO selection could not be validated." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Goods Receipt"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cboSupplierPOID_AfterUpdate()
+
+    On Error GoTo Err_Handler
+
+    Dim SupplierPOID As Long
+
+    SupplierPOID = Nz(Me.cboSupplierPOID, 0)
+
+    If SupplierPOID <= 0 Then
+        UpdateSupplierPODisplay
+        Exit Sub
+    End If
+
+    If Not SupplierPOIsReceivable(SupplierPOID) Then
+        MsgBox _
+            "Only a Sent or Partially Received Supplier PO can " & _
+            "be received.", _
+            vbExclamation, _
+            "Supplier PO Not Ready"
+
+        Me.cboSupplierPOID.Undo
+        UpdateSupplierPODisplay
+        Exit Sub
+    End If
+
+    UpdateSupplierPODisplay
+
+    If Not SaveReceiptHeader() Then
+        Exit Sub
+    End If
+
+    LoadOutstandingPOLines False
+
+Exit_Handler:
+    RefreshWorkflowState
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The Supplier PO could not be loaded into this receipt." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Goods Receipt"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cboSupplierPOID_DblClick(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    Dim SupplierPOID As Long
+
+    Cancel = True
+    SupplierPOID = Nz(Me.cboSupplierPOID, 0)
+
+    If SupplierPOID <= 0 Then
+        Exit Sub
+    End If
+
+    DoCmd.OpenForm _
+        formName:=SUPPLIER_PO_FORM, _
+        View:=acNormal, _
+        WhereCondition:="SupplierPOID=" & SupplierPOID
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The Supplier PO could not be opened." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Supplier Purchase Order"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' BUTTONS
+'=============================================================
+
+Private Sub cmdLoadOutstanding_Click()
+
+    On Error GoTo Err_Handler
+
+    If Not SaveReceiptHeader() Then
+        Exit Sub
+    End If
+
+    LoadOutstandingPOLines True
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The outstanding Supplier PO lines could not be loaded." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Load Outstanding Lines"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cmdSaveReceipt_Click()
+
+    If SaveReceiptHeader() Then
+        RecalculateReceiptSummary
+        RefreshWorkflowState
+
+        MsgBox _
+            "The Draft Goods Receipt has been saved.", _
+            vbInformation, _
+            "Goods Receipt Saved"
+    End If
+
+End Sub
+
+
+Private Sub cmdPostReceipt_Click()
+
+    On Error GoTo Err_Handler
+
+    Dim ws As DAO.Workspace
+    Dim db As DAO.Database
+    Dim receiptItems As DAO.Recordset
+
+    Dim receiptID As Long
+    Dim SupplierPOID As Long
+    Dim performedByUserID As Long
+    Dim MovementTypeID As Long
+
+    Dim ItemID As Long
+    Dim ItemInstanceID As Long
+    Dim StockMovementID As Long
+    Dim LocationID As Long
+    Dim QuantityReceived As Double
+    Dim RequiresSerial As Boolean
+
+    Dim ReceiptDate As Date
+    Dim SerialNumber As String
+    Dim ReferenceDocument As String
+    Dim MovementNotes As String
+    Dim UnitCost As Variant
+
+    Dim transactionStarted As Boolean
+    Dim postingCommitted As Boolean
+    Dim postedLineCount As Long
+
+    Dim errorNumber As Long
+    Dim errorDescription As String
+
+    If Not SaveReceiptHeader() Then
+        Exit Sub
+    End If
+
+    If Not SaveReceiptItemsIfDirty() Then
+        Exit Sub
+    End If
+
+    receiptID = CurrentGoodsReceiptID()
+    SupplierPOID = Nz(Me.cboSupplierPOID, 0)
+
+    Set db = CurrentDb
+
+    ValidateReceiptForPosting _
+        db, _
+        receiptID, _
+        SupplierPOID
+
+    If MsgBox( _
+        "Post Goods Receipt " & _
+        Nz(Me.txtReceiptNumber, vbNullString) & "?" & _
+        vbCrLf & vbCrLf & _
+        "This will permanently:" & vbCrLf & _
+        "- add bulk quantities to stock" & vbCrLf & _
+        "- create serialized item instances" & vbCrLf & _
+        "- create stock-movement audit records" & vbCrLf & _
+        "- update the Supplier PO receiving status" & _
+        vbCrLf & vbCrLf & _
+        "This action cannot be posted twice.", _
+        vbQuestion + vbYesNo + vbDefaultButton2, _
+        "Post Goods Receipt") <> vbYes Then
+
+        GoTo Exit_Handler
+    End If
+
+    performedByUserID = CLng(Me.cboReceivedByUserID)
+    ReceiptDate = CDate(Me.txtReceiptDate)
+
+    ReferenceDocument = _
+        Trim$(Nz(DLookup( _
+            "PONumber", _
+            "T_SupplierPOs", _
+            "SupplierPOID=" & SupplierPOID), _
+            vbNullString)) & _
+        " / " & _
+        Trim$(Nz(Me.txtReceiptNumber, vbNullString))
+
+    Set ws = DBEngine.Workspaces(0)
+
+    MovementTypeID = _
+        GetMovementTypeID(db, "STOCK_IN")
+
+    ws.BeginTrans
+    transactionStarted = True
+
+    Set receiptItems = db.OpenRecordset( _
+        "SELECT * " & _
+        "FROM T_GoodsReceiptItems " & _
+        "WHERE GoodsReceiptID=" & receiptID & " " & _
+        "AND Nz(QuantityReceived,0)>0 " & _
+        "ORDER BY GoodsReceiptItemID;", _
+        dbOpenDynaset)
+
+    Do While Not receiptItems.EOF
+
+        ItemID = CLng(receiptItems!ItemID)
+        LocationID = CLng(receiptItems!LocationID)
+        QuantityReceived = _
+            CDbl(receiptItems!QuantityReceived)
+
+        RequiresSerial = _
+            ItemRequiresSerial(db, ItemID)
+
+        SerialNumber = _
+            Trim$(Nz( _
+                receiptItems!SerialNumber, _
+                vbNullString))
+
+        If IsNull(receiptItems!UnitCost) Then
+            UnitCost = Null
+        Else
+            UnitCost = CCur(receiptItems!UnitCost)
+        End If
+
+        MovementNotes = BuildReceiptMovementNotes( _
+            Nz(receiptItems!Notes, vbNullString))
+
+        ItemInstanceID = 0
+
+        If RequiresSerial Then
+
+            ItemInstanceID = InsertSerializedInstance( _
+                db, _
+                ItemID, _
+                SerialNumber, _
+                LocationID, _
+                ReceiptDate, _
+                UnitCost, _
+                MovementNotes)
+
+        Else
+
+            UpdateBulkStockBalance _
+                db, _
+                ItemID, _
+                LocationID, _
+                QuantityReceived
+
+        End If
+
+        StockMovementID = InsertStockMovement( _
+            db, _
+            ReceiptDate, _
+            ItemID, _
+            ItemInstanceID, _
+            MovementTypeID, _
+            QuantityReceived, _
+            LocationID, _
+            performedByUserID, _
+            "Purchase Receipt", _
+            ReferenceDocument, _
+            MovementNotes, _
+            UnitCost)
+
+        receiptItems.Edit
+
+        If ItemInstanceID > 0 Then
+            receiptItems!ItemInstanceID = ItemInstanceID
+        Else
+            receiptItems!ItemInstanceID = Null
+        End If
+
+        receiptItems!StockMovementID = StockMovementID
+        receiptItems!UpdatedOn = Now()
+        receiptItems.Update
+
+        postedLineCount = postedLineCount + 1
+        receiptItems.MoveNext
+
+    Loop
+
+    receiptItems.close
+    Set receiptItems = Nothing
+
+    MarkReceiptAsPosted _
+        db, _
+        receiptID, _
+        performedByUserID
+
+    UpdateSupplierPOLineStatuses _
+        db, _
+        SupplierPOID
+
+    UpdateSupplierPOStatus _
+        db, _
+        SupplierPOID
+
+    ws.CommitTrans
+    transactionStarted = False
+    postingCommitted = True
+
+    On Error Resume Next
+
+    mLoadingForm = True
+    Me.Requery
+    GoToReceipt receiptID
+    mLoadingForm = False
+
+    UpdateSupplierPODisplay
+    RecalculateReceiptSummary
+    RefreshWorkflowState
+
+    If CurrentProject.AllForms(SUPPLIER_PO_FORM).IsLoaded Then
+        Forms(SUPPLIER_PO_FORM).Refresh
+        Forms(SUPPLIER_PO_FORM).Recalc
+    End If
+
+    On Error GoTo Err_Handler
+
+    MsgBox _
+        "Goods Receipt " & _
+        Nz(Me.txtReceiptNumber, vbNullString) & _
+        " has been posted successfully." & _
+        vbCrLf & vbCrLf & _
+        postedLineCount & _
+        " receipt line(s) were added to stock.", _
+        vbInformation, _
+        "Goods Receipt Posted"
+
+Exit_Handler:
+    On Error Resume Next
+
+    If Not receiptItems Is Nothing Then
+        receiptItems.close
+    End If
+
+    Set receiptItems = Nothing
+    Set db = Nothing
+    Set ws = Nothing
+
+    mLoadingForm = False
+
+    On Error GoTo 0
+    Exit Sub
+
+Err_Handler:
+    errorNumber = Err.Number
+    errorDescription = Err.Description
+
+    On Error Resume Next
+
+    If transactionStarted Then
+        ws.Rollback
+    End If
+
+    If Not receiptItems Is Nothing Then
+        receiptItems.close
+    End If
+
+    Set receiptItems = Nothing
+    Set db = Nothing
+    Set ws = Nothing
+
+    mLoadingForm = False
+
+    On Error GoTo 0
+
+    If postingCommitted Then
+        MsgBox _
+            "The Goods Receipt was posted, but the screen could not " & _
+            "be refreshed." & _
+            vbCrLf & vbCrLf & _
+            "Close and reopen the form." & vbCrLf & vbCrLf & _
+            "Error Number: " & errorNumber & vbCrLf & _
+            "Details: " & errorDescription, _
+            vbExclamation, _
+            "Receipt Posted - Refresh Failed"
+    Else
+        MsgBox _
+            "The Goods Receipt was not posted." & _
+            vbCrLf & vbCrLf & _
+            "All stock changes were rolled back." & _
+            vbCrLf & vbCrLf & _
+            "Error Number: " & errorNumber & vbCrLf & _
+            "Details: " & errorDescription, _
+            vbExclamation, _
+            "Goods Receipt Posting"
+    End If
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cmdClose_Click()
+
+    On Error GoTo Err_Handler
+
+    If Me.Dirty Then
+        If Not SaveReceiptHeader() Then
+            Exit Sub
+        End If
+    End If
+
+    DoCmd.close acForm, Me.Name
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The Goods Receipt form could not be closed." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Goods Receipt"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' PUBLIC METHOD CALLED BY SF_GoodsReceiptItems
+'=============================================================
+
+Public Sub RecalculateReceiptSummary()
+
+    On Error GoTo Err_Handler
+
+    Dim receiptID As Long
+    Dim db As DAO.Database
+    Dim rs As DAO.Recordset
+    Dim SqlText As String
+
+    receiptID = CurrentGoodsReceiptID()
+
+    If receiptID <= 0 Then
+        Me.txtLineCount = 0
+        Me.txtTotalQuantity = 0
+        Me.txtReceiptValue = 0
+        Exit Sub
+    End If
+
+    Me.txtLineCount = DCount( _
+        "*", _
+        "T_GoodsReceiptItems", _
+        "GoodsReceiptID=" & receiptID & _
+        " AND Nz(QuantityReceived,0)>0")
+
+    Me.txtTotalQuantity = Nz(DSum( _
+        "QuantityReceived", _
+        "T_GoodsReceiptItems", _
+        "GoodsReceiptID=" & receiptID), 0)
+
+    SqlText = _
+        "SELECT Sum(" & _
+        "Nz(QuantityReceived,0) * Nz(UnitCost,0)" & _
+        ") AS ReceiptValue " & _
+        "FROM T_GoodsReceiptItems " & _
+        "WHERE GoodsReceiptID=" & receiptID & ";"
+
+    Set db = CurrentDb
+    Set rs = db.OpenRecordset(SqlText, dbOpenSnapshot)
+
+    If Not rs.EOF Then
+        Me.txtReceiptValue = Nz(rs!ReceiptValue, 0)
+    Else
+        Me.txtReceiptValue = 0
+    End If
+
+    Me.Recalc
+
+    If Not mLoadingForm Then
+        RefreshWorkflowState
+    End If
+
+Exit_Handler:
+    On Error Resume Next
+
+    If Not rs Is Nothing Then
+        rs.close
+    End If
+
+    Set rs = Nothing
+    Set db = Nothing
+
+    On Error GoTo 0
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The Goods Receipt summary could not be recalculated." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Goods Receipt Summary"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' OPEN OR CREATE RECEIPT
+'=============================================================
+
+Private Sub OpenOrCreateReceiptForPO( _
+    ByVal SupplierPOID As Long _
+)
+
+    On Error GoTo Err_Handler
+
+    Dim existingDraftID As Long
+
+    existingDraftID = Nz(DMax( _
+        "GoodsReceiptID", _
+        "T_GoodsReceipts", _
+        "SupplierPOID=" & SupplierPOID & _
+        " AND ReceiptStatus='Draft'"), 0)
+
+    If existingDraftID > 0 Then
+        GoToReceipt existingDraftID
+
+        If DCount( _
+            "*", _
+            "T_GoodsReceiptItems", _
+            "GoodsReceiptID=" & existingDraftID) = 0 Then
+
+            LoadOutstandingPOLines False
+
+        End If
+
+        Exit Sub
+    End If
+
+    If Not SupplierPOIsReceivable(SupplierPOID) Then
+        MsgBox _
+            "Only a Sent or Partially Received Supplier PO can " & _
+            "be received.", _
+            vbExclamation, _
+            "Supplier PO Not Ready"
+
+        Exit Sub
+    End If
+
+    DoCmd.GoToRecord _
+        ObjectType:=acDataForm, _
+        ObjectName:=Me.Name, _
+        Record:=acNewRec
+
+    InitializeNewReceipt
+    Me.cboSupplierPOID = SupplierPOID
+    UpdateSupplierPODisplay
+
+    If Not SaveReceiptHeader() Then
+        Exit Sub
+    End If
+
+    LoadOutstandingPOLines False
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Err.Raise _
+        Err.Number, _
+        "OpenOrCreateReceiptForPO", _
+        Err.Description
+
+End Sub
+
+
+Private Sub GoToReceipt(ByVal GoodsReceiptID As Long)
+
+    On Error GoTo Err_Handler
+
+    Dim rs As DAO.Recordset
+    Dim errorNumber As Long
+    Dim errorDescription As String
+
+    Set rs = Me.RecordsetClone
+
+    rs.FindFirst _
+        "GoodsReceiptID=" & GoodsReceiptID
+
+    If rs.NoMatch Then
+        Err.Raise _
+            vbObjectError + 7201, _
+            "GoToReceipt", _
+            "Goods Receipt ID " & GoodsReceiptID & _
+            " could not be found."
+    End If
+
+    Me.Bookmark = rs.Bookmark
+
+Exit_Handler:
+    On Error Resume Next
+
+    If Not rs Is Nothing Then
+        rs.close
+    End If
+
+    Set rs = Nothing
+
+    On Error GoTo 0
+    Exit Sub
+
+Err_Handler:
+    errorNumber = Err.Number
+    errorDescription = Err.Description
+
+    On Error Resume Next
+
+    If Not rs Is Nothing Then
+        rs.close
+    End If
+
+    Set rs = Nothing
+
+    On Error GoTo 0
+
+    Err.Raise _
+        errorNumber, _
+        "GoToReceipt", _
+        errorDescription
+
+End Sub
+
+
+'=============================================================
+' LOAD OUTSTANDING SUPPLIER PO LINES
+'=============================================================
+
+Private Sub LoadOutstandingPOLines( _
+    ByVal showCompletionMessage As Boolean _
+)
+
+    On Error GoTo Err_Handler
+
+    Dim ws As DAO.Workspace
+    Dim db As DAO.Database
+    Dim sourceRows As DAO.Recordset
+    Dim targetRows As DAO.Recordset
+
+    Dim receiptID As Long
+    Dim SupplierPOID As Long
+    Dim DefaultLocationID As Long
+
+    Dim SupplierPOLineID As Long
+    Dim ItemID As Long
+    Dim UnitID As Long
+    Dim remainingQuantity As Double
+    Dim RequiresSerial As Boolean
+    Dim serialRowCount As Long
+    Dim rowIndex As Long
+
+    Dim loadedRowCount As Long
+    Dim transactionStarted As Boolean
+
+    Dim sourceSql As String
+    Dim errorNumber As Long
+    Dim errorDescription As String
+
+    receiptID = CurrentGoodsReceiptID()
+    SupplierPOID = Nz(Me.cboSupplierPOID, 0)
+
+    If receiptID <= 0 Or SupplierPOID <= 0 Then
+        MsgBox _
+            "Save the Goods Receipt header and select a Supplier PO first.", _
+            vbExclamation, _
+            "Receipt Header Required"
+        Exit Sub
+    End If
+
+    If Not ReceiptCanBeEdited() Then
+        MsgBox _
+            "Posted or cancelled receipts cannot load additional lines.", _
+            vbExclamation, _
+            "Receipt Locked"
+        Exit Sub
+    End If
+
+    DefaultLocationID = Nz(DLookup( _
+        "DeliveryLocationID", _
+        "T_SupplierPOs", _
+        "SupplierPOID=" & SupplierPOID), 0)
+
+    sourceSql = _
+        "SELECT O.SupplierPOLineID, O.ItemID, " & _
+        "O.UnitID, O.UnitPrice, O.RemainingQuantity, " & _
+        "Nz(I.RequiresSerial,False) AS RequiresSerial " & _
+        "FROM Q_SupplierPOOutstandingLines AS O " & _
+        "INNER JOIN T_Items AS I " & _
+        "ON O.ItemID=I.ItemID " & _
+        "WHERE O.SupplierPOID=" & SupplierPOID & " " & _
+        "AND O.RemainingQuantity>0 " & _
+        "ORDER BY O.SupplierPOLineID;"
+
+    Set ws = DBEngine.Workspaces(0)
+    Set db = CurrentDb
+
+    Set sourceRows = db.OpenRecordset( _
+        sourceSql, _
+        dbOpenSnapshot)
+
+    If sourceRows.EOF Then
+        MsgBox _
+            "This Supplier PO has no outstanding lines to receive.", _
+            vbInformation, _
+            "Nothing Outstanding"
+        GoTo Exit_Handler
+    End If
+
+    Set targetRows = db.OpenRecordset( _
+        "T_GoodsReceiptItems", _
+        dbOpenDynaset)
+
+    ws.BeginTrans
+    transactionStarted = True
+
+    Do While Not sourceRows.EOF
+
+        SupplierPOLineID = _
+            CLng(sourceRows!SupplierPOLineID)
+
+        If DCount( _
+            "*", _
+            "T_GoodsReceiptItems", _
+            "GoodsReceiptID=" & receiptID & _
+            " AND SupplierPOLineID=" & SupplierPOLineID) = 0 Then
+
+            ItemID = CLng(sourceRows!ItemID)
+            UnitID = CLng(sourceRows!UnitID)
+            remainingQuantity = _
+                CDbl(sourceRows!remainingQuantity)
+            RequiresSerial = _
+                Nz(sourceRows!RequiresSerial, False)
+
+            If RequiresSerial Then
+
+                If Abs(remainingQuantity - Fix(remainingQuantity)) _
+                   > 0.0000001 Then
+
+                    Err.Raise _
+                        vbObjectError + 7202, _
+                        "LoadOutstandingPOLines", _
+                        "Serialized item ID " & ItemID & _
+                        " has a non-whole outstanding quantity of " & _
+                        Format$(remainingQuantity, "0.####") & "." & _
+                        vbCrLf & vbCrLf & _
+                        "Serialized PO quantities must be whole numbers."
+
+                End If
+
+                serialRowCount = _
+                    CLng(Fix(remainingQuantity))
+
+                For rowIndex = 1 To serialRowCount
+
+                    AddReceiptItemRow _
+                        targetRows, _
+                        receiptID, _
+                        SupplierPOLineID, _
+                        ItemID, _
+                        UnitID, _
+                        1, _
+                        sourceRows!UnitPrice, _
+                        DefaultLocationID
+
+                    loadedRowCount = loadedRowCount + 1
+
+                Next rowIndex
+
+            Else
+
+                AddReceiptItemRow _
+                    targetRows, _
+                    receiptID, _
+                    SupplierPOLineID, _
+                    ItemID, _
+                    UnitID, _
+                    remainingQuantity, _
+                    sourceRows!UnitPrice, _
+                    DefaultLocationID
+
+                loadedRowCount = loadedRowCount + 1
+
+            End If
+
+        End If
+
+        sourceRows.MoveNext
+
+    Loop
+
+    ws.CommitTrans
+    transactionStarted = False
+
+    Me.Controls(RECEIPT_ITEM_SUBFORM).Form.Requery
+
+    RecalculateReceiptSummary
+    RefreshWorkflowState
+
+    If showCompletionMessage Then
+
+        If loadedRowCount > 0 Then
+            MsgBox _
+                loadedRowCount & _
+                " outstanding receipt row(s) were loaded.", _
+                vbInformation, _
+                "Outstanding Lines Loaded"
+        Else
+            MsgBox _
+                "All outstanding lines for this PO are already " & _
+                "present on this Draft receipt.", _
+                vbInformation, _
+                "No Additional Lines"
+        End If
+
+    End If
+
+Exit_Handler:
+    On Error Resume Next
+
+    If Not targetRows Is Nothing Then
+        targetRows.close
+    End If
+
+    If Not sourceRows Is Nothing Then
+        sourceRows.close
+    End If
+
+    Set targetRows = Nothing
+    Set sourceRows = Nothing
+    Set db = Nothing
+    Set ws = Nothing
+
+    On Error GoTo 0
+    Exit Sub
+
+Err_Handler:
+    errorNumber = Err.Number
+    errorDescription = Err.Description
+
+    On Error Resume Next
+
+    If transactionStarted Then
+        ws.Rollback
+    End If
+
+    On Error GoTo 0
+
+    MsgBox _
+        "The outstanding Supplier PO lines could not be loaded." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & errorNumber & vbCrLf & _
+        "Details: " & errorDescription, _
+        vbExclamation, _
+        "Load Outstanding Lines"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub AddReceiptItemRow( _
+    ByVal targetRows As DAO.Recordset, _
+    ByVal GoodsReceiptID As Long, _
+    ByVal SupplierPOLineID As Long, _
+    ByVal ItemID As Long, _
+    ByVal UnitID As Long, _
+    ByVal QuantityReceived As Double, _
+    ByVal UnitCost As Variant, _
+    ByVal LocationID As Long _
+)
+
+    targetRows.addnew
+
+    targetRows!GoodsReceiptID = GoodsReceiptID
+    targetRows!SupplierPOLineID = SupplierPOLineID
+    targetRows!ItemID = ItemID
+    targetRows!UnitID = UnitID
+    targetRows!QuantityReceived = QuantityReceived
+
+    If Not IsNull(UnitCost) Then
+        targetRows!UnitCost = UnitCost
+    End If
+
+    If LocationID > 0 Then
+        targetRows!LocationID = LocationID
+    End If
+
+    targetRows!CreatedOn = Now()
+    targetRows!UpdatedOn = Now()
+
+    targetRows.Update
+
+End Sub
+
+
+'=============================================================
+' SAVE AND VALIDATE RECEIPT BEFORE POSTING
+'=============================================================
+
+Private Function SaveReceiptItemsIfDirty() As Boolean
+
+    On Error GoTo Err_Handler
+
+    SaveReceiptItemsIfDirty = False
+
+    With Me.Controls(RECEIPT_ITEM_SUBFORM).Form
+        If .Dirty Then
+            .Dirty = False
+        End If
+    End With
+
+    SaveReceiptItemsIfDirty = True
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    MsgBox _
+        "The current receipt line could not be saved." & _
+        vbCrLf & vbCrLf & _
+        "Correct the highlighted line before posting." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Receipt Line Not Saved"
+
+    Resume Exit_Handler
+
+End Function
+
+
+Private Sub ValidateReceiptForPosting( _
+    ByVal db As DAO.Database, _
+    ByVal receiptID As Long, _
+    ByVal SupplierPOID As Long _
+)
+
+    Dim groupRows As DAO.Recordset
+    Dim itemRows As DAO.Recordset
+
+    Dim SupplierPOLineID As Long
+    Dim lineSupplierPOID As Long
+    Dim ItemID As Long
+    Dim expectedItemID As Long
+    Dim UnitID As Long
+    Dim expectedUnitID As Long
+    Dim receiptItemID As Long
+
+    Dim OrderedQuantity As Double
+    Dim previouslyReceived As Double
+    Dim thisReceiptQuantity As Double
+    Dim QuantityReceived As Double
+
+    Dim SerialNumber As String
+    Dim RequiresSerial As Boolean
+
+    If receiptID <= 0 Then
+        Err.Raise _
+            vbObjectError + 7401, _
+            "ValidateReceiptForPosting", _
+            "Save the Goods Receipt header before posting."
+    End If
+
+    If SupplierPOID <= 0 Then
+        Err.Raise _
+            vbObjectError + 7402, _
+            "ValidateReceiptForPosting", _
+            "The Goods Receipt does not have a Supplier PO."
+    End If
+
+    If Not ReceiptCanBeEdited() Then
+        Err.Raise _
+            vbObjectError + 7403, _
+            "ValidateReceiptForPosting", _
+            "Only a Draft Goods Receipt can be posted."
+    End If
+
+    If Not SupplierPOIsReceivable(SupplierPOID) Then
+        Err.Raise _
+            vbObjectError + 7404, _
+            "ValidateReceiptForPosting", _
+            "The Supplier PO must be Sent or Partially Received."
+    End If
+
+    If IsNull(Me.txtReceiptDate) Or _
+       Not IsDate(Me.txtReceiptDate) Then
+
+        Err.Raise _
+            vbObjectError + 7405, _
+            "ValidateReceiptForPosting", _
+            "Enter a valid receipt date."
+    End If
+
+    If Nz(Me.cboReceivedByUserID, 0) <= 0 Then
+        Err.Raise _
+            vbObjectError + 7406, _
+            "ValidateReceiptForPosting", _
+            "Select the user who received the goods."
+    End If
+
+    If DCount( _
+        "*", _
+        "T_GoodsReceiptItems", _
+        "GoodsReceiptID=" & receiptID & _
+        " AND Nz(QuantityReceived,0)>0") = 0 Then
+
+        Err.Raise _
+            vbObjectError + 7407, _
+            "ValidateReceiptForPosting", _
+            "Enter a received quantity greater than zero for at " & _
+            "least one receipt line."
+    End If
+
+    '---------------------------------------------------------
+    ' Validate total quantity for every Supplier PO line.
+    '---------------------------------------------------------
+    Set groupRows = db.OpenRecordset( _
+        "SELECT SupplierPOLineID, " & _
+        "Sum(Nz(QuantityReceived,0)) AS ThisReceiptQuantity " & _
+        "FROM T_GoodsReceiptItems " & _
+        "WHERE GoodsReceiptID=" & receiptID & " " & _
+        "GROUP BY SupplierPOLineID;", _
+        dbOpenSnapshot)
+
+    Do While Not groupRows.EOF
+
+        SupplierPOLineID = _
+            Nz(groupRows!SupplierPOLineID, 0)
+
+        If SupplierPOLineID <= 0 Then
+            Err.Raise _
+                vbObjectError + 7408, _
+                "ValidateReceiptForPosting", _
+                "A receipt row is not connected to a Supplier PO line."
+        End If
+
+        lineSupplierPOID = Nz(DLookup( _
+            "SupplierPOID", _
+            "T_SupplierPOLines", _
+            "SupplierPOLineID=" & SupplierPOLineID), 0)
+
+        If lineSupplierPOID <> SupplierPOID Then
+            Err.Raise _
+                vbObjectError + 7409, _
+                "ValidateReceiptForPosting", _
+                "Supplier PO line ID " & SupplierPOLineID & _
+                " does not belong to the selected Supplier PO."
+        End If
+
+        OrderedQuantity = Nz(DLookup( _
+            "OrderedQuantity", _
+            "T_SupplierPOLines", _
+            "SupplierPOLineID=" & SupplierPOLineID), 0)
+
+        previouslyReceived = Nz(DLookup( _
+            "QuantityReceivedToDate", _
+            "Q_SupplierPOLineReceived", _
+            "SupplierPOLineID=" & SupplierPOLineID), 0)
+
+        thisReceiptQuantity = _
+            Nz(groupRows!thisReceiptQuantity, 0)
+
+        If thisReceiptQuantity < 0 Then
+            Err.Raise _
+                vbObjectError + 7410, _
+                "ValidateReceiptForPosting", _
+                "Supplier PO line ID " & SupplierPOLineID & _
+                " has a negative receipt quantity."
+        End If
+
+        If previouslyReceived + thisReceiptQuantity > _
+           OrderedQuantity + 0.0000001 Then
+
+            Err.Raise _
+                vbObjectError + 7411, _
+                "ValidateReceiptForPosting", _
+                "Supplier PO line ID " & SupplierPOLineID & _
+                " would be over-received." & _
+                vbCrLf & vbCrLf & _
+                "Ordered: " & _
+                Format$(OrderedQuantity, "0.####") & vbCrLf & _
+                "Previously received: " & _
+                Format$(previouslyReceived, "0.####") & vbCrLf & _
+                "This receipt: " & _
+                Format$(thisReceiptQuantity, "0.####")
+        End If
+
+        groupRows.MoveNext
+
+    Loop
+
+    groupRows.close
+    Set groupRows = Nothing
+
+    '---------------------------------------------------------
+    ' Validate every positive receipt row.
+    '---------------------------------------------------------
+    Set itemRows = db.OpenRecordset( _
+        "SELECT * " & _
+        "FROM T_GoodsReceiptItems " & _
+        "WHERE GoodsReceiptID=" & receiptID & " " & _
+        "AND Nz(QuantityReceived,0)>0 " & _
+        "ORDER BY GoodsReceiptItemID;", _
+        dbOpenSnapshot)
+
+    Do While Not itemRows.EOF
+
+        receiptItemID = _
+            CLng(itemRows!GoodsReceiptItemID)
+
+        SupplierPOLineID = _
+            Nz(itemRows!SupplierPOLineID, 0)
+
+        ItemID = Nz(itemRows!ItemID, 0)
+        UnitID = Nz(itemRows!UnitID, 0)
+        QuantityReceived = _
+            Nz(itemRows!QuantityReceived, 0)
+
+        If SupplierPOLineID <= 0 Or _
+           ItemID <= 0 Or _
+           UnitID <= 0 Then
+
+            Err.Raise _
+                vbObjectError + 7412, _
+                "ValidateReceiptForPosting", _
+                "Receipt item ID " & receiptItemID & _
+                " is missing its PO line, item, or unit."
+        End If
+
+        expectedItemID = Nz(DLookup( _
+            "ItemID", _
+            "T_SupplierPOLines", _
+            "SupplierPOLineID=" & SupplierPOLineID), 0)
+
+        expectedUnitID = Nz(DLookup( _
+            "UnitID", _
+            "T_SupplierPOLines", _
+            "SupplierPOLineID=" & SupplierPOLineID), 0)
+
+        If ItemID <> expectedItemID Then
+            Err.Raise _
+                vbObjectError + 7413, _
+                "ValidateReceiptForPosting", _
+                "Receipt item ID " & receiptItemID & _
+                " does not match the item ordered on its Supplier PO line."
+        End If
+
+        If UnitID <> expectedUnitID Then
+            Err.Raise _
+                vbObjectError + 7414, _
+                "ValidateReceiptForPosting", _
+                "Receipt item ID " & receiptItemID & _
+                " does not use the unit ordered on its Supplier PO line."
+        End If
+
+        If Nz(itemRows!LocationID, 0) <= 0 Then
+            Err.Raise _
+                vbObjectError + 7415, _
+                "ValidateReceiptForPosting", _
+                "Select a receiving location for receipt item ID " & _
+                receiptItemID & "."
+        End If
+
+        If IsNull(itemRows!UnitCost) Or _
+           Not IsNumeric(itemRows!UnitCost) Then
+
+            Err.Raise _
+                vbObjectError + 7416, _
+                "ValidateReceiptForPosting", _
+                "Enter a valid unit cost for receipt item ID " & _
+                receiptItemID & "."
+        End If
+
+        If CCur(itemRows!UnitCost) < 0 Then
+            Err.Raise _
+                vbObjectError + 7417, _
+                "ValidateReceiptForPosting", _
+                "Unit cost cannot be negative for receipt item ID " & _
+                receiptItemID & "."
+        End If
+
+        If Nz(itemRows!StockMovementID, 0) > 0 Then
+            Err.Raise _
+                vbObjectError + 7418, _
+                "ValidateReceiptForPosting", _
+                "Receipt item ID " & receiptItemID & _
+                " already has a stock movement and cannot be posted again."
+        End If
+
+        If Nz(itemRows!ItemInstanceID, 0) > 0 Then
+            Err.Raise _
+                vbObjectError + 7419, _
+                "ValidateReceiptForPosting", _
+                "Receipt item ID " & receiptItemID & _
+                " already has a serialized item instance."
+        End If
+
+        RequiresSerial = _
+            ItemRequiresSerial(db, ItemID)
+
+        SerialNumber = _
+            Trim$(Nz( _
+                itemRows!SerialNumber, _
+                vbNullString))
+
+        If RequiresSerial Then
+
+            If Abs(QuantityReceived - 1) > 0.0000001 Then
+                Err.Raise _
+                    vbObjectError + 7420, _
+                    "ValidateReceiptForPosting", _
+                    "Serialized receipt item ID " & receiptItemID & _
+                    " must have quantity one."
+            End If
+
+            If Len(SerialNumber) = 0 Then
+                Err.Raise _
+                    vbObjectError + 7421, _
+                    "ValidateReceiptForPosting", _
+                    "Enter the serial number for receipt item ID " & _
+                    receiptItemID & "."
+            End If
+
+            If SerialExistsInStock(db, SerialNumber) Then
+                Err.Raise _
+                    vbObjectError + 7422, _
+                    "ValidateReceiptForPosting", _
+                    "Serial number '" & SerialNumber & _
+                    "' already exists in stock."
+            End If
+
+            If DCount( _
+                "*", _
+                "T_GoodsReceiptItems", _
+                "GoodsReceiptID=" & receiptID & _
+                " AND Nz(QuantityReceived,0)>0" & _
+                " AND SerialNumber=" & _
+                SqlText(SerialNumber)) > 1 Then
+
+                Err.Raise _
+                    vbObjectError + 7423, _
+                    "ValidateReceiptForPosting", _
+                    "Serial number '" & SerialNumber & _
+                    "' is repeated within this Goods Receipt."
+            End If
+
+            If SerialExistsInAnotherActiveReceipt( _
+                db, _
+                SerialNumber, _
+                receiptItemID) Then
+
+                Err.Raise _
+                    vbObjectError + 7424, _
+                    "ValidateReceiptForPosting", _
+                    "Serial number '" & SerialNumber & _
+                    "' is already entered on another active receipt."
+            End If
+
+        ElseIf Len(SerialNumber) > 0 Then
+
+            Err.Raise _
+                vbObjectError + 7425, _
+                "ValidateReceiptForPosting", _
+                "Receipt item ID " & receiptItemID & _
+                " is a bulk item and must not have a serial number."
+        End If
+
+        itemRows.MoveNext
+
+    Loop
+
+    itemRows.close
+    Set itemRows = Nothing
+
+End Sub
+
+
+'=============================================================
+' STOCK POSTING HELPERS
+'=============================================================
+
+Private Sub UpdateBulkStockBalance( _
+    ByVal db As DAO.Database, _
+    ByVal ItemID As Long, _
+    ByVal LocationID As Long, _
+    ByVal QuantityReceived As Double _
+)
+
+    Dim rs As DAO.Recordset
+    Dim existingLocationID As Long
+    Dim currentQuantity As Double
+
+    Set rs = db.OpenRecordset( _
+        "SELECT * " & _
+        "FROM T_StockBalances " & _
+        "WHERE ItemID=" & ItemID & ";", _
+        dbOpenDynaset)
+
+    If Not rs.EOF Then
+        rs.MoveLast
+
+        If rs.recordCount > 1 Then
+            rs.close
+            Set rs = Nothing
+
+            Err.Raise _
+                vbObjectError + 7430, _
+                "UpdateBulkStockBalance", _
+                "More than one stock-balance row exists for bulk " & _
+                "item ID " & ItemID & "." & _
+                vbCrLf & vbCrLf & _
+                "Each bulk item must have only one row in T_StockBalances."
+        End If
+
+        rs.MoveFirst
+    End If
+
+    If rs.EOF Then
+
+        rs.addnew
+        rs!ItemID = ItemID
+        rs!CurrentLocationID = LocationID
+        rs!QuantityOnHand = QuantityReceived
+        rs!QuantityReserved = 0
+        rs!LastUpdated = Now()
+        rs.Update
+
+    Else
+
+        existingLocationID = _
+            Nz(rs!CurrentLocationID, 0)
+
+        currentQuantity = _
+            Nz(rs!QuantityOnHand, 0)
+
+        If existingLocationID = 0 And _
+           currentQuantity <> 0 Then
+
+            rs.close
+            Set rs = Nothing
+
+            Err.Raise _
+                vbObjectError + 7431, _
+                "UpdateBulkStockBalance", _
+                "Bulk item ID " & ItemID & _
+                " has stock on hand but no current location."
+        End If
+
+        If existingLocationID <> 0 And _
+           existingLocationID <> LocationID And _
+           currentQuantity <> 0 Then
+
+            rs.close
+            Set rs = Nothing
+
+            Err.Raise _
+                vbObjectError + 7432, _
+                "UpdateBulkStockBalance", _
+                "Bulk item ID " & ItemID & _
+                " already has stock in another location." & _
+                vbCrLf & vbCrLf & _
+                "Current location: " & _
+                GetLocationDescription(db, existingLocationID) & _
+                vbCrLf & _
+                "Current quantity: " & _
+                Format$(currentQuantity, "0.####") & _
+                vbCrLf & vbCrLf & _
+                "Use the transfer form before receiving this item " & _
+                "into a different location."
+        End If
+
+        rs.Edit
+        rs!CurrentLocationID = LocationID
+        rs!QuantityOnHand = _
+            currentQuantity + QuantityReceived
+        rs!LastUpdated = Now()
+        rs.Update
+
+    End If
+
+    rs.close
+    Set rs = Nothing
+
+End Sub
+
+
+Private Function InsertSerializedInstance( _
+    ByVal db As DAO.Database, _
+    ByVal ItemID As Long, _
+    ByVal SerialNumber As String, _
+    ByVal LocationID As Long, _
+    ByVal acquisitionDate As Date, _
+    ByVal UnitCost As Variant, _
+    ByVal Notes As String _
+) As Long
+
+    Dim rs As DAO.Recordset
+
+    If SerialExistsInStock(db, SerialNumber) Then
+        Err.Raise _
+            vbObjectError + 7433, _
+            "InsertSerializedInstance", _
+            "Serial number '" & SerialNumber & _
+            "' already exists in T_ItemInstances."
+    End If
+
+    Set rs = db.OpenRecordset( _
+        "T_ItemInstances", _
+        dbOpenDynaset)
+
+    rs.addnew
+    rs!ItemID = ItemID
+    rs!SerialNumber = SerialNumber
+    rs!CurrentLocationID = LocationID
+    rs!currentStatus = "In Stock"
+    rs!acquisitionDate = acquisitionDate
+
+    If Not IsNull(UnitCost) Then
+        rs!UnitCost = UnitCost
+    End If
+
+    If Len(Trim$(Notes)) > 0 Then
+        rs!Notes = Notes
+    End If
+
+    rs.Update
+    rs.Bookmark = rs.LastModified
+
+    InsertSerializedInstance = _
+        CLng(rs!ItemInstanceID)
+
+    rs.close
+    Set rs = Nothing
+
+End Function
+
+
+Private Function InsertStockMovement( _
+    ByVal db As DAO.Database, _
+    ByVal MovementDate As Date, _
+    ByVal ItemID As Long, _
+    ByVal ItemInstanceID As Long, _
+    ByVal MovementTypeID As Long, _
+    ByVal QuantityReceived As Double, _
+    ByVal LocationID As Long, _
+    ByVal performedByUserID As Long, _
+    ByVal Reason As String, _
+    ByVal ReferenceDocument As String, _
+    ByVal Notes As String, _
+    ByVal UnitCost As Variant _
+) As Long
+
+    Dim rs As DAO.Recordset
+
+    Set rs = db.OpenRecordset( _
+        "T_StockMovements", _
+        dbOpenDynaset)
+
+    rs.addnew
+    rs!MovementDate = MovementDate
+    rs!ItemID = ItemID
+
+    If ItemInstanceID > 0 Then
+        rs!ItemInstanceID = ItemInstanceID
+    End If
+
+    rs!MovementTypeID = MovementTypeID
+    rs!Quantity = QuantityReceived
+    rs!ToLocationID = LocationID
+    rs!performedByUserID = performedByUserID
+    rs!Reason = Reason
+
+    If Len(Trim$(ReferenceDocument)) > 0 Then
+        rs!ReferenceDocument = ReferenceDocument
+    End If
+
+    If Len(Trim$(Notes)) > 0 Then
+        rs!Notes = Notes
+    End If
+
+    If Not IsNull(UnitCost) Then
+        rs!UnitCost = UnitCost
+    End If
+
+    rs.Update
+    rs.Bookmark = rs.LastModified
+
+    InsertStockMovement = _
+        CLng(rs!StockMovementID)
+
+    rs.close
+    Set rs = Nothing
+
+End Function
+
+
+Private Function GetMovementTypeID( _
+    ByVal db As DAO.Database, _
+    ByVal MovementTypeCode As String _
+) As Long
+
+    Dim rs As DAO.Recordset
+
+    Set rs = db.OpenRecordset( _
+        "SELECT MovementTypeID " & _
+        "FROM T_StockMovementTypes " & _
+        "WHERE MovementTypeCode=" & _
+        SqlText(MovementTypeCode) & ";", _
+        dbOpenSnapshot)
+
+    If rs.EOF Then
+        rs.close
+        Set rs = Nothing
+
+        Err.Raise _
+            vbObjectError + 7434, _
+            "GetMovementTypeID", _
+            "Movement type code '" & MovementTypeCode & _
+            "' was not found in T_StockMovementTypes."
+    End If
+
+    GetMovementTypeID = _
+        CLng(rs!MovementTypeID)
+
+    rs.close
+    Set rs = Nothing
+
+End Function
+
+
+Private Function ItemRequiresSerial( _
+    ByVal db As DAO.Database, _
+    ByVal ItemID As Long _
+) As Boolean
+
+    Dim rs As DAO.Recordset
+
+    Set rs = db.OpenRecordset( _
+        "SELECT RequiresSerial " & _
+        "FROM T_Items " & _
+        "WHERE ItemID=" & ItemID & ";", _
+        dbOpenSnapshot)
+
+    If rs.EOF Then
+        rs.close
+        Set rs = Nothing
+
+        Err.Raise _
+            vbObjectError + 7435, _
+            "ItemRequiresSerial", _
+            "Item ID " & ItemID & _
+            " was not found in T_Items."
+    End If
+
+    ItemRequiresSerial = _
+        Nz(rs!RequiresSerial, False)
+
+    rs.close
+    Set rs = Nothing
+
+End Function
+
+
+Private Function SerialExistsInStock( _
+    ByVal db As DAO.Database, _
+    ByVal SerialNumber As String _
+) As Boolean
+
+    Dim rs As DAO.Recordset
+
+    Set rs = db.OpenRecordset( _
+        "SELECT TOP 1 ItemInstanceID " & _
+        "FROM T_ItemInstances " & _
+        "WHERE SerialNumber=" & _
+        SqlText(SerialNumber) & ";", _
+        dbOpenSnapshot)
+
+    SerialExistsInStock = Not rs.EOF
+
+    rs.close
+    Set rs = Nothing
+
+End Function
+
+
+Private Function SerialExistsInAnotherActiveReceipt( _
+    ByVal db As DAO.Database, _
+    ByVal SerialNumber As String, _
+    ByVal currentReceiptItemID As Long _
+) As Boolean
+
+    Dim rs As DAO.Recordset
+    Dim sqlTextValue As String
+
+    sqlTextValue = _
+        "SELECT TOP 1 RI.GoodsReceiptItemID " & _
+        "FROM T_GoodsReceiptItems AS RI " & _
+        "INNER JOIN T_GoodsReceipts AS RH " & _
+        "ON RI.GoodsReceiptID=RH.GoodsReceiptID " & _
+        "WHERE Nz(RH.ReceiptStatus,'Draft')<>'Cancelled' " & _
+        "AND Nz(RI.QuantityReceived,0)>0 " & _
+        "AND RI.SerialNumber=" & _
+        SqlText(SerialNumber) & " " & _
+        "AND RI.GoodsReceiptItemID<>" & _
+        currentReceiptItemID & ";"
+
+    Set rs = db.OpenRecordset( _
+        sqlTextValue, _
+        dbOpenSnapshot)
+
+    SerialExistsInAnotherActiveReceipt = _
+        Not rs.EOF
+
+    rs.close
+    Set rs = Nothing
+
+End Function
+
+
+'=============================================================
+' UPDATE RECEIPT AND SUPPLIER PO STATUSES
+'=============================================================
+
+Private Sub MarkReceiptAsPosted( _
+    ByVal db As DAO.Database, _
+    ByVal receiptID As Long, _
+    ByVal PostedByUserID As Long _
+)
+
+    Dim rs As DAO.Recordset
+
+    Set rs = db.OpenRecordset( _
+        "SELECT * " & _
+        "FROM T_GoodsReceipts " & _
+        "WHERE GoodsReceiptID=" & receiptID & ";", _
+        dbOpenDynaset)
+
+    If rs.EOF Then
+        rs.close
+        Set rs = Nothing
+
+        Err.Raise _
+            vbObjectError + 7440, _
+            "MarkReceiptAsPosted", _
+            "The Goods Receipt header could not be found."
+    End If
+
+    If StrComp( _
+        Trim$(Nz(rs!ReceiptStatus, vbNullString)), _
+        STATUS_DRAFT, _
+        vbTextCompare) <> 0 Then
+
+        rs.close
+        Set rs = Nothing
+
+        Err.Raise _
+            vbObjectError + 7441, _
+            "MarkReceiptAsPosted", _
+            "The Goods Receipt is no longer in Draft status."
+    End If
+
+    rs.Edit
+    rs!ReceiptStatus = "Posted"
+    rs!PostedOn = Now()
+    rs!PostedByUserID = PostedByUserID
+    rs!UpdatedOn = Now()
+    rs.Update
+
+    rs.close
+    Set rs = Nothing
+
+End Sub
+
+
+Private Sub UpdateSupplierPOLineStatuses( _
+    ByVal db As DAO.Database, _
+    ByVal SupplierPOID As Long _
+)
+
+    Dim lineRows As DAO.Recordset
+    Dim receivedRows As DAO.Recordset
+
+    Dim SupplierPOLineID As Long
+    Dim OrderedQuantity As Double
+    Dim receivedQuantity As Double
+    Dim newLineStatus As String
+
+    Set lineRows = db.OpenRecordset( _
+        "SELECT * " & _
+        "FROM T_SupplierPOLines " & _
+        "WHERE SupplierPOID=" & SupplierPOID & " " & _
+        "ORDER BY LineNumber;", _
+        dbOpenDynaset)
+
+    Do While Not lineRows.EOF
+
+        If StrComp( _
+            Trim$(Nz(lineRows!LineStatus, vbNullString)), _
+            "Cancelled", _
+            vbTextCompare) <> 0 Then
+
+            SupplierPOLineID = _
+                CLng(lineRows!SupplierPOLineID)
+
+            OrderedQuantity = _
+                Nz(lineRows!OrderedQuantity, 0)
+
+            receivedQuantity = 0
+
+            Set receivedRows = db.OpenRecordset( _
+                "SELECT QuantityReceivedToDate " & _
+                "FROM Q_SupplierPOLineReceived " & _
+                "WHERE SupplierPOLineID=" & _
+                SupplierPOLineID & ";", _
+                dbOpenSnapshot)
+
+            If Not receivedRows.EOF Then
+                receivedQuantity = _
+                    Nz(receivedRows!QuantityReceivedToDate, 0)
+            End If
+
+            receivedRows.close
+            Set receivedRows = Nothing
+
+            If receivedQuantity >= _
+               OrderedQuantity - 0.0000001 Then
+
+                newLineStatus = "Received"
+
+            ElseIf receivedQuantity > 0 Then
+
+                newLineStatus = "Partially Received"
+
+            Else
+
+                newLineStatus = "Open"
+
+            End If
+
+            lineRows.Edit
+            lineRows!LineStatus = newLineStatus
+            lineRows!UpdatedOn = Now()
+            lineRows.Update
+
+        End If
+
+        lineRows.MoveNext
+
+    Loop
+
+    lineRows.close
+    Set lineRows = Nothing
+
+End Sub
+
+
+Private Sub UpdateSupplierPOStatus( _
+    ByVal db As DAO.Database, _
+    ByVal SupplierPOID As Long _
+)
+
+    Dim countRows As DAO.Recordset
+    Dim poRows As DAO.Recordset
+    Dim outstandingLineCount As Long
+    Dim newPOStatus As String
+
+    Set countRows = db.OpenRecordset( _
+        "SELECT Count(*) AS OutstandingLineCount " & _
+        "FROM T_SupplierPOLines " & _
+        "WHERE SupplierPOID=" & SupplierPOID & " " & _
+        "AND Nz(LineStatus,'Open') " & _
+        "Not In ('Received','Cancelled');", _
+        dbOpenSnapshot)
+
+    outstandingLineCount = _
+        Nz(countRows!outstandingLineCount, 0)
+
+    countRows.close
+    Set countRows = Nothing
+
+    If outstandingLineCount = 0 Then
+        newPOStatus = "Received"
+    Else
+        newPOStatus = "Partially Received"
+    End If
+
+    Set poRows = db.OpenRecordset( _
+        "SELECT * " & _
+        "FROM T_SupplierPOs " & _
+        "WHERE SupplierPOID=" & SupplierPOID & ";", _
+        dbOpenDynaset)
+
+    If poRows.EOF Then
+        poRows.close
+        Set poRows = Nothing
+
+        Err.Raise _
+            vbObjectError + 7442, _
+            "UpdateSupplierPOStatus", _
+            "The Supplier PO header could not be found."
+    End If
+
+    poRows.Edit
+    poRows!POStatus = newPOStatus
+    poRows!UpdatedOn = Now()
+    poRows.Update
+
+    poRows.close
+    Set poRows = Nothing
+
+End Sub
+
+
+'=============================================================
+' POSTING TEXT AND DISPLAY HELPERS
+'=============================================================
+
+Private Function BuildReceiptMovementNotes( _
+    ByVal LineNotes As String _
+) As String
+
+    Dim result As String
+    Dim deliveryNote As String
+    Dim supplierInvoice As String
+
+    result = _
+        "Goods Receipt: " & _
+        Trim$(Nz(Me.txtReceiptNumber, vbNullString))
+
+    deliveryNote = _
+        Trim$(Nz( _
+            Me.txtSupplierDeliveryNote, _
+            vbNullString))
+
+    supplierInvoice = _
+        Trim$(Nz( _
+            Me.txtSupplierInvoiceNumber, _
+            vbNullString))
+
+    If Len(deliveryNote) > 0 Then
+        result = result & _
+            vbCrLf & _
+            "Supplier delivery note: " & deliveryNote
+    End If
+
+    If Len(supplierInvoice) > 0 Then
+        result = result & _
+            vbCrLf & _
+            "Supplier invoice: " & supplierInvoice
+    End If
+
+    If Len(Trim$(LineNotes)) > 0 Then
+        result = result & _
+            vbCrLf & _
+            "Line notes: " & Trim$(LineNotes)
+    End If
+
+    BuildReceiptMovementNotes = result
+
+End Function
+
+
+Private Function GetLocationDescription( _
+    ByVal db As DAO.Database, _
+    ByVal LocationID As Long _
+) As String
+
+    On Error GoTo Err_Handler
+
+    Dim rs As DAO.Recordset
+    Dim result As String
+
+    Set rs = db.OpenRecordset( _
+        "SELECT W.WarehouseName, L.LocationCode, " & _
+        "L.LocationName, L.BinNumber, L.ShelfNumber " & _
+        "FROM T_Warehouses AS W " & _
+        "INNER JOIN T_Locations AS L " & _
+        "ON W.WarehouseID=L.WarehouseID " & _
+        "WHERE L.LocationID=" & LocationID & ";", _
+        dbOpenSnapshot)
+
+    If rs.EOF Then
+        result = "Location ID " & LocationID
+    Else
+        result = Nz(rs!WarehouseName, vbNullString)
+
+        If Len(Trim$(Nz(rs!LocationCode, vbNullString))) > 0 Then
+            result = result & " - " & rs!LocationCode
+        End If
+
+        If Len(Trim$(Nz(rs!LocationName, vbNullString))) > 0 Then
+            result = result & " - " & rs!LocationName
+        End If
+
+        If Len(Trim$(Nz(rs!BinNumber, vbNullString))) > 0 Then
+            result = result & " | Bin: " & rs!BinNumber
+        End If
+
+        If Len(Trim$(Nz(rs!ShelfNumber, vbNullString))) > 0 Then
+            result = result & " | Shelf: " & rs!ShelfNumber
+        End If
+    End If
+
+    rs.close
+    Set rs = Nothing
+
+    GetLocationDescription = result
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    GetLocationDescription = _
+        "Location ID " & LocationID
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' FORM CONFIGURATION
+'=============================================================
+
+Private Sub ConfigureControls()
+
+    RequireComboBox "cboSupplierPOID"
+    RequireComboBox "cboReceivedByUserID"
+    RequireComboBox "cboPostedByUserID"
+    RequireComboBox "cboReceiptStatus"
+
+    With Me.cboSupplierPOID
+        .RowSourceType = "Table/Query"
+        .RowSource = _
+            "SELECT P.SupplierPOID, P.PONumber, " & _
+            "S.CompanyName, P.PODate, P.POStatus " & _
+            "FROM T_SupplierPOs AS P " & _
+            "INNER JOIN T_Suppliers AS S " & _
+            "ON P.SupplierID=S.SupplierID " & _
+            "ORDER BY P.PODate DESC, P.PONumber DESC;"
+        .BoundColumn = 1
+        .ColumnCount = 5
+        .ColumnWidths = "0cm;3cm;6cm;2.8cm;3cm"
+        .LimitToList = True
+        .AutoExpand = True
+    End With
+
+    ConfigureUserCombo Me.cboReceivedByUserID
+    ConfigureUserCombo Me.cboPostedByUserID
+
+    With Me.cboReceiptStatus
+        .RowSourceType = "Value List"
+        .RowSource = "Draft;Posted;Cancelled"
+        .BoundColumn = 1
+        .ColumnCount = 1
+        .LimitToList = True
+        .Locked = True
+        .TabStop = False
+    End With
+
+    'Set these controls to Visible = No in Design View:
+    'txtGoodsReceiptID, txtCreatedOn, txtUpdatedOn.
+    'Do not hide them during Form_Load because Access may have
+    'already placed focus on the first control (error 2165).
+
+    Me.txtReceiptNumber.Locked = True
+    Me.txtReceiptNumber.TabStop = False
+
+    Me.txtPostedOn.Locked = True
+    Me.txtPostedOn.TabStop = False
+
+    Me.cboPostedByUserID.Locked = True
+    Me.cboPostedByUserID.TabStop = False
+
+    Me.txtSupplierName.Locked = True
+    Me.txtSupplierName.TabStop = False
+
+    Me.txtPOStatusDisplay.Locked = True
+    Me.txtPOStatusDisplay.TabStop = False
+
+    Me.txtLineCount.Locked = True
+    Me.txtLineCount.TabStop = False
+
+    Me.txtTotalQuantity.Locked = True
+    Me.txtTotalQuantity.TabStop = False
+
+    Me.txtReceiptValue.Locked = True
+    Me.txtReceiptValue.TabStop = False
+
+    Me.txtNOtes.EnterKeyBehavior = True
+    Me.txtNOtes.ScrollBars = 2
+
+    Me.txtReceiptDate.defaultValue = "=Date()"
+    Me.cboReceiptStatus.defaultValue = """Draft"""
+
+End Sub
+
+
+Private Sub ConfigureUserCombo(ByVal userCombo As Control)
+
+    With userCombo
+        .RowSourceType = "Table/Query"
+        .RowSource = _
+            "SELECT UserID, UserName " & _
+            "FROM T_Users " & _
+            "ORDER BY UserName;"
+        .BoundColumn = 1
+        .ColumnCount = 2
+        .ColumnWidths = "0cm;5cm"
+        .LimitToList = True
+        .AutoExpand = True
+    End With
+
+End Sub
+
+
+Private Sub RequireComboBox(ByVal controlName As String)
+
+    Dim controlObject As Control
+
+    On Error GoTo Missing_Control
+
+    Set controlObject = Me.Controls(controlName)
+
+    If controlObject.ControlType <> acComboBox Then
+        Err.Raise _
+            vbObjectError + 7301, _
+            "RequireComboBox", _
+            "Control '" & controlName & "' is a " & _
+            TypeName(controlObject) & ", but it must be a Combo Box." & _
+            vbCrLf & vbCrLf & _
+            "Open F_GoodsReceipt in Design View, delete that control, " & _
+            "add a Combo Box, give it the same name, and set its " & _
+            "Control Source correctly."
+    End If
+
+Exit_Handler:
+    Set controlObject = Nothing
+    Exit Sub
+
+Missing_Control:
+    If Err.Number = 2465 Then
+        Err.Raise _
+            vbObjectError + 7302, _
+            "RequireComboBox", _
+            "Required Combo Box '" & controlName & _
+            "' is missing from F_GoodsReceipt."
+    Else
+        Err.Raise Err.Number, Err.Source, Err.Description
+    End If
+
+End Sub
+
+
+Private Sub ConfigureReceiptSubform()
+
+    On Error GoTo Err_Handler
+
+    With Me.Controls(RECEIPT_ITEM_SUBFORM)
+
+        If .SourceObject <> _
+           "Form.SF_GoodsReceiptItems" Then
+
+            .SourceObject = _
+                "Form.SF_GoodsReceiptItems"
+
+        End If
+
+        .LinkMasterFields = "txtGoodsReceiptID"
+        .LinkChildFields = "GoodsReceiptID"
+        .Enabled = True
+        .Locked = False
+
+    End With
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Err.Raise _
+        Err.Number, _
+        "ConfigureReceiptSubform", _
+        "Confirm that the subform control is named '" & _
+        RECEIPT_ITEM_SUBFORM & "'." & _
+        vbCrLf & Err.Description
+
+End Sub
+
+
+Private Sub InitializeNewReceipt()
+
+    If Len(Trim$(Nz(Me.txtReceiptNumber, vbNullString))) = 0 Then
+        Me.txtReceiptNumber = NextReceiptNumber()
+    End If
+
+    If IsNull(Me.txtReceiptDate) Then
+        Me.txtReceiptDate = Date
+    End If
+
+    If Len(Trim$(Nz(Me.cboReceiptStatus, vbNullString))) = 0 Then
+        Me.cboReceiptStatus = STATUS_DRAFT
+    End If
+
+    If IsNull(Me.txtCreatedOn) Then
+        Me.txtCreatedOn = Now()
+    End If
+
+End Sub
+
+
+Private Sub RefreshWorkflowState()
+
+    On Error Resume Next
+
+    Dim canEdit As Boolean
+    Dim hasReceipt As Boolean
+    Dim hasLines As Boolean
+    Dim hasPositiveLines As Boolean
+    Dim receiptID As Long
+
+    receiptID = CurrentGoodsReceiptID()
+    hasReceipt = (receiptID > 0)
+
+    If hasReceipt Then
+        hasLines = _
+            (DCount( _
+                "*", _
+                "T_GoodsReceiptItems", _
+                "GoodsReceiptID=" & receiptID) > 0)
+
+        hasPositiveLines = _
+            (DCount( _
+                "*", _
+                "T_GoodsReceiptItems", _
+                "GoodsReceiptID=" & receiptID & _
+                " AND Nz(QuantityReceived,0)>0") > 0)
+    End If
+
+    canEdit = ReceiptCanBeEdited()
+
+    Me.cboSupplierPOID.Locked = _
+        (Not canEdit) Or hasLines
+
+    Me.txtReceiptDate.Locked = Not canEdit
+    Me.txtSupplierDeliveryNote.Locked = Not canEdit
+    Me.txtSupplierInvoiceNumber.Locked = Not canEdit
+    Me.cboReceivedByUserID.Locked = Not canEdit
+    Me.txtNOtes.Locked = Not canEdit
+
+    With Me.Controls(RECEIPT_ITEM_SUBFORM).Form
+        .AllowAdditions = False
+        .AllowEdits = canEdit
+        .AllowDeletions = canEdit
+    End With
+
+    Me.cmdLoadOutstanding.Enabled = _
+        canEdit And hasReceipt
+
+    Me.cmdSaveReceipt.Enabled = canEdit
+
+    Me.cmdPostReceipt.Enabled = _
+        canEdit And _
+        hasReceipt And _
+        hasPositiveLines
+
+    On Error GoTo 0
+
+End Sub
+
+
+'=============================================================
+' DISPLAY SUPPLIER PO DETAILS
+'=============================================================
+
+Private Sub UpdateSupplierPODisplay()
+
+    On Error GoTo Err_Handler
+
+    Dim db As DAO.Database
+    Dim rs As DAO.Recordset
+    Dim SupplierPOID As Long
+    Dim SqlText As String
+
+    Me.txtSupplierName = Null
+    Me.txtPOStatusDisplay = Null
+
+    SupplierPOID = Nz(Me.cboSupplierPOID, 0)
+
+    If SupplierPOID <= 0 Then
+        GoTo Exit_Handler
+    End If
+
+    SqlText = _
+        "SELECT S.CompanyName, P.POStatus " & _
+        "FROM T_SupplierPOs AS P " & _
+        "INNER JOIN T_Suppliers AS S " & _
+        "ON P.SupplierID=S.SupplierID " & _
+        "WHERE P.SupplierPOID=" & SupplierPOID & ";"
+
+    Set db = CurrentDb
+
+    Set rs = db.OpenRecordset( _
+        SqlText, _
+        dbOpenSnapshot)
+
+    If Not rs.EOF Then
+        Me.txtSupplierName = _
+            Nz(rs!CompanyName, vbNullString)
+
+        Me.txtPOStatusDisplay = _
+            Nz(rs!POStatus, vbNullString)
+    End If
+
+Exit_Handler:
+    On Error Resume Next
+
+    If Not rs Is Nothing Then
+        rs.close
+    End If
+
+    Set rs = Nothing
+    Set db = Nothing
+
+    On Error GoTo 0
+    Exit Sub
+
+Err_Handler:
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' SAVE AND STATUS HELPERS
+'=============================================================
+
+Private Function SaveReceiptHeader() As Boolean
+
+    On Error GoTo Err_Handler
+
+    SaveReceiptHeader = False
+
+    If Nz(Me.cboSupplierPOID, 0) <= 0 Then
+        MsgBox _
+            "Select the Supplier Purchase Order first.", _
+            vbExclamation, _
+            "Supplier PO Required"
+        Exit Function
+    End If
+
+    InitializeNewReceipt
+
+    If Me.Dirty Then
+        Me.Dirty = False
+    End If
+
+    SaveReceiptHeader = _
+        (CurrentGoodsReceiptID() > 0)
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    MsgBox _
+        "The Goods Receipt header could not be saved." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Goods Receipt"
+
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function CurrentGoodsReceiptID() As Long
+
+    CurrentGoodsReceiptID = _
+        Nz(Me.txtGoodsReceiptID, 0)
+
+End Function
+
+
+Private Function ReceiptCanBeEdited() As Boolean
+
+    Dim ReceiptStatus As String
+
+    ReceiptStatus = _
+        Trim$(Nz(Me.cboReceiptStatus, STATUS_DRAFT))
+
+    ReceiptCanBeEdited = _
+        (StrComp( _
+            ReceiptStatus, _
+            STATUS_DRAFT, _
+            vbTextCompare) = 0)
+
+End Function
+
+
+Private Function SupplierPOIsReceivable( _
+    ByVal SupplierPOID As Long _
+) As Boolean
+
+    Dim POStatus As String
+
+    POStatus = Trim$(Nz(DLookup( _
+        "POStatus", _
+        "T_SupplierPOs", _
+        "SupplierPOID=" & SupplierPOID), _
+        vbNullString))
+
+    SupplierPOIsReceivable = _
+        (StrComp( _
+            POStatus, _
+            "Sent", _
+            vbTextCompare) = 0) Or _
+        (StrComp( _
+            POStatus, _
+            "Partially Received", _
+            vbTextCompare) = 0)
+
+End Function
+
+
+'=============================================================
+' RECEIPT NUMBER
+'=============================================================
+
+Private Function NextReceiptNumber() As String
+
+    Dim nextNumber As Long
+    Dim candidate As String
+
+    nextNumber = Nz(DMax( _
+        "GoodsReceiptID", _
+        "T_GoodsReceipts"), 0) + 1
+
+    Do
+        candidate = _
+            "GRN-" & Format$(nextNumber, "00000")
+
+        If DCount( _
+            "*", _
+            "T_GoodsReceipts", _
+            "ReceiptNumber=" & SqlText(candidate)) = 0 Then
+
+            Exit Do
+        End If
+
+        nextNumber = nextNumber + 1
+    Loop
+
+    NextReceiptNumber = candidate
+
+End Function
+
+
+'=============================================================
+' OPENARGS
+'=============================================================
+
+Private Function ReadOpenArgLong( _
+    ByVal argumentName As String _
+) As Long
+
+    On Error GoTo Exit_Handler
+
+    Dim openArgumentText As String
+    Dim argumentParts As Variant
+    Dim argumentPart As Variant
+    Dim equalsPosition As Long
+    Dim currentName As String
+    Dim currentValue As String
+
+    openArgumentText = _
+        Trim$(Nz(Me.OpenArgs, vbNullString))
+
+    If Len(openArgumentText) = 0 Then
+        Exit Function
+    End If
+
+    argumentParts = Split(openArgumentText, ";")
+
+    For Each argumentPart In argumentParts
+
+        equalsPosition = _
+            InStr(1, CStr(argumentPart), "=", vbBinaryCompare)
+
+        If equalsPosition > 0 Then
+
+            currentName = Trim$(Left$( _
+                CStr(argumentPart), _
+                equalsPosition - 1))
+
+            currentValue = Trim$(Mid$( _
+                CStr(argumentPart), _
+                equalsPosition + 1))
+
+            If StrComp( _
+                currentName, _
+                argumentName, _
+                vbTextCompare) = 0 Then
+
+                If IsNumeric(currentValue) Then
+                    ReadOpenArgLong = CLng(currentValue)
+                End If
+
+                Exit Function
+
+            End If
+
+        End If
+
+    Next argumentPart
+
+Exit_Handler:
+    If ReadOpenArgLong < 0 Then
+        ReadOpenArgLong = 0
+    End If
+
+End Function
+
+
+'=============================================================
+' SQL HELPER
+'=============================================================
+
+Private Function SqlText( _
+    ByVal textValue As String _
+) As String
+
+    SqlText = _
+        "'" & Replace(textValue, "'", "''") & "'"
+
+End Function

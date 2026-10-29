@@ -1,0 +1,630 @@
+Option Compare Database
+Option Explicit
+
+'=============================================================
+' STANDARD MODULE: M_ProjectIssueSetup
+' STEP 1 - THREE-MODE PROJECT ISSUE / TOOL RETURN SUPPORT
+'
+' Replace the existing contents of M_ProjectIssueSetup with this
+' complete module, then run from the Immediate Window:
+'
+'     SetupProjectIssueSupportV2
+'
+' This procedure is safe to run more than once. It only creates or
+' extends the temporary staging table and checks the permanent stock
+' structures. It does not change stock quantities or stock movements.
+'=============================================================
+
+Private Const STAGING_TABLE As String = "T_ProjectIssueStaging"
+
+
+Public Sub SetupProjectIssueSupportV2()
+
+    On Error GoTo Err_Handler
+
+    Dim db As DAO.Database
+    Dim changesMade As String
+
+    Set db = CurrentDb
+
+    EnsureStagingTable db, changesMade
+    EnsureStagingFields db, changesMade
+    EnsureStagingIndexes db, changesMade
+
+    ValidateProjectIssueDependencies db
+    ValidateMovementTypeCode db, "STOCK_OUT"
+    ValidateMovementTypeCode db, "STOCK_IN"
+
+    db.TableDefs.Refresh
+
+    MsgBox _
+        "Step 1 is complete." & vbCrLf & vbCrLf & _
+        "T_ProjectIssueStaging now supports:" & vbCrLf & _
+        "  - material issues" & vbCrLf & _
+        "  - tool issues" & vbCrLf & _
+        "  - tool returns" & vbCrLf & vbCrLf & _
+        "The inventory dependencies were also verified." & _
+        ChangesMessage(changesMade), _
+        vbInformation, _
+        "Project Issue Support Ready"
+
+Exit_Handler:
+    Set db = Nothing
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "Step 1 could not be completed." & vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Project Issue Setup"
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' CREATE / EXTEND THE TEMPORARY STAGING TABLE
+'=============================================================
+
+Private Sub EnsureStagingTable( _
+    ByVal db As DAO.Database, _
+    ByRef changesMade As String _
+)
+
+    Dim tableObject As DAO.TableDef
+    Dim fieldObject As DAO.Field
+
+    If TableExists(db, STAGING_TABLE) Then
+        Exit Sub
+    End If
+
+    Set tableObject = db.CreateTableDef(STAGING_TABLE)
+
+    Set fieldObject = _
+        tableObject.CreateField("ProjectIssueStagingID", dbLong)
+    fieldObject.Attributes = dbAutoIncrField
+    tableObject.Fields.Append fieldObject
+
+    tableObject.Fields.Append _
+        tableObject.CreateField("ProjectID", dbLong)
+    tableObject.Fields.Append _
+        tableObject.CreateField("IssueType", dbText, 20)
+    tableObject.Fields.Append _
+        tableObject.CreateField("ItemID", dbLong)
+
+    'Serialized issue/return identity and locations.
+    tableObject.Fields.Append _
+        tableObject.CreateField("ItemInstanceID", dbLong)
+    tableObject.Fields.Append _
+        tableObject.CreateField("FromLocationID", dbLong)
+    tableObject.Fields.Append _
+        tableObject.CreateField("ToLocationID", dbLong)
+
+    'Links a return row back to the original stock-out movement.
+    tableObject.Fields.Append _
+        tableObject.CreateField("SourceMovementID", dbLong)
+
+    tableObject.Fields.Append _
+        tableObject.CreateField("RequiredQty", dbDouble)
+    tableObject.Fields.Append _
+        tableObject.CreateField("AvailableQty", dbDouble)
+    tableObject.Fields.Append _
+        tableObject.CreateField("IssueQty", dbDouble)
+    tableObject.Fields.Append _
+        tableObject.CreateField("Selected", dbBoolean)
+    tableObject.Fields.Append _
+        tableObject.CreateField("Notes", dbMemo)
+
+    db.TableDefs.Append tableObject
+    db.TableDefs.Refresh
+
+    AddChange changesMade, "Created " & STAGING_TABLE
+
+End Sub
+
+
+Private Sub EnsureStagingFields( _
+    ByVal db As DAO.Database, _
+    ByRef changesMade As String _
+)
+
+    EnsureAutoNumberField _
+        db, STAGING_TABLE, "ProjectIssueStagingID", changesMade
+
+    EnsureField _
+        db, STAGING_TABLE, "ProjectID", dbLong, 0, changesMade
+    EnsureField _
+        db, STAGING_TABLE, "IssueType", dbText, 20, changesMade
+    EnsureField _
+        db, STAGING_TABLE, "ItemID", dbLong, 0, changesMade
+
+    EnsureField _
+        db, STAGING_TABLE, "ItemInstanceID", dbLong, 0, changesMade
+    EnsureField _
+        db, STAGING_TABLE, "FromLocationID", dbLong, 0, changesMade
+    EnsureField _
+        db, STAGING_TABLE, "ToLocationID", dbLong, 0, changesMade
+    EnsureField _
+        db, STAGING_TABLE, "SourceMovementID", dbLong, 0, changesMade
+
+    EnsureField _
+        db, STAGING_TABLE, "RequiredQty", dbDouble, 0, changesMade
+    EnsureField _
+        db, STAGING_TABLE, "AvailableQty", dbDouble, 0, changesMade
+    EnsureField _
+        db, STAGING_TABLE, "IssueQty", dbDouble, 0, changesMade
+    EnsureField _
+        db, STAGING_TABLE, "Selected", dbBoolean, 0, changesMade
+    EnsureField _
+        db, STAGING_TABLE, "Notes", dbMemo, 0, changesMade
+
+    'Stop immediately if an existing field has an incompatible type.
+    RequireFieldType db, STAGING_TABLE, _
+        "ProjectIssueStagingID", dbLong
+    RequireFieldType db, STAGING_TABLE, "ProjectID", dbLong
+    RequireTextField db, STAGING_TABLE, "IssueType", 10
+    RequireFieldType db, STAGING_TABLE, "ItemID", dbLong
+    RequireFieldType db, STAGING_TABLE, "ItemInstanceID", dbLong
+    RequireFieldType db, STAGING_TABLE, "FromLocationID", dbLong
+    RequireFieldType db, STAGING_TABLE, "ToLocationID", dbLong
+    RequireFieldType db, STAGING_TABLE, "SourceMovementID", dbLong
+    RequireFieldType db, STAGING_TABLE, "RequiredQty", dbDouble
+    RequireFieldType db, STAGING_TABLE, "AvailableQty", dbDouble
+    RequireFieldType db, STAGING_TABLE, "IssueQty", dbDouble
+    RequireFieldType db, STAGING_TABLE, "Selected", dbBoolean
+
+End Sub
+
+
+Private Sub EnsureStagingIndexes( _
+    ByVal db As DAO.Database, _
+    ByRef changesMade As String _
+)
+
+    Dim tableObject As DAO.TableDef
+    Dim indexObject As DAO.Index
+
+    Set tableObject = db.TableDefs(STAGING_TABLE)
+
+    If Not PrimaryIndexExists(tableObject) Then
+        Set indexObject = tableObject.CreateIndex("PrimaryKey")
+        indexObject.Primary = True
+        indexObject.Unique = True
+        indexObject.Fields.Append _
+            indexObject.CreateField("ProjectIssueStagingID")
+        tableObject.Indexes.Append indexObject
+
+        AddChange changesMade, _
+            "Added primary key on ProjectIssueStagingID"
+    End If
+
+    If Not IndexExists(tableObject, "IX_ProjectIssueScope") Then
+        Set indexObject = _
+            tableObject.CreateIndex("IX_ProjectIssueScope")
+        indexObject.Fields.Append _
+            indexObject.CreateField("ProjectID")
+        indexObject.Fields.Append _
+            indexObject.CreateField("IssueType")
+        tableObject.Indexes.Append indexObject
+
+        AddChange changesMade, _
+            "Added ProjectID/IssueType staging index"
+    End If
+
+    If Not IndexExists(tableObject, "IX_ProjectIssueInstance") Then
+        Set indexObject = _
+            tableObject.CreateIndex("IX_ProjectIssueInstance")
+        indexObject.Fields.Append _
+            indexObject.CreateField("ItemInstanceID")
+        tableObject.Indexes.Append indexObject
+
+        AddChange changesMade, _
+            "Added ItemInstanceID staging index"
+    End If
+
+End Sub
+
+
+'=============================================================
+' VERIFY THE PERMANENT TABLES USED BY THE NEXT STEPS
+'=============================================================
+
+Private Sub ValidateProjectIssueDependencies( _
+    ByVal db As DAO.Database _
+)
+
+    'Project and template header.
+    RequireField db, "T_Projects", "ProjectID"
+    RequireField db, "T_Projects", "ProjectCode"
+    RequireField db, "T_Projects", "ProjectName"
+    RequireField db, "T_Projects", "CustomerID"
+    RequireField db, "T_Projects", "AssemblyTemplateID"
+    RequireField db, "T_Projects", "BuildQuantity"
+    RequireField db, "T_Projects", "EndDate"
+
+    RequireField db, "T_Customers", "CustomerID"
+    RequireField db, "T_Customers", "CustomerName"
+
+    RequireField db, "T_AssemblyTemplates", "AssemblyTemplateID"
+    RequireField db, "T_AssemblyTemplates", "TemplateName"
+
+    'Template lines. No dependency on any removed line-level key.
+    RequireField db, "T_AssemblyTemplateMaterials", _
+        "AssemblyTemplateID"
+    RequireField db, "T_AssemblyTemplateMaterials", _
+        "ComponentItemID"
+    RequireField db, "T_AssemblyTemplateMaterials", _
+        "QuantityPerOutput"
+
+    RequireField db, "T_AssemblyTemplateTools", _
+        "AssemblyTemplateID"
+    RequireField db, "T_AssemblyTemplateTools", _
+        "ToolItemID"
+    RequireField db, "T_AssemblyTemplateTools", _
+        "QuantityRequired"
+
+    'Item display, serialization, and destination defaults.
+    RequireField db, "T_Items", "ItemID"
+    RequireField db, "T_Items", "ItemName"
+    RequireField db, "T_Items", "BaseUnitID"
+    RequireField db, "T_Items", "RequiresSerial"
+    RequireField db, "T_Items", "DefaultLocationID"
+
+    RequireField db, "T_Units", "UnitID"
+    RequireField db, "T_Units", "UnitCode"
+
+    RequireField db, "T_Users", "UserID"
+
+    'Bulk stock.
+    RequireField db, "T_StockBalances", "ItemID"
+    RequireField db, "T_StockBalances", "CurrentLocationID"
+    RequireField db, "T_StockBalances", "QuantityOnHand"
+    RequireField db, "T_StockBalances", "QuantityReserved"
+    RequireField db, "T_StockBalances", "LastUpdated"
+
+    'Serialized stock.
+    RequireField db, "T_ItemInstances", "ItemInstanceID"
+    RequireField db, "T_ItemInstances", "ItemID"
+    RequireField db, "T_ItemInstances", "SerialNumber"
+    RequireField db, "T_ItemInstances", "CurrentLocationID"
+    RequireField db, "T_ItemInstances", "CurrentStatus"
+    RequireField db, "T_ItemInstances", "UnitCost"
+    RequireField db, "T_ItemInstances", "Notes"
+
+    'Permanent audit trail used by issue and return posting.
+    RequireField db, "T_StockMovements", "StockMovementID"
+    RequireField db, "T_StockMovements", "MovementDate"
+    RequireField db, "T_StockMovements", "ExpectedReturnDate"
+    RequireField db, "T_StockMovements", "ItemID"
+    RequireField db, "T_StockMovements", "ItemInstanceID"
+    RequireField db, "T_StockMovements", "ProjectID"
+    RequireField db, "T_StockMovements", "MovementTypeID"
+    RequireField db, "T_StockMovements", "Quantity"
+    RequireField db, "T_StockMovements", "FromLocationID"
+    RequireField db, "T_StockMovements", "ToLocationID"
+    RequireField db, "T_StockMovements", "PerformedByUserID"
+    RequireField db, "T_StockMovements", "Reason"
+    RequireField db, "T_StockMovements", "ReferenceDocument"
+    RequireField db, "T_StockMovements", "Notes"
+    RequireField db, "T_StockMovements", "UnitCost"
+
+    RequireField db, "T_StockMovementTypes", "MovementTypeID"
+    RequireField db, "T_StockMovementTypes", "MovementTypeCode"
+
+End Sub
+
+
+Private Sub ValidateMovementTypeCode( _
+    ByVal db As DAO.Database, _
+    ByVal MovementTypeCode As String _
+)
+
+    Dim queryObject As DAO.QueryDef
+    Dim rows As DAO.Recordset
+
+    Set queryObject = db.CreateQueryDef( _
+        vbNullString, _
+        "PARAMETERS pCode Text (50); " & _
+        "SELECT MovementTypeID " & _
+        "FROM T_StockMovementTypes " & _
+        "WHERE MovementTypeCode=pCode;")
+
+    queryObject.Parameters("pCode") = MovementTypeCode
+    Set rows = queryObject.OpenRecordset(dbOpenSnapshot)
+
+    If rows.EOF Then
+        Err.Raise _
+            vbObjectError + 7101, _
+            "ValidateMovementTypeCode", _
+            "T_StockMovementTypes does not contain the required " & _
+            "movement code '" & MovementTypeCode & "'."
+    End If
+
+    rows.close
+    Set rows = Nothing
+    Set queryObject = Nothing
+
+End Sub
+
+
+'=============================================================
+' TABLE / FIELD HELPERS
+'=============================================================
+
+Private Sub EnsureAutoNumberField( _
+    ByVal db As DAO.Database, _
+    ByVal tableName As String, _
+    ByVal fieldName As String, _
+    ByRef changesMade As String _
+)
+
+    Dim tableObject As DAO.TableDef
+    Dim fieldObject As DAO.Field
+
+    Set tableObject = db.TableDefs(tableName)
+
+    If FieldExists(tableObject, fieldName) Then
+        Set fieldObject = tableObject.Fields(fieldName)
+
+        If fieldObject.Type <> dbLong Then
+            Err.Raise _
+                vbObjectError + 7102, _
+                "EnsureAutoNumberField", _
+                tableName & "." & fieldName & _
+                " exists but is not a Long Integer/AutoNumber field."
+        End If
+
+        If (fieldObject.Attributes And dbAutoIncrField) = 0 Then
+            Err.Raise _
+                vbObjectError + 7103, _
+                "EnsureAutoNumberField", _
+                tableName & "." & fieldName & _
+                " exists but is not AutoNumber. Change it to AutoNumber " & _
+                "in table Design View, then run setup again."
+        End If
+
+        Exit Sub
+    End If
+
+    Set fieldObject = tableObject.CreateField(fieldName, dbLong)
+    fieldObject.Attributes = dbAutoIncrField
+    tableObject.Fields.Append fieldObject
+
+    AddChange changesMade, _
+        "Added " & tableName & "." & fieldName
+
+End Sub
+
+
+Private Sub EnsureField( _
+    ByVal db As DAO.Database, _
+    ByVal tableName As String, _
+    ByVal fieldName As String, _
+    ByVal fieldType As DAO.DataTypeEnum, _
+    ByVal fieldSize As Long, _
+    ByRef changesMade As String _
+)
+
+    Dim tableObject As DAO.TableDef
+
+    Set tableObject = db.TableDefs(tableName)
+
+    If FieldExists(tableObject, fieldName) Then
+        Exit Sub
+    End If
+
+    If fieldSize > 0 Then
+        tableObject.Fields.Append _
+            tableObject.CreateField(fieldName, fieldType, fieldSize)
+    Else
+        tableObject.Fields.Append _
+            tableObject.CreateField(fieldName, fieldType)
+    End If
+
+    AddChange changesMade, _
+        "Added " & tableName & "." & fieldName
+
+End Sub
+
+
+Private Sub RequireField( _
+    ByVal db As DAO.Database, _
+    ByVal tableName As String, _
+    ByVal fieldName As String _
+)
+
+    If Not TableExists(db, tableName) Then
+        Err.Raise _
+            vbObjectError + 7104, _
+            "RequireField", _
+            "Required table " & tableName & " is missing."
+    End If
+
+    If Not FieldExists(db.TableDefs(tableName), fieldName) Then
+        Err.Raise _
+            vbObjectError + 7105, _
+            "RequireField", _
+            "Required field " & tableName & "." & _
+            fieldName & " is missing."
+    End If
+
+End Sub
+
+
+Private Sub RequireFieldType( _
+    ByVal db As DAO.Database, _
+    ByVal tableName As String, _
+    ByVal fieldName As String, _
+    ByVal expectedType As DAO.DataTypeEnum _
+)
+
+    Dim fieldObject As DAO.Field
+
+    RequireField db, tableName, fieldName
+    Set fieldObject = db.TableDefs(tableName).Fields(fieldName)
+
+    If fieldObject.Type <> expectedType Then
+        Err.Raise _
+            vbObjectError + 7106, _
+            "RequireFieldType", _
+            tableName & "." & fieldName & _
+            " has the wrong data type. Expected DAO type " & _
+            CStr(expectedType) & ", but found DAO type " & _
+            CStr(fieldObject.Type) & "."
+    End If
+
+End Sub
+
+
+Private Sub RequireTextField( _
+    ByVal db As DAO.Database, _
+    ByVal tableName As String, _
+    ByVal fieldName As String, _
+    ByVal minimumSize As Long _
+)
+
+    Dim fieldObject As DAO.Field
+
+    RequireField db, tableName, fieldName
+    Set fieldObject = db.TableDefs(tableName).Fields(fieldName)
+
+    If fieldObject.Type <> dbText Then
+        Err.Raise _
+            vbObjectError + 7107, _
+            "RequireTextField", _
+            tableName & "." & fieldName & _
+            " must be a Short Text field."
+    End If
+
+    If fieldObject.Size < minimumSize Then
+        Err.Raise _
+            vbObjectError + 7108, _
+            "RequireTextField", _
+            tableName & "." & fieldName & _
+            " is too short. Its Field Size must be at least " & _
+            CStr(minimumSize) & "."
+    End If
+
+End Sub
+
+
+Private Function TableExists( _
+    ByVal db As DAO.Database, _
+    ByVal tableName As String _
+) As Boolean
+
+    On Error GoTo Missing_Table
+
+    Dim tableObject As DAO.TableDef
+
+    Set tableObject = db.TableDefs(tableName)
+    TableExists = True
+
+Exit_Function:
+    Set tableObject = Nothing
+    Exit Function
+
+Missing_Table:
+    TableExists = False
+    Resume Exit_Function
+
+End Function
+
+
+Private Function FieldExists( _
+    ByVal tableObject As DAO.TableDef, _
+    ByVal fieldName As String _
+) As Boolean
+
+    On Error GoTo Missing_Field
+
+    Dim fieldObject As DAO.Field
+
+    Set fieldObject = tableObject.Fields(fieldName)
+    FieldExists = True
+
+Exit_Function:
+    Set fieldObject = Nothing
+    Exit Function
+
+Missing_Field:
+    FieldExists = False
+    Resume Exit_Function
+
+End Function
+
+
+Private Function IndexExists( _
+    ByVal tableObject As DAO.TableDef, _
+    ByVal indexName As String _
+) As Boolean
+
+    On Error GoTo Missing_Index
+
+    Dim indexObject As DAO.Index
+
+    Set indexObject = tableObject.Indexes(indexName)
+    IndexExists = True
+
+Exit_Function:
+    Set indexObject = Nothing
+    Exit Function
+
+Missing_Index:
+    IndexExists = False
+    Resume Exit_Function
+
+End Function
+
+
+Private Function PrimaryIndexExists( _
+    ByVal tableObject As DAO.TableDef _
+) As Boolean
+
+    Dim indexObject As DAO.Index
+
+    For Each indexObject In tableObject.Indexes
+        If indexObject.Primary Then
+            PrimaryIndexExists = True
+            Exit Function
+        End If
+    Next indexObject
+
+End Function
+
+
+'=============================================================
+' MESSAGE HELPERS
+'=============================================================
+
+Private Sub AddChange( _
+    ByRef changesMade As String, _
+    ByVal changeDescription As String _
+)
+
+    If Len(changesMade) > 0 Then
+        changesMade = changesMade & vbCrLf
+    End If
+
+    changesMade = changesMade & "  - " & changeDescription
+
+End Sub
+
+
+Private Function ChangesMessage( _
+    ByVal changesMade As String _
+) As String
+
+    If Len(changesMade) = 0 Then
+        ChangesMessage = _
+            vbCrLf & vbCrLf & _
+            "No structural changes were needed."
+    Else
+        ChangesMessage = _
+            vbCrLf & vbCrLf & _
+            "Changes made:" & vbCrLf & changesMade
+    End If
+
+End Function

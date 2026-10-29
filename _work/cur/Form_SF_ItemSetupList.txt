@@ -1,0 +1,24 @@
+﻿Option Compare Database
+Option Explicit
+
+Public Function OpenSelectedRecord() As Boolean
+
+    On Error GoTo Err_Handler
+
+    If Nz(Me!ItemID, 0) <= 0 Then Exit Function
+
+    DoCmd.OpenForm "F_ItemSetup", acNormal, , "ItemID = " & CLng(Me!ItemID)
+
+    OpenSelectedRecord = True
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    MsgBox "The selected item could not be opened." & vbCrLf & vbCrLf & _
+           "Error Number: " & Err.Number & vbCrLf & _
+           "Details: " & Err.Description, vbExclamation, "Open Item"
+    Resume Exit_Handler
+
+End Function
+

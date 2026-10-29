@@ -1,0 +1,55 @@
+﻿dbMemo "SQL" ="SELECT L.SupplierPOID, Count(L.SupplierPOLineID) AS LineCount, Sum(\015\012     "
+    "   Nz(L.OrderedQuantity,0) * Nz(L.UnitPrice,0)\015\012    ) AS GrossAmount, Sum("
+    "\015\012        Nz(L.DiscountAmount,0)\015\012    ) AS DiscountTotal, Sum(\015\012"
+    "        (Nz(L.OrderedQuantity,0) * Nz(L.UnitPrice,0))\015\012        - Nz(L.Disc"
+    "ountAmount,0)\015\012    ) AS CalculatedSubtotal, Sum(\015\012        (\015\012 "
+    "           (Nz(L.OrderedQuantity,0) * Nz(L.UnitPrice,0))\015\012            - Nz"
+    "(L.DiscountAmount,0)\015\012        )\015\012        * (Nz(L.TaxPercent,0) / 100"
+    ")\015\012    ) AS CalculatedTax\015\012FROM T_SupplierPOLines AS L\015\012GROUP "
+    "BY L.SupplierPOID;\015\012"
+dbMemo "Connect" =""
+dbBoolean "ReturnsRecords" ="-1"
+dbInteger "ODBCTimeout" ="60"
+dbBoolean "OrderByOn" ="0"
+dbByte "Orientation" ="0"
+dbByte "DefaultView" ="2"
+dbBinary "GUID" = Begin
+    0x51e5b998b593fa4eb06254d4e558fb3e
+End
+dbBoolean "FilterOnLoad" ="0"
+dbBoolean "OrderByOnLoad" ="-1"
+dbByte "PublishToWeb" ="1"
+Begin
+    Begin
+        dbText "Name" ="OrphanReceiptItems"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="OldHeaderLinks"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="CalculatedTax"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="CalculatedSubtotal"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="DiscountTotal"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="GrossAmount"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="LineCount"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="L.SupplierPOID"
+        dbLong "AggregateType" ="-1"
+    End
+End

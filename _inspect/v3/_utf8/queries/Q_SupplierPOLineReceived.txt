@@ -1,0 +1,27 @@
+﻿dbMemo "SQL" ="SELECT RI.SupplierPOLineID, Sum(Nz(RI.QuantityReceived,0)) AS QuantityReceivedTo"
+    "Date\015\012FROM T_GoodsReceipts AS R INNER JOIN T_GoodsReceiptItems AS RI ON R."
+    "GoodsReceiptID = RI.GoodsReceiptID\015\012WHERE R.ReceiptStatus = \"Posted\"\015"
+    "\012    AND RI.SupplierPOLineID Is Not Null\015\012GROUP BY RI.SupplierPOLineID;"
+    "\015\012"
+dbMemo "Connect" =""
+dbBoolean "ReturnsRecords" ="-1"
+dbInteger "ODBCTimeout" ="60"
+dbBoolean "OrderByOn" ="0"
+dbByte "Orientation" ="0"
+dbByte "DefaultView" ="2"
+dbBinary "GUID" = Begin
+    0x0cae394080671a4496ed2171105ef5af
+End
+dbBoolean "FilterOnLoad" ="0"
+dbBoolean "OrderByOnLoad" ="-1"
+dbByte "PublishToWeb" ="1"
+Begin
+    Begin
+        dbText "Name" ="RI.SupplierPOLineID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="QuantityReceivedToDate"
+        dbLong "AggregateType" ="-1"
+    End
+End

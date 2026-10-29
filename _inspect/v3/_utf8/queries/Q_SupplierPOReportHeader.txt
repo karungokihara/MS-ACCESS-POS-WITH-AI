@@ -1,0 +1,17 @@
+﻿dbMemo "SQL" ="SELECT P.SupplierPOID AS InvoiceID, P.PONumber AS InvoiceNo, P.SupplierID AS Cus"
+    "tomerID, S.CompanyName AS CustomerName, Null AS CustomerPOID, P.PONumber, Null A"
+    "S SalesOrderID, Null AS SalesOrderNo, P.PODate AS InvoiceDate, Nz(P.POType,'Purc"
+    "hase Order') AS InvoiceType, P.PaymentTerms, Nz(P.ShipToName,S.CompanyName) AS B"
+    "illToName, Nz(P.ShipToAddress,'') AS BillToAddress, Nz(P.SubtotalAmount,0) AS Su"
+    "btotalAmount, Nz(P.TaxAmount,0) AS TaxAmount, Nz(P.TotalAmount,0) AS GrandTotalA"
+    "mount, P.POStatus AS InvoiceStatus, P.Notes, \"Value Transformation LLC\" AS Com"
+    "panyName, \"1211 Heath Church Road\" AS CompanyAddress1, \"Lexington, NC, 27292,"
+    " phone: 336-963-0119\" AS CompanyAddress2, \"email: Jon.Quigley@ValueTransform.c"
+    "om\" AS CompanyEmail, \"Product Development Experts - Training and Consulting\" "
+    "AS CompanyFooter, Nz(P.Notes,'') AS InvoiceDescription\015\012FROM T_SupplierPOs"
+    " AS P LEFT JOIN T_Suppliers AS S ON P.SupplierID = S.SupplierID;\015\012"
+dbMemo "Connect" =""
+dbBoolean "ReturnsRecords" ="-1"
+dbInteger "ODBCTimeout" ="60"
+Begin
+End

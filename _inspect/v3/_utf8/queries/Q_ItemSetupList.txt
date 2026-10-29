@@ -1,0 +1,86 @@
+﻿dbMemo "SQL" ="SELECT I.ItemID, I.InternalSKU, I.ItemName, I.Description, I.CategoryID, C.Categ"
+    "oryName, IIf(Nz(I.RequiresSerial,0)=0,'Bulk','Serialized') AS StockType, I.BaseU"
+    "nitID, IIf(Len(Trim(Nz(U.UnitCode,'')))=0,Nz(U.UnitName,''),U.UnitCode) AS UnitC"
+    "ode, Nz(B.QtyOnHand,0) AS QuantityOnHand, I.ReorderLevel, I.DefaultLocationID, L"
+    ".LocationCode AS DefaultLocationCode, L.LocationName AS DefaultLocationName, W.W"
+    "arehouseName AS DefaultWarehouseName, I.CreatedOn, I.UpdatedOn\015\012FROM ((((T"
+    "_Items AS I LEFT JOIN T_Categories AS C ON I.CategoryID = C.CategoryID) LEFT JOI"
+    "N T_Units AS U ON I.BaseUnitID = U.UnitID) LEFT JOIN T_Locations AS L ON I.Defau"
+    "ltLocationID = L.LocationID) LEFT JOIN T_Warehouses AS W ON L.WarehouseID = W.Wa"
+    "rehouseID) LEFT JOIN (SELECT ItemID, Sum(Nz(QuantityOnHand,0)) AS QtyOnHand FROM"
+    " T_StockBalances GROUP BY ItemID)  AS B ON I.ItemID = B.ItemID\015\012ORDER BY I"
+    ".ItemName, I.InternalSKU;\015\012"
+dbMemo "Connect" =""
+dbBoolean "ReturnsRecords" ="-1"
+dbInteger "ODBCTimeout" ="60"
+dbBoolean "OrderByOn" ="0"
+dbByte "Orientation" ="0"
+dbByte "DefaultView" ="2"
+dbBinary "GUID" = Begin
+    0x47da18bcdb13a2439c19c39846e2301c
+End
+dbBoolean "FilterOnLoad" ="0"
+dbBoolean "OrderByOnLoad" ="-1"
+dbByte "PublishToWeb" ="1"
+Begin
+    Begin
+        dbText "Name" ="I.InternalSKU"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.ItemID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.CategoryID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.Description"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.ItemName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="StockType"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="C.CategoryName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.BaseUnitID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.ReorderLevel"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.DefaultLocationID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="DefaultLocationCode"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="DefaultLocationName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="DefaultWarehouseName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.CreatedOn"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.UpdatedOn"
+        dbLong "AggregateType" ="-1"
+    End
+End

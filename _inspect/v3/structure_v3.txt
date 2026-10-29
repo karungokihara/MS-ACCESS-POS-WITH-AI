@@ -1,0 +1,872 @@
+﻿TABLE: T_AssemblyJobMaterials  Records~0
+  AssemblyJobMaterialID | Type=4 | Size=4 | Required=False
+  AssemblyJobID | Type=4 | Size=4 | Required=False
+  TemplateMaterialID | Type=4 | Size=4 | Required=False
+  ComponentItemID | Type=4 | Size=4 | Required=False
+  PlannedQuantity | Type=7 | Size=8 | Required=False
+  IssuedQuantity | Type=7 | Size=8 | Required=False
+  UnitCost | Type=5 | Size=8 | Required=False
+  SourceLocationID | Type=4 | Size=4 | Required=False
+  IssueMovementID | Type=4 | Size=4 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  INDEX FK_T_AssemblyJobMaterials_ComponentItem Fields=ComponentItemID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_T_AssemblyJobMaterials_Job Fields=AssemblyJobID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_T_AssemblyJobMaterials_TemplateMaterial Fields=TemplateMaterialID Primary=False Unique=False IgnoreNulls=False
+  INDEX IX_T_AssemblyJobMaterials_AssemblyJobID Fields=AssemblyJobID Primary=False Unique=False IgnoreNulls=False
+  INDEX IX_T_AssemblyJobMaterials_ComponentItemID Fields=ComponentItemID Primary=False Unique=False IgnoreNulls=False
+  INDEX PK_T_AssemblyJobMaterials Fields=AssemblyJobMaterialID Primary=True Unique=True IgnoreNulls=False
+TABLE: T_AssemblyJobs  Records~0
+  AssemblyJobID | Type=4 | Size=4 | Required=False
+  AssemblyJobCode | Type=10 | Size=50 | Required=False
+  AssemblyTemplateID | Type=4 | Size=4 | Required=False
+  CustomerID | Type=4 | Size=4 | Required=False
+  ProjectID | Type=4 | Size=4 | Required=False
+  SalesOrderID | Type=4 | Size=4 | Required=False
+  SalesOrderLineID | Type=4 | Size=4 | Required=False
+  FinishedItemID | Type=4 | Size=4 | Required=False
+  BuildQuantity | Type=7 | Size=8 | Required=False
+  OutputLocationID | Type=4 | Size=4 | Required=False
+  Status | Type=10 | Size=30 | Required=False
+  PlannedStartDate | Type=8 | Size=8 | Required=False
+  StartedOn | Type=8 | Size=8 | Required=False
+  CompletedOn | Type=8 | Size=8 | Required=False
+  CreatedByUserID | Type=4 | Size=4 | Required=False
+  CompletedByUserID | Type=4 | Size=4 | Required=False
+  EstimatedMaterialCost | Type=5 | Size=8 | Required=False
+  ActualMaterialCost | Type=5 | Size=8 | Required=False
+  ActualTotalCost | Type=5 | Size=8 | Required=False
+  FinishedUnitCost | Type=5 | Size=8 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  CreatedOn | Type=8 | Size=8 | Required=False
+  UpdatedOn | Type=8 | Size=8 | Required=False
+  INDEX FK_T_AssemblyJobs_Customer Fields=CustomerID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_T_AssemblyJobs_FinishedItem Fields=FinishedItemID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_T_AssemblyJobs_OutputLocation Fields=OutputLocationID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_T_AssemblyJobs_Template Fields=AssemblyTemplateID Primary=False Unique=False IgnoreNulls=False
+  INDEX PK_T_AssemblyJobs Fields=AssemblyJobID Primary=True Unique=True IgnoreNulls=False
+  INDEX UX_T_AssemblyJobs_AssemblyJobCode Fields=AssemblyJobCode Primary=False Unique=True IgnoreNulls=False
+TABLE: T_AssemblyJobTools  Records~0
+  AssemblyJobToolID | Type=4 | Size=4 | Required=False
+  AssemblyJobID | Type=4 | Size=4 | Required=False
+  TemplateToolID | Type=4 | Size=4 | Required=False
+  ToolItemID | Type=4 | Size=4 | Required=False
+  ItemInstanceID | Type=4 | Size=4 | Required=False
+  QuantityRequired | Type=7 | Size=8 | Required=False
+  ToolStatus | Type=10 | Size=30 | Required=False
+  IssuedTo | Type=10 | Size=255 | Required=False
+  IssuedOn | Type=8 | Size=8 | Required=False
+  ReturnedOn | Type=8 | Size=8 | Required=False
+  IssueMovementID | Type=4 | Size=4 | Required=False
+  ReturnMovementID | Type=4 | Size=4 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  INDEX FK_T_AssemblyJobTools_ItemInstance Fields=ItemInstanceID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_T_AssemblyJobTools_Job Fields=AssemblyJobID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_T_AssemblyJobTools_ToolItem Fields=ToolItemID Primary=False Unique=False IgnoreNulls=False
+  INDEX IX_T_AssemblyJobTools_AssemblyJobID Fields=AssemblyJobID Primary=False Unique=False IgnoreNulls=False
+  INDEX IX_T_AssemblyJobTools_ToolItemID Fields=ToolItemID Primary=False Unique=False IgnoreNulls=False
+  INDEX PK_T_AssemblyJobTools Fields=AssemblyJobToolID Primary=True Unique=True IgnoreNulls=False
+TABLE: T_AssemblyTemplateMaterials  Records~0
+  TemplateMaterialID | Type=4 | Size=4 | Required=False
+  AssemblyTemplateID | Type=4 | Size=4 | Required=False
+  ComponentItemID | Type=4 | Size=4 | Required=False
+  QuantityPerOutput | Type=7 | Size=8 | Required=False
+  EstimatedUnitCost | Type=5 | Size=8 | Required=False
+  SortOrder | Type=4 | Size=4 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  INDEX FK_T_AssemblyTemplateMaterials_ComponentItem Fields=ComponentItemID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_T_AssemblyTemplateMaterials_Template Fields=AssemblyTemplateID Primary=False Unique=False IgnoreNulls=False
+  INDEX IX_T_AssemblyTemplateMaterials_ComponentItemID Fields=ComponentItemID Primary=False Unique=False IgnoreNulls=False
+  INDEX IX_T_AssemblyTemplateMaterials_TemplateID Fields=AssemblyTemplateID Primary=False Unique=False IgnoreNulls=False
+  INDEX PK_T_AssemblyTemplateMaterials Fields=TemplateMaterialID Primary=True Unique=True IgnoreNulls=False
+TABLE: T_AssemblyTemplates  Records~0
+  AssemblyTemplateID | Type=4 | Size=4 | Required=False
+  TemplateCode | Type=10 | Size=50 | Required=False
+  TemplateName | Type=10 | Size=255 | Required=False
+  FinishedItemID | Type=4 | Size=4 | Required=False
+  CustomerID | Type=4 | Size=4 | Required=False
+  CustomerPartNumber | Type=10 | Size=100 | Required=False
+  OutputQuantity | Type=7 | Size=8 | Required=False
+  RevisionNo | Type=10 | Size=50 | Required=False
+  Status | Type=10 | Size=30 | Required=False
+  EstimatedLaborHours | Type=7 | Size=8 | Required=False
+  EstimatedMaterialCost | Type=5 | Size=8 | Required=False
+  EstimatedTotalCost | Type=5 | Size=8 | Required=False
+  Instructions | Type=12 | Size=0 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  CreatedOn | Type=8 | Size=8 | Required=False
+  UpdatedOn | Type=8 | Size=8 | Required=False
+  WorkInstructionID | Type=4 | Size=4 | Required=False
+  INDEX FK_T_AssemblyTemplates_Customers Fields=CustomerID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_T_AssemblyTemplates_FinishedItem Fields=FinishedItemID Primary=False Unique=False IgnoreNulls=False
+  INDEX PK_T_AssemblyTemplates Fields=AssemblyTemplateID Primary=True Unique=True IgnoreNulls=False
+  INDEX UX_T_AssemblyTemplates_TemplateCode Fields=TemplateCode Primary=False Unique=True IgnoreNulls=False
+TABLE: T_AssemblyTemplateSteps  Records~0
+  AssemblyStepID | Type=4 | Size=4 | Required=False
+  AssemblyTemplateID | Type=4 | Size=4 | Required=False
+  StepNumber | Type=4 | Size=4 | Required=False
+  StepTitle | Type=10 | Size=255 | Required=False
+  StepInstructions | Type=12 | Size=0 | Required=False
+  SafetyNotes | Type=12 | Size=0 | Required=False
+  QualityCheckNotes | Type=12 | Size=0 | Required=False
+  INDEX FK_T_AssemblyTemplateSteps_Template Fields=AssemblyTemplateID Primary=False Unique=False IgnoreNulls=False
+  INDEX IX_T_AssemblyTemplateSteps_TemplateID Fields=AssemblyTemplateID Primary=False Unique=False IgnoreNulls=False
+  INDEX PK_T_AssemblyTemplateSteps Fields=AssemblyStepID Primary=True Unique=True IgnoreNulls=False
+TABLE: T_AssemblyTemplateTools  Records~0
+  TemplateToolID | Type=4 | Size=4 | Required=False
+  AssemblyTemplateID | Type=4 | Size=4 | Required=False
+  ToolItemID | Type=4 | Size=4 | Required=False
+  QuantityRequired | Type=7 | Size=8 | Required=False
+  SortOrder | Type=4 | Size=4 | Required=False
+  ToolUseNotes | Type=12 | Size=0 | Required=False
+  INDEX FK_T_AssemblyTemplateTools_Template Fields=AssemblyTemplateID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_T_AssemblyTemplateTools_ToolItem Fields=ToolItemID Primary=False Unique=False IgnoreNulls=False
+  INDEX IX_T_AssemblyTemplateTools_TemplateID Fields=AssemblyTemplateID Primary=False Unique=False IgnoreNulls=False
+  INDEX IX_T_AssemblyTemplateTools_ToolItemID Fields=ToolItemID Primary=False Unique=False IgnoreNulls=False
+  INDEX PK_T_AssemblyTemplateTools Fields=TemplateToolID Primary=True Unique=True IgnoreNulls=False
+TABLE: T_Attendance  Records~0
+  AttendanceID | Type=4 | Size=4 | Required=False
+  StaffID | Type=4 | Size=4 | Required=False
+  WorkDate | Type=8 | Size=8 | Required=False
+  TimeIn | Type=8 | Size=8 | Required=False
+  TimeOut | Type=8 | Size=8 | Required=False
+  Notes | Type=10 | Size=255 | Required=False
+  INDEX PrimaryKey Fields=AttendanceID Primary=True Unique=True IgnoreNulls=False
+TABLE: T_Categories  Records~0
+  CategoryID | Type=4 | Size=4 | Required=False
+  ItemTypeID | Type=4 | Size=4 | Required=False
+  CategoryName | Type=10 | Size=100 | Required=False
+  Description | Type=12 | Size=0 | Required=False
+  RequiresSerial | Type=1 | Size=1 | Required=False
+  RequiresExpiry | Type=1 | Size=1 | Required=False
+  INDEX FK_Categories_ItemTypes Fields=ItemTypeID Primary=False Unique=False IgnoreNulls=False
+  INDEX PrimaryKey Fields=CategoryID Primary=True Unique=True IgnoreNulls=False
+  INDEX UQ_T_Categories_TypeName Fields=ItemTypeID,CategoryName Primary=False Unique=True IgnoreNulls=False
+TABLE: T_Currencies  Records~3
+  CurrencyID | Type=4 | Size=4 | Required=False
+  CurrencyCode | Type=10 | Size=3 | Required=False
+  CurrencyName | Type=10 | Size=50 | Required=False
+  CurrencySymbol | Type=10 | Size=10 | Required=False
+  INDEX PrimaryKey Fields=CurrencyID Primary=True Unique=True IgnoreNulls=False
+  INDEX UQ_T_Currencies_CurrencyCode Fields=CurrencyCode Primary=False Unique=True IgnoreNulls=False
+TABLE: T_CustomerPOLines  Records~0
+  CustomerPOLineID | Type=4 | Size=4 | Required=False
+  CustomerPOID | Type=4 | Size=4 | Required=False
+  LineNo | Type=4 | Size=4 | Required=False
+  CustomerPartNumber | Type=10 | Size=100 | Required=False
+  CustomerRevision | Type=10 | Size=50 | Required=False
+  ItemID | Type=4 | Size=4 | Required=False
+  LineDescription | Type=12 | Size=0 | Required=False
+  QuantityOrdered | Type=7 | Size=8 | Required=False
+  UnitID | Type=4 | Size=4 | Required=False
+  UnitPrice | Type=5 | Size=8 | Required=False
+  LineSubtotal | Type=5 | Size=8 | Required=False
+  Taxable | Type=1 | Size=1 | Required=False
+  LineStatus | Type=10 | Size=50 | Required=False
+  LineNotes | Type=12 | Size=0 | Required=False
+  CreatedOn | Type=8 | Size=8 | Required=False
+  UpdatedOn | Type=8 | Size=8 | Required=False
+  INDEX FK_CustomerPOLines_CustomerPOs Fields=CustomerPOID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_CustomerPOLines_Items Fields=ItemID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_CustomerPOLines_Units Fields=UnitID Primary=False Unique=False IgnoreNulls=False
+  INDEX PK_T_CustomerPOLines Fields=CustomerPOLineID Primary=True Unique=True IgnoreNulls=False
+TABLE: T_CustomerPOReleases  Records~0
+  CustomerPOReleaseID | Type=4 | Size=4 | Required=False
+  CustomerPOLineID | Type=4 | Size=4 | Required=False
+  DueDate | Type=8 | Size=8 | Required=False
+  ReleaseQuantity | Type=7 | Size=8 | Required=False
+  UnitID | Type=4 | Size=4 | Required=False
+  ReleaseStatus | Type=10 | Size=50 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  CreatedOn | Type=8 | Size=8 | Required=False
+  UpdatedOn | Type=8 | Size=8 | Required=False
+  INDEX PK_T_CustomerPOReleases Fields=CustomerPOReleaseID Primary=True Unique=True IgnoreNulls=False
+TABLE: T_CustomerPOs  Records~0
+  CustomerPOID | Type=4 | Size=4 | Required=False
+  CustomerID | Type=4 | Size=4 | Required=False
+  PONumber | Type=10 | Size=50 | Required=False
+  PODate | Type=8 | Size=8 | Required=False
+  PORevisionDate | Type=8 | Size=8 | Required=False
+  POType | Type=10 | Size=50 | Required=False
+  PaymentTerms | Type=10 | Size=100 | Required=False
+  ShipVia | Type=10 | Size=100 | Required=False
+  PrepaidFreight | Type=1 | Size=1 | Required=False
+  ResaleNo | Type=10 | Size=100 | Required=False
+  ShipToName | Type=10 | Size=255 | Required=False
+  ShipToAddress | Type=12 | Size=0 | Required=False
+  ShipToContactName | Type=10 | Size=255 | Required=False
+  ShipToPhone | Type=10 | Size=100 | Required=False
+  ShipToEmail | Type=10 | Size=255 | Required=False
+  AuthorizedBy | Type=10 | Size=255 | Required=False
+  AuthorizedByEmail | Type=10 | Size=255 | Required=False
+  SubtotalAmount | Type=5 | Size=8 | Required=False
+  MiscChargeAmount | Type=5 | Size=8 | Required=False
+  TaxAmount | Type=5 | Size=8 | Required=False
+  TotalAmount | Type=5 | Size=8 | Required=False
+  POStatus | Type=10 | Size=50 | Required=False
+  GoodsConfirmed | Type=1 | Size=1 | Required=False
+  GoodsConfirmedOn | Type=8 | Size=8 | Required=False
+  SalesOrderID | Type=4 | Size=4 | Required=False
+  InvoiceID | Type=4 | Size=4 | Required=False
+  SourceFilePath | Type=12 | Size=0 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  CreatedOn | Type=8 | Size=8 | Required=False
+  UpdatedOn | Type=8 | Size=8 | Required=False
+  INDEX FK_CustomerPOs_Customers Fields=CustomerID Primary=False Unique=False IgnoreNulls=False
+  INDEX IX_T_CustomerPOs_CustomerID Fields=CustomerID Primary=False Unique=False IgnoreNulls=False
+  INDEX IX_T_CustomerPOs_InvoiceID Fields=InvoiceID Primary=False Unique=False IgnoreNulls=False
+  INDEX IX_T_CustomerPOs_PONumber Fields=PONumber Primary=False Unique=False IgnoreNulls=False
+  INDEX IX_T_CustomerPOs_POStatus Fields=POStatus Primary=False Unique=False IgnoreNulls=False
+  INDEX IX_T_CustomerPOs_SalesOrderID Fields=SalesOrderID Primary=False Unique=False IgnoreNulls=False
+  INDEX PK_T_CustomerPOs Fields=CustomerPOID Primary=True Unique=True IgnoreNulls=False
+TABLE: T_Customers  Records~1
+  CustomerID | Type=4 | Size=4 | Required=False
+  CustomerCode | Type=10 | Size=50 | Required=False
+  CustomerName | Type=10 | Size=255 | Required=False
+  CustomerType | Type=10 | Size=255 | Required=False
+  ContactPerson | Type=10 | Size=255 | Required=False
+  Phone | Type=10 | Size=100 | Required=False
+  Email | Type=10 | Size=255 | Required=False
+  BillingAddress | Type=12 | Size=0 | Required=False
+  ShippingAddress | Type=12 | Size=0 | Required=False
+  Status | Type=10 | Size=30 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  CreatedOn | Type=8 | Size=8 | Required=False
+  UpdatedOn | Type=8 | Size=8 | Required=False
+  BillingName | Type=10 | Size=255 | Required=False
+  BillingCity | Type=10 | Size=100 | Required=False
+  BillingAddress2 | Type=10 | Size=255 | Required=False
+  BillingAddress1 | Type=10 | Size=255 | Required=False
+  BillingState | Type=10 | Size=100 | Required=False
+  BillingPostalCode | Type=10 | Size=50 | Required=False
+  BillingCountry | Type=10 | Size=100 | Required=False
+  MainContactName | Type=10 | Size=255 | Required=False
+  MainContactEmail | Type=10 | Size=255 | Required=False
+  MainContactPhone | Type=10 | Size=100 | Required=False
+  DefaultPaymentTerms | Type=10 | Size=100 | Required=False
+  DefaultShipVia | Type=10 | Size=100 | Required=False
+  TaxExempt | Type=1 | Size=1 | Required=False
+  INDEX PK_T_Customers Fields=CustomerID Primary=True Unique=True IgnoreNulls=False
+  INDEX UX_T_Customers_CustomerCode Fields=CustomerCode Primary=False Unique=True IgnoreNulls=False
+TABLE: T_DocumentAttachments  Records~0
+  DocumentAttachmentID | Type=4 | Size=4 | Required=False
+  DocumentType | Type=10 | Size=50 | Required=False
+  DocumentID | Type=4 | Size=4 | Required=False
+  FileName | Type=10 | Size=255 | Required=False
+  FilePath | Type=12 | Size=0 | Required=False
+  AttachmentNotes | Type=12 | Size=0 | Required=False
+  CreatedOn | Type=8 | Size=8 | Required=False
+  INDEX PK_T_DocumentAttachments Fields=DocumentAttachmentID Primary=True Unique=True IgnoreNulls=False
+TABLE: T_DocumentNumbers  Records~4
+  DocumentNumberID | Type=4 | Size=4 | Required=False
+  DocumentType | Type=10 | Size=50 | Required=False
+  Prefix | Type=10 | Size=20 | Required=False
+  NextNumber | Type=4 | Size=4 | Required=False
+  NumberLength | Type=4 | Size=4 | Required=False
+  LastUpdatedOn | Type=8 | Size=8 | Required=False
+  INDEX PK_T_DocumentNumbers Fields=DocumentNumberID Primary=True Unique=True IgnoreNulls=False
+TABLE: T_Expenses  Records~0
+  ExpenseID | Type=4 | Size=4 | Required=False
+  ExpenseDate | Type=8 | Size=8 | Required=False
+  Category | Type=10 | Size=50 | Required=False
+  Description | Type=10 | Size=255 | Required=False
+  Amount | Type=5 | Size=8 | Required=False
+  PaidTo | Type=10 | Size=120 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  INDEX PrimaryKey Fields=ExpenseID Primary=True Unique=True IgnoreNulls=False
+TABLE: T_GoodsReceiptItems  Records~0
+  GoodsReceiptItemID | Type=4 | Size=4 | Required=False
+  GoodsReceiptID | Type=4 | Size=4 | Required=False
+  PurchaseOrderItemID | Type=4 | Size=4 | Required=False
+  QuantityReceived | Type=7 | Size=8 | Required=False
+  LocationID | Type=4 | Size=4 | Required=False
+  BatchNumber | Type=10 | Size=100 | Required=False
+  UnitCost | Type=5 | Size=8 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  SupplierPOLineID | Type=4 | Size=4 | Required=False
+  ItemID | Type=4 | Size=4 | Required=False
+  UnitID | Type=4 | Size=4 | Required=False
+  SerialNumber | Type=10 | Size=100 | Required=False
+  ItemInstanceID | Type=4 | Size=4 | Required=False
+  StockMovementID | Type=4 | Size=4 | Required=False
+  CreatedOn | Type=8 | Size=8 | Required=False
+  UpdatedOn | Type=8 | Size=8 | Required=False
+  INDEX FK_GoodsReceiptItems_Locations Fields=LocationID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_GoodsReceiptItems_POItems Fields=PurchaseOrderItemID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_GoodsReceiptItems_Receipts Fields=GoodsReceiptID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_GRI_Item Fields=ItemID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_GRI_ItemInstance Fields=ItemInstanceID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_GRI_StockMovement Fields=StockMovementID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_GRI_SupplierPOLine Fields=SupplierPOLineID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_GRI_Unit Fields=UnitID Primary=False Unique=False IgnoreNulls=False
+  INDEX IX_GRI_GoodsReceiptID Fields=GoodsReceiptID Primary=False Unique=False IgnoreNulls=False
+  INDEX IX_GRI_ItemID Fields=ItemID Primary=False Unique=False IgnoreNulls=False
+  INDEX IX_GRI_StockMovementID Fields=StockMovementID Primary=False Unique=False IgnoreNulls=False
+  INDEX IX_GRI_SupplierPOLineID Fields=SupplierPOLineID Primary=False Unique=False IgnoreNulls=False
+  INDEX PrimaryKey Fields=GoodsReceiptItemID Primary=True Unique=True IgnoreNulls=False
+TABLE: T_GoodsReceipts  Records~0
+  GoodsReceiptID | Type=4 | Size=4 | Required=False
+  ReceiptNumber | Type=10 | Size=50 | Required=False
+  PurchaseOrderID | Type=4 | Size=4 | Required=False
+  ReceiptDate | Type=8 | Size=8 | Required=False
+  SupplierDeliveryNote | Type=10 | Size=100 | Required=False
+  ReceivedByUserID | Type=4 | Size=4 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  SupplierPOID | Type=4 | Size=4 | Required=False
+  SupplierInvoiceNumber | Type=10 | Size=100 | Required=False
+  ReceiptStatus | Type=10 | Size=30 | Required=False
+  PostedOn | Type=8 | Size=8 | Required=False
+  PostedByUserID | Type=4 | Size=4 | Required=False
+  CreatedOn | Type=8 | Size=8 | Required=False
+  UpdatedOn | Type=8 | Size=8 | Required=False
+  INDEX FK_GoodsReceipts_PurchaseOrders Fields=PurchaseOrderID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_GoodsReceipts_Users Fields=ReceivedByUserID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_GR_PostedByUser Fields=PostedByUserID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_GR_SupplierPO Fields=SupplierPOID Primary=False Unique=False IgnoreNulls=False
+  INDEX IX_GR_ReceiptStatus Fields=ReceiptStatus Primary=False Unique=False IgnoreNulls=False
+  INDEX IX_GR_SupplierPOID Fields=SupplierPOID Primary=False Unique=False IgnoreNulls=False
+  INDEX PrimaryKey Fields=GoodsReceiptID Primary=True Unique=True IgnoreNulls=False
+  INDEX UQ_T_GoodsReceipts_ReceiptNumber Fields=ReceiptNumber Primary=False Unique=True IgnoreNulls=False
+  INDEX UX_GR_ReceiptNumber Fields=ReceiptNumber Primary=False Unique=True IgnoreNulls=False
+TABLE: T_InvoiceLines  Records~0
+  InvoiceLineID | Type=4 | Size=4 | Required=False
+  InvoiceID | Type=4 | Size=4 | Required=False
+  SalesOrderLineID | Type=4 | Size=4 | Required=False
+  CustomerPOLineID | Type=4 | Size=4 | Required=False
+  ItemID | Type=4 | Size=4 | Required=False
+  ItemCode | Type=10 | Size=100 | Required=False
+  LineDescription | Type=12 | Size=0 | Required=False
+  Quantity | Type=7 | Size=8 | Required=False
+  UnitID | Type=4 | Size=4 | Required=False
+  UnitPrice | Type=5 | Size=8 | Required=False
+  Taxable | Type=1 | Size=1 | Required=False
+  LineSubtotal | Type=5 | Size=8 | Required=False
+  CreatedOn | Type=8 | Size=8 | Required=False
+  UpdatedOn | Type=8 | Size=8 | Required=False
+  INDEX FK_InvoiceLines_CustomerPOLines Fields=CustomerPOLineID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_InvoiceLines_Invoices Fields=InvoiceID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_InvoiceLines_Items Fields=ItemID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_InvoiceLines_SalesOrderLines Fields=SalesOrderLineID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_InvoiceLines_Units Fields=UnitID Primary=False Unique=False IgnoreNulls=False
+  INDEX PK_T_InvoiceLines Fields=InvoiceLineID Primary=True Unique=True IgnoreNulls=False
+TABLE: T_Invoices  Records~0
+  InvoiceID | Type=4 | Size=4 | Required=False
+  InvoiceNo | Type=10 | Size=50 | Required=False
+  CustomerID | Type=4 | Size=4 | Required=False
+  CustomerPOID | Type=4 | Size=4 | Required=False
+  SalesOrderID | Type=4 | Size=4 | Required=False
+  InvoiceDate | Type=8 | Size=8 | Required=False
+  InvoiceType | Type=10 | Size=50 | Required=False
+  PaymentTerms | Type=10 | Size=100 | Required=False
+  BillToName | Type=10 | Size=255 | Required=False
+  BillToAddress | Type=12 | Size=0 | Required=False
+  SubtotalAmount | Type=5 | Size=8 | Required=False
+  TaxAmount | Type=5 | Size=8 | Required=False
+  GrandTotalAmount | Type=5 | Size=8 | Required=False
+  InvoiceStatus | Type=10 | Size=50 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  CreatedOn | Type=8 | Size=8 | Required=False
+  UpdatedOn | Type=8 | Size=8 | Required=False
+  INDEX FK_Invoices_CustomerPOs Fields=CustomerPOID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_Invoices_Customers Fields=CustomerID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_Invoices_SalesOrders Fields=SalesOrderID Primary=False Unique=False IgnoreNulls=False
+  INDEX PK_T_Invoices Fields=InvoiceID Primary=True Unique=True IgnoreNulls=False
+TABLE: T_ItemInstances  Records~0
+  ItemInstanceID | Type=4 | Size=4 | Required=False
+  ItemID | Type=4 | Size=4 | Required=False
+  SerialNumber | Type=10 | Size=100 | Required=False
+  CurrentLocationID | Type=4 | Size=4 | Required=False
+  CurrentStatus | Type=10 | Size=30 | Required=False
+  AcquisitionDate | Type=8 | Size=8 | Required=False
+  WarrantyExpiry | Type=8 | Size=8 | Required=False
+  UnitCost | Type=5 | Size=8 | Required=False
+  SourceGoodsReceiptItemID | Type=4 | Size=4 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  INDEX FK_ItemInstances_Items Fields=ItemID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_ItemInstances_Locations Fields=CurrentLocationID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_ItemInstances_ReceiptItems Fields=SourceGoodsReceiptItemID Primary=False Unique=False IgnoreNulls=False
+  INDEX IX_T_ItemInstances_ItemID Fields=ItemID Primary=False Unique=False IgnoreNulls=False
+  INDEX PrimaryKey Fields=ItemInstanceID Primary=True Unique=True IgnoreNulls=False
+  INDEX UQ_T_ItemInstances_SerialNumber Fields=SerialNumber Primary=False Unique=True IgnoreNulls=True
+TABLE: T_ItemPartNumbers  Records~0
+  ItemPartNumberID | Type=4 | Size=4 | Required=False
+  ItemID | Type=4 | Size=4 | Required=False
+  PartNumberTypeID | Type=4 | Size=4 | Required=False
+  PartNumber | Type=10 | Size=100 | Required=False
+  SupplierID | Type=4 | Size=4 | Required=False
+  ManufacturerID | Type=4 | Size=4 | Required=False
+  IsPrimary | Type=1 | Size=1 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  CustomerID | Type=4 | Size=4 | Required=False
+  PartDescription | Type=12 | Size=0 | Required=False
+  IsCustomerPartNumber | Type=1 | Size=1 | Required=False
+  IsVendorPartNumber | Type=1 | Size=1 | Required=False
+  IsActive | Type=1 | Size=1 | Required=False
+  UpdatedOn | Type=8 | Size=8 | Required=False
+  INDEX FK_ItemPartNumbers_Items Fields=ItemID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_ItemPartNumbers_Manufacturers Fields=ManufacturerID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_ItemPartNumbers_Suppliers Fields=SupplierID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_ItemPartNumbers_Types Fields=PartNumberTypeID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_T_ItemPartNumbers_Customers Fields=CustomerID Primary=False Unique=False IgnoreNulls=False
+  INDEX IX_T_ItemPartNumbers_ItemID Fields=ItemID Primary=False Unique=False IgnoreNulls=False
+  INDEX IX_T_ItemPartNumbers_PartNumber Fields=PartNumber Primary=False Unique=False IgnoreNulls=False
+  INDEX PrimaryKey Fields=ItemPartNumberID Primary=True Unique=True IgnoreNulls=False
+TABLE: T_Items  Records~0
+  ItemID | Type=4 | Size=4 | Required=False
+  InternalSKU | Type=10 | Size=50 | Required=False
+  ItemName | Type=10 | Size=150 | Required=False
+  Description | Type=12 | Size=0 | Required=False
+  CategoryID | Type=4 | Size=4 | Required=False
+  BaseUnitID | Type=4 | Size=4 | Required=False
+  ReorderLevel | Type=7 | Size=8 | Required=False
+  MinStockLevel | Type=7 | Size=8 | Required=False
+  MaxStockLevel | Type=7 | Size=8 | Required=False
+  DefaultLocationID | Type=4 | Size=4 | Required=False
+  RequiresSerial | Type=1 | Size=1 | Required=False
+  SerialNumber | Type=10 | Size=255 | Required=False
+  CreatedOn | Type=8 | Size=8 | Required=False
+  UpdatedOn | Type=8 | Size=8 | Required=False
+  ItemClass | Type=10 | Size=50 | Required=False
+  ItemType | Type=10 | Size=50 | Required=False
+  IsSellable | Type=1 | Size=1 | Required=False
+  DefaultSalesPrice | Type=5 | Size=8 | Required=False
+  DefaultTaxable | Type=1 | Size=1 | Required=False
+  SalesDescription | Type=12 | Size=0 | Required=False
+  INDEX FK_Items_Categories Fields=CategoryID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_Items_DefaultLocation Fields=DefaultLocationID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_Items_Units Fields=BaseUnitID Primary=False Unique=False IgnoreNulls=False
+  INDEX IX_T_Items_CategoryID Fields=CategoryID Primary=False Unique=False IgnoreNulls=False
+  INDEX PrimaryKey Fields=ItemID Primary=True Unique=True IgnoreNulls=False
+  INDEX SerialNumber Fields=SerialNumber Primary=False Unique=True IgnoreNulls=False
+  INDEX UQ_T_Items_InternalSKU Fields=InternalSKU Primary=False Unique=True IgnoreNulls=False
+TABLE: T_ItemSuppliers  Records~0
+  ItemSupplierID | Type=4 | Size=4 | Required=False
+  ItemID | Type=4 | Size=4 | Required=False
+  SupplierID | Type=4 | Size=4 | Required=False
+  PreferredSupplier | Type=1 | Size=1 | Required=False
+  LastUnitPrice | Type=5 | Size=8 | Required=False
+  CurrencyID | Type=4 | Size=4 | Required=False
+  LeadTimeDays | Type=4 | Size=4 | Required=False
+  IsActive | Type=1 | Size=1 | Required=False
+  INDEX FK_ItemSuppliers_Currencies Fields=CurrencyID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_ItemSuppliers_Items Fields=ItemID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_ItemSuppliers_Suppliers Fields=SupplierID Primary=False Unique=False IgnoreNulls=False
+  INDEX PrimaryKey Fields=ItemSupplierID Primary=True Unique=True IgnoreNulls=False
+  INDEX UQ_T_ItemSuppliers_ItemSupplier Fields=ItemID,SupplierID Primary=False Unique=True IgnoreNulls=False
+TABLE: T_ItemTypes  Records~3
+  ItemTypeID | Type=4 | Size=4 | Required=False
+  ItemTypeName | Type=10 | Size=50 | Required=False
+  Description | Type=12 | Size=0 | Required=False
+  INDEX PrimaryKey Fields=ItemTypeID Primary=True Unique=True IgnoreNulls=False
+  INDEX UQ_T_ItemTypes_ItemTypeName Fields=ItemTypeName Primary=False Unique=True IgnoreNulls=False
+TABLE: T_Leave  Records~0
+  LeaveID | Type=4 | Size=4 | Required=False
+  StaffID | Type=4 | Size=4 | Required=False
+  LeaveType | Type=10 | Size=30 | Required=False
+  StartDate | Type=8 | Size=8 | Required=False
+  EndDate | Type=8 | Size=8 | Required=False
+  Days | Type=7 | Size=8 | Required=False
+  Status | Type=10 | Size=20 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  INDEX PrimaryKey Fields=LeaveID Primary=True Unique=True IgnoreNulls=False
+TABLE: T_Locations  Records~0
+  LocationID | Type=4 | Size=4 | Required=False
+  WarehouseID | Type=4 | Size=4 | Required=False
+  LocationCode | Type=10 | Size=30 | Required=False
+  LocationName | Type=10 | Size=120 | Required=False
+  BinNumber | Type=10 | Size=30 | Required=False
+  ShelfNumber | Type=10 | Size=30 | Required=False
+  INDEX FK_Locations_Warehouses Fields=WarehouseID Primary=False Unique=False IgnoreNulls=False
+  INDEX PrimaryKey Fields=LocationID Primary=True Unique=True IgnoreNulls=False
+  INDEX UQ_T_Locations_WarehouseCode Fields=WarehouseID,LocationCode Primary=False Unique=True IgnoreNulls=False
+TABLE: T_Manufacturers  Records~0
+  ManufacturerID | Type=4 | Size=4 | Required=False
+  ManufacturerName | Type=10 | Size=150 | Required=False
+  Website | Type=10 | Size=255 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  INDEX PrimaryKey Fields=ManufacturerID Primary=True Unique=True IgnoreNulls=False
+  INDEX UQ_T_Manufacturers_Name Fields=ManufacturerName Primary=False Unique=True IgnoreNulls=False
+TABLE: T_PartNumberTypes  Records~8
+  PartNumberTypeID | Type=4 | Size=4 | Required=False
+  PartNumberTypeName | Type=10 | Size=50 | Required=False
+  Description | Type=12 | Size=0 | Required=False
+  INDEX PrimaryKey Fields=PartNumberTypeID Primary=True Unique=True IgnoreNulls=False
+  INDEX UQ_T_PartNumberTypes_Name Fields=PartNumberTypeName Primary=False Unique=True IgnoreNulls=False
+TABLE: T_Permissions  Records~15
+  PermissionID | Type=4 | Size=4 | Required=False
+  PermissionName | Type=10 | Size=255 | Required=False
+  Description | Type=12 | Size=0 | Required=False
+  INDEX PrimaryKey Fields=PermissionID Primary=True Unique=True IgnoreNulls=False
+TABLE: T_POStatuses  Records~5
+  POStatusID | Type=4 | Size=4 | Required=False
+  StatusName | Type=10 | Size=50 | Required=False
+  Description | Type=12 | Size=0 | Required=False
+  INDEX PrimaryKey Fields=POStatusID Primary=True Unique=True IgnoreNulls=False
+  INDEX UQ_T_POStatuses_StatusName Fields=StatusName Primary=False Unique=True IgnoreNulls=False
+TABLE: T_ProjectIssueStaging  Records~0
+  ProjectIssueStagingID | Type=4 | Size=4 | Required=False
+  ProjectID | Type=4 | Size=4 | Required=True
+  IssueType | Type=10 | Size=20 | Required=True
+  ItemID | Type=4 | Size=4 | Required=True
+  RequiredQty | Type=7 | Size=8 | Required=True
+  AvailableQty | Type=7 | Size=8 | Required=True
+  IssueQty | Type=7 | Size=8 | Required=True
+  Selected | Type=1 | Size=1 | Required=True
+  Notes | Type=12 | Size=0 | Required=False
+  ItemInstanceID | Type=4 | Size=4 | Required=False
+  FromLocationID | Type=4 | Size=4 | Required=False
+  ToLocationID | Type=4 | Size=4 | Required=False
+  SourceMovementID | Type=4 | Size=4 | Required=False
+  INDEX IX_ProjectIssueInstance Fields=ItemInstanceID Primary=False Unique=False IgnoreNulls=False
+  INDEX IX_ProjectIssueScope Fields=ProjectID,IssueType Primary=False Unique=False IgnoreNulls=False
+  INDEX PrimaryKey Fields=ProjectIssueStagingID Primary=True Unique=True IgnoreNulls=False
+  INDEX ProjectIssueStagingID Fields=ProjectIssueStagingID Primary=False Unique=False IgnoreNulls=False
+TABLE: T_Projects  Records~0
+  ProjectID | Type=4 | Size=4 | Required=False
+  ProjectCode | Type=10 | Size=30 | Required=False
+  ProjectName | Type=10 | Size=150 | Required=False
+  StartDate | Type=8 | Size=8 | Required=False
+  EndDate | Type=8 | Size=8 | Required=False
+  Status | Type=10 | Size=30 | Required=False
+  Budget | Type=5 | Size=8 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  IsActive | Type=1 | Size=1 | Required=False
+  CustomerID | Type=4 | Size=4 | Required=False
+  FinishedItemID | Type=4 | Size=4 | Required=False
+  AssemblyTemplateID | Type=4 | Size=4 | Required=False
+  BuildQuantity | Type=7 | Size=8 | Required=False
+  OutputLocationID | Type=4 | Size=4 | Required=False
+  CustomerPOReference | Type=10 | Size=100 | Required=False
+  ShippedDate | Type=8 | Size=8 | Required=False
+  ShippedByUserID | Type=4 | Size=4 | Required=False
+  SaleMovementID | Type=4 | Size=4 | Required=False
+  QuantityShipped | Type=7 | Size=8 | Required=False
+  WorkInstructions | Type=12 | Size=0 | Required=False
+  SalesOrderID | Type=4 | Size=4 | Required=False
+  CustomerPOLineID | Type=4 | Size=4 | Required=False
+  CustomerPOID | Type=4 | Size=4 | Required=False
+  RequiredCompletionDate | Type=8 | Size=8 | Required=False
+  WorkflowStatus | Type=10 | Size=30 | Required=False
+  INDEX PrimaryKey Fields=ProjectID Primary=True Unique=True IgnoreNulls=False
+  INDEX UQ_T_Projects_ProjectCode Fields=ProjectCode Primary=False Unique=True IgnoreNulls=False
+TABLE: T_PurchaseOrderItems  Records~0
+  PurchaseOrderItemID | Type=4 | Size=4 | Required=False
+  PurchaseOrderID | Type=4 | Size=4 | Required=False
+  LineNumber | Type=4 | Size=4 | Required=False
+  ItemID | Type=4 | Size=4 | Required=False
+  SupplierPartNumberSnapshot | Type=10 | Size=100 | Required=False
+  DescriptionSnapshot | Type=12 | Size=0 | Required=False
+  QuantityOrdered | Type=7 | Size=8 | Required=False
+  UnitPrice | Type=5 | Size=8 | Required=False
+  TariffAmount | Type=5 | Size=8 | Required=False
+  FreightAmount | Type=5 | Size=8 | Required=False
+  OtherCharges | Type=5 | Size=8 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  INDEX FK_POItems_Items Fields=ItemID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_POItems_PurchaseOrders Fields=PurchaseOrderID Primary=False Unique=False IgnoreNulls=False
+  INDEX PrimaryKey Fields=PurchaseOrderItemID Primary=True Unique=True IgnoreNulls=False
+  INDEX UQ_T_PurchaseOrderItems_POLine Fields=PurchaseOrderID,LineNumber Primary=False Unique=True IgnoreNulls=False
+TABLE: T_PurchaseOrders  Records~0
+  PurchaseOrderID | Type=4 | Size=4 | Required=False
+  PONumber | Type=10 | Size=50 | Required=False
+  SupplierID | Type=4 | Size=4 | Required=False
+  OrderDate | Type=8 | Size=8 | Required=False
+  ExpectedDeliveryDate | Type=8 | Size=8 | Required=False
+  CurrencyID | Type=4 | Size=4 | Required=False
+  POStatusID | Type=4 | Size=4 | Required=False
+  CreatedByUserID | Type=4 | Size=4 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  CreatedOn | Type=8 | Size=8 | Required=False
+  INDEX FK_PurchaseOrders_Currencies Fields=CurrencyID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_PurchaseOrders_Statuses Fields=POStatusID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_PurchaseOrders_Suppliers Fields=SupplierID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_PurchaseOrders_Users Fields=CreatedByUserID Primary=False Unique=False IgnoreNulls=False
+  INDEX IX_T_PurchaseOrders_OrderDate Fields=OrderDate Primary=False Unique=False IgnoreNulls=False
+  INDEX PrimaryKey Fields=PurchaseOrderID Primary=True Unique=True IgnoreNulls=False
+  INDEX UQ_T_PurchaseOrders_PONumber Fields=PONumber Primary=False Unique=True IgnoreNulls=False
+TABLE: T_RolePermissions  Records~29
+  RolePermissionID | Type=4 | Size=4 | Required=False
+  RoleID | Type=4 | Size=4 | Required=False
+  PermissionID | Type=4 | Size=4 | Required=False
+  CanView | Type=1 | Size=1 | Required=False
+  CanAdd | Type=1 | Size=1 | Required=False
+  CanEdit | Type=1 | Size=1 | Required=False
+  CanDelete | Type=1 | Size=1 | Required=False
+  INDEX PrimaryKey Fields=RolePermissionID Primary=True Unique=True IgnoreNulls=False
+TABLE: T_Roles  Records~4
+  RoleID | Type=4 | Size=4 | Required=False
+  RoleName | Type=10 | Size=50 | Required=False
+  Description | Type=12 | Size=0 | Required=False
+  INDEX PrimaryKey Fields=RoleID Primary=True Unique=True IgnoreNulls=False
+  INDEX UQ_T_Roles_RoleName Fields=RoleName Primary=False Unique=True IgnoreNulls=False
+TABLE: T_SalesOrderLines  Records~0
+  SalesOrderLineID | Type=4 | Size=4 | Required=False
+  SalesOrderID | Type=4 | Size=4 | Required=False
+  CustomerPOLineID | Type=4 | Size=4 | Required=False
+  ItemID | Type=4 | Size=4 | Required=False
+  LineDescription | Type=12 | Size=0 | Required=False
+  AssemblyTemplateID | Type=4 | Size=4 | Required=False
+  CustomerPartNumber | Type=10 | Size=100 | Required=False
+  QuantityOrdered | Type=7 | Size=8 | Required=False
+  QuantityShipped | Type=7 | Size=8 | Required=False
+  UnitPrice | Type=5 | Size=8 | Required=False
+  LineNotes | Type=12 | Size=0 | Required=False
+  CustomerPO | Type=4 | Size=4 | Required=False
+  QuantityAllocated | Type=7 | Size=8 | Required=False
+  UnitID | Type=4 | Size=4 | Required=False
+  LineSubtotal | Type=5 | Size=8 | Required=False
+  Taxable | Type=1 | Size=1 | Required=False
+  LineStatus | Type=10 | Size=50 | Required=False
+  INDEX FK_SalesOrderLines_CustomerPOLines Fields=CustomerPO Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_SalesOrderLines_Items Fields=ItemID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_SalesOrderLines_SalesOrders Fields=SalesOrderID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_SalesOrderLines_Units Fields=UnitID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_T_SalesOrderLines_Items Fields=ItemID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_T_SalesOrderLines_SalesOrders Fields=SalesOrderID Primary=False Unique=False IgnoreNulls=False
+  INDEX IX_T_SalesOrderLines_ItemID Fields=ItemID Primary=False Unique=False IgnoreNulls=False
+  INDEX IX_T_SalesOrderLines_SalesOrderID Fields=SalesOrderID Primary=False Unique=False IgnoreNulls=False
+  INDEX PK_T_SalesOrderLines Fields=SalesOrderLineID Primary=True Unique=True IgnoreNulls=False
+TABLE: T_SalesOrders  Records~0
+  SalesOrderID | Type=4 | Size=4 | Required=False
+  SalesOrderNo | Type=10 | Size=50 | Required=False
+  CustomerID | Type=4 | Size=4 | Required=False
+  CustomerPOID | Type=4 | Size=4 | Required=False
+  OrderDate | Type=8 | Size=8 | Required=False
+  RequiredDate | Type=8 | Size=8 | Required=False
+  PaymentTerms | Type=10 | Size=100 | Required=False
+  ShipVia | Type=10 | Size=100 | Required=False
+  ShipToName | Type=10 | Size=255 | Required=False
+  ShipToAddress | Type=12 | Size=0 | Required=False
+  ShipDate | Type=8 | Size=8 | Required=False
+  SalesOrderStatus | Type=10 | Size=50 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  CreatedOn | Type=8 | Size=8 | Required=False
+  UpdatedOn | Type=8 | Size=8 | Required=False
+  INDEX FK_SalesOrders_CustomerPOs Fields=CustomerPOID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_SalesOrders_Customers Fields=CustomerID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_T_SalesOrders_Customers Fields=CustomerID Primary=False Unique=False IgnoreNulls=False
+  INDEX PK_T_SalesOrders Fields=SalesOrderID Primary=True Unique=True IgnoreNulls=False
+  INDEX UX_T_SalesOrders_SalesOrderNumber Fields=SalesOrderNo Primary=False Unique=True IgnoreNulls=False
+TABLE: T_Staff  Records~0
+  StaffID | Type=4 | Size=4 | Required=False
+  StaffName | Type=10 | Size=120 | Required=False
+  JobTitle | Type=10 | Size=80 | Required=False
+  Phone | Type=10 | Size=40 | Required=False
+  Status | Type=10 | Size=20 | Required=False
+  INDEX PrimaryKey Fields=StaffID Primary=True Unique=True IgnoreNulls=False
+TABLE: T_StockBalances  Records~0
+  StockBalanceID | Type=4 | Size=4 | Required=False
+  ItemID | Type=4 | Size=4 | Required=False
+  CurrentLocationID | Type=4 | Size=4 | Required=False
+  QuantityOnHand | Type=7 | Size=8 | Required=False
+  QuantityReserved | Type=7 | Size=8 | Required=False
+  LastUpdated | Type=8 | Size=8 | Required=False
+  INDEX FK_StockBalances_Items Fields=ItemID Primary=False Unique=True IgnoreNulls=False
+  INDEX FK_StockBalances_Locations Fields=CurrentLocationID Primary=False Unique=False IgnoreNulls=False
+  INDEX PrimaryKey Fields=StockBalanceID Primary=True Unique=True IgnoreNulls=False
+  INDEX UQ_T_StockBalances_ItemID Fields=ItemID Primary=False Unique=True IgnoreNulls=False
+TABLE: T_StockMovements  Records~0
+  StockMovementID | Type=4 | Size=4 | Required=False
+  MovementDate | Type=8 | Size=8 | Required=False
+  ItemID | Type=4 | Size=4 | Required=False
+  ItemInstanceID | Type=4 | Size=4 | Required=False
+  MovementTypeID | Type=4 | Size=4 | Required=False
+  Quantity | Type=7 | Size=8 | Required=False
+  FromLocationID | Type=4 | Size=4 | Required=False
+  ToLocationID | Type=4 | Size=4 | Required=False
+  ProjectID | Type=4 | Size=4 | Required=False
+  ReferenceDocument | Type=10 | Size=100 | Required=False
+  PerformedByUserID | Type=4 | Size=4 | Required=False
+  Reason | Type=10 | Size=255 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  UnitCost | Type=5 | Size=8 | Required=False
+  CustomerID | Type=4 | Size=4 | Required=False
+  AssemblyTemplateID | Type=4 | Size=4 | Required=False
+  AssemblyJobID | Type=4 | Size=4 | Required=False
+  SalesOrderID | Type=4 | Size=4 | Required=False
+  SalesOrderLineID | Type=4 | Size=4 | Required=False
+  CustomerPOID | Type=4 | Size=4 | Required=False
+  CustomerPOLineID | Type=4 | Size=4 | Required=False
+  InvoiceID | Type=4 | Size=4 | Required=False
+  InvoiceLineID | Type=4 | Size=4 | Required=False
+  ExpectedReturnDate | Type=8 | Size=8 | Required=False
+  SourceDocumentType | Type=10 | Size=50 | Required=False
+  MovementNotes | Type=12 | Size=0 | Required=False
+  ActualReturnDate | Type=8 | Size=8 | Required=False
+  IssuedToStaffID | Type=4 | Size=4 | Required=False
+  INDEX FK_StockMovements_FromLocation Fields=FromLocationID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_StockMovements_ItemInstances Fields=ItemInstanceID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_StockMovements_Items Fields=ItemID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_StockMovements_Projects Fields=ProjectID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_StockMovements_ToLocation Fields=ToLocationID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_StockMovements_Types Fields=MovementTypeID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_StockMovements_Users Fields=PerformedByUserID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_T_StockMovements_AssemblyJob Fields=AssemblyJobID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_T_StockMovements_AssemblyTemplate Fields=AssemblyTemplateID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_T_StockMovements_Customer Fields=CustomerID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_T_StockMovements_SalesOrder Fields=SalesOrderID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_T_StockMovements_SalesOrderLine Fields=SalesOrderLineID Primary=False Unique=False IgnoreNulls=False
+  INDEX IX_T_StockMovements_ItemID Fields=ItemID Primary=False Unique=False IgnoreNulls=False
+  INDEX IX_T_StockMovements_MovementDate Fields=MovementDate Primary=False Unique=False IgnoreNulls=False
+  INDEX PrimaryKey Fields=StockMovementID Primary=True Unique=True IgnoreNulls=False
+TABLE: T_StockMovementTypes  Records~12
+  MovementTypeID | Type=4 | Size=4 | Required=False
+  MovementTypeCode | Type=10 | Size=30 | Required=False
+  MovementTypeName | Type=10 | Size=100 | Required=False
+  StockEffect | Type=4 | Size=4 | Required=False
+  Description | Type=12 | Size=0 | Required=False
+  INDEX PrimaryKey Fields=MovementTypeID Primary=True Unique=True IgnoreNulls=False
+  INDEX UQ_T_StockMovementTypes_Code Fields=MovementTypeCode Primary=False Unique=True IgnoreNulls=False
+TABLE: T_SupplierPOLines  Records~0
+  SupplierPOLineID | Type=4 | Size=4 | Required=False
+  SupplierPOID | Type=4 | Size=4 | Required=True
+  LineNumber | Type=4 | Size=4 | Required=True
+  ItemID | Type=4 | Size=4 | Required=True
+  SupplierPartNumber | Type=10 | Size=100 | Required=False
+  ItemDescription | Type=10 | Size=255 | Required=False
+  OrderedQuantity | Type=7 | Size=8 | Required=True
+  UnitID | Type=4 | Size=4 | Required=True
+  UnitPrice | Type=5 | Size=8 | Required=True
+  DiscountAmount | Type=5 | Size=8 | Required=False
+  TaxPercent | Type=7 | Size=8 | Required=False
+  RequiredDate | Type=8 | Size=8 | Required=False
+  LineStatus | Type=10 | Size=30 | Required=True
+  CreatedOn | Type=8 | Size=8 | Required=False
+  UpdatedOn | Type=8 | Size=8 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  INDEX FK_T_SupplierPOLines_Item Fields=ItemID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_T_SupplierPOLines_PO Fields=SupplierPOID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_T_SupplierPOLines_Unit Fields=UnitID Primary=False Unique=False IgnoreNulls=False
+  INDEX IX_T_SupplierPOLines_ItemID Fields=ItemID Primary=False Unique=False IgnoreNulls=False
+  INDEX PK_T_SupplierPOLines Fields=SupplierPOLineID Primary=True Unique=True IgnoreNulls=False
+  INDEX UX_T_SupplierPOLines_PO_Line Fields=SupplierPOID,LineNumber Primary=False Unique=True IgnoreNulls=False
+TABLE: T_SupplierPOs  Records~0
+  SupplierPOID | Type=4 | Size=4 | Required=False
+  PONumber | Type=10 | Size=30 | Required=True
+  SupplierID | Type=4 | Size=4 | Required=True
+  PODate | Type=8 | Size=8 | Required=True
+  PORevisionDate | Type=8 | Size=8 | Required=False
+  POType | Type=10 | Size=30 | Required=False
+  ExpectedDeliveryDate | Type=8 | Size=8 | Required=False
+  DeliveryLocationID | Type=4 | Size=4 | Required=False
+  CurrencyID | Type=4 | Size=4 | Required=False
+  PaymentTerms | Type=10 | Size=100 | Required=False
+  ShipVia | Type=10 | Size=100 | Required=False
+  PrepaidFreight | Type=1 | Size=1 | Required=False
+  ResaleNo | Type=10 | Size=50 | Required=False
+  SupplierQuoteReference | Type=10 | Size=100 | Required=False
+  ShipToName | Type=10 | Size=150 | Required=False
+  ShipToAddress | Type=12 | Size=0 | Required=False
+  ShipToContactName | Type=10 | Size=100 | Required=False
+  ShipToPhone | Type=10 | Size=50 | Required=False
+  ShipToEmail | Type=10 | Size=150 | Required=False
+  AuthorizedBy | Type=10 | Size=100 | Required=False
+  AuthorizedByEmail | Type=10 | Size=150 | Required=False
+  SubtotalAmount | Type=5 | Size=8 | Required=False
+  FreightAmount | Type=5 | Size=8 | Required=False
+  TaxAmount | Type=5 | Size=8 | Required=False
+  TotalAmount | Type=5 | Size=8 | Required=False
+  POStatus | Type=10 | Size=30 | Required=True
+  SentOn | Type=8 | Size=8 | Required=False
+  CreatedByUserID | Type=4 | Size=4 | Required=False
+  CreatedOn | Type=8 | Size=8 | Required=False
+  UpdatedOn | Type=8 | Size=8 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  INDEX FK_T_SupplierPOs_CreatedBy Fields=CreatedByUserID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_T_SupplierPOs_Currency Fields=CurrencyID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_T_SupplierPOs_Location Fields=DeliveryLocationID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_T_SupplierPOs_Supplier Fields=SupplierID Primary=False Unique=False IgnoreNulls=False
+  INDEX IX_T_SupplierPOs_POStatus Fields=POStatus Primary=False Unique=False IgnoreNulls=False
+  INDEX IX_T_SupplierPOs_SupplierID Fields=SupplierID Primary=False Unique=False IgnoreNulls=False
+  INDEX PK_T_SupplierPOs Fields=SupplierPOID Primary=True Unique=True IgnoreNulls=False
+  INDEX UX_T_SupplierPOs_PONumber Fields=PONumber Primary=False Unique=True IgnoreNulls=False
+TABLE: T_Suppliers  Records~0
+  SupplierID | Type=4 | Size=4 | Required=False
+  SupplierCode | Type=10 | Size=30 | Required=False
+  CompanyName | Type=10 | Size=150 | Required=False
+  ContactPerson | Type=10 | Size=120 | Required=False
+  Phone | Type=10 | Size=50 | Required=False
+  Email | Type=10 | Size=120 | Required=False
+  Address | Type=12 | Size=0 | Required=False
+  PaymentTerms | Type=10 | Size=100 | Required=False
+  INDEX PrimaryKey Fields=SupplierID Primary=True Unique=True IgnoreNulls=False
+  INDEX UQ_T_Suppliers_SupplierCode Fields=SupplierCode Primary=False Unique=True IgnoreNulls=False
+TABLE: T_SystemInfo  Records~3
+  SystemInfoID | Type=4 | Size=4 | Required=False
+  SettingName | Type=10 | Size=100 | Required=False
+  SettingValue | Type=10 | Size=255 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  INDEX PrimaryKey Fields=SystemInfoID Primary=True Unique=True IgnoreNulls=False
+  INDEX UQ_T_SystemInfo_SettingName Fields=SettingName Primary=False Unique=True IgnoreNulls=False
+TABLE: T_TransferItems  Records~0
+  TransferItemID | Type=4 | Size=4 | Required=False
+  TransferID | Type=4 | Size=4 | Required=False
+  ItemID | Type=4 | Size=4 | Required=False
+  ItemInstanceID | Type=4 | Size=4 | Required=False
+  Quantity | Type=7 | Size=8 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  INDEX FK_TransferItems_ItemInstances Fields=ItemInstanceID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_TransferItems_Items Fields=ItemID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_TransferItems_Transfers Fields=TransferID Primary=False Unique=False IgnoreNulls=False
+  INDEX PrimaryKey Fields=TransferItemID Primary=True Unique=True IgnoreNulls=False
+TABLE: T_Transfers  Records~0
+  TransferID | Type=4 | Size=4 | Required=False
+  TransferNumber | Type=10 | Size=50 | Required=False
+  FromLocationID | Type=4 | Size=4 | Required=False
+  ToLocationID | Type=4 | Size=4 | Required=False
+  RequestedByUserID | Type=4 | Size=4 | Required=False
+  ApprovedByUserID | Type=4 | Size=4 | Required=False
+  TransferStatusID | Type=4 | Size=4 | Required=False
+  RequestDate | Type=8 | Size=8 | Required=False
+  ApprovalDate | Type=8 | Size=8 | Required=False
+  DispatchDate | Type=8 | Size=8 | Required=False
+  ReceivedDate | Type=8 | Size=8 | Required=False
+  Notes | Type=12 | Size=0 | Required=False
+  INDEX FK_Transfers_ApproveUsers Fields=ApprovedByUserID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_Transfers_FromLocation Fields=FromLocationID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_Transfers_RequestUsers Fields=RequestedByUserID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_Transfers_Statuses Fields=TransferStatusID Primary=False Unique=False IgnoreNulls=False
+  INDEX FK_Transfers_ToLocation Fields=ToLocationID Primary=False Unique=False IgnoreNulls=False
+  INDEX PrimaryKey Fields=TransferID Primary=True Unique=True IgnoreNulls=False
+  INDEX UQ_T_Transfers_TransferNumber Fields=TransferNumber Primary=False Unique=True IgnoreNulls=False
+TABLE: T_TransferStatuses  Records~7
+  TransferStatusID | Type=4 | Size=4 | Required=False
+  StatusName | Type=10 | Size=50 | Required=False
+  Description | Type=12 | Size=0 | Required=False
+  INDEX PrimaryKey Fields=TransferStatusID Primary=True Unique=True IgnoreNulls=False
+  INDEX UQ_T_TransferStatuses_StatusName Fields=StatusName Primary=False Unique=True IgnoreNulls=False
+TABLE: T_Units  Records~6
+  UnitID | Type=4 | Size=4 | Required=False
+  UnitCode | Type=10 | Size=20 | Required=False
+  UnitName | Type=10 | Size=50 | Required=False
+  Description | Type=12 | Size=0 | Required=False
+  INDEX PrimaryKey Fields=UnitID Primary=True Unique=True IgnoreNulls=False
+  INDEX UQ_T_Units_UnitCode Fields=UnitCode Primary=False Unique=True IgnoreNulls=False
+TABLE: T_Users  Records~3
+  UserID | Type=4 | Size=4 | Required=False
+  Username | Type=10 | Size=50 | Required=False
+  PasswordHash | Type=10 | Size=255 | Required=False
+  FullName | Type=10 | Size=120 | Required=False
+  RoleID | Type=4 | Size=4 | Required=False
+  Department | Type=10 | Size=100 | Required=False
+  Email | Type=10 | Size=120 | Required=False
+  CreatedOn | Type=8 | Size=8 | Required=False
+  INDEX FK_Users_Roles Fields=RoleID Primary=False Unique=False IgnoreNulls=False
+  INDEX PrimaryKey Fields=UserID Primary=True Unique=True IgnoreNulls=False
+  INDEX UQ_T_Users_Username Fields=Username Primary=False Unique=True IgnoreNulls=False
+TABLE: T_Warehouses  Records~0
+  WarehouseID | Type=4 | Size=4 | Required=False
+  WarehouseCode | Type=10 | Size=20 | Required=False
+  WarehouseName | Type=10 | Size=120 | Required=False
+  Address | Type=12 | Size=0 | Required=False
+  ContactPerson | Type=10 | Size=120 | Required=False
+  INDEX PrimaryKey Fields=WarehouseID Primary=True Unique=True IgnoreNulls=False
+  INDEX UQ_T_Warehouses_WarehouseCode Fields=WarehouseCode Primary=False Unique=True IgnoreNulls=False
+TABLE: T_WorkInstructions  Records~0
+  WorkInstructionID | Type=4 | Size=4 | Required=False
+  InstructionName | Type=10 | Size=255 | Required=False
+  Description | Type=12 | Size=0 | Required=False
+  FilePath | Type=12 | Size=0 | Required=False
+  CreatedOn | Type=8 | Size=8 | Required=False
+  Active | Type=1 | Size=1 | Required=False
+  INDEX PrimaryKey Fields=WorkInstructionID Primary=True Unique=True IgnoreNulls=False
+

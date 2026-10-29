@@ -1,0 +1,753 @@
+﻿Version =21
+VersionRequired =20
+PublishOption =1
+Checksum =207310265
+Begin Form
+    RecordSelectors = NotDefault
+    DividingLines = NotDefault
+    AllowDesignChanges = NotDefault
+    DefaultView =0
+    TabularFamily =0
+    PictureAlignment =2
+    DatasheetGridlinesBehavior =3
+    GridX =24
+    GridY =24
+    Width =23520
+    DatasheetFontHeight =11
+    ItemSuffix =3
+    Right =15090
+    Bottom =4695
+    DatasheetGridlinesColor =15263976
+    RecSrcDt = Begin
+        0x08faa80d6c8ee640
+    End
+    GUID = Begin
+        0xa993f41c8d444441bb78eecf14e08f7c
+    End
+    DatasheetFontName ="Aptos"
+    PrtMip = Begin
+        0x6801000068010000680100006801000000000000201c0000e010000001000000 ,
+        0x010000006801000000000000a10700000100000001000000
+    End
+    PrtDevMode = Begin
+        0x0000000000000000308490d58b0200000000000000000000e70a7e35f77f0000 ,
+        0x010403069c004003032d000001000100ea0a6f08640001000f00580202000100 ,
+        0x5802030001004c657474657200000000030000000000c8420000c842e8e8e800 ,
+        0xc05e04d08b020000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000ffffffff4749533400000000000000000000000044494e55 ,
+        0x2200c80024031c00ac13d8c00000000000000000000000000000000000000000 ,
+        0x0000000000000000050000000000070000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000100000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000c8000000534d544a ,
+        0x000000001000b8007b00330045004500330039003100310034002d0033003000 ,
+        0x420034002d0034003500610034002d0041003100300039002d00310039004400 ,
+        0x3400410034003000460043004300320032007d000000524553444c4c00556e69 ,
+        0x726573444c4c00506170657253697a65004c4554544552004f7269656e746174 ,
+        0x696f6e00504f525452414954005265736f6c7574696f6e004450493630300043 ,
+        0x6f6c6f724d6f6465003234627070000000000000000000000000000000000000 ,
+        0x1c0000005634444d0100000000000000000000000000000000000000
+    End
+    PrtDevNames = Begin
+        0x08002c003f000100000000000000000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000000000000000006e ,
+        0x756c3a0000000000000000000000000000000000000000000000000000000000
+    End
+    OnLoad ="[Event Procedure]"
+    FilterOnLoad =0
+    ShowPageMargins =0
+    DisplayOnSharePointSite =1
+    DatasheetAlternateBackColor =15921906
+    DatasheetGridlinesColor12 =0
+    FitToScreen =1
+    DatasheetBackThemeColorIndex =1
+    BorderThemeColorIndex =3
+    ThemeFontIndex =1
+    ForeThemeColorIndex =0
+    AlternateBackThemeColorIndex =1
+    AlternateBackShade =95.0
+    PrtDevModeW = Begin
+        0x0000e0cf8b020000b88a2636f77f0000704adc35f77f00000900000000000000 ,
+        0x08000000000000005fed3db5f97f000050000000000000004000000000000000 ,
+        0x01040306dc004003032d000001000100ea0a6f08640001000f00580202000100 ,
+        0x5802030001004c0065007400740065007200000000000000b0dcd5e28b020000 ,
+        0x00000000000000000000000000000000a0dcd5e28b02000044000000f1000000 ,
+        0x4400000000000000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000ffffffff4749533400000000000000000000000044494e55 ,
+        0x2200c80024031c00ac13d8c00000000000000000000000000000000000000000 ,
+        0x0000000000000000050000000000070000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000100000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000c8000000534d544a ,
+        0x000000001000b8007b00330045004500330039003100310034002d0033003000 ,
+        0x420034002d0034003500610034002d0041003100300039002d00310039004400 ,
+        0x3400410034003000460043004300320032007d000000524553444c4c00556e69 ,
+        0x726573444c4c00506170657253697a65004c4554544552004f7269656e746174 ,
+        0x696f6e00504f525452414954005265736f6c7574696f6e004450493630300043 ,
+        0x6f6c6f724d6f6465003234627070000000000000000000000000000000000000 ,
+        0x1c0000005634444d0100000000000000000000000000000000000000
+    End
+    PrtDevNamesW = Begin
+        0x040028003b000100000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000006e0075006c003a000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000
+    End
+    NoSaveCTIWhenDisabled =1
+    Begin
+        Begin Label
+            BackStyle =0
+            TextFontFamily =0
+            FontSize =11
+            BorderColor =8355711
+            ForeColor =6710886
+            FontName ="Aptos"
+            GridlineColor =10921638
+            ThemeFontIndex =1
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =0
+            BorderTint =50.0
+            ForeThemeColorIndex =0
+            ForeTint =60.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin Rectangle
+            SpecialEffect =3
+            BackStyle =0
+            BorderLineStyle =0
+            BorderColor =10921638
+            GridlineColor =10921638
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin CommandButton
+            TextFontFamily =0
+            FontSize =11
+            FontWeight =400
+            ForeColor =4210752
+            FontName ="Aptos"
+            GridlineColor =10921638
+            ForeThemeColorIndex =0
+            ForeTint =75.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+            UseTheme =1
+            Shape =1
+            Gradient =12
+            BackColor =14790982
+            BackThemeColorIndex =4
+            BackTint =60.0
+            BorderLineStyle =0
+            BorderColor =14790982
+            BorderThemeColorIndex =4
+            BorderTint =60.0
+            ThemeFontIndex =1
+            HoverColor =15453059
+            HoverThemeColorIndex =4
+            HoverTint =40.0
+            PressedColor =6440976
+            PressedThemeColorIndex =4
+            PressedShade =75.0
+            HoverForeColor =4210752
+            HoverForeThemeColorIndex =0
+            HoverForeTint =75.0
+            PressedForeColor =4210752
+            PressedForeThemeColorIndex =0
+            PressedForeTint =75.0
+        End
+        Begin TextBox
+            AddColon = NotDefault
+            FELineBreak = NotDefault
+            TextFontFamily =0
+            BorderLineStyle =0
+            LabelX =-1800
+            FontSize =11
+            BorderColor =10921638
+            ForeColor =4210752
+            FontName ="Aptos"
+            AsianLineBreak =1
+            GridlineColor =10921638
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            ThemeFontIndex =1
+            ForeThemeColorIndex =0
+            ForeTint =75.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin ComboBox
+            AddColon = NotDefault
+            TextFontFamily =0
+            BorderLineStyle =0
+            LabelX =-1800
+            FontSize =11
+            BorderColor =10921638
+            ForeColor =2102279
+            FontName ="Aptos"
+            GridlineColor =10921638
+            AllowValueListEdits =1
+            InheritValueList =1
+            ThemeFontIndex =1
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            ForeThemeColorIndex =2
+            ForeShade =50.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin Subform
+            BorderLineStyle =0
+            BorderColor =10921638
+            GridlineColor =10921638
+            BorderThemeColorIndex =1
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+            BorderShade =65.0
+            ShowPageHeaderAndPageFooter =1
+        End
+        Begin FormHeader
+            BackColor =14482166
+            Name ="FormHeader"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x48e8fe577f1191488692782bc524e353
+            End
+            AlternateBackShade =95.0
+            BackTint =20.0
+            Begin
+                Begin Rectangle
+                    BackStyle =1
+                    OverlapFlags =93
+                    Top =240
+                    Width =20220
+                    Height =960
+                    BorderColor =1513239
+                    Name ="Box42"
+                    GUID = Begin
+                        0x473071e642182240a2c26428169f689d
+                    End
+                    LayoutCachedTop =240
+                    LayoutCachedWidth =20220
+                    LayoutCachedHeight =1200
+                    BorderThemeColorIndex =3
+                    BorderShade =10.0
+                End
+                Begin TextBox
+                    OverlapFlags =215
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =1140
+                    Top =600
+                    Width =7862
+                    Height =360
+                    FontSize =12
+                    FontWeight =700
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtSearch"
+                    AfterUpdate ="[Event Procedure]"
+                    FontName ="Segoe UI"
+                    OnKeyDown ="[Event Procedure]"
+                    GUID = Begin
+                        0x8d0aed1a8559c241a394fe56d49834c9
+                    End
+
+                    LayoutCachedLeft =1140
+                    LayoutCachedTop =600
+                    LayoutCachedWidth =9002
+                    LayoutCachedHeight =960
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =50.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =215
+                            TextAlign =3
+                            TextFontFamily =34
+                            Left =120
+                            Top =600
+                            Width =990
+                            Height =360
+                            FontSize =12
+                            FontWeight =700
+                            BackColor =14524133
+                            BorderColor =4855376
+                            ForeColor =4855376
+                            Name ="Label580"
+                            Caption ="Search: "
+                            FontName ="Segoe UI Semibold"
+                            GUID = Begin
+                                0x48943eb5f6f93e43bcfbaa74963b1893
+                            End
+                            LayoutCachedLeft =120
+                            LayoutCachedTop =600
+                            LayoutCachedWidth =1110
+                            LayoutCachedHeight =960
+                            ThemeFontIndex =-1
+                            BackThemeColorIndex =8
+                            BackTint =40.0
+                            BorderThemeColorIndex =8
+                            BorderTint =100.0
+                            BorderShade =50.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin CommandButton
+                    FontUnderline = NotDefault
+                    OverlapFlags =215
+                    TextFontFamily =34
+                    Left =13020
+                    Top =360
+                    Width =840
+                    Height =714
+                    FontWeight =700
+                    TabIndex =1
+                    ForeColor =16777215
+                    Name ="btnClearFilter"
+                    Caption ="Filter"
+                    OnClick ="[Event Procedure]"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"btnClearFilter\")"
+                    ControlTipText ="Filter"
+                    Picture ="round-button-for-web-icon-delete-filter-button-banner-round-badge-interface-for-"
+                        "application-illustration-on-white-background-vector.jpg"
+                    GUID = Begin
+                        0xfcb1b32c156c8b4f8bbe78185e172f1f
+                    End
+                    LeftPadding =36
+                    TopPadding =36
+                    RightPadding =108
+                    BottomPadding =108
+                    ImageData = Begin
+                        0xffd8ffe000104a46494600010101006000600000ffe100224578696600004d4d ,
+                        0x002a00000008000101120003000000010001000000000000ffdb004300020101 ,
+                        0x0201010202020202020202030503030303030604040305070607070706070708 ,
+                        0x090b0908080a0807070a0d0a0a0b0c0c0c0c07090e0f0d0c0e0b0c0c0cffdb00 ,
+                        0x4301020202030303060303060c0807080c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c ,
+                        0x0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c ,
+                        0x0c0cffc0001108003f003b03012200021101031101ffc4001f00000105010101 ,
+                        0x01010100000000000000000102030405060708090a0bffc400b5100002010303 ,
+                        0x020403050504040000017d010203000411051221314106135161072271143281 ,
+                        0x91a1082342b1c11552d1f02433627282090a161718191a25262728292a343536 ,
+                        0x3738393a434445464748494a535455565758595a636465666768696a73747576 ,
+                        0x7778797a838485868788898a92939495969798999aa2a3a4a5a6a7a8a9aab2b3 ,
+                        0xb4b5b6b7b8b9bac2c3c4c5c6c7c8c9cad2d3d4d5d6d7d8d9dae1e2e3e4e5e6e7 ,
+                        0xe8e9eaf1f2f3f4f5f6f7f8f9faffc4001f010003010101010101010101000000 ,
+                        0x0000000102030405060708090a0bffc400b51100020102040403040705040400 ,
+                        0x010277000102031104052131061241510761711322328108144291a1b1c10923 ,
+                        0x3352f0156272d10a162434e125f11718191a262728292a35363738393a434445 ,
+                        0x464748494a535455565758595a636465666768696a737475767778797a828384 ,
+                        0x85868788898a92939495969798999aa2a3a4a5a6a7a8a9aab2b3b4b5b6b7b8b9 ,
+                        0xbac2c3c4c5c6c7c8c9cad2d3d4d5d6d7d8d9dae2e3e4e5e6e7e8e9eaf2f3f4f5 ,
+                        0xf6f7f8f9faffda000c03010002110311003f00fdfca28af3ff008b1f1c60f044 ,
+                        0xcda769e91de6ab8f9f71fdddb67a6ec756ff0067f3f700efddc46a5988503a92 ,
+                        0x7005551afd81936fdb6d377a79cb9fe75f37ea3e21d5bc6173e6ea57d7173939 ,
+                        0x085b6c6bf451c0fcaaee99a428c7c83f2a00fa351c3a82a4107a10720d2d78ce ,
+                        0x8125ce9a41b79e7831fdc7207e55d9e8bf1165b128baa00606217ed2a31e59ed ,
+                        0xbc7a7b8a00ece8a447122065219586411d0d2d00737f15bc6a7c09e0db8bc8f0 ,
+                        0x6ee4221b60790646e87e8064fe15f3c5858c9797265959e596672ceec72cec4e ,
+                        0x4926bd4ff6919daef53d22d39f2e3492623d492147e80fe75c5e99a6e08e0d00 ,
+                        0x7cefe1cfda6fe2478be7d62e3c3fe00f044da469fad6a3a45bcba8f8b2e6dee6 ,
+                        0xe3ec7772dab48d1a58baa6e6898801db008e735bd6dfb43fc61b7ff9a73f0d0f ,
+                        0xfdceb79ffcaeaadf18fe086b3fb3febfab78efc11a7dfeb9e12d52e24d47c59e ,
+                        0x14b44335d5a4ce774dab6989d59c9cbdc5a0ff005bcc91012ee4960bff008bbe ,
+                        0x16d37e180f1b49afe9ade126b45be8f558a4f3609e2720218f6825d9d8855450 ,
+                        0x5d9c840bb8e28037f41fdaf3e2168ff10bc17a67897e1f7832cb49f16788ad7c ,
+                        0x3cf77a678aee6eee2cdee049b251149651aba829823783cf15f55db69cb2c651 ,
+                        0xd43a382195864303d41af9aff663fd9a35bf893e31d27e267c49d3eef465d264 ,
+                        0xfb5f83bc1b39c3e8cc54a8d4b5100e1b506466090e4a5aab91f34c5997eaab4b ,
+                        0x4c638a00a1f0f7589344d6ee7c3f72ece90a89acdd8e4b44d9c0ff00809047e0 ,
+                        0x2bb5af38f1fb7f6278c3c337c9f2b492cb6ac7d5480c3f507f3af45864f36256 ,
+                        0xfef0cd0079cfc73d20cdaae9b738ca98de23f5041fea6b99d3b4ee9c1af50f88 ,
+                        0xba37f6bf875d954b496ade6803a903ae3f0fe55c569d661d159790790474c500 ,
+                        0x2e9d66636461b9594e411c107d6be1af877e1bd393f6ecd2b4a5b3b25d3ed7e3 ,
+                        0xcf886e20b4f2d7c88655f0fcf70b22c7f755967669410389097186e6befcb2b2 ,
+                        0xc638ae7f47fd987e1d69bf16e4f1fc1e03f09c3e399e47964d7d34c8975291de ,
+                        0x3f29d8ce06fdcd1fc84e72578e9401ca784bf6daf0278af51d0f4ab26d725f16 ,
+                        0xeb5acc9a13f85cd811ade93710906e5ef20ddfb882146491a766f2d92488c6d2 ,
+                        0x19630dee36f6d8af9f3c09fb054de0df8bd6bf13e2f1cea571f152fef02f89f5 ,
+                        0xa7b35167e22d2b771a4fd8f7ed82de15c7d9d918c914819d9a5f36657fa3269a ,
+                        0x2d3ed659e6912182152f248e70a8a064927d00a00e03e2fcc2e3c61e16b04399 ,
+                        0x16496edc0eca0041f9927f2af46b21b6d2307b28af2af03492fc4bf88977e217 ,
+                        0x475b33882c95860ac2a4e0e3b1624b7e35eb2a36a81e9400bd6b85f137876e3c ,
+                        0x2976f776703dde9b236e9208ff00d65b9ee53d47fb3f9577541008c1e41a00e2 ,
+                        0xbc39aee9faf0c5addc3248bf7a3276c887d0a9e47e55d15bd930fe16fcab3bc4 ,
+                        0xdf0af47f1436f9ed6312f6751861f8d73d3fecff006cff002adf6a023fee7daa ,
+                        0x4c7e59a00e97c49e3ad1bc15016d4750b781fb441b7cce7d150658fe55e7bace ,
+                        0xafabfc6fbb5b48ede6d37c3aae18c4ff00ebaf3078326380bdf68fc7d2ba8d03 ,
+                        0xe03e8fa2cde608119fbb11927f1aec74fd220d3230b122ae3da8029f853c350f ,
+                        0x86f4d486350a5462b568a2803fffd9
+                    End
+
+                    CursorOnHover =1
+                    LayoutCachedLeft =13020
+                    LayoutCachedTop =360
+                    LayoutCachedWidth =13860
+                    LayoutCachedHeight =1074
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    OldBorderStyle =0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =7
+                    WebImagePaddingBottom =7
+                    Overlaps =1
+                End
+                Begin CommandButton
+                    OverlapFlags =215
+                    TextFontFamily =34
+                    Left =18660
+                    Top =600
+                    Width =1320
+                    Height =300
+                    FontWeight =700
+                    TabIndex =2
+                    ForeColor =16777215
+                    Name ="EXIT"
+                    Caption ="EXIT"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"EXIT\")"
+                    GUID = Begin
+                        0x3193396280f7bf4ba7903a3321cc878b
+                    End
+                    OnClickEmMacro = Begin
+                        Version =196611
+                        ColumnsShown =8
+                        Begin
+                            Action ="Close"
+                            Argument ="-1"
+                            Argument =""
+                            Argument ="0"
+                        End
+                        Begin
+                            Comment ="_AXL:<?xml version=\"1.0\" encoding=\"UTF-16\" standalone=\"no\"?>\015\012<UserI"
+                                "nterfaceMacro For=\"EXIT\" xmlns=\"http://schemas.microsoft.com/office/accessser"
+                                "vices/2009/11/application\"><Statements><Action Name=\"CloseWindow\"/></Statemen"
+                                "ts></UserInterfaceMacro>"
+                        End
+                    End
+
+                    CursorOnHover =1
+                    LayoutCachedLeft =18660
+                    LayoutCachedTop =600
+                    LayoutCachedWidth =19980
+                    LayoutCachedHeight =900
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    HoverForeTint =100.0
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    PressedForeTint =100.0
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                    Overlaps =1
+                End
+                Begin CommandButton
+                    OverlapFlags =215
+                    TextFontFamily =34
+                    Left =14820
+                    Top =540
+                    Width =2400
+                    FontWeight =700
+                    TabIndex =3
+                    ForeColor =16777215
+                    Name ="btnNew"
+                    Caption ="ADD CUSTOMER"
+                    OnClick ="[Event Procedure]"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"btnNew\")"
+                    GUID = Begin
+                        0x4826263aeb64594195d2c0a2bf0ff4f1
+                    End
+                    LeftPadding =45
+                    TopPadding =45
+                    RightPadding =150
+                    BottomPadding =150
+
+                    CursorOnHover =1
+                    LayoutCachedLeft =14820
+                    LayoutCachedTop =540
+                    LayoutCachedWidth =17220
+                    LayoutCachedHeight =900
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    Shadow =1
+                    Overlaps =1
+                End
+                Begin CommandButton
+                    OverlapFlags =215
+                    TextFontFamily =34
+                    Left =200
+                    Top =60
+                    Width =1400
+                    Height =340
+                    FontWeight =700
+                    TabIndex =4
+                    ForeColor =16777215
+                    Name ="cmdUXBack"
+                    Caption ="Back"
+                    OnClick ="=UX_GoBack()"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdUXBack\")"
+                    GUID = Begin
+                        0xf92f2d1b082a25418b0638dd696bc9ac
+                    End
+
+                    LayoutCachedLeft =200
+                    LayoutCachedTop =60
+                    LayoutCachedWidth =1600
+                    LayoutCachedHeight =400
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                    Overlaps =1
+                End
+            End
+        End
+        Begin Section
+            CanGrow = NotDefault
+            Height =9660
+            BackColor =14482166
+            Name ="Detail"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x176b021d88c50f46b4fe03f4cac0c53a
+            End
+            AlternateBackColor =14482166
+            AlternateBackShade =95.0
+            Begin
+                Begin Subform
+                    OverlapFlags =215
+                    Width =23520
+                    Height =7116
+                    Name ="subCustomerList"
+                    SourceObject ="Form.SF_CustomerList"
+                    GUID = Begin
+                        0x9e79179cdbb9f84cbd0834d44608e70f
+                    End
+
+                    LayoutCachedWidth =23520
+                    LayoutCachedHeight =7116
+                    Begin
+                        Begin Label
+                            OverlapFlags =93
+                            Width =1692
+                            Height =300
+                            Name ="SF_CustomerList Label"
+                            Caption ="SF_CustomerList"
+                            EventProcPrefix ="SF_CustomerList_Label"
+                            GUID = Begin
+                                0xd0cef91fd8d438428df1939e464acfc4
+                            End
+                            LayoutCachedWidth =1692
+                            LayoutCachedHeight =300
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =360
+            BackColor =14482166
+            Name ="FormFooter"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x021e1a0bbe1dab419276806233feffde
+            End
+            AutoHeight =1
+            AlternateBackShade =95.0
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+Private Sub Form_Load()
+    ApplyListFilter
+End Sub
+
+Private Sub txtSearch_AfterUpdate()
+    ApplyListFilter
+End Sub
+
+Private Sub txtSearch_KeyDown(KeyCode As Integer, Shift As Integer)
+
+    If KeyCode = vbKeyReturn Then
+        KeyCode = 0
+        ApplyListFilter
+    End If
+
+End Sub
+
+Private Sub btnClearFilter_Click()
+
+    Me.txtSearch = Null
+    ApplyListFilter
+
+End Sub
+
+Private Sub btnNew_Click()
+
+    DoCmd.OpenForm "F_CustomerSetup", acNormal, , , acFormAdd
+
+End Sub
+
+Private Sub ApplyListFilter()
+
+    On Error GoTo Err_Handler
+
+    Dim s As String
+    Dim filterText As String
+
+    s = Trim$(Nz(Me.txtSearch, vbNullString))
+    s = Replace(s, "'", "''")
+
+    If Len(s) = 0 Then
+
+        Me.Controls("subCustomerList").Form.FilterOn = False
+        Me.Controls("subCustomerList").Form.Filter = vbNullString
+
+    Else
+
+        filterText = ""
+        filterText = filterText & "Nz([CustomerName],'') Like '*" & s & "*'"
+        filterText = filterText & " OR Nz([DefaultPaymentTerms],'') Like '*" & s & "*'"
+        filterText = filterText & " OR Nz([DefaultShipVia],'') Like '*" & s & "*'"
+
+        Me.Controls("subCustomerList").Form.Filter = filterText
+        Me.Controls("subCustomerList").Form.FilterOn = True
+
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox "Customer list filter failed." & vbCrLf & vbCrLf & _
+           "Error Number: " & Err.Number & vbCrLf & _
+           "Details: " & Err.Description, vbExclamation, "Customer List"
+    Resume Exit_Handler
+
+End Sub

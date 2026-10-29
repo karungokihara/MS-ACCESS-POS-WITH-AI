@@ -1,0 +1,636 @@
+﻿Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+'=============================================================
+' FORM: F_CustomerSetup
+' PURPOSE:
+'   Maintains customers and supports safe Quick Add calls from
+'   combo-box NotInList events.
+'
+' CODE FORMAT:
+'   First four letters from CustomerName plus a five-digit
+'   sequence for that prefix, for example LAWI-00001.
+'=============================================================
+
+Private mQuickAddMode As Boolean
+
+'=============================================================
+' FORM EVENTS
+'=============================================================
+
+Private Sub Form_Load()
+
+    On Error GoTo Err_Handler
+
+    mQuickAddMode = IsQuickAddRequest()
+
+    ConfigureFormControls
+    ConfigureComboBoxes
+    ApplyCustomerDefaults
+
+    If Me.NewRecord Then
+        SeedQuickAddField Me, "txtCustomerName"
+        EnsureCustomerCode
+    End If
+
+    SetSubformAvailability
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "Customer Setup could not be initialized." & vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Customer Setup"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_Current()
+
+    On Error Resume Next
+
+    If Me.NewRecord Then
+        Me.cboFindCustomer = Null
+    Else
+        Me.cboFindCustomer = Me.txtCustomerID
+    End If
+
+    SetSubformAvailability
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub Form_BeforeInsert(Cancel As Integer)
+
+    ApplyCustomerDefaults
+
+End Sub
+
+
+Private Sub Form_BeforeUpdate(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    NormalizeCustomerValues
+    EnsureCustomerCode
+
+    If Not ValidateCustomerRecord Then
+        Cancel = True
+        Exit Sub
+    End If
+
+    If Me.NewRecord Then
+        Me!CreatedOn = Now()
+    End If
+
+    Me!UpdatedOn = Now()
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Cancel = True
+    MsgBox _
+        "The customer could not be validated." & vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Customer Validation"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_AfterUpdate()
+
+    On Error Resume Next
+
+    Me.cboFindCustomer.Requery
+    Me.cboFindCustomer = Me.txtCustomerID
+
+    SafeRequerySubform "SF_CustomerPartNumbers"
+    SetSubformAvailability
+
+    On Error GoTo 0
+
+End Sub
+
+'=============================================================
+' CUSTOMER NAME AND CODE
+'=============================================================
+
+Private Sub txtCustomerName_AfterUpdate()
+
+    On Error GoTo Err_Handler
+
+    If Me.NewRecord Then
+        EnsureCustomerCode
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The customer code could not be generated." & vbCrLf & vbCrLf & _
+        Err.Description, _
+        vbExclamation, _
+        "Customer Code"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub EnsureCustomerCode()
+
+    If Not Me.NewRecord Then
+        Exit Sub
+    End If
+
+    If Len(Trim$(Nz(Me.txtCustomerName, vbNullString))) = 0 Then
+        Me.txtCustomerCode = Null
+    Else
+        Me.txtCustomerCode = _
+            GenerateNameBasedCode(Me.txtCustomerName)
+    End If
+
+End Sub
+
+
+Private Function GenerateNameBasedCode( _
+    ByVal sourceName As String _
+) As String
+
+    Dim prefix As String
+    Dim nextNumber As Long
+    Dim existingMaximum As Variant
+    Dim candidate As String
+
+    prefix = FourCharacterPrefix(sourceName, "CUST")
+
+    existingMaximum = DMax( _
+        "Val(Mid([CustomerCode],6))", _
+        "T_Customers", _
+        "CustomerCode Like " & SqlText(prefix & "-*") & _
+        " AND IsNumeric(Mid([CustomerCode],6))")
+
+    If IsNull(existingMaximum) Then
+        nextNumber = 1
+    Else
+        nextNumber = CLng(existingMaximum) + 1
+    End If
+
+    Do
+        candidate = prefix & "-" & Format$(nextNumber, "00000")
+
+        If DCount( _
+            "*", _
+            "T_Customers", _
+            "CustomerCode=" & SqlText(candidate)) = 0 Then
+            Exit Do
+        End If
+
+        nextNumber = nextNumber + 1
+    Loop
+
+    GenerateNameBasedCode = candidate
+
+End Function
+
+
+Private Function FourCharacterPrefix( _
+    ByVal sourceText As String, _
+    ByVal fallbackPrefix As String _
+) As String
+
+    Dim resultText As String
+    Dim oneCharacter As String
+    Dim position As Long
+
+    sourceText = UCase$(Trim$(sourceText))
+
+    For position = 1 To Len(sourceText)
+        oneCharacter = Mid$(sourceText, position, 1)
+
+        If oneCharacter Like "[A-Z]" Then
+            resultText = resultText & oneCharacter
+
+            If Len(resultText) = 4 Then
+                Exit For
+            End If
+        End If
+    Next position
+
+    If Len(resultText) = 0 Then
+        resultText = Left$(fallbackPrefix & "XXXX", 4)
+    ElseIf Len(resultText) < 4 Then
+        resultText = resultText & String$(4 - Len(resultText), "X")
+    End If
+
+    FourCharacterPrefix = resultText
+
+End Function
+
+'=============================================================
+' FIND CUSTOMER
+'=============================================================
+
+Private Sub cboFindCustomer_AfterUpdate()
+
+    On Error GoTo Err_Handler
+
+    Dim rs As DAO.Recordset
+
+    If IsNull(Me.cboFindCustomer) Then
+        Exit Sub
+    End If
+
+    If Me.Dirty Then
+        If IsBlankNewCustomerRecord Then
+            Me.Undo
+        ElseIf Not SaveCustomerRecord(False) Then
+            Exit Sub
+        End If
+    End If
+
+    Set rs = Me.RecordsetClone
+    rs.FindFirst "CustomerID=" & CLng(Me.cboFindCustomer)
+
+    If rs.NoMatch Then
+        MsgBox "The customer could not be found.", vbExclamation, "Find Customer"
+    Else
+        Me.Bookmark = rs.Bookmark
+    End If
+
+Exit_Handler:
+    On Error Resume Next
+    If Not rs Is Nothing Then
+        rs.close
+    End If
+    Set rs = Nothing
+    On Error GoTo 0
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The customer could not be opened." & vbCrLf & vbCrLf & _
+        Err.Description, _
+        vbExclamation, _
+        "Find Customer"
+    Resume Exit_Handler
+
+End Sub
+
+'=============================================================
+' BUTTONS
+'=============================================================
+
+Private Sub cmdNewCustomer_Click()
+
+    On Error GoTo Err_Handler
+
+    Dim reuseCurrentNewRecord As Boolean
+
+    If Me.NewRecord And IsBlankNewCustomerRecord Then
+        reuseCurrentNewRecord = True
+
+        If Me.Dirty Then
+            Me.Undo
+        End If
+    ElseIf Me.Dirty Then
+        If Not SaveCustomerRecord(False) Then
+            Exit Sub
+        End If
+    End If
+
+    If Not reuseCurrentNewRecord Then
+        DoCmd.GoToRecord acDataForm, Me.Name, acNewRec
+    End If
+
+    mQuickAddMode = False
+    ApplyCustomerDefaults
+    Me.cboFindCustomer = Null
+    SetSubformAvailability
+    Me.txtCustomerName.SetFocus
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "A new customer could not be opened." & vbCrLf & vbCrLf & _
+        Err.Description, _
+        vbExclamation, _
+        "New Customer"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cmdSaveCustomer_Click()
+
+    If SaveCustomerRecord(True) Then
+        If mQuickAddMode Then
+            DoCmd.close acForm, Me.Name
+        Else
+            MsgBox "Customer saved successfully.", vbInformation, "Customer Saved"
+        End If
+    End If
+
+End Sub
+
+
+Private Sub cmdClose_Click()
+
+    On Error GoTo Err_Handler
+
+    Dim Response As VbMsgBoxResult
+
+    If Me.NewRecord And IsBlankNewCustomerRecord Then
+        If Me.Dirty Then
+            Me.Undo
+        End If
+    ElseIf Me.Dirty Then
+
+        Response = MsgBox( _
+            "Save the customer changes before closing?", _
+            vbQuestion + vbYesNoCancel, _
+            "Close Customer Setup")
+
+        Select Case Response
+
+            Case vbYes
+                If Not SaveCustomerRecord(False) Then
+                    Exit Sub
+                End If
+
+            Case vbNo
+                Me.Undo
+
+            Case vbCancel
+                Exit Sub
+
+        End Select
+    End If
+
+    DoCmd.close acForm, Me.Name
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "Customer Setup could not be closed." & vbCrLf & vbCrLf & _
+        Err.Description, _
+        vbExclamation, _
+        "Customer Setup"
+    Resume Exit_Handler
+
+End Sub
+
+'=============================================================
+' CONFIGURATION
+'=============================================================
+
+Private Sub ConfigureFormControls()
+
+    Me.txtCustomerID.Visible = False
+    Me.txtCustomerID.Enabled = False
+    Me.txtCustomerID.Locked = True
+
+    Me.txtCustomerCode.Locked = True
+    Me.txtCustomerCode.TabStop = False
+
+    Me.txtBillingAddress.EnterKeyBehavior = True
+    Me.txtBillingAddress.ScrollBars = 2
+
+    Me.txtShippingAddress.EnterKeyBehavior = True
+    Me.txtShippingAddress.ScrollBars = 2
+
+    Me.txtNOtes.EnterKeyBehavior = True
+    Me.txtNOtes.ScrollBars = 2
+
+    Me.cmdNewCustomer.Enabled = Not mQuickAddMode
+
+End Sub
+
+
+Private Sub ConfigureComboBoxes()
+
+    With Me.cboFindCustomer
+        .RowSourceType = "Table/Query"
+        .RowSource = _
+            "SELECT CustomerID, CustomerCode, CustomerName, " & _
+            "Nz([Status],'') AS CustomerStatus " & _
+            "FROM T_Customers " & _
+            "ORDER BY CustomerName, CustomerCode;"
+        .BoundColumn = 1
+        .ColumnCount = 4
+        .ColumnWidths = "0cm;3cm;7cm;3cm"
+        .LimitToList = True
+        .AutoExpand = True
+    End With
+
+    With Me.cboStatus
+        .RowSourceType = "Value List"
+        .RowSource = "Active;On Hold;Closed"
+        .BoundColumn = 1
+        .ColumnCount = 1
+        .LimitToList = True
+        .AutoExpand = True
+    End With
+
+End Sub
+
+
+Private Sub ApplyCustomerDefaults()
+
+    If Me.NewRecord Then
+        If Len(Trim$(Nz(Me.cboStatus, vbNullString))) = 0 Then
+            Me.cboStatus = "Active"
+        End If
+    End If
+
+End Sub
+
+'=============================================================
+' SAVE, NORMALIZE AND VALIDATE
+'=============================================================
+
+Private Function SaveCustomerRecord( _
+    ByVal refreshFindCombo As Boolean _
+) As Boolean
+
+    On Error GoTo Err_Handler
+
+    SaveCustomerRecord = False
+
+    NormalizeCustomerValues
+    EnsureCustomerCode
+
+    If Not ValidateCustomerRecord Then
+        Exit Function
+    End If
+
+    If Me.Dirty Then
+        Me.Dirty = False
+    End If
+
+    If refreshFindCombo Then
+        Me.cboFindCustomer.Requery
+        Me.cboFindCustomer = Me.txtCustomerID
+    End If
+
+    SafeRequerySubform "SF_CustomerPartNumbers"
+    SetSubformAvailability
+
+    SaveCustomerRecord = (Nz(Me.txtCustomerID, 0) > 0)
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    MsgBox _
+        "The customer could not be saved." & vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Save Customer"
+    Resume Exit_Handler
+
+End Function
+
+
+Private Sub NormalizeCustomerValues()
+
+    Me.txtCustomerName = Trim$(Nz(Me.txtCustomerName, vbNullString))
+    Me.txtCustomerCode = UCase$(Trim$(Nz(Me.txtCustomerCode, vbNullString)))
+    Me.txtContactPerson = Trim$(Nz(Me.txtContactPerson, vbNullString))
+    Me.txtPhone = Trim$(Nz(Me.txtPhone, vbNullString))
+    Me.txtEmail = Trim$(Nz(Me.txtEmail, vbNullString))
+    Me.cboStatus = Trim$(Nz(Me.cboStatus, vbNullString))
+    Me.txtBillingAddress = Trim$(Nz(Me.txtBillingAddress, vbNullString))
+    Me.txtShippingAddress = Trim$(Nz(Me.txtShippingAddress, vbNullString))
+    Me.txtNOtes = Trim$(Nz(Me.txtNOtes, vbNullString))
+
+End Sub
+
+
+Private Function ValidateCustomerRecord() As Boolean
+
+    Dim currentCustomerID As Long
+    Dim criteria As String
+
+    ValidateCustomerRecord = False
+    currentCustomerID = Nz(Me.txtCustomerID, 0)
+
+    If Len(Trim$(Nz(Me.txtCustomerName, vbNullString))) = 0 Then
+        MsgBox "Enter the customer name.", vbExclamation, "Customer Name Required"
+        Me.txtCustomerName.SetFocus
+        Exit Function
+    End If
+
+    If Len(Trim$(Nz(Me.txtCustomerCode, vbNullString))) = 0 Then
+        MsgBox "The customer code could not be generated.", vbExclamation, "Customer Code"
+        Exit Function
+    End If
+
+    criteria = _
+        "CustomerCode=" & SqlText(Me.txtCustomerCode) & _
+        " AND CustomerID<>" & currentCustomerID
+
+    If DCount("*", "T_Customers", criteria) > 0 Then
+        MsgBox "The customer code already exists.", vbExclamation, "Duplicate Code"
+        Exit Function
+    End If
+
+    If Len(Trim$(Nz(Me.cboStatus, vbNullString))) = 0 Then
+        MsgBox "Select the customer status.", vbExclamation, "Status Required"
+        Me.cboStatus.SetFocus
+        Exit Function
+    End If
+
+    If Len(Trim$(Nz(Me.txtEmail, vbNullString))) > 0 Then
+        If InStr(1, Me.txtEmail, "@", vbTextCompare) = 0 Then
+            MsgBox _
+                "Enter a valid email address or leave it blank.", _
+                vbExclamation, _
+                "Invalid Email"
+            Me.txtEmail.SetFocus
+            Exit Function
+        End If
+    End If
+
+    ValidateCustomerRecord = True
+
+End Function
+
+
+Private Function IsBlankNewCustomerRecord() As Boolean
+
+    If Not Me.NewRecord Then
+        Exit Function
+    End If
+
+    IsBlankNewCustomerRecord = _
+        (Len(Trim$(Nz(Me.txtCustomerName, vbNullString))) = 0) And _
+        (Len(Trim$(Nz(Me.txtContactPerson, vbNullString))) = 0) And _
+        (Len(Trim$(Nz(Me.txtPhone, vbNullString))) = 0) And _
+        (Len(Trim$(Nz(Me.txtEmail, vbNullString))) = 0) And _
+        (Len(Trim$(Nz(Me.txtBillingAddress, vbNullString))) = 0) And _
+        (Len(Trim$(Nz(Me.txtShippingAddress, vbNullString))) = 0) And _
+        (Len(Trim$(Nz(Me.txtNOtes, vbNullString))) = 0)
+
+End Function
+
+'=============================================================
+' SUBFORM AND QUICK-ADD HELPERS
+'=============================================================
+
+Private Sub SetSubformAvailability()
+
+    On Error Resume Next
+
+    Me.Controls("SF_CustomerPartNumbers").Enabled = _
+        (Nz(Me.txtCustomerID, 0) > 0)
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub SafeRequerySubform(ByVal controlName As String)
+
+    On Error Resume Next
+
+    Me.Controls(controlName).Form.Requery
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Function IsQuickAddRequest() As Boolean
+
+    IsQuickAddRequest = _
+        (Left$(Nz(Me.OpenArgs, vbNullString), 9) = "QUICKADD|")
+
+End Function
+
+
+Private Function SqlText(ByVal value As String) As String
+
+    SqlText = "'" & Replace(value, "'", "''") & "'"
+
+End Function

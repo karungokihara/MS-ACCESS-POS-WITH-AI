@@ -1,0 +1,99 @@
+﻿dbMemo "SQL" ="SELECT B.StockBalanceID, I.ItemID, I.InternalSKU, I.ItemName, C.CategoryName, W."
+    "WarehouseName, L.LocationCode, L.LocationName, L.BinNumber, L.ShelfNumber, Nz(B."
+    "QuantityOnHand,0) AS QuantityOnHand, Nz(B.QuantityReserved,0) AS QuantityReserve"
+    "d, Nz(B.QuantityOnHand,0) - Nz(B.QuantityReserved,0) AS AvailableQty, Nz(I.Reord"
+    "erLevel,0) AS ReorderPoint, IIf(\015\012        Nz(B.QuantityOnHand,0) - Nz(B.Qu"
+    "antityReserved,0) <= 0,\015\012        'RESTOCK REQUIRED',\015\012        'LOW S"
+    "TOCK'\015\012    ) AS AlertStatus, IIf(\015\012        Nz(B.QuantityOnHand,0) - "
+    "Nz(B.QuantityReserved,0) <= 0,\015\012        'Restock required for ' & Nz(I.Ite"
+    "mName,''),\015\012        'Low stock for ' & Nz(I.ItemName,'')\015\012    ) AS A"
+    "lertMessage, B.LastUpdated\015\012FROM (((T_StockBalances AS B INNER JOIN T_Item"
+    "s AS I ON B.ItemID = I.ItemID) LEFT JOIN T_Categories AS C ON I.CategoryID = C.C"
+    "ategoryID) LEFT JOIN T_Locations AS L ON B.CurrentLocationID = L.LocationID) LEF"
+    "T JOIN T_Warehouses AS W ON L.WarehouseID = W.WarehouseID\015\012WHERE Nz(C.Requ"
+    "iresSerial,False) = False\015\012    AND Nz(I.ReorderLevel,0) > 0\015\012    AND"
+    " Nz(B.QuantityOnHand,0) - Nz(B.QuantityReserved,0) <= Nz(I.ReorderLevel,0)\015\012"
+    "ORDER BY IIf(Nz(B.QuantityOnHand,0) - Nz(B.QuantityReserved,0) <= 0, 1, 2), I.It"
+    "emName;\015\012"
+dbMemo "Connect" =""
+dbBoolean "ReturnsRecords" ="-1"
+dbInteger "ODBCTimeout" ="60"
+dbBoolean "OrderByOn" ="0"
+dbByte "Orientation" ="0"
+dbByte "DefaultView" ="2"
+dbBinary "GUID" = Begin
+    0x1f3f0597358cd54d8c18f761c684a4a7
+End
+dbBoolean "FilterOnLoad" ="0"
+dbBoolean "OrderByOnLoad" ="-1"
+dbByte "PublishToWeb" ="1"
+Begin
+    Begin
+        dbText "Name" ="B.StockBalanceID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="C.CategoryName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.ItemName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.InternalSKU"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.ItemID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="L.LocationCode"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="W.WarehouseName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="L.LocationName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="L.BinNumber"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="L.ShelfNumber"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="QuantityOnHand"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="QuantityReserved"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="AvailableQty"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="ReorderPoint"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="AlertStatus"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="AlertMessage"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="B.LastUpdated"
+        dbLong "AggregateType" ="-1"
+    End
+End

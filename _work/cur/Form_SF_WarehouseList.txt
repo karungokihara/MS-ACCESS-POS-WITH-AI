@@ -1,0 +1,124 @@
+﻿Option Compare Database
+Option Explicit
+
+'=============================================================
+' FORM: SF_WarehouseList
+'
+' PURPOSE:
+'   Datasheet list of warehouses.
+'
+'   Double-clicking a warehouse row opens the warehouse detail form.
+'
+' RECORD SOURCE:
+'   Q_WarehouseList
+'
+' REQUIRED FIELD:
+'   WarehouseID
+'
+' IMPORTANT:
+'   On each visible textbox/control in the datasheet, set:
+'       On Dbl Click: =OpenSelectedWarehouse()
+'=============================================================
+
+Private Const DETAIL_FORM_1 As String = "F_WarehouseSetup"
+Private Const DETAIL_FORM_2 As String = "F_Warehouse"
+Private Const DETAIL_FORM_3 As String = "F_Warehouses"
+
+
+Public Function OpenSelectedWarehouse() As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim warehouseIDValue As Long
+    Dim detailFormName As String
+
+    If IsNull(Me!WarehouseID) Then
+        OpenSelectedWarehouse = False
+        Exit Function
+    End If
+
+    warehouseIDValue = CLng(Me!WarehouseID)
+
+    If warehouseIDValue <= 0 Then
+        OpenSelectedWarehouse = False
+        Exit Function
+    End If
+
+    detailFormName = GetWarehouseDetailFormName()
+
+    If Len(detailFormName) = 0 Then
+
+        MsgBox _
+            "No warehouse detail form was found." & vbCrLf & vbCrLf & _
+            "Expected one of these forms:" & vbCrLf & _
+            DETAIL_FORM_1 & vbCrLf & _
+            DETAIL_FORM_2 & vbCrLf & _
+            DETAIL_FORM_3, _
+            vbExclamation, _
+            "Warehouse Form Missing"
+
+        OpenSelectedWarehouse = False
+        Exit Function
+
+    End If
+
+    DoCmd.OpenForm _
+        detailFormName, _
+        acNormal, _
+        , _
+        "WarehouseID=" & warehouseIDValue
+
+    OpenSelectedWarehouse = True
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    MsgBox _
+        "The selected warehouse could not be opened." & vbCrLf & vbCrLf & _
+        "WarehouseID: " & Nz(Me!WarehouseID, "Null") & vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Open Warehouse"
+
+    OpenSelectedWarehouse = False
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function GetWarehouseDetailFormName() As String
+
+    If FormExists(DETAIL_FORM_1) Then
+        GetWarehouseDetailFormName = DETAIL_FORM_1
+    ElseIf FormExists(DETAIL_FORM_2) Then
+        GetWarehouseDetailFormName = DETAIL_FORM_2
+    ElseIf FormExists(DETAIL_FORM_3) Then
+        GetWarehouseDetailFormName = DETAIL_FORM_3
+    Else
+        GetWarehouseDetailFormName = vbNullString
+    End If
+
+End Function
+
+
+Private Function FormExists(ByVal formName As String) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim tmp As String
+
+    tmp = CurrentProject.AllForms(formName).Name
+
+    FormExists = True
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    FormExists = False
+    Resume Exit_Handler
+
+End Function
+

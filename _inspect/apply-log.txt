@@ -1,0 +1,60 @@
+﻿
+12:59:00 Opening Access
+12:59:06 Loading M_UX
+12:59:10 LoadFromText M_UX ok
+12:59:10 Updating queries
+12:59:13 Queries saved
+12:59:13 Building printable documents
+12:59:26 Reports saved
+12:59:26 Setting yes/no defaults
+12:59:28 Patching forms
+12:59:31 Warehouses form saved
+12:59:32 Location setup saved
+12:59:35 Stock in saved
+12:59:37 Stock out saved
+12:59:38 Item setup saved
+12:59:39 Item review list saved
+12:59:40 Sales order lines saved
+12:59:42 Invoice lines saved
+12:59:44 Customer PO lines saved
+12:59:45 Supplier PO lines saved
+12:59:51 Sales orders saved
+12:59:53 Invoices saved
+12:59:55 Customer PO saved
+12:59:56 Supplier PO saved
+12:59:58 Projects saved
+13:00:06 Project issue saved
+13:00:10 Invoice list saved
+13:00:14 Dashboard saved
+13:00:15 Back button on F_ProjectList
+13:00:16 Back button on F_CategoriesList
+13:00:17 Back button on F_InventoryList
+13:00:18 Back button on F_CustomerSetup
+13:00:19 Back button on F_UnitSetup
+13:00:20 Back button on F_SupplierSetup
+13:00:21 Back button on F_GoodsReceipts
+13:00:22 Back button on F_SystemSettings
+13:00:23 Back button on F_CategorySetup
+13:00:24 Back button on F_CurrencySetup
+13:00:26 Back button on F_AssemblyTemplate
+13:00:27 Back button on F_PartNumberTypeSetup
+13:00:28 Back button on F_WarehouseList
+13:00:29 Back button on F_TemplateList
+13:00:30 Back button on F_SupplierList
+13:00:31 Back button on F_CustomerList
+13:00:32 Back button on F_WorkInstructions
+13:00:33 Back button on F_BusinessReadiness
+13:00:34 Back button on F_ManufacturerSetup
+13:00:35 Back button on F_ItemSetupList
+13:00:36 Back button on F_StockMovementList
+13:00:36 Back button on F_SupplerProcurement
+13:00:37 Back button on F_CustomerPOList
+13:00:38 Back button on F_NotificationCenter
+13:00:39 Back button on F_UserManagement
+13:00:40 Back button on F_Reports
+13:00:40 Clearing business data
+13:00:40 Seeding units and internal customer
+13:00:41 Customer seed: INTERNAL / Internal Customer
+13:00:41 Units remaining: 6
+13:00:41 Items remaining: 0
+13:00:41 DONE

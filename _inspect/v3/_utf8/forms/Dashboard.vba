@@ -1,0 +1,707 @@
+﻿Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+Private Sub Command16_Click()
+
+
+
+    If HasPermission("Reports") Then
+        DoCmd.OpenForm "F_Reports", _
+            View:=acNormal, _
+            WindowMode:=acNormal
+    Else
+        MsgBox "Access denied.", vbExclamation
+    End If
+
+
+End Sub
+
+'=============================================================
+' FORM: Dashboard
+'
+' PURPOSE:
+'   Display dashboard totals.
+'
+' TEXTBOXES:
+'   txtActiveProjets
+'   txtInventoryQty
+'   txtTotalItems
+'   txtLowStockItems / txtLowstockItems
+'   txtTotalTools
+'   txtActiveSaleOrders
+'   txtReadyToShipProjects
+'   txtSentInvoices
+'   txtPaidInvoices
+'
+' NOTES:
+'   Total Tools counts item master records whose category name
+'   or item name contains "Tool".
+'=============================================================
+
+
+'=============================================================
+' FORM EVENTS
+'=============================================================
+
+Private Sub Form_Load()
+    UX_Startup
+
+    Me.SETUP.Visible = HasPermission("Item Setup") _
+                    Or HasPermission("Location Setup") _
+                    Or HasPermission("User Management")
+
+    Me.Sales.Visible = HasPermission("Sales Orders")
+
+    Me.Command15.Visible = HasPermission("Goods Receipts")
+
+End Sub
+
+
+Private Sub Form_Activate()
+
+    RefreshDashboardTotals
+
+End Sub
+
+
+Private Sub Form_Timer()
+
+    On Error Resume Next
+
+    Me.TimerInterval = 0
+
+    'Safe call. If notification module/procedure is missing,
+    'dashboard will still continue working.
+    Application.Run "Notif_ShowPopup", False
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub Command38_Click()
+
+    RefreshDashboardTotals
+
+End Sub
+
+
+'=============================================================
+' REFRESH ALL DASHBOARD TOTALS
+'=============================================================
+
+Private Sub RefreshDashboardTotals()
+
+    On Error GoTo Err_Handler
+
+    SetDashboardValue Array("txtActiveProjets", "txtActiveProjects"), GetActiveProjectsCount()
+    SetDashboardValue Array("txtInventoryQty"), GetInventoryQuantity()
+    SetDashboardValue Array("txtTotalItems"), GetTotalItemsCount()
+    SetDashboardValue Array("txtLowStockItems", "txtLowstockItems"), GetLowStockItemsCount()
+    SetDashboardValue Array("txtTotalTools"), GetTotalToolsCount()
+
+    SetDashboardValue Array("txtActiveSaleOrders", "txtActiveSalesOrders"), GetActiveSaleOrdersCount()
+    SetDashboardValue Array("txtReadyToShipProjects", "txtReadyShipProjects"), GetReadyToShipProjectsCount()
+    SetDashboardValue Array("txtSentInvoices"), GetSentInvoicesCount()
+    SetDashboardValue Array("txtPaidInvoices"), GetPaidInvoicesCount()
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "Dashboard totals could not be refreshed." & vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Dashboard Totals"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' ACTIVE PROJECTS
+'=============================================================
+
+Private Function GetActiveProjectsCount() As Long
+
+    On Error GoTo Err_Handler
+
+    If Not TableExists("T_Projects") Then
+        GetActiveProjectsCount = 0
+        Exit Function
+    End If
+
+    If FieldExists("T_Projects", "IsActive") Then
+
+        GetActiveProjectsCount = CountRowsWhere( _
+            "T_Projects", _
+            "Nz([IsActive],False)=True" _
+        )
+
+    ElseIf FieldExists("T_Projects", "Status") Then
+
+        GetActiveProjectsCount = CountRowsWhere( _
+            "T_Projects", _
+            "UCase(Trim(Nz([Status],''))) Not In ('COMPLETED','CANCELLED','CANCELED','CLOSED')" _
+        )
+
+    Else
+
+        GetActiveProjectsCount = CountRowsWhere("T_Projects")
+
+    End If
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    GetActiveProjectsCount = 0
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' TOTAL INVENTORY QUANTITY
+'=============================================================
+
+Private Function GetInventoryQuantity() As Double
+
+    On Error GoTo Err_Handler
+
+    If QueryExists("Q_InventoryListAll") Then
+
+        GetInventoryQuantity = SumFieldValue("Q_InventoryListAll", "QuantityOnHand")
+
+    ElseIf TableExists("T_StockBalances") Then
+
+        GetInventoryQuantity = SumFieldValue("T_StockBalances", "QuantityOnHand")
+
+    Else
+
+        GetInventoryQuantity = 0
+
+    End If
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    GetInventoryQuantity = 0
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' TOTAL ITEMS
+'=============================================================
+
+Private Function GetTotalItemsCount() As Long
+
+    On Error GoTo Err_Handler
+
+    If TableExists("T_Items") Then
+        GetTotalItemsCount = CountRowsWhere("T_Items")
+    Else
+        GetTotalItemsCount = 0
+    End If
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    GetTotalItemsCount = 0
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' LOW STOCK ITEMS
+'=============================================================
+
+Private Function GetLowStockItemsCount() As Long
+
+    On Error GoTo Err_Handler
+
+    If QueryExists("Q_Notify_LowStock") Then
+
+        GetLowStockItemsCount = CountRowsWhere("Q_Notify_LowStock")
+
+    ElseIf QueryExists("Q_InventoryListAll") Then
+
+        GetLowStockItemsCount = CountRowsWhere( _
+            "Q_InventoryListAll", _
+            "UCase(Trim(Nz([StockAlert],''))) In ('LOW STOCK','RESTOCK REQUIRED')" _
+        )
+
+    Else
+
+        GetLowStockItemsCount = 0
+
+    End If
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    GetLowStockItemsCount = 0
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' TOTAL TOOLS
+'
+' Counts item master records whose:
+'   - CategoryName contains Tool
+'   OR
+'   - ItemName contains Tool
+'
+' Tables:
+'   T_Items
+'   T_Categories
+'=============================================================
+
+Private Function GetTotalToolsCount() As Long
+
+    On Error GoTo Err_Handler
+
+    Dim SqlText As String
+
+    If Not TableExists("T_Items") Then
+        GetTotalToolsCount = 0
+        Exit Function
+    End If
+
+    If TableExists("T_Categories") Then
+
+        SqlText = _
+            "SELECT Count(*) AS RecordCount " & _
+            "FROM T_Items AS I " & _
+            "LEFT JOIN T_Categories AS C " & _
+            "ON I.CategoryID = C.CategoryID " & _
+            "WHERE UCase(Nz(C.CategoryName,'')) Like '*TOOL*' " & _
+            "OR UCase(Nz(I.ItemName,'')) Like '*TOOL*';"
+
+        GetTotalToolsCount = GetCountFromSQL(SqlText)
+
+    Else
+
+        If FieldExists("T_Items", "ItemName") Then
+
+            GetTotalToolsCount = CountRowsWhere( _
+                "T_Items", _
+                "UCase(Nz([ItemName],'')) Like '*TOOL*'" _
+            )
+
+        Else
+
+            GetTotalToolsCount = 0
+
+        End If
+
+    End If
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    GetTotalToolsCount = 0
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' ACTIVE SALE ORDERS
+'=============================================================
+
+Private Function GetActiveSaleOrdersCount() As Long
+
+    On Error GoTo Err_Handler
+
+    If Not TableExists("T_SalesOrders") Then
+        GetActiveSaleOrdersCount = 0
+        Exit Function
+    End If
+
+    If FieldExists("T_SalesOrders", "SalesOrderStatus") Then
+
+        GetActiveSaleOrdersCount = CountRowsWhere( _
+            "T_SalesOrders", _
+            "UCase(Trim(Nz([SalesOrderStatus],''))) Not In ('CANCELLED','CANCELED','CLOSED','COMPLETED','SHIPPED','INVOICED')" _
+        )
+
+    Else
+
+        GetActiveSaleOrdersCount = CountRowsWhere("T_SalesOrders")
+
+    End If
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    GetActiveSaleOrdersCount = 0
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' READY TO SHIP PROJECTS
+'=============================================================
+
+Private Function GetReadyToShipProjectsCount() As Long
+
+    On Error GoTo Err_Handler
+
+    If Not TableExists("T_Projects") Then
+        GetReadyToShipProjectsCount = 0
+        Exit Function
+    End If
+
+    If FieldExists("T_Projects", "Status") Then
+
+        GetReadyToShipProjectsCount = CountRowsWhere( _
+            "T_Projects", _
+            "UCase(Trim(Nz([Status],''))) In ('READY TO SHIP','READY FOR SHIPMENT','READY FOR SHIPPING')" _
+        )
+
+    Else
+
+        GetReadyToShipProjectsCount = 0
+
+    End If
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    GetReadyToShipProjectsCount = 0
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' SENT INVOICES
+'=============================================================
+
+Private Function GetSentInvoicesCount() As Long
+
+    On Error GoTo Err_Handler
+
+    If Not TableExists("T_Invoices") Then
+        GetSentInvoicesCount = 0
+        Exit Function
+    End If
+
+    If FieldExists("T_Invoices", "InvoiceStatus") Then
+
+        GetSentInvoicesCount = CountRowsWhere( _
+            "T_Invoices", _
+            "UCase(Trim(Nz([InvoiceStatus],'')))='SENT'" _
+        )
+
+    Else
+
+        GetSentInvoicesCount = 0
+
+    End If
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    GetSentInvoicesCount = 0
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' PAID INVOICES
+'=============================================================
+
+Private Function GetPaidInvoicesCount() As Long
+
+    On Error GoTo Err_Handler
+
+    If Not TableExists("T_Invoices") Then
+        GetPaidInvoicesCount = 0
+        Exit Function
+    End If
+
+    If FieldExists("T_Invoices", "InvoiceStatus") Then
+
+        GetPaidInvoicesCount = CountRowsWhere( _
+            "T_Invoices", _
+            "UCase(Trim(Nz([InvoiceStatus],'')))='PAID'" _
+        )
+
+    Else
+
+        GetPaidInvoicesCount = 0
+
+    End If
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    GetPaidInvoicesCount = 0
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' SET DASHBOARD VALUE SAFELY
+'=============================================================
+
+Private Sub SetDashboardValue( _
+    ByVal controlNames As Variant, _
+    ByVal controlValue As Variant _
+)
+
+    On Error Resume Next
+
+    Dim oneName As Variant
+
+    For Each oneName In controlNames
+
+        If ControlExists(CStr(oneName)) Then
+            Me.Controls(CStr(oneName)).value = controlValue
+            Exit For
+        End If
+
+    Next oneName
+
+    On Error GoTo 0
+
+End Sub
+
+
+'=============================================================
+' COUNT ROWS FROM TABLE OR QUERY
+'=============================================================
+
+Private Function CountRowsWhere( _
+    ByVal sourceName As String, _
+    Optional ByVal criteriaText As String = vbNullString _
+) As Long
+
+    On Error GoTo Err_Handler
+
+    Dim rs As Object
+    Dim SqlText As String
+
+    SqlText = "SELECT Count(*) AS RecordCount FROM [" & sourceName & "]"
+
+    If Len(Trim$(criteriaText)) > 0 Then
+        SqlText = SqlText & " WHERE " & criteriaText
+    End If
+
+    Set rs = CurrentDb.OpenRecordset(SqlText)
+
+    If Not rs.EOF Then
+        CountRowsWhere = Nz(rs.Fields("RecordCount").value, 0)
+    Else
+        CountRowsWhere = 0
+    End If
+
+Exit_Handler:
+    On Error Resume Next
+    If Not rs Is Nothing Then rs.close
+    Set rs = Nothing
+    On Error GoTo 0
+    Exit Function
+
+Err_Handler:
+    CountRowsWhere = 0
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' GET COUNT FROM CUSTOM SQL
+'=============================================================
+
+Private Function GetCountFromSQL(ByVal SqlText As String) As Long
+
+    On Error GoTo Err_Handler
+
+    Dim rs As Object
+
+    Set rs = CurrentDb.OpenRecordset(SqlText)
+
+    If Not rs.EOF Then
+        GetCountFromSQL = Nz(rs.Fields("RecordCount").value, 0)
+    Else
+        GetCountFromSQL = 0
+    End If
+
+Exit_Handler:
+    On Error Resume Next
+    If Not rs Is Nothing Then rs.close
+    Set rs = Nothing
+    On Error GoTo 0
+    Exit Function
+
+Err_Handler:
+    GetCountFromSQL = 0
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' SUM NUMERIC FIELD FROM TABLE OR QUERY
+'=============================================================
+
+Private Function SumFieldValue( _
+    ByVal sourceName As String, _
+    ByVal fieldName As String _
+) As Double
+
+    On Error GoTo Err_Handler
+
+    Dim rs As Object
+    Dim SqlText As String
+
+    SqlText = _
+        "SELECT Sum(Nz([" & fieldName & "],0)) AS TotalValue " & _
+        "FROM [" & sourceName & "]"
+
+    Set rs = CurrentDb.OpenRecordset(SqlText)
+
+    If Not rs.EOF Then
+        SumFieldValue = Nz(rs.Fields("TotalValue").value, 0)
+    Else
+        SumFieldValue = 0
+    End If
+
+Exit_Handler:
+    On Error Resume Next
+    If Not rs Is Nothing Then rs.close
+    Set rs = Nothing
+    On Error GoTo 0
+    Exit Function
+
+Err_Handler:
+    SumFieldValue = 0
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' CHECK TABLE EXISTS
+'=============================================================
+
+Private Function TableExists(ByVal tableName As String) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim tmp As String
+
+    tmp = CurrentDb.TableDefs(tableName).Name
+
+    TableExists = True
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    TableExists = False
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' CHECK QUERY EXISTS
+'=============================================================
+
+Private Function QueryExists(ByVal queryName As String) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim tmp As String
+
+    tmp = CurrentDb.QueryDefs(queryName).Name
+
+    QueryExists = True
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    QueryExists = False
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' CHECK FIELD EXISTS IN TABLE
+'=============================================================
+
+Private Function FieldExists( _
+    ByVal tableName As String, _
+    ByVal fieldName As String _
+) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim tmp As String
+
+    tmp = CurrentDb.TableDefs(tableName).Fields(fieldName).Name
+
+    FieldExists = True
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    FieldExists = False
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' CHECK CONTROL EXISTS
+'=============================================================
+
+Private Function ControlExists(ByVal controlName As String) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim ctl As Control
+
+    Set ctl = Me.Controls(controlName)
+
+    ControlExists = True
+
+Exit_Handler:
+    Set ctl = Nothing
+    Exit Function
+
+Err_Handler:
+    ControlExists = False
+    Resume Exit_Handler
+
+End Function

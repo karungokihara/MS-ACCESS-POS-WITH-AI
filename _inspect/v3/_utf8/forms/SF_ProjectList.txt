@@ -1,0 +1,2145 @@
+﻿Version =21
+VersionRequired =20
+PublishOption =1
+Checksum =761750105
+Begin Form
+    AutoCenter = NotDefault
+    DividingLines = NotDefault
+    OrderByOn = NotDefault
+    AllowDesignChanges = NotDefault
+    DefaultView =2
+    TabularFamily =0
+    PictureAlignment =2
+    DatasheetGridlinesBehavior =3
+    GridX =24
+    GridY =24
+    Width =11520
+    DatasheetFontHeight =11
+    ItemSuffix =57
+    Right =15090
+    Bottom =4695
+    DatasheetGridlinesColor =15263976
+    Filter ="([ProjectCode] Like '*flash*' OR [ProjectName] Like '*flash*' OR [Status] Like '"
+        "*flash*' OR [CustomerPOReference] Like '*flash*' OR [FinishedItemSKU] Like '*fla"
+        "sh*' OR [FinishedItemName] Like '*flash*' OR [TemplateCode] Like '*flash*' OR [T"
+        "emplateName] Like '*flash*' OR [OutputLocationCode] Like '*flash*' OR [OutputLoc"
+        "ationName] Like '*flash*' OR [WarehouseName] Like '*flash*')"
+    OrderBy ="[Q_ProjectList].[ProjectID]"
+    RecSrcDt = Begin
+        0x374f9c36748ee640
+    End
+    GUID = Begin
+        0xde7163dce44cf6498a7f7d902854a238
+    End
+    RecordSource ="Q_ProjectList"
+    Caption ="SF_ProjectList"
+    DatasheetFontName ="Aptos"
+    PrtMip = Begin
+        0x6801000068010000680100006801000000000000201c0000e010000001000000 ,
+        0x010000006801000000000000a10700000100000001000000
+    End
+    PrtDevMode = Begin
+        0x0000000000000000308490d58b0200000000000000000000e70a7e35f77f0000 ,
+        0x010403069c004003032d000001000100ea0a6f08640001000f00580202000100 ,
+        0x5802030001004c657474657200000000030000000000c8420000c842e8e8e800 ,
+        0x403083d58b020000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000ffffffff4749533400000000000000000000000044494e55 ,
+        0x2200c80024031c00ac13d8c00000000000000000000000000000000000000000 ,
+        0x0000000000000000050000000000070000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000100000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000c8000000534d544a ,
+        0x000000001000b8007b00330045004500330039003100310034002d0033003000 ,
+        0x420034002d0034003500610034002d0041003100300039002d00310039004400 ,
+        0x3400410034003000460043004300320032007d000000524553444c4c00556e69 ,
+        0x726573444c4c00506170657253697a65004c4554544552004f7269656e746174 ,
+        0x696f6e00504f525452414954005265736f6c7574696f6e004450493630300043 ,
+        0x6f6c6f724d6f6465003234627070000000000000000000000000000000000000 ,
+        0x1c0000005634444d0100000000000000000000000000000000000000
+    End
+    PrtDevNames = Begin
+        0x08002c003f000100000000000000000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000000000000000006e ,
+        0x756c3a0000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x000000000000000000000000
+    End
+    FilterOnLoad =0
+    ShowPageMargins =0
+    DisplayOnSharePointSite =1
+    DatasheetAlternateBackColor =15921906
+    DatasheetGridlinesColor12 =0
+    FitToScreen =1
+    DatasheetBackThemeColorIndex =1
+    BorderThemeColorIndex =3
+    ThemeFontIndex =1
+    ForeThemeColorIndex =0
+    AlternateBackThemeColorIndex =1
+    AlternateBackShade =95.0
+    PrtDevModeW = Begin
+        0x0000fccf8b02000021000000f77f000030bafbd48b0200002100000000000000 ,
+        0x80befbd48b0200005fed3db5f97f0000000008c48b020000796d2ff7f1000000 ,
+        0x01040306dc004003032d000001000100ea0a6f08640001000f00580202000100 ,
+        0x5802030001004c006500740074006500720000000000000040bafbd48b020000 ,
+        0x0000000000000000000000000000000030bafbd48b02000065000000f1000000 ,
+        0x2100000000000000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000ffffffff4749533400000000000000000000000044494e55 ,
+        0x2200c80024031c00ac13d8c00000000000000000000000000000000000000000 ,
+        0x0000000000000000050000000000070000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000100000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000c8000000534d544a ,
+        0x000000001000b8007b00330045004500330039003100310034002d0033003000 ,
+        0x420034002d0034003500610034002d0041003100300039002d00310039004400 ,
+        0x3400410034003000460043004300320032007d000000524553444c4c00556e69 ,
+        0x726573444c4c00506170657253697a65004c4554544552004f7269656e746174 ,
+        0x696f6e00504f525452414954005265736f6c7574696f6e004450493630300043 ,
+        0x6f6c6f724d6f6465003234627070000000000000000000000000000000000000 ,
+        0x1c0000005634444d0100000000000000000000000000000000000000
+    End
+    PrtDevNamesW = Begin
+        0x040028003b000100000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000006e0075006c003a000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x00000000000000000000000000000000
+    End
+    NoSaveCTIWhenDisabled =1
+    Begin
+        Begin Label
+            BackStyle =0
+            TextFontFamily =0
+            FontSize =11
+            BorderColor =8355711
+            ForeColor =6710886
+            FontName ="Aptos"
+            GridlineColor =10921638
+            ThemeFontIndex =1
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =0
+            BorderTint =50.0
+            ForeThemeColorIndex =0
+            ForeTint =60.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin CheckBox
+            BorderLineStyle =0
+            LabelX =230
+            LabelY =-30
+            BorderColor =10921638
+            GridlineColor =10921638
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin TextBox
+            AddColon = NotDefault
+            FELineBreak = NotDefault
+            TextFontFamily =0
+            BorderLineStyle =0
+            LabelX =-1800
+            FontSize =11
+            BorderColor =10921638
+            ForeColor =4210752
+            FontName ="Aptos"
+            AsianLineBreak =1
+            GridlineColor =10921638
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            ThemeFontIndex =1
+            ForeThemeColorIndex =0
+            ForeTint =75.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin FormHeader
+            Height =1080
+            BackColor =14482166
+            Name ="FormHeader"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0xd73a81d402e60d418bb7b2bfd60d12fb
+            End
+            AutoHeight =1
+            AlternateBackShade =95.0
+            BackTint =20.0
+            Begin
+                Begin Label
+                    OverlapFlags =85
+                    Left =60
+                    Top =60
+                    Width =3024
+                    Height =1020
+                    FontSize =20
+                    Name ="Label56"
+                    Caption ="SF_ProjectList"
+                    GUID = Begin
+                        0x2c053bccb9b92b45a87a013a358c33f3
+                    End
+                    LayoutCachedLeft =60
+                    LayoutCachedTop =60
+                    LayoutCachedWidth =3084
+                    LayoutCachedHeight =1080
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                End
+            End
+        End
+        Begin Section
+            Height =8640
+            BackColor =14482166
+            Name ="Detail"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x67ffd2d4592e8a48970562ce99c36202
+            End
+            AutoHeight =1
+            AlternateBackColor =14482166
+            AlternateBackShade =95.0
+            Begin
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =1890
+                    Top =360
+                    Height =300
+                    ColumnWidth =768
+                    ColumnOrder =0
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="ProjectID"
+                    ControlSource ="ProjectID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xb091f4ed968e29438c0f9f3e0d2be011
+                    End
+
+                    LayoutCachedLeft =1890
+                    LayoutCachedTop =360
+                    LayoutCachedWidth =3330
+                    LayoutCachedHeight =660
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =360
+                            Width =1440
+                            Height =312
+                            Name ="ProjectID_Label"
+                            Caption ="ProjectID"
+                            GUID = Begin
+                                0xbff195cf04da3040a56fb25cf3324655
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =360
+                            LayoutCachedWidth =1800
+                            LayoutCachedHeight =672
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =1890
+                    Top =780
+                    Width =3648
+                    Height =312
+                    ColumnWidth =3000
+                    ColumnOrder =1
+                    TabIndex =1
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="ProjectCode"
+                    ControlSource ="ProjectCode"
+                    OnDblClick ="=OpenSelectedProject()"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xb326de2967624b49a814cdbf9d776394
+                    End
+
+                    LayoutCachedLeft =1890
+                    LayoutCachedTop =780
+                    LayoutCachedWidth =5538
+                    LayoutCachedHeight =1092
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =780
+                            Width =1440
+                            Height =312
+                            Name ="ProjectCode_Label"
+                            Caption ="ProjectCode"
+                            GUID = Begin
+                                0xe359e32213a9c449bb18763f3291bf81
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =780
+                            LayoutCachedWidth =1800
+                            LayoutCachedHeight =1092
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =1890
+                    Top =1200
+                    Width =4170
+                    Height =576
+                    ColumnWidth =3000
+                    ColumnOrder =2
+                    TabIndex =2
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="ProjectName"
+                    ControlSource ="ProjectName"
+                    OnDblClick ="=OpenSelectedProject()"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x3594fcb13146de4f9b51a24dfbee72e6
+                    End
+
+                    LayoutCachedLeft =1890
+                    LayoutCachedTop =1200
+                    LayoutCachedWidth =6060
+                    LayoutCachedHeight =1776
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =1200
+                            Width =1440
+                            Height =312
+                            Name ="ProjectName_Label"
+                            Caption ="ProjectName"
+                            GUID = Begin
+                                0x8fcfe601ccfe3045b689ff48a990e08f
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =1200
+                            LayoutCachedWidth =1800
+                            LayoutCachedHeight =1512
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    ColumnHidden = NotDefault
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =1890
+                    Top =1860
+                    Width =1488
+                    Height =312
+                    ColumnWidth =1488
+                    ColumnOrder =3
+                    TabIndex =3
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="CustomerID"
+                    ControlSource ="CustomerID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xc8e648823833b343a38059fd570d9cfd
+                    End
+
+                    LayoutCachedLeft =1890
+                    LayoutCachedTop =1860
+                    LayoutCachedWidth =3378
+                    LayoutCachedHeight =2172
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =1860
+                            Width =1440
+                            Height =312
+                            Name ="CustomerID_Label"
+                            Caption ="CustomerID"
+                            GUID = Begin
+                                0xa6d3b7f972ab7c4aa396a7420502bf46
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =1860
+                            LayoutCachedWidth =1800
+                            LayoutCachedHeight =2172
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =1890
+                    Top =2280
+                    Width =1608
+                    Height =312
+                    ColumnWidth =1608
+                    ColumnOrder =5
+                    TabIndex =4
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="StartDate"
+                    ControlSource ="StartDate"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x3bb177d7a2f877419af7fa1f67fc8545
+                    End
+
+                    LayoutCachedLeft =1890
+                    LayoutCachedTop =2280
+                    LayoutCachedWidth =3498
+                    LayoutCachedHeight =2592
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =2280
+                            Width =1440
+                            Height =312
+                            Name ="StartDate_Label"
+                            Caption ="StartDate"
+                            GUID = Begin
+                                0xbb8f38d8cdbb9e42b538197fe0d0803c
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =2280
+                            LayoutCachedWidth =1800
+                            LayoutCachedHeight =2592
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =1890
+                    Top =2700
+                    Width =1608
+                    Height =312
+                    ColumnWidth =1608
+                    ColumnOrder =6
+                    TabIndex =5
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="EndDate"
+                    ControlSource ="EndDate"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x91fad489429bab4aaeca8ec8fc7363e7
+                    End
+
+                    LayoutCachedLeft =1890
+                    LayoutCachedTop =2700
+                    LayoutCachedWidth =3498
+                    LayoutCachedHeight =3012
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =2700
+                            Width =1440
+                            Height =312
+                            Name ="EndDate_Label"
+                            Caption ="EndDate"
+                            GUID = Begin
+                                0xc79793fe7af4884f84ce81ad742e358d
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =2700
+                            LayoutCachedWidth =1800
+                            LayoutCachedHeight =3012
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =1890
+                    Top =3120
+                    Width =3648
+                    Height =312
+                    ColumnWidth =3000
+                    ColumnOrder =7
+                    TabIndex =6
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="Status"
+                    ControlSource ="Status"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x2045c0521da12346ad3d24df970b88e9
+                    End
+
+                    LayoutCachedLeft =1890
+                    LayoutCachedTop =3120
+                    LayoutCachedWidth =5538
+                    LayoutCachedHeight =3432
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =3120
+                            Width =1440
+                            Height =312
+                            Name ="Status_Label"
+                            Caption ="Status"
+                            GUID = Begin
+                                0x2f113ef59690524eab00e61dd72b07f4
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =3120
+                            LayoutCachedWidth =1800
+                            LayoutCachedHeight =3432
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =1890
+                    Top =3540
+                    Width =3648
+                    Height =312
+                    ColumnWidth =3000
+                    ColumnOrder =8
+                    TabIndex =7
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="Budget"
+                    ControlSource ="Budget"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x8484267aa3834244a8f4c8a1f36316bf
+                    End
+
+                    LayoutCachedLeft =1890
+                    LayoutCachedTop =3540
+                    LayoutCachedWidth =5538
+                    LayoutCachedHeight =3852
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =3540
+                            Width =1440
+                            Height =312
+                            Name ="Budget_Label"
+                            Caption ="Budget"
+                            GUID = Begin
+                                0x7807a597a30cf045837cbb2073966163
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =3540
+                            LayoutCachedWidth =1800
+                            LayoutCachedHeight =3852
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin CheckBox
+                    OverlapFlags =85
+                    Left =1890
+                    Top =3960
+                    ColumnOrder =9
+                    TabIndex =8
+                    Name ="IsActive"
+                    ControlSource ="IsActive"
+                    GUID = Begin
+                        0x5e3799812af8b7439aee01667c30988f
+                    End
+
+                    LayoutCachedLeft =1890
+                    LayoutCachedTop =3960
+                    LayoutCachedWidth =2150
+                    LayoutCachedHeight =4200
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =3960
+                            Width =1440
+                            Height =312
+                            Name ="IsActive_Label"
+                            Caption ="IsActive"
+                            GUID = Begin
+                                0xa21df518c3c7264fb37e832f93ddeac1
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =3960
+                            LayoutCachedWidth =1800
+                            LayoutCachedHeight =4272
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =1890
+                    Top =4380
+                    Width =1488
+                    Height =312
+                    ColumnWidth =1488
+                    ColumnOrder =10
+                    TabIndex =9
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="FinishedItemID"
+                    ControlSource ="FinishedItemID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x4dab84d900d6b944b7a072df54241490
+                    End
+
+                    LayoutCachedLeft =1890
+                    LayoutCachedTop =4380
+                    LayoutCachedWidth =3378
+                    LayoutCachedHeight =4692
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =4380
+                            Width =1440
+                            Height =312
+                            Name ="FinishedItemID_Label"
+                            Caption ="FinishedItemID"
+                            GUID = Begin
+                                0x90cd575ae3e20a4b9fe46c345ecdcccf
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =4380
+                            LayoutCachedWidth =1800
+                            LayoutCachedHeight =4692
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =1890
+                    Top =4800
+                    Width =3648
+                    Height =312
+                    ColumnWidth =3000
+                    ColumnOrder =4
+                    TabIndex =10
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="FinishedItemSKU"
+                    ControlSource ="FinishedItemSKU"
+                    OnDblClick ="=OpenSelectedProject()"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x95e4aeb0229015408394874c919c8054
+                    End
+
+                    LayoutCachedLeft =1890
+                    LayoutCachedTop =4800
+                    LayoutCachedWidth =5538
+                    LayoutCachedHeight =5112
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =4800
+                            Width =1440
+                            Height =312
+                            Name ="FinishedItemSKU_Label"
+                            Caption ="FinishedItemSKU"
+                            GUID = Begin
+                                0x71af1679e74b0d44a7e801e5a2271297
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =4800
+                            LayoutCachedWidth =1800
+                            LayoutCachedHeight =5112
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =1890
+                    Top =5220
+                    Width =4170
+                    Height =576
+                    ColumnWidth =3000
+                    TabIndex =11
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="FinishedItemName"
+                    ControlSource ="FinishedItemName"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x9941662d1ae83f45b9a478c825962c37
+                    End
+
+                    LayoutCachedLeft =1890
+                    LayoutCachedTop =5220
+                    LayoutCachedWidth =6060
+                    LayoutCachedHeight =5796
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =5220
+                            Width =1440
+                            Height =312
+                            Name ="FinishedItemName_Label"
+                            Caption ="FinishedItemName"
+                            GUID = Begin
+                                0xab21ffcd3c48704cb2718a8b53fdede4
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =5220
+                            LayoutCachedWidth =1800
+                            LayoutCachedHeight =5532
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =1890
+                    Top =5880
+                    Width =1488
+                    Height =312
+                    ColumnWidth =1488
+                    TabIndex =12
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="AssemblyTemplateID"
+                    ControlSource ="AssemblyTemplateID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x27db04968804624e9235109b7ead43b0
+                    End
+
+                    LayoutCachedLeft =1890
+                    LayoutCachedTop =5880
+                    LayoutCachedWidth =3378
+                    LayoutCachedHeight =6192
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =5880
+                            Width =1440
+                            Height =312
+                            Name ="AssemblyTemplateID_Label"
+                            Caption ="AssemblyTemplateID"
+                            GUID = Begin
+                                0xdc48ada5259f334582b7af5438c5e8dc
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =5880
+                            LayoutCachedWidth =1800
+                            LayoutCachedHeight =6192
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =1890
+                    Top =6300
+                    Width =3648
+                    Height =312
+                    ColumnWidth =3000
+                    TabIndex =13
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="TemplateCode"
+                    ControlSource ="TemplateCode"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x91240c08e0b27f4592d34a54b905f803
+                    End
+
+                    LayoutCachedLeft =1890
+                    LayoutCachedTop =6300
+                    LayoutCachedWidth =5538
+                    LayoutCachedHeight =6612
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =6300
+                            Width =1440
+                            Height =312
+                            Name ="TemplateCode_Label"
+                            Caption ="TemplateCode"
+                            GUID = Begin
+                                0xb6b76791c28f4c4ab69216140ed8afb3
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =6300
+                            LayoutCachedWidth =1800
+                            LayoutCachedHeight =6612
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =1890
+                    Top =6720
+                    Width =4170
+                    Height =576
+                    ColumnWidth =3000
+                    TabIndex =14
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="TemplateName"
+                    ControlSource ="TemplateName"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x6ca86fd9f49cb0418af9f8176b8bdd32
+                    End
+
+                    LayoutCachedLeft =1890
+                    LayoutCachedTop =6720
+                    LayoutCachedWidth =6060
+                    LayoutCachedHeight =7296
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =6720
+                            Width =1440
+                            Height =312
+                            Name ="TemplateName_Label"
+                            Caption ="TemplateName"
+                            GUID = Begin
+                                0x9fe30f8bbbcd1d4180ae636eeb89793a
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =6720
+                            LayoutCachedWidth =1800
+                            LayoutCachedHeight =7032
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =1890
+                    Top =7380
+                    Width =3648
+                    Height =312
+                    ColumnWidth =3000
+                    TabIndex =15
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="BuildQuantity"
+                    ControlSource ="BuildQuantity"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xe77ea558bdb8614baa4ba3d1bc6ea5a2
+                    End
+
+                    LayoutCachedLeft =1890
+                    LayoutCachedTop =7380
+                    LayoutCachedWidth =5538
+                    LayoutCachedHeight =7692
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =7380
+                            Width =1440
+                            Height =312
+                            Name ="BuildQuantity_Label"
+                            Caption ="BuildQuantity"
+                            GUID = Begin
+                                0x0d9d0ad8d8d9fc469ea6e3f3ff949309
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =7380
+                            LayoutCachedWidth =1800
+                            LayoutCachedHeight =7692
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =1890
+                    Top =7800
+                    Width =1488
+                    Height =312
+                    ColumnWidth =1488
+                    TabIndex =16
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="OutputLocationID"
+                    ControlSource ="OutputLocationID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x663b91cbbca416409a58ce193bc5b55e
+                    End
+
+                    LayoutCachedLeft =1890
+                    LayoutCachedTop =7800
+                    LayoutCachedWidth =3378
+                    LayoutCachedHeight =8112
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =7800
+                            Width =1440
+                            Height =312
+                            Name ="OutputLocationID_Label"
+                            Caption ="OutputLocationID"
+                            GUID = Begin
+                                0x76e842e83fd51048b783858a3046f18e
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =7800
+                            LayoutCachedWidth =1800
+                            LayoutCachedHeight =8112
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =1890
+                    Top =8220
+                    Width =3648
+                    Height =312
+                    ColumnWidth =3000
+                    TabIndex =17
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="OutputLocationCode"
+                    ControlSource ="OutputLocationCode"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x6c38d2e69614024a8ebac84ebe8cff5e
+                    End
+
+                    LayoutCachedLeft =1890
+                    LayoutCachedTop =8220
+                    LayoutCachedWidth =5538
+                    LayoutCachedHeight =8532
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =8220
+                            Width =1440
+                            Height =312
+                            Name ="OutputLocationCode_Label"
+                            Caption ="OutputLocationCode"
+                            GUID = Begin
+                                0x891ae742b28bed48b72ee674ef6330f2
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =8220
+                            LayoutCachedWidth =1800
+                            LayoutCachedHeight =8532
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =7770
+                    Top =360
+                    Width =3690
+                    Height =576
+                    ColumnWidth =3000
+                    TabIndex =18
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="OutputLocationName"
+                    ControlSource ="OutputLocationName"
+                    OnDblClick ="=OpenSelectedProject()"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xd46cd83fb23c9140a346185f4d729755
+                    End
+
+                    LayoutCachedLeft =7770
+                    LayoutCachedTop =360
+                    LayoutCachedWidth =11460
+                    LayoutCachedHeight =936
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =6240
+                            Top =360
+                            Width =1440
+                            Height =312
+                            Name ="OutputLocationName_Label"
+                            Caption ="OutputLocationName"
+                            GUID = Begin
+                                0x1dddc205e3072843bc7de165ab4ba20e
+                            End
+                            LayoutCachedLeft =6240
+                            LayoutCachedTop =360
+                            LayoutCachedWidth =7680
+                            LayoutCachedHeight =672
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =7770
+                    Top =1020
+                    Width =3690
+                    Height =576
+                    ColumnWidth =3000
+                    TabIndex =19
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="WarehouseName"
+                    ControlSource ="WarehouseName"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x6e57b0acf0b0ed4aa95d932b9c489eb6
+                    End
+
+                    LayoutCachedLeft =7770
+                    LayoutCachedTop =1020
+                    LayoutCachedWidth =11460
+                    LayoutCachedHeight =1596
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =6240
+                            Top =1020
+                            Width =1440
+                            Height =312
+                            Name ="WarehouseName_Label"
+                            Caption ="WarehouseName"
+                            GUID = Begin
+                                0x47f0f3df779d1e4aa676faace075a156
+                            End
+                            LayoutCachedLeft =6240
+                            LayoutCachedTop =1020
+                            LayoutCachedWidth =7680
+                            LayoutCachedHeight =1332
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =7770
+                    Top =1680
+                    Width =3690
+                    Height =576
+                    ColumnWidth =3000
+                    TabIndex =20
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="CustomerPOReference"
+                    ControlSource ="CustomerPOReference"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x5fb87373c440864d84e761b828f3db86
+                    End
+
+                    LayoutCachedLeft =7770
+                    LayoutCachedTop =1680
+                    LayoutCachedWidth =11460
+                    LayoutCachedHeight =2256
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =6240
+                            Top =1680
+                            Width =1440
+                            Height =312
+                            Name ="CustomerPOReference_Label"
+                            Caption ="CustomerPOReference"
+                            GUID = Begin
+                                0x7383a04179df734c88c9a218d8aa40ce
+                            End
+                            LayoutCachedLeft =6240
+                            LayoutCachedTop =1680
+                            LayoutCachedWidth =7680
+                            LayoutCachedHeight =1992
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =7770
+                    Top =2340
+                    Width =1488
+                    Height =312
+                    ColumnWidth =1488
+                    TabIndex =21
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="CustomerPOID"
+                    ControlSource ="CustomerPOID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xea5a6ba8b1b0e942b552498b183b7d44
+                    End
+
+                    LayoutCachedLeft =7770
+                    LayoutCachedTop =2340
+                    LayoutCachedWidth =9258
+                    LayoutCachedHeight =2652
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =6240
+                            Top =2340
+                            Width =1440
+                            Height =312
+                            Name ="CustomerPOID_Label"
+                            Caption ="CustomerPOID"
+                            GUID = Begin
+                                0x5e118fbe69390449bf495a602826e24d
+                            End
+                            LayoutCachedLeft =6240
+                            LayoutCachedTop =2340
+                            LayoutCachedWidth =7680
+                            LayoutCachedHeight =2652
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =7770
+                    Top =2760
+                    Width =1488
+                    Height =312
+                    ColumnWidth =1488
+                    TabIndex =22
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="CustomerPOLineID"
+                    ControlSource ="CustomerPOLineID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x9b15ea1f3031b645a842d443228b06d3
+                    End
+
+                    LayoutCachedLeft =7770
+                    LayoutCachedTop =2760
+                    LayoutCachedWidth =9258
+                    LayoutCachedHeight =3072
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =6240
+                            Top =2760
+                            Width =1440
+                            Height =312
+                            Name ="CustomerPOLineID_Label"
+                            Caption ="CustomerPOLineID"
+                            GUID = Begin
+                                0x4c864cd2d7c7ec4084f7458f1e4e2ff2
+                            End
+                            LayoutCachedLeft =6240
+                            LayoutCachedTop =2760
+                            LayoutCachedWidth =7680
+                            LayoutCachedHeight =3072
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =7770
+                    Top =3180
+                    Width =1488
+                    Height =312
+                    ColumnWidth =1488
+                    TabIndex =23
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="SalesOrderID"
+                    ControlSource ="SalesOrderID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xc79e615b98781b47b081da143306c48c
+                    End
+
+                    LayoutCachedLeft =7770
+                    LayoutCachedTop =3180
+                    LayoutCachedWidth =9258
+                    LayoutCachedHeight =3492
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =6240
+                            Top =3180
+                            Width =1440
+                            Height =312
+                            Name ="SalesOrderID_Label"
+                            Caption ="SalesOrderID"
+                            GUID = Begin
+                                0x4d2f77473a4e35479b60587194d8dd49
+                            End
+                            LayoutCachedLeft =6240
+                            LayoutCachedTop =3180
+                            LayoutCachedWidth =7680
+                            LayoutCachedHeight =3492
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =7770
+                    Top =3600
+                    Width =3648
+                    Height =312
+                    ColumnWidth =3000
+                    TabIndex =24
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="QuantityShipped"
+                    ControlSource ="QuantityShipped"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x014a66823db8044e86f407e830025854
+                    End
+
+                    LayoutCachedLeft =7770
+                    LayoutCachedTop =3600
+                    LayoutCachedWidth =11418
+                    LayoutCachedHeight =3912
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =6240
+                            Top =3600
+                            Width =1440
+                            Height =312
+                            Name ="QuantityShipped_Label"
+                            Caption ="QuantityShipped"
+                            GUID = Begin
+                                0x5379f92f5c3cef49b5cd094200e3abf1
+                            End
+                            LayoutCachedLeft =6240
+                            LayoutCachedTop =3600
+                            LayoutCachedWidth =7680
+                            LayoutCachedHeight =3912
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =7770
+                    Top =4020
+                    Width =1608
+                    Height =312
+                    ColumnWidth =1608
+                    TabIndex =25
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="ShippedDate"
+                    ControlSource ="ShippedDate"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x1f3ff95a005f734cbfae110c652c952c
+                    End
+
+                    LayoutCachedLeft =7770
+                    LayoutCachedTop =4020
+                    LayoutCachedWidth =9378
+                    LayoutCachedHeight =4332
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =6240
+                            Top =4020
+                            Width =1440
+                            Height =312
+                            Name ="ShippedDate_Label"
+                            Caption ="ShippedDate"
+                            GUID = Begin
+                                0x46bb03b14f585e4c940421b4e32cb03f
+                            End
+                            LayoutCachedLeft =6240
+                            LayoutCachedTop =4020
+                            LayoutCachedWidth =7680
+                            LayoutCachedHeight =4332
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =7770
+                    Top =4440
+                    Width =3690
+                    Height =1104
+                    ColumnWidth =3000
+                    TabIndex =26
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="WorkInstructions"
+                    ControlSource ="WorkInstructions"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xadf1b0c5c2a6974fa7ee3c441a850b59
+                    End
+
+                    LayoutCachedLeft =7770
+                    LayoutCachedTop =4440
+                    LayoutCachedWidth =11460
+                    LayoutCachedHeight =5544
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =6240
+                            Top =4440
+                            Width =1440
+                            Height =312
+                            Name ="WorkInstructions_Label"
+                            Caption ="WorkInstructions"
+                            GUID = Begin
+                                0xde70c600f3abcd45987b6707012d5ebf
+                            End
+                            LayoutCachedLeft =6240
+                            LayoutCachedTop =4440
+                            LayoutCachedWidth =7680
+                            LayoutCachedHeight =4752
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =7770
+                    Top =5640
+                    Width =3690
+                    Height =1104
+                    ColumnWidth =3000
+                    TabIndex =27
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="Notes"
+                    ControlSource ="Notes"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xaebdaf29125443429b3c5903271f8167
+                    End
+
+                    LayoutCachedLeft =7770
+                    LayoutCachedTop =5640
+                    LayoutCachedWidth =11460
+                    LayoutCachedHeight =6744
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =6240
+                            Top =5640
+                            Width =1440
+                            Height =312
+                            Name ="Notes_Label"
+                            Caption ="Notes"
+                            GUID = Begin
+                                0x60af9fa2ee4beb4fabc642fd436549e1
+                            End
+                            LayoutCachedLeft =6240
+                            LayoutCachedTop =5640
+                            LayoutCachedWidth =7680
+                            LayoutCachedHeight =5952
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =14482166
+            Name ="FormFooter"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x2fb46f9935e8344a9aef71d7227f4b32
+            End
+            AutoHeight =1
+            AlternateBackShade =95.0
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+'=============================================================
+' FORM: SF_ProjectList
+'
+' PURPOSE:
+'   Displays the project list.
+'
+'   Double-clicking any project row opens the exact selected
+'   project in F_Projects.
+'
+' RECORD SOURCE:
+'   Q_ProjectList
+'
+' REQUIRED FIELD:
+'   ProjectID
+'
+' DOUBLE-CLICK PROPERTY:
+'   Set the On Dbl Click property of each visible control to:
+'
+'       =OpenSelectedProject()
+'=============================================================
+
+Private Const PROJECT_DETAIL_FORM As String = "F_Projects"
+Private Const PROJECT_TABLE As String = "T_Projects"
+Private Const PROJECT_ID_FIELD As String = "ProjectID"
+
+
+'=============================================================
+' OPEN SELECTED PROJECT
+'=============================================================
+
+Public Function OpenSelectedProject() As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim projectIDValue As Long
+    Dim openedProjectID As Long
+
+    OpenSelectedProject = False
+
+    'Do not continue when the list is on its blank new row.
+    If Me.NewRecord Then
+        MsgBox _
+            "Select an existing project first.", _
+            vbInformation, _
+            "Project Required"
+
+        Exit Function
+    End If
+
+    'Read ProjectID directly from the selected datasheet row.
+    projectIDValue = Nz( _
+        Me.Recordset.Fields(PROJECT_ID_FIELD).value, _
+        0)
+
+    If projectIDValue <= 0 Then
+        MsgBox _
+            "The selected row does not contain a valid ProjectID.", _
+            vbExclamation, _
+            "Invalid Project"
+
+        Exit Function
+    End If
+
+    'Make sure the project still exists in T_Projects.
+    If DCount( _
+        "*", _
+        PROJECT_TABLE, _
+        "[" & PROJECT_ID_FIELD & "]=" & _
+            CStr(projectIDValue)) = 0 Then
+
+        MsgBox _
+            "Project ID " & CStr(projectIDValue) & _
+            " could not be found in T_Projects." & _
+            vbCrLf & vbCrLf & _
+            "Refresh the project list and try again.", _
+            vbExclamation, _
+            "Project Not Found"
+
+        Exit Function
+    End If
+
+    'The detail form must be the actual project form.
+    If Not FormExists(PROJECT_DETAIL_FORM) Then
+
+        MsgBox _
+            "The project detail form '" & _
+            PROJECT_DETAIL_FORM & "' could not be found.", _
+            vbExclamation, _
+            "Project Form Missing"
+
+        Exit Function
+    End If
+
+    'If F_Projects is already open, close it first.
+    '
+    'This is important because calling OpenForm again does not
+    'reliably apply a different WhereCondition to an open form.
+    If IsFormLoaded(PROJECT_DETAIL_FORM) Then
+
+        If Not CloseLoadedProjectForm Then
+            Exit Function
+        End If
+
+    End If
+
+    'Open only the selected ProjectID.
+    DoCmd.OpenForm _
+        formName:=PROJECT_DETAIL_FORM, _
+        View:=acNormal, _
+        WhereCondition:= _
+            "[" & PROJECT_ID_FIELD & "]=" & _
+            CStr(projectIDValue), _
+        DataMode:=acFormEdit, _
+        WindowMode:=acWindowNormal
+
+    'Confirm that Access loaded the requested project.
+    If Not IsFormLoaded(PROJECT_DETAIL_FORM) Then
+
+        Err.Raise _
+            vbObjectError + 7601, _
+            "OpenSelectedProject", _
+            "F_Projects did not open."
+
+    End If
+
+    openedProjectID = Nz( _
+        Forms(PROJECT_DETAIL_FORM).Recordset.Fields( _
+            PROJECT_ID_FIELD).value, _
+        0)
+
+    If openedProjectID <> projectIDValue Then
+
+        Err.Raise _
+            vbObjectError + 7602, _
+            "OpenSelectedProject", _
+            "Access opened Project ID " & _
+            CStr(openedProjectID) & _
+            " instead of Project ID " & _
+            CStr(projectIDValue) & "."
+
+    End If
+
+    Forms(PROJECT_DETAIL_FORM).SetFocus
+
+    OpenSelectedProject = True
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+
+    MsgBox _
+        "The selected project could not be opened." & _
+        vbCrLf & vbCrLf & _
+        "Selected ProjectID: " & _
+            CStr(projectIDValue) & vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Open Project"
+
+    OpenSelectedProject = False
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' CLOSE AN ALREADY-OPEN PROJECT FORM
+'=============================================================
+
+Private Function CloseLoadedProjectForm() As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim projectForm As Access.Form
+
+    CloseLoadedProjectForm = False
+
+    If Not IsFormLoaded(PROJECT_DETAIL_FORM) Then
+        CloseLoadedProjectForm = True
+        Exit Function
+    End If
+
+    Set projectForm = Forms(PROJECT_DETAIL_FORM)
+
+    If projectForm.Dirty Then
+
+        'F_Projects automatically enters defaults such as the
+        'project code, date and status on a blank new record.
+        '
+        'Do not try to save that blank default record.
+        If projectForm.NewRecord And _
+           IsBlankNewProject(projectForm) Then
+
+            projectForm.Undo
+
+        Else
+
+            'Save a genuine edited or newly entered project before
+            'opening the project selected from the list.
+            '
+            'This runs the existing validation code in F_Projects.
+            projectForm.Dirty = False
+
+        End If
+
+    End If
+
+    DoCmd.close _
+        acForm, _
+        PROJECT_DETAIL_FORM, _
+        acSaveNo
+
+    CloseLoadedProjectForm = _
+        Not IsFormLoaded(PROJECT_DETAIL_FORM)
+
+Exit_Handler:
+    Set projectForm = Nothing
+    Exit Function
+
+Err_Handler:
+
+    MsgBox _
+        "The currently open project could not be saved or closed." & _
+        vbCrLf & vbCrLf & _
+        "Correct or cancel the current project record, then " & _
+        "double-click the required project again." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Current Project Still Open"
+
+    CloseLoadedProjectForm = False
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' CHECK FOR A BLANK DEFAULT NEW PROJECT
+'=============================================================
+
+Private Function IsBlankNewProject( _
+    ByVal projectForm As Access.Form _
+) As Boolean
+
+    On Error GoTo Not_Blank
+
+    IsBlankNewProject = _
+        (Len(Trim$(Nz( _
+            projectForm.Controls( _
+                "txtProjectName").value, _
+            vbNullString))) = 0) And _
+        (Nz(projectForm.Controls( _
+            "cboCustomerID").value, 0) = 0) And _
+        (Nz(projectForm.Controls( _
+            "cboAssemblyTemplateID").value, 0) = 0) And _
+        (Nz(projectForm.Controls( _
+            "cboOutputLocationID").value, 0) = 0) And _
+        (Len(Trim$(Nz( _
+            projectForm.Controls( _
+                "txtCustomerPOReference").value, _
+            vbNullString))) = 0) And _
+        (Len(Trim$(Nz( _
+            projectForm.Controls( _
+                "txtWorkInstructions").value, _
+            vbNullString))) = 0) And _
+        (Len(Trim$(Nz( _
+            projectForm.Controls( _
+                "txtNOtes").value, _
+            vbNullString))) = 0)
+
+Exit_Handler:
+    Exit Function
+
+Not_Blank:
+    IsBlankNewProject = False
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' FORM HELPERS
+'=============================================================
+
+Private Function FormExists( _
+    ByVal formName As String _
+) As Boolean
+
+    On Error GoTo Not_Found
+
+    Dim formObject As AccessObject
+
+    Set formObject = CurrentProject.AllForms(formName)
+
+    FormExists = True
+
+Exit_Handler:
+    Set formObject = Nothing
+    Exit Function
+
+Not_Found:
+    FormExists = False
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function IsFormLoaded( _
+    ByVal formName As String _
+) As Boolean
+
+    On Error GoTo Not_Loaded
+
+    IsFormLoaded = _
+        CurrentProject.AllForms(formName).IsLoaded
+
+    Exit Function
+
+Not_Loaded:
+    IsFormLoaded = False
+
+End Function

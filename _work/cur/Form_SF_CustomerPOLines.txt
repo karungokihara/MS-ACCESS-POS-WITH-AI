@@ -1,0 +1,585 @@
+﻿Option Compare Database
+Option Explicit
+
+'=============================================================
+' FORM: SF_CustomerPOLines
+'
+' PURPOSE:
+'   Customer PO line entry.
+'
+' IMPORTANT:
+'   This subform does NOT move stock.
+'   It only records what the customer ordered.
+'
+' REQUIRED CONTROLS:
+'   txtCustomerPOLineID
+'   txtCustomerPOID
+'   txtLineNo
+'   txtCustomerPartNumber
+'   txtCustomerRevision
+'   cboItemID
+'   txtLineDescription
+'   txtQuantityOrdered
+'   cboUnitID
+'   txtUnitPrice
+'   txtLineSubtotal
+'   chkTaxable
+'   txtDueDate
+'   cboLineStatus
+'   txtLineNotes
+'=============================================================
+
+
+'=============================================================
+' FORM EVENTS
+'=============================================================
+Private Sub Form_Load()
+
+    On Error GoTo Err_Handler
+
+    ConfigureLineForm
+    ConfigureLineCombos
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The customer PO line form could not be loaded." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Customer PO Lines"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_Current()
+
+    On Error Resume Next
+
+    If Not IsBlankNewPOLine Then
+        CalculateLineSubtotal
+    End If
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub Form_BeforeInsert(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    'If the PO header is not saved, silently stop accidental line creation.
+    If ParentPOID <= 0 Then
+        Cancel = True
+        Exit Sub
+    End If
+
+    Me.txtCustomerPOID = ParentPOID
+
+    If Nz(Me.txtLineNo, 0) = 0 Then
+        Me.txtLineNo = GetNextLineNo(ParentPOID)
+    End If
+
+    If Len(Trim$(Nz(Me.cboLineStatus, vbNullString))) = 0 Then
+        Me.cboLineStatus = "Open"
+    End If
+
+    If IsNull(Me.chkTaxable) Then
+        Me.chkTaxable = False
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Cancel = True
+
+    MsgBox _
+        "The new PO line could not be initialized." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "New PO Line"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_BeforeUpdate(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    'If this is only the blank new row, discard it silently.
+    If IsBlankNewPOLine Then
+        Me.Undo
+        Exit Sub
+    End If
+
+    If ParentPOID <= 0 Then
+
+        MsgBox _
+            "Save the customer PO header first before saving line items.", _
+            vbExclamation, _
+            "PO Header Not Saved"
+
+        Cancel = True
+        Exit Sub
+
+    End If
+
+    Me.txtCustomerPOID = ParentPOID
+
+    If Nz(Me.txtLineNo, 0) = 0 Then
+        Me.txtLineNo = GetNextLineNo(ParentPOID)
+    End If
+
+    If Not ValidateLineRecord Then
+        Cancel = True
+        Exit Sub
+    End If
+
+    CalculateLineSubtotal
+
+    If Len(Trim$(Nz(Me.cboLineStatus, vbNullString))) = 0 Then
+        Me.cboLineStatus = "Open"
+    End If
+
+    If IsNull(Me.chkTaxable) Then
+        Me.chkTaxable = False
+    End If
+
+    If Nz(Me.txtCustomerPOLineID, 0) = 0 Then
+        SafeSetField "CreatedOn", Now()
+    End If
+
+    SafeSetField "UpdatedOn", Now()
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Cancel = True
+
+    MsgBox _
+        "The PO line could not be validated." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "PO Line Validation"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_AfterUpdate()
+
+    On Error Resume Next
+
+    If Not Me.Parent Is Nothing Then
+        Me.Parent.RecalculatePOTotals
+    End If
+
+    On Error GoTo 0
+
+End Sub
+
+
+'=============================================================
+' CONTROL EVENTS
+'=============================================================
+Private Sub cboItemID_AfterUpdate()
+
+    On Error Resume Next
+
+    Dim salesPrice As Variant
+    Dim BaseUnitID As Variant
+
+    If IsNull(Me.cboItemID) Then
+        Exit Sub
+    End If
+
+    If Len(Trim$(Nz(Me.txtLineDescription, vbNullString))) = 0 Then
+        Me.txtLineDescription = Nz(Me.cboItemID.Column(1), vbNullString)
+    End If
+
+    salesPrice = DLookup( _
+        "DefaultSalesPrice", _
+        "T_Items", _
+        "ItemID = " & CLng(Me.cboItemID) _
+    )
+
+    If Not IsNull(salesPrice) Then
+
+        If Nz(Me.txtUnitPrice, 0) = 0 Then
+            Me.txtUnitPrice = salesPrice
+        End If
+
+    End If
+
+    BaseUnitID = DLookup( _
+        "BaseUnitID", _
+        "T_Items", _
+        "ItemID = " & CLng(Me.cboItemID) _
+    )
+
+    If Not IsNull(BaseUnitID) Then
+
+        If IsNull(Me.cboUnitID) Then
+            Me.cboUnitID = CLng(BaseUnitID)
+        End If
+
+    End If
+
+    CalculateLineSubtotal
+
+    On Error GoTo 0
+
+    UX_FillLineFromItem Me
+End Sub
+
+
+Private Sub txtQuantityOrdered_AfterUpdate()
+
+    If Not IsBlankNewPOLine Then
+        CalculateLineSubtotal
+    End If
+
+End Sub
+
+
+Private Sub txtUnitPrice_AfterUpdate()
+
+    If Not IsBlankNewPOLine Then
+        CalculateLineSubtotal
+    End If
+
+End Sub
+
+
+Private Sub cboItemID_NotInList(NewData As String, Response As Integer)
+    On Error GoTo Err_Handler
+    Response = acDataErrContinue
+    If HandleComboNotInList(Me.cboItemID, NewData, "F_ItemSetup", "T_Items", "ItemID", "ItemName", "InternalSKU") Then
+        Response = acDataErrAdded
+    Else
+        Me.cboItemID.Undo
+    End If
+    Exit Sub
+Err_Handler:
+    Response = acDataErrContinue
+    MsgBox Err.Description, vbExclamation, "Add Item"
+End Sub
+
+
+'=============================================================
+' CONFIGURATION
+'=============================================================
+Private Sub ConfigureLineForm()
+
+    On Error Resume Next
+
+    Me.txtCustomerPOLineID.Visible = False
+    Me.txtCustomerPOID.Visible = False
+
+    Me.txtLineSubtotal.Locked = True
+    Me.txtLineSubtotal.Enabled = True
+
+    Me.txtLineDescription.EnterKeyBehavior = True
+    Me.txtLineDescription.ScrollBars = 2
+
+    Me.txtLineNotes.EnterKeyBehavior = True
+    Me.txtLineNotes.ScrollBars = 2
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub ConfigureLineCombos()
+
+    On Error GoTo Err_Handler
+
+    Me.cboItemID.RowSourceType = "Table/Query"
+    Me.cboItemID.RowSource = _
+        "SELECT ItemID, [InternalSKU] & ' - ' & [ItemName] " & _
+        "FROM T_Items " & _
+        "ORDER BY ItemName;"
+
+    Me.cboItemID.BoundColumn = 1
+    Me.cboItemID.ColumnCount = 2
+    Me.cboItemID.ColumnWidths = "0cm;7cm"
+    Me.cboItemID.LimitToList = True
+    Me.cboItemID.AutoExpand = True
+    Me.cboItemID.Requery
+
+
+    Me.cboUnitID.RowSourceType = "Table/Query"
+    Me.cboUnitID.RowSource = _
+        "SELECT UnitID, IIf(Len(Trim(Nz([UnitCode],'')))=0,[UnitName],[UnitCode]) " & _
+        "FROM T_Units " & _
+        "ORDER BY UnitCode;"
+
+    Me.cboUnitID.BoundColumn = 1
+    Me.cboUnitID.ColumnCount = 2
+    Me.cboUnitID.ColumnWidths = "0cm;3cm"
+    Me.cboUnitID.LimitToList = True
+    Me.cboUnitID.AutoExpand = True
+    Me.cboUnitID.Requery
+
+
+    Me.cboLineStatus.RowSourceType = "Value List"
+    Me.cboLineStatus.RowSource = _
+        "Open;" & _
+        "Confirmed;" & _
+        "Sales Order Created;" & _
+        "Invoiced;" & _
+        "Closed;" & _
+        "Cancelled"
+
+    Me.cboLineStatus.BoundColumn = 1
+    Me.cboLineStatus.ColumnCount = 1
+    Me.cboLineStatus.ColumnWidths = "4cm"
+    Me.cboLineStatus.LimitToList = True
+    Me.cboLineStatus.AutoExpand = True
+    Me.cboLineStatus.Requery
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The PO line combo boxes could not be loaded." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "PO Line Combos"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' VALIDATION
+'=============================================================
+Private Function ValidateLineRecord() As Boolean
+
+    On Error GoTo Err_Handler
+
+    ValidateLineRecord = False
+
+    If IsNull(Me.cboItemID) And _
+       Len(Trim$(Nz(Me.txtLineDescription, vbNullString))) = 0 Then
+
+        MsgBox _
+            "Select an item or enter a line description.", _
+            vbExclamation, _
+            "Line Description Required"
+
+        Me.txtLineDescription.SetFocus
+        Exit Function
+
+    End If
+
+    If IsNull(Me.txtQuantityOrdered) Then
+
+        MsgBox _
+            "Enter the quantity ordered.", _
+            vbExclamation, _
+            "Quantity Required"
+
+        Me.txtQuantityOrdered.SetFocus
+        Exit Function
+
+    End If
+
+    If Not IsNumeric(Me.txtQuantityOrdered) Then
+
+        MsgBox _
+            "Quantity ordered must be numeric.", _
+            vbExclamation, _
+            "Invalid Quantity"
+
+        Me.txtQuantityOrdered.SetFocus
+        Exit Function
+
+    End If
+
+    If CDbl(Nz(Me.txtQuantityOrdered, 0)) <= 0 Then
+
+        MsgBox _
+            "Quantity ordered must be greater than zero.", _
+            vbExclamation, _
+            "Invalid Quantity"
+
+        Me.txtQuantityOrdered.SetFocus
+        Exit Function
+
+    End If
+
+    If IsNull(Me.cboUnitID) Then
+
+        MsgBox _
+            "Select the unit.", _
+            vbExclamation, _
+            "Unit Required"
+
+        Me.cboUnitID.SetFocus
+        Exit Function
+
+    End If
+
+    If IsNull(Me.txtUnitPrice) Then
+
+        MsgBox _
+            "Enter the unit price.", _
+            vbExclamation, _
+            "Unit Price Required"
+
+        Me.txtUnitPrice.SetFocus
+        Exit Function
+
+    End If
+
+    If Not IsNumeric(Me.txtUnitPrice) Then
+
+        MsgBox _
+            "Unit price must be numeric.", _
+            vbExclamation, _
+            "Invalid Unit Price"
+
+        Me.txtUnitPrice.SetFocus
+        Exit Function
+
+    End If
+
+    If CCur(Nz(Me.txtUnitPrice, 0)) < 0 Then
+
+        MsgBox _
+            "Unit price cannot be negative.", _
+            vbExclamation, _
+            "Invalid Unit Price"
+
+        Me.txtUnitPrice.SetFocus
+        Exit Function
+
+    End If
+
+    ValidateLineRecord = True
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    MsgBox _
+        "PO line validation failed." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "PO Line Validation"
+
+    ValidateLineRecord = False
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function IsBlankNewPOLine() As Boolean
+
+    On Error GoTo Err_Handler
+
+    If Not Me.NewRecord Then
+        IsBlankNewPOLine = False
+        Exit Function
+    End If
+
+    IsBlankNewPOLine = _
+        IsNull(Me.cboItemID) And _
+        Len(Trim$(Nz(Me.txtCustomerPartNumber, vbNullString))) = 0 And _
+        Len(Trim$(Nz(Me.txtCustomerRevision, vbNullString))) = 0 And _
+        Len(Trim$(Nz(Me.txtLineDescription, vbNullString))) = 0 And _
+        Nz(Me.txtQuantityOrdered, 0) = 0 And _
+        IsNull(Me.cboUnitID) And _
+        Nz(Me.txtUnitPrice, 0) = 0 And _
+        Len(Trim$(Nz(Me.txtLineNotes, vbNullString))) = 0
+
+    Exit Function
+
+Err_Handler:
+    IsBlankNewPOLine = False
+
+End Function
+
+
+'=============================================================
+' CALCULATION
+'=============================================================
+Private Sub CalculateLineSubtotal()
+
+    On Error Resume Next
+
+    If IsBlankNewPOLine Then
+        Exit Sub
+    End If
+
+    Me.txtLineSubtotal = _
+        Nz(Me.txtQuantityOrdered, 0) * Nz(Me.txtUnitPrice, 0)
+
+    On Error GoTo 0
+
+End Sub
+
+
+'=============================================================
+' HELPERS
+'=============================================================
+Private Function ParentPOID() As Long
+
+    On Error GoTo Err_Handler
+
+    ParentPOID = Nz(Me.Parent!txtCustomerPOID, 0)
+    Exit Function
+
+Err_Handler:
+    ParentPOID = 0
+
+End Function
+
+
+Private Function GetNextLineNo(ByVal customerPOIDValue As Long) As Long
+
+    On Error GoTo Err_Handler
+
+    GetNextLineNo = Nz(DMax( _
+        "LineNo", _
+        "T_CustomerPOLines", _
+        "CustomerPOID = " & customerPOIDValue _
+    ), 0) + 1
+
+    Exit Function
+
+Err_Handler:
+    GetNextLineNo = 1
+
+End Function
+
+
+Private Sub SafeSetField(ByVal fieldName As String, ByVal fieldValue As Variant)
+
+    On Error Resume Next
+    Me(fieldName) = fieldValue
+    On Error GoTo 0
+
+End Sub

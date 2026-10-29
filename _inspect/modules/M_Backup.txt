@@ -1,0 +1,275 @@
+Attribute VB_Name = "M_Backup"
+Option Compare Database
+Option Explicit
+
+' Full ERP master-data backup and restore.
+' Backup creates a new Access file containing user tables.
+' Restore replaces data in the current database from that file.
+
+Public Sub UX_BackupAllData()
+
+    On Error GoTo Err_Handler
+
+    Dim destPath As String
+    Dim folderPath As String
+    Dim backupDb As DAO.Database
+    Dim sourceTable As DAO.TableDef
+    Dim exportedCount As Long
+
+    folderPath = CurrentProject.Path & "\Backups"
+    If Dir(folderPath, vbDirectory) = vbNullString Then
+        MkDir folderPath
+    End If
+
+    destPath = folderPath & "\LLC_DataBackup_" & _
+        Format$(Now(), "yyyymmdd_hhnnss") & ".accdb"
+
+    Set backupDb = DBEngine.CreateDatabase(destPath, dbLangGeneral)
+    backupDb.Close
+    Set backupDb = Nothing
+
+    For Each sourceTable In CurrentDb.TableDefs
+        If IsUserTable(sourceTable.Name) Then
+            DoCmd.TransferDatabase _
+                acExport, _
+                "Microsoft Access", _
+                destPath, _
+                acTable, _
+                sourceTable.Name, _
+                sourceTable.Name
+            exportedCount = exportedCount + 1
+        End If
+    Next sourceTable
+
+    MsgBox _
+        "Backup completed." & vbCrLf & vbCrLf & _
+        "Tables exported: " & exportedCount & vbCrLf & _
+        "File:" & vbCrLf & destPath, _
+        vbInformation, _
+        "System Backup"
+
+Exit_Handler:
+    Set sourceTable = Nothing
+    Set backupDb = Nothing
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The system backup could not be completed." & vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "System Backup"
+    Resume Exit_Handler
+
+End Sub
+
+
+Public Sub UX_RestoreAllData()
+
+    On Error GoTo Err_Handler
+
+    Dim sourcePath As String
+    Dim confirmValue As VbMsgBoxResult
+    Dim sourceDb As DAO.Database
+    Dim sourceTable As DAO.TableDef
+    Dim tableName As String
+    Dim importedCount As Long
+    Dim remainingDeletes As Long
+    Dim passNumber As Long
+
+    sourcePath = BrowseForBackupFile()
+    If Len(sourcePath) = 0 Then Exit Sub
+
+    confirmValue = MsgBox( _
+        "Restore will replace current ERP data with the selected backup." & _
+        vbCrLf & vbCrLf & _
+        "This cannot be undone from inside the application." & _
+        vbCrLf & vbCrLf & _
+        "Continue?", _
+        vbQuestion + vbYesNo, _
+        "Restore System Data")
+
+    If confirmValue <> vbYes Then Exit Sub
+
+    DoCmd.SetWarnings False
+    Set sourceDb = DBEngine.OpenDatabase(sourcePath)
+
+    remainingDeletes = 1
+    passNumber = 0
+    Do While remainingDeletes > 0 And passNumber < 20
+        remainingDeletes = 0
+        passNumber = passNumber + 1
+        For Each sourceTable In CurrentDb.TableDefs
+            If IsUserTable(sourceTable.Name) Then
+                On Error Resume Next
+                CurrentDb.Execute "DELETE FROM [" & sourceTable.Name & "]", dbFailOnError
+                If Err.Number <> 0 Then
+                    remainingDeletes = remainingDeletes + 1
+                    Err.Clear
+                End If
+                On Error GoTo Err_Handler
+            End If
+        Next sourceTable
+    Loop
+
+    For Each sourceTable In sourceDb.TableDefs
+        tableName = sourceTable.Name
+        If IsUserTable(tableName) Then
+            If TableExistsLocal(tableName) Then
+                ImportRestoredTable sourcePath, tableName
+                importedCount = importedCount + 1
+            End If
+        End If
+    Next sourceTable
+
+    sourceDb.Close
+    DoCmd.SetWarnings True
+
+    MsgBox _
+        "Restore completed." & vbCrLf & vbCrLf & _
+        "Tables restored: " & importedCount & vbCrLf & _
+        "Restart Access if lists still show old records.", _
+        vbInformation, _
+        "Restore System Data"
+
+Exit_Handler:
+    On Error Resume Next
+    DoCmd.SetWarnings True
+    If Not sourceDb Is Nothing Then sourceDb.Close
+    Set sourceTable = Nothing
+    Set sourceDb = Nothing
+    Exit Sub
+
+Err_Handler:
+    DoCmd.SetWarnings True
+    MsgBox _
+        "The restore could not be completed." & vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Restore System Data"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub ImportRestoredTable( _
+    ByVal sourcePath As String, _
+    ByVal tableName As String _
+)
+
+    Dim tempName As String
+    Dim fieldList As String
+    Dim db As DAO.Database
+    Dim destTable As DAO.TableDef
+    Dim srcTable As DAO.TableDef
+    Dim destField As DAO.Field
+    Dim srcDb As DAO.Database
+
+    tempName = tableName & "_RESTORE_TMP"
+    If TableExistsLocal(tempName) Then
+        CurrentDb.TableDefs.Delete tempName
+        CurrentDb.TableDefs.Refresh
+    End If
+
+    DoCmd.TransferDatabase _
+        acImport, _
+        "Microsoft Access", _
+        sourcePath, _
+        acTable, _
+        tableName, _
+        tempName
+
+    Set db = CurrentDb
+    Set destTable = db.TableDefs(tableName)
+    Set srcDb = DBEngine.OpenDatabase(sourcePath)
+    Set srcTable = srcDb.TableDefs(tableName)
+
+    fieldList = vbNullString
+    For Each destField In destTable.Fields
+        If FieldExistsInTableDef(srcTable, destField.Name) Then
+            If Len(fieldList) > 0 Then fieldList = fieldList & ", "
+            fieldList = fieldList & "[" & destField.Name & "]"
+        End If
+    Next destField
+
+    srcDb.Close
+    Set srcDb = Nothing
+
+    If Len(fieldList) > 0 Then
+        db.Execute _
+            "INSERT INTO [" & tableName & "] (" & fieldList & ") " & _
+            "SELECT " & fieldList & " FROM [" & tempName & "]", _
+            dbFailOnError
+    End If
+
+    db.TableDefs.Delete tempName
+    db.TableDefs.Refresh
+
+    Set destField = Nothing
+    Set destTable = Nothing
+    Set srcTable = Nothing
+    Set db = Nothing
+
+End Sub
+
+
+Private Function BrowseForBackupFile() As String
+
+    Dim dialogObject As Object
+    Dim selectedPath As String
+
+    Set dialogObject = Application.FileDialog(1)
+    With dialogObject
+        .Title = "Select LLC data backup"
+        .AllowMultiSelect = False
+        .Filters.Clear
+        .Filters.Add "Access Backup", "*.accdb;*.mdb"
+        If .Show = -1 Then
+            selectedPath = CStr(.SelectedItems(1))
+        End If
+    End With
+
+    BrowseForBackupFile = selectedPath
+    Set dialogObject = Nothing
+
+End Function
+
+
+Private Function IsUserTable(ByVal tableName As String) As Boolean
+
+    If Left$(tableName, 4) = "MSys" Then Exit Function
+    If Left$(tableName, 1) = "~" Then Exit Function
+    If Left$(tableName, 4) = "USys" Then Exit Function
+    IsUserTable = True
+
+End Function
+
+
+Private Function TableExistsLocal(ByVal tableName As String) As Boolean
+
+    On Error GoTo Not_Found
+    TableExistsLocal = (CurrentDb.TableDefs(tableName).Name = tableName)
+    Exit Function
+Not_Found:
+    TableExistsLocal = False
+
+End Function
+
+
+Private Function FieldExistsInTableDef( _
+    ByVal tableDefObject As DAO.TableDef, _
+    ByVal fieldName As String _
+) As Boolean
+
+    Dim oneField As DAO.Field
+
+    For Each oneField In tableDefObject.Fields
+        If StrComp(oneField.Name, fieldName, vbTextCompare) = 0 Then
+            FieldExistsInTableDef = True
+            Exit Function
+        End If
+    Next oneField
+
+End Function

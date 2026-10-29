@@ -1,0 +1,127 @@
+﻿Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+'=============================================================
+' FORM: SF_SupplierList
+'
+' PURPOSE:
+'   Datasheet list of suppliers.
+'
+'   Double-clicking a supplier row opens the supplier detail form.
+'
+' RECORD SOURCE:
+'   Q_SupplierList
+'
+' REQUIRED FIELD:
+'   SupplierID
+'
+' IMPORTANT:
+'   On each visible textbox/control in the datasheet, set:
+'       On Dbl Click: =OpenSelectedSupplier()
+'=============================================================
+
+Private Const DETAIL_FORM_1 As String = "F_SupplierSetup"
+Private Const DETAIL_FORM_2 As String = "F_Supplier"
+Private Const DETAIL_FORM_3 As String = "F_Suppliers"
+
+
+Public Function OpenSelectedSupplier() As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim supplierIDValue As Long
+    Dim detailFormName As String
+
+    If IsNull(Me!SupplierID) Then
+        OpenSelectedSupplier = False
+        Exit Function
+    End If
+
+    supplierIDValue = CLng(Me!SupplierID)
+
+    If supplierIDValue <= 0 Then
+        OpenSelectedSupplier = False
+        Exit Function
+    End If
+
+    detailFormName = GetSupplierDetailFormName()
+
+    If Len(detailFormName) = 0 Then
+
+        MsgBox _
+            "No supplier detail form was found." & vbCrLf & vbCrLf & _
+            "Expected one of these forms:" & vbCrLf & _
+            DETAIL_FORM_1 & vbCrLf & _
+            DETAIL_FORM_2 & vbCrLf & _
+            DETAIL_FORM_3, _
+            vbExclamation, _
+            "Supplier Form Missing"
+
+        OpenSelectedSupplier = False
+        Exit Function
+
+    End If
+
+    DoCmd.OpenForm _
+        detailFormName, _
+        acNormal, _
+        , _
+        "SupplierID=" & supplierIDValue
+
+    OpenSelectedSupplier = True
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    MsgBox _
+        "The selected supplier could not be opened." & vbCrLf & vbCrLf & _
+        "SupplierID: " & Nz(Me!SupplierID, "Null") & vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Open Supplier"
+
+    OpenSelectedSupplier = False
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function GetSupplierDetailFormName() As String
+
+    If FormExists(DETAIL_FORM_1) Then
+        GetSupplierDetailFormName = DETAIL_FORM_1
+    ElseIf FormExists(DETAIL_FORM_2) Then
+        GetSupplierDetailFormName = DETAIL_FORM_2
+    ElseIf FormExists(DETAIL_FORM_3) Then
+        GetSupplierDetailFormName = DETAIL_FORM_3
+    Else
+        GetSupplierDetailFormName = vbNullString
+    End If
+
+End Function
+
+
+Private Function FormExists(ByVal FormName As String) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim tmp As String
+
+    tmp = CurrentProject.AllForms(FormName).Name
+
+    FormExists = True
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    FormExists = False
+    Resume Exit_Handler
+
+End Function

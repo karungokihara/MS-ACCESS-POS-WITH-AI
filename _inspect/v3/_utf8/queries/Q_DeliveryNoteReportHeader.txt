@@ -1,0 +1,18 @@
+﻿dbMemo "SQL" ="SELECT I.InvoiceID, I.InvoiceNo, I.CustomerID, C.CustomerName, I.CustomerPOID, P"
+    "O.PONumber, I.SalesOrderID, SO.SalesOrderNo, I.InvoiceDate, 'Delivery Note' AS I"
+    "nvoiceType, I.PaymentTerms, Nz(SO.ShipToName,Nz(C.CustomerName,I.BillToName)) AS"
+    " BillToName, Nz(SO.ShipToAddress,Nz(C.ShippingAddress,I.BillToAddress)) AS BillT"
+    "oAddress, I.SubtotalAmount, I.TaxAmount, I.GrandTotalAmount, I.InvoiceStatus, I."
+    "Notes, \"Value Transformation LLC\" AS CompanyName, \"1211 Heath Church Road\" A"
+    "S CompanyAddress1, \"Lexington, NC, 27292, phone: 336-963-0119\" AS CompanyAddre"
+    "ss2, \"email: Jon.Quigley@ValueTransform.com\" AS CompanyEmail, \"Product Develo"
+    "pment Experts - Training and Consulting\" AS CompanyFooter, Nz(SO.ShipVia,'') & "
+    "' ' & Nz(I.Notes,'') AS InvoiceDescription\015\012FROM ((T_Invoices AS I LEFT JO"
+    "IN T_Customers AS C ON I.CustomerID = C.CustomerID) LEFT JOIN T_CustomerPOs AS P"
+    "O ON I.CustomerPOID = PO.CustomerPOID) LEFT JOIN T_SalesOrders AS SO ON I.SalesO"
+    "rderID = SO.SalesOrderID;\015\012"
+dbMemo "Connect" =""
+dbBoolean "ReturnsRecords" ="-1"
+dbInteger "ODBCTimeout" ="60"
+Begin
+End

@@ -1,0 +1,534 @@
+﻿Version =21
+VersionRequired =20
+PublishOption =1
+Checksum =-782870045
+Begin Form
+    DividingLines = NotDefault
+    AllowDesignChanges = NotDefault
+    DefaultView =0
+    PictureAlignment =2
+    DatasheetGridlinesBehavior =3
+    GridX =24
+    GridY =24
+    Width =15000
+    DatasheetFontHeight =11
+    ItemSuffix =18
+    Right =15090
+    Bottom =4695
+    DatasheetGridlinesColor =15263976
+    RecSrcDt = Begin
+        0x338e1bb2749ce640
+    End
+    GUID = Begin
+        0xf4ef1ee3f80df647b576fede7342aa73
+    End
+    Caption ="Statistics"
+    DatasheetFontName ="Aptos"
+    FilterOnLoad =0
+    ShowPageMargins =0
+    DisplayOnSharePointSite =1
+    DatasheetAlternateBackColor =15921906
+    DatasheetGridlinesColor12 =0
+    FitToScreen =1
+    DatasheetBackThemeColorIndex =1
+    BorderThemeColorIndex =3
+    ThemeFontIndex =1
+    ForeThemeColorIndex =0
+    AlternateBackThemeColorIndex =1
+    AlternateBackShade =95.0
+    NoSaveCTIWhenDisabled =1
+    Begin
+        Begin Label
+            BackStyle =0
+            FontSize =11
+            BorderColor =8355711
+            ForeColor =6710886
+            FontName ="Aptos"
+            GridlineColor =10921638
+            ThemeFontIndex =1
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =0
+            BorderTint =50.0
+            ForeThemeColorIndex =0
+            ForeTint =60.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin CommandButton
+            FontSize =11
+            FontWeight =400
+            ForeColor =4210752
+            FontName ="Aptos"
+            GridlineColor =10921638
+            ForeThemeColorIndex =0
+            ForeTint =75.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+            UseTheme =1
+            Shape =1
+            Gradient =12
+            BackColor =14790982
+            BackThemeColorIndex =4
+            BackTint =60.0
+            BorderLineStyle =0
+            BorderColor =14790982
+            BorderThemeColorIndex =4
+            BorderTint =60.0
+            ThemeFontIndex =1
+            HoverColor =15453059
+            HoverThemeColorIndex =4
+            HoverTint =40.0
+            PressedColor =6440976
+            PressedThemeColorIndex =4
+            PressedShade =75.0
+            HoverForeColor =4210752
+            HoverForeThemeColorIndex =0
+            HoverForeTint =75.0
+            PressedForeColor =4210752
+            PressedForeThemeColorIndex =0
+            PressedForeTint =75.0
+        End
+        Begin TextBox
+            AddColon = NotDefault
+            FELineBreak = NotDefault
+            BorderLineStyle =0
+            LabelX =-1800
+            FontSize =11
+            BorderColor =10921638
+            ForeColor =4210752
+            FontName ="Aptos"
+            AsianLineBreak =1
+            GridlineColor =10921638
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            ThemeFontIndex =1
+            ForeThemeColorIndex =0
+            ForeTint =75.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin Subform
+            BorderLineStyle =0
+            BorderColor =10921638
+            GridlineColor =10921638
+            BorderThemeColorIndex =1
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+            BorderShade =65.0
+            ShowPageHeaderAndPageFooter =1
+        End
+        Begin Section
+            Height =6200
+            BackColor =14482166
+            Name ="Detail"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x2922b1c21a88644e99d5f501e1780ef9
+            End
+            AutoHeight =1
+            AlternateBackColor =14482166
+            AlternateBackShade =95.0
+            Begin
+                Begin Label
+                    OverlapFlags =85
+                    Left =300
+                    Top =160
+                    Width =4000
+                    Height =400
+                    FontSize =20
+                    FontWeight =700
+                    ForeColor =3947580
+                    Name ="lblTitle"
+                    Caption ="Statistics"
+                    GUID = Begin
+                        0x470a8185da84944ea8f139f815d00fe7
+                    End
+                    LayoutCachedLeft =300
+                    LayoutCachedTop =160
+                    LayoutCachedWidth =4300
+                    LayoutCachedHeight =560
+                    ForeThemeColorIndex =-1
+                End
+                Begin Label
+                    OverlapFlags =85
+                    Left =300
+                    Top =800
+                    Width =2000
+                    Height =260
+                    FontSize =10
+                    FontWeight =700
+                    ForeColor =3947580
+                    Name ="lblSales"
+                    Caption ="Sales total"
+                    GUID = Begin
+                        0x1e422bc8a11cc34f9a511d3c590fd94a
+                    End
+                    LayoutCachedLeft =300
+                    LayoutCachedTop =800
+                    LayoutCachedWidth =2300
+                    LayoutCachedHeight =1060
+                    ForeThemeColorIndex =-1
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =300
+                    Top =1100
+                    Width =2000
+                    Height =420
+                    FontSize =16
+                    FontWeight =700
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtSales"
+                    ControlSource ="=Format(Nz(DSum(\"GrandTotalAmount\",\"T_Invoices\"),0),\"#,##0.00\")"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x31b414dbb1702f4ab140244acd9d0301
+                    End
+
+                    LayoutCachedLeft =300
+                    LayoutCachedTop =1100
+                    LayoutCachedWidth =2300
+                    LayoutCachedHeight =1520
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                End
+                Begin Label
+                    OverlapFlags =85
+                    Left =2500
+                    Top =800
+                    Width =2000
+                    Height =260
+                    FontSize =10
+                    FontWeight =700
+                    ForeColor =3947580
+                    Name ="lblInv"
+                    Caption ="Invoices"
+                    GUID = Begin
+                        0x63c32b1c555d7940bcd56672546cc845
+                    End
+                    LayoutCachedLeft =2500
+                    LayoutCachedTop =800
+                    LayoutCachedWidth =4500
+                    LayoutCachedHeight =1060
+                    ForeThemeColorIndex =-1
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =2500
+                    Top =1100
+                    Width =2000
+                    Height =420
+                    FontSize =16
+                    FontWeight =700
+                    TabIndex =1
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtInv"
+                    ControlSource ="=Nz(DCount(\"*\",\"T_Invoices\"),0)"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x248cae61a46beb41afdca2116228e5eb
+                    End
+
+                    LayoutCachedLeft =2500
+                    LayoutCachedTop =1100
+                    LayoutCachedWidth =4500
+                    LayoutCachedHeight =1520
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                End
+                Begin Label
+                    OverlapFlags =85
+                    Left =4700
+                    Top =800
+                    Width =2000
+                    Height =260
+                    FontSize =10
+                    FontWeight =700
+                    ForeColor =3947580
+                    Name ="lblExp"
+                    Caption ="Expenses"
+                    GUID = Begin
+                        0x718ff3d9ac35c1449278ffa29459d972
+                    End
+                    LayoutCachedLeft =4700
+                    LayoutCachedTop =800
+                    LayoutCachedWidth =6700
+                    LayoutCachedHeight =1060
+                    ForeThemeColorIndex =-1
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =4700
+                    Top =1100
+                    Width =2000
+                    Height =420
+                    FontSize =16
+                    FontWeight =700
+                    TabIndex =2
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtExp"
+                    ControlSource ="=Format(Nz(DSum(\"Amount\",\"T_Expenses\"),0),\"#,##0.00\")"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x9cfffb44a4d7bc4cac57c147652f9692
+                    End
+
+                    LayoutCachedLeft =4700
+                    LayoutCachedTop =1100
+                    LayoutCachedWidth =6700
+                    LayoutCachedHeight =1520
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                End
+                Begin Label
+                    OverlapFlags =85
+                    Left =6900
+                    Top =800
+                    Width =2000
+                    Height =260
+                    FontSize =10
+                    FontWeight =700
+                    ForeColor =3947580
+                    Name ="lblStock"
+                    Caption ="Stock on hand"
+                    GUID = Begin
+                        0xd084b43af90c16419e33ac164bfcfce9
+                    End
+                    LayoutCachedLeft =6900
+                    LayoutCachedTop =800
+                    LayoutCachedWidth =8900
+                    LayoutCachedHeight =1060
+                    ForeThemeColorIndex =-1
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =6900
+                    Top =1100
+                    Width =2000
+                    Height =420
+                    FontSize =16
+                    FontWeight =700
+                    TabIndex =3
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtStock"
+                    ControlSource ="=Nz(DSum(\"QuantityOnHand\",\"T_StockBalances\"),0)"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xb7225a83a0822045a17ca03038fe129c
+                    End
+
+                    LayoutCachedLeft =6900
+                    LayoutCachedTop =1100
+                    LayoutCachedWidth =8900
+                    LayoutCachedHeight =1520
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                End
+                Begin Label
+                    OverlapFlags =85
+                    Left =9100
+                    Top =800
+                    Width =2000
+                    Height =260
+                    FontSize =10
+                    FontWeight =700
+                    ForeColor =3947580
+                    Name ="lblProj"
+                    Caption ="Projects"
+                    GUID = Begin
+                        0xdc6a0ad225718649b580f6eb6e908330
+                    End
+                    LayoutCachedLeft =9100
+                    LayoutCachedTop =800
+                    LayoutCachedWidth =11100
+                    LayoutCachedHeight =1060
+                    ForeThemeColorIndex =-1
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =9100
+                    Top =1100
+                    Width =2000
+                    Height =420
+                    FontSize =16
+                    FontWeight =700
+                    TabIndex =4
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtProj"
+                    ControlSource ="=Nz(DCount(\"*\",\"T_Projects\"),0)"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x44020abf0fa60f4da53a7d0a27e19cda
+                    End
+
+                    LayoutCachedLeft =9100
+                    LayoutCachedTop =1100
+                    LayoutCachedWidth =11100
+                    LayoutCachedHeight =1520
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                End
+                Begin Label
+                    OverlapFlags =85
+                    Left =11300
+                    Top =800
+                    Width =2000
+                    Height =260
+                    FontSize =10
+                    FontWeight =700
+                    ForeColor =3947580
+                    Name ="lblLeaveN"
+                    Caption ="Approved leave"
+                    GUID = Begin
+                        0x70e5b5f332ab464eb20fd87db3ea3b05
+                    End
+                    LayoutCachedLeft =11300
+                    LayoutCachedTop =800
+                    LayoutCachedWidth =13300
+                    LayoutCachedHeight =1060
+                    ForeThemeColorIndex =-1
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =11300
+                    Top =1100
+                    Width =2000
+                    Height =420
+                    FontSize =16
+                    FontWeight =700
+                    TabIndex =5
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtLeaveN"
+                    ControlSource ="=Nz(DCount(\"*\",\"T_Leave\",\"Status='Approved'\"),0)"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x542d96bf6cdaad4397ee991bedfa0571
+                    End
+
+                    LayoutCachedLeft =11300
+                    LayoutCachedTop =1100
+                    LayoutCachedWidth =13300
+                    LayoutCachedHeight =1520
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                End
+                Begin Label
+                    OverlapFlags =85
+                    Left =300
+                    Top =1800
+                    Width =4000
+                    Height =300
+                    FontSize =14
+                    FontWeight =700
+                    ForeColor =3947580
+                    Name ="lblByCat"
+                    Caption ="Expenses by category"
+                    GUID = Begin
+                        0xb8a0865327c09445b087c05b47c3f953
+                    End
+                    LayoutCachedLeft =300
+                    LayoutCachedTop =1800
+                    LayoutCachedWidth =4300
+                    LayoutCachedHeight =2100
+                    ForeThemeColorIndex =-1
+                End
+                Begin Subform
+                    OverlapFlags =85
+                    Left =300
+                    Top =2200
+                    Width =7000
+                    Height =2800
+                    TabIndex =6
+                    Name ="SF_ExpenseStats"
+                    SourceObject ="Form.SF_ExpenseStats"
+                    GUID = Begin
+                        0x8ca85f693fa77a4ab12e29deab8b9818
+                    End
+
+                    LayoutCachedLeft =300
+                    LayoutCachedTop =2200
+                    LayoutCachedWidth =7300
+                    LayoutCachedHeight =5000
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =5600
+                    Top =180
+                    Width =1500
+                    Height =400
+                    FontWeight =700
+                    TabIndex =7
+                    ForeColor =16777215
+                    Name ="cmdUXBack"
+                    Caption ="Back"
+                    OnClick ="=UX_GoBack()"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdUXBack\")"
+                    GUID = Begin
+                        0x0ec64cec063b424db8305254f8f93e67
+                    End
+
+                    LayoutCachedLeft =5600
+                    LayoutCachedTop =180
+                    LayoutCachedWidth =7100
+                    LayoutCachedHeight =580
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                End
+            End
+        End
+    End
+End

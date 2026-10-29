@@ -1,0 +1,436 @@
+﻿Option Compare Database
+Option Explicit
+
+'=============================================================
+' MODULE: M_Notifications
+'
+' PURPOSE:
+'   Notification logic for:
+'       - Low stock
+'       - Restock required
+'       - Overdue tools
+'       - Tools due soon
+'
+' IMPORTANT:
+'   Notification detail lists are opened in DATASHEET VIEW.
+'
+' LIST FORMS:
+'   SF_NotifyLowStock
+'   SF_NotifyToolReturns
+'=============================================================
+
+
+'=============================================================
+' SHOW POPUP
+'=============================================================
+Public Sub Notif_ShowPopup(Optional ByVal forceShow As Boolean = False)
+
+    On Error GoTo Err_Handler
+
+    Dim totalAlerts As Long
+
+    totalAlerts = Notif_GetTotalActiveAlerts()
+
+    If totalAlerts <= 0 And forceShow = False Then
+        Exit Sub
+    End If
+
+    If Not Notif_FormExists("F_NotificationCenter") Then
+        MsgBox "F_NotificationCenter was not found.", vbExclamation, "Notification Center"
+        Exit Sub
+    End If
+
+    If Not CurrentProject.AllForms("F_NotificationCenter").IsLoaded Then
+        DoCmd.OpenForm "F_NotificationCenter", acNormal
+    End If
+
+    Notif_RefreshNotificationForm Forms!F_NotificationCenter
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The notification popup could not be opened." & vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Notification Popup"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' REFRESH NOTIFICATION CENTER COUNTS
+'=============================================================
+Public Sub Notif_RefreshNotificationForm(ByVal frm As Form)
+
+    On Error GoTo Err_Handler
+
+    Dim restockCount As Long
+    Dim lowStockCount As Long
+    Dim overdueCount As Long
+    Dim dueSoonCount As Long
+    Dim totalCount As Long
+
+    restockCount = Notif_SafeDCount( _
+        "*", _
+        "Q_Notify_LowStock", _
+        "AlertStatus='RESTOCK REQUIRED'" _
+    )
+
+    lowStockCount = Notif_SafeDCount( _
+        "*", _
+        "Q_Notify_LowStock", _
+        "AlertStatus='LOW STOCK'" _
+    )
+
+    overdueCount = Notif_SafeDCount( _
+        "*", _
+        "Q_Notify_ToolReturns", _
+        "AlertStatus='OVERDUE'" _
+    )
+
+    dueSoonCount = Notif_SafeDCount( _
+        "*", _
+        "Q_Notify_ToolReturns", _
+        "AlertStatus='DUE SOON'" _
+    )
+
+    totalCount = restockCount + lowStockCount + overdueCount + dueSoonCount
+
+    Notif_SetControlValue frm, "txtRestockRequiredCount", restockCount
+    Notif_SetControlValue frm, "txtLowStockCount", lowStockCount
+    Notif_SetControlValue frm, "txtToolOverdueCount", overdueCount
+    Notif_SetControlValue frm, "txtToolDueSoonCount", dueSoonCount
+    Notif_SetControlValue frm, "txtTotalAlerts", totalCount
+
+    Notif_EnableControl frm, "cmdViewRestockRequired", (restockCount > 0)
+    Notif_EnableControl frm, "cmdViewLowStock", (lowStockCount > 0)
+    Notif_EnableControl frm, "cmdViewToolOverdue", (overdueCount > 0)
+    Notif_EnableControl frm, "cmdViewToolDueSoon", (dueSoonCount > 0)
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The notification counts could not be refreshed." & vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Refresh Notifications"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' TOTAL ACTIVE ALERTS
+'=============================================================
+Public Function Notif_GetTotalActiveAlerts() As Long
+
+    On Error GoTo Err_Handler
+
+    Notif_GetTotalActiveAlerts = _
+        Notif_SafeDCount("*", "Q_Notify_LowStock") + _
+        Notif_SafeDCount("*", "Q_Notify_ToolReturns")
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    Notif_GetTotalActiveAlerts = 0
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' OPEN RESTOCK REQUIRED
+'=============================================================
+Public Sub Notif_OpenRestockRequired()
+
+    Notif_OpenLowStockList "RESTOCK REQUIRED"
+
+End Sub
+
+
+'=============================================================
+' OPEN LOW STOCK
+'=============================================================
+Public Sub Notif_OpenLowStock()
+
+    Notif_OpenLowStockList "LOW STOCK"
+
+End Sub
+
+
+'=============================================================
+' OPEN OVERDUE TOOLS
+'=============================================================
+Public Sub Notif_OpenOverdueTools()
+
+    Notif_OpenToolReturnList "OVERDUE"
+
+End Sub
+
+
+'=============================================================
+' OPEN TOOLS DUE SOON
+'=============================================================
+Public Sub Notif_OpenToolsDueSoon()
+
+    Notif_OpenToolReturnList "DUE SOON"
+
+End Sub
+
+
+'=============================================================
+' OPEN LOW STOCK LIST IN DATASHEET VIEW
+'=============================================================
+Private Sub Notif_OpenLowStockList(ByVal AlertStatus As String)
+
+    On Error GoTo Err_Handler
+
+    Dim formName As String
+    Dim filterText As String
+
+    formName = "SF_NotifyLowStock"
+
+    If Not Notif_FormExists(formName) Then
+
+        MsgBox _
+            "The low-stock list form was not found." & vbCrLf & vbCrLf & _
+            "Expected form: SF_NotifyLowStock", _
+            vbExclamation, _
+            "Low Stock List Missing"
+
+        Exit Sub
+
+    End If
+
+    filterText = "AlertStatus=" & Notif_SqlText(AlertStatus)
+
+    Notif_OpenFormDatasheet formName, filterText
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The low-stock list could not be opened." & vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Open Low Stock List"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' OPEN TOOL RETURN LIST IN DATASHEET VIEW
+'=============================================================
+Private Sub Notif_OpenToolReturnList(ByVal AlertStatus As String)
+
+    On Error GoTo Err_Handler
+
+    Dim formName As String
+    Dim filterText As String
+
+    formName = "SF_NotifyToolReturns"
+
+    If Not Notif_FormExists(formName) Then
+
+        MsgBox _
+            "The tool-return list form was not found." & vbCrLf & vbCrLf & _
+            "Expected form: SF_NotifyToolReturns", _
+            vbExclamation, _
+            "Tool Return List Missing"
+
+        Exit Sub
+
+    End If
+
+    filterText = "AlertStatus=" & Notif_SqlText(AlertStatus)
+
+    Notif_OpenFormDatasheet formName, filterText
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The tool-return list could not be opened." & vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Open Tool Return List"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' FORCE OPEN FORM IN DATASHEET VIEW
+'
+' If the form is already open in normal Form View, close it and
+' reopen it in Datasheet View.
+'=============================================================
+Private Sub Notif_OpenFormDatasheet( _
+    ByVal formName As String, _
+    ByVal filterText As String _
+)
+
+    On Error GoTo Err_Handler
+
+    If CurrentProject.AllForms(formName).IsLoaded Then
+        DoCmd.close acForm, formName, acSaveNo
+    End If
+
+    DoCmd.OpenForm _
+        formName, _
+        acFormDS, _
+        , _
+        filterText
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Err.Raise Err.Number, "Notif_OpenFormDatasheet", Err.Description
+
+End Sub
+
+
+'=============================================================
+' OPEN FULL INVENTORY LIST
+'=============================================================
+Public Sub Notif_OpenInventoryList()
+
+    On Error GoTo Err_Handler
+
+    If Not Notif_FormExists("F_InventoryList") Then
+        MsgBox "F_InventoryList was not found.", vbExclamation, "Inventory List"
+        Exit Sub
+    End If
+
+    DoCmd.OpenForm "F_InventoryList", acNormal
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The inventory list could not be opened." & vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Open Inventory List"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' SAFE DCOUNT
+'=============================================================
+Private Function Notif_SafeDCount( _
+    ByVal expr As String, _
+    ByVal domain As String, _
+    Optional ByVal criteria As String = vbNullString _
+) As Long
+
+    On Error GoTo Err_Handler
+
+    If Len(criteria) > 0 Then
+        Notif_SafeDCount = Nz(DCount(expr, domain, criteria), 0)
+    Else
+        Notif_SafeDCount = Nz(DCount(expr, domain), 0)
+    End If
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    Notif_SafeDCount = 0
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' SET CONTROL VALUE IF EXISTS
+'=============================================================
+Private Sub Notif_SetControlValue( _
+    ByVal frm As Form, _
+    ByVal controlName As String, _
+    ByVal controlValue As Variant _
+)
+
+    On Error Resume Next
+
+    frm.Controls(controlName).value = controlValue
+
+    On Error GoTo 0
+
+End Sub
+
+
+'=============================================================
+' ENABLE CONTROL IF EXISTS
+'=============================================================
+Private Sub Notif_EnableControl( _
+    ByVal frm As Form, _
+    ByVal controlName As String, _
+    ByVal enabledValue As Boolean _
+)
+
+    On Error Resume Next
+
+    frm.Controls(controlName).Enabled = enabledValue
+
+    On Error GoTo 0
+
+End Sub
+
+
+'=============================================================
+' CHECK FORM EXISTS
+'=============================================================
+Private Function Notif_FormExists(ByVal formName As String) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim tmp As String
+
+    tmp = CurrentProject.AllForms(formName).Name
+
+    Notif_FormExists = True
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    Notif_FormExists = False
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' ESCAPE TEXT FOR ACCESS SQL/FILTERS
+'=============================================================
+Private Function Notif_SqlText(ByVal value As String) As String
+
+    Notif_SqlText = "'" & Replace(value, "'", "''") & "'"
+
+End Function
+

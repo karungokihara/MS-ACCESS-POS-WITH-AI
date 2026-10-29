@@ -1,0 +1,27 @@
+﻿Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+Public Function OpenSelectedRecord() As Boolean
+
+    On Error GoTo Err_Handler
+
+    If Nz(Me!SalesOrderID, 0) <= 0 Then Exit Function
+
+    DoCmd.OpenForm "F_SalesOrders", acNormal, , "SalesOrderID = " & CLng(Me!SalesOrderID)
+
+    OpenSelectedRecord = True
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    MsgBox "The selected sales order could not be opened." & vbCrLf & vbCrLf & _
+           "Error Number: " & Err.Number & vbCrLf & _
+           "Details: " & Err.Description, vbExclamation, "Open Sales Order"
+    Resume Exit_Handler
+
+End Function

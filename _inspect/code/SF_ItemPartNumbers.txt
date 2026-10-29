@@ -1,0 +1,136 @@
+﻿Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+
+'=============================================================
+' MANUFACTURER
+'=============================================================
+
+Private Sub cboManufacturerID_NotInList( _
+    NewData As String, _
+    Response As Integer _
+)
+
+    Response = acDataErrContinue
+
+    If HandleComboNotInList( _
+        Me!cboManufacturerID, _
+        NewData, _
+        "F_ManufacturerSetup", _
+        "T_Manufacturers", _
+        "ManufacturerID", _
+        "ManufacturerName" _
+    ) Then
+
+        Response = acDataErrAdded
+
+    Else
+
+        Me!cboManufacturerID.Undo
+
+    End If
+
+End Sub
+
+
+Private Sub cboManufacturerID_DblClick(Cancel As Integer)
+
+    Cancel = True
+
+    EditComboEntry _
+        Me!cboManufacturerID, _
+        "F_ManufacturerSetup", _
+        "ManufacturerID"
+
+End Sub
+
+
+'=============================================================
+' PART-NUMBER TYPE
+'=============================================================
+
+Private Sub cboPartNumberTypeID_NotInList( _
+    NewData As String, _
+    Response As Integer _
+)
+
+    Response = acDataErrContinue
+
+    If HandleComboNotInList( _
+        Me!cboPartNumberTypeID, _
+        NewData, _
+        "F_PartNumberTypeSetup", _
+        "T_PartNumberTypes", _
+        "PartNumberTypeID", _
+        "PartNumberTypeName" _
+    ) Then
+
+        Response = acDataErrAdded
+
+    Else
+
+        Me!cboPartNumberTypeID.Undo
+
+    End If
+
+End Sub
+
+
+Private Sub cboPartNumberTypeID_DblClick(Cancel As Integer)
+
+    Cancel = True
+
+    EditComboEntry _
+        Me!cboPartNumberTypeID, _
+        "F_PartNumberTypeSetup", _
+        "PartNumberTypeID"
+
+End Sub
+
+
+'=============================================================
+' SUPPLIER
+'=============================================================
+
+Private Sub cboSupplierID_NotInList( _
+    NewData As String, _
+    Response As Integer _
+)
+
+    Response = acDataErrContinue
+
+    If HandleComboNotInList( _
+        Me!cboSupplierID, _
+        NewData, _
+        "F_SupplierSetup", _
+        "T_Suppliers", _
+        "SupplierID", _
+        "SupplierCode", _
+        "CompanyName" _
+    ) Then
+
+        Response = acDataErrAdded
+
+    Else
+
+        Me!cboSupplierID.Undo
+
+    End If
+
+End Sub
+
+
+Private Sub cboSupplierID_DblClick(Cancel As Integer)
+
+    Cancel = True
+
+    EditComboEntry _
+        Me!cboSupplierID, _
+        "F_SupplierSetup", _
+        "SupplierID"
+
+End Sub

@@ -1,0 +1,18 @@
+﻿dbMemo "SQL" ="SELECT W.WarehouseID, W.WarehouseCode, W.WarehouseName, W.Address, W.ContactPers"
+    "on, (SELECT Count(*) FROM T_Locations AS L WHERE L.WarehouseID = W.WarehouseID) "
+    "AS LocationCount, UX_WarehouseLocationNames(W.WarehouseID) AS LocationName\015\012"
+    "FROM T_Warehouses AS W\015\012ORDER BY W.WarehouseName, W.WarehouseCode;\015\012"
+dbMemo "Connect" =""
+dbBoolean "ReturnsRecords" ="-1"
+dbInteger "ODBCTimeout" ="60"
+dbBoolean "OrderByOn" ="0"
+dbByte "Orientation" ="0"
+dbByte "DefaultView" ="2"
+dbBinary "GUID" = Begin
+    0xf0b560abbacfa643be4af0813a0a07ac
+End
+dbBoolean "FilterOnLoad" ="0"
+dbBoolean "OrderByOnLoad" ="-1"
+dbByte "PublishToWeb" ="1"
+Begin
+End

@@ -1,0 +1,1495 @@
+﻿Version =21
+VersionRequired =20
+PublishOption =1
+Checksum =1090165179
+Begin Form
+    RecordSelectors = NotDefault
+    DividingLines = NotDefault
+    AllowDesignChanges = NotDefault
+    DefaultView =0
+    TabularFamily =0
+    PictureSizeMode =1
+    DatasheetGridlinesBehavior =3
+    PictureType =1
+    GridX =24
+    GridY =24
+    Width =22500
+    DatasheetFontHeight =11
+    ItemSuffix =8
+    Right =15090
+    Bottom =4695
+    DatasheetGridlinesColor =15263976
+    RecSrcDt = Begin
+        0x640549835b8de640
+    End
+    GUID = Begin
+        0x970d0c34e6f7354abdb4970b6e474661
+    End
+    Caption ="InventoryList"
+    DatasheetFontName ="Aptos"
+    PrtMip = Begin
+        0x6801000068010000680100006801000000000000201c0000e010000001000000 ,
+        0x010000006801000000000000a10700000100000001000000
+    End
+    PrtDevMode = Begin
+        0x0000000000000000308490d58b0200000000000000000000e70a7e35f77f0000 ,
+        0x010403069c004003032d000001000100ea0a6f08640001000f00580202000100 ,
+        0x5802030001004c657474657200000000030000000000c8420000c842e8e8e800 ,
+        0x808a82d58b020000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000ffffffff4749533400000000000000000000000044494e55 ,
+        0x2200c80024031c00ac13d8c00000000000000000000000000000000000000000 ,
+        0x0000000000000000050000000000070000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000100000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000c8000000534d544a ,
+        0x000000001000b8007b00330045004500330039003100310034002d0033003000 ,
+        0x420034002d0034003500610034002d0041003100300039002d00310039004400 ,
+        0x3400410034003000460043004300320032007d000000524553444c4c00556e69 ,
+        0x726573444c4c00506170657253697a65004c4554544552004f7269656e746174 ,
+        0x696f6e00504f525452414954005265736f6c7574696f6e004450493630300043 ,
+        0x6f6c6f724d6f6465003234627070000000000000000000000000000000000000 ,
+        0x1c0000005634444d0100000000000000000000000000000000000000
+    End
+    PrtDevNames = Begin
+        0x08002c003f000100000000000000000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000000000000000006e ,
+        0x756c3a0000000000000000000000000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000
+    End
+    OnClick ="=UX_ButtonOut()"
+    OnLoad ="[Event Procedure]"
+    FilterOnLoad =0
+    ShowPageMargins =0
+    DisplayOnSharePointSite =1
+    DatasheetAlternateBackColor =15921906
+    PictureSizeMode =1
+    DatasheetGridlinesColor12 =0
+    FitToScreen =1
+    DatasheetBackThemeColorIndex =1
+    BorderThemeColorIndex =3
+    ThemeFontIndex =1
+    ForeThemeColorIndex =0
+    AlternateBackThemeColorIndex =1
+    AlternateBackShade =95.0
+    PrtDevModeW = Begin
+        0x000037c78b02000019000000f77f0000004041d08b0200001900000000000000 ,
+        0x504441d08b0200005fed3db5f97f0000000008c48b020000796d2ff7f1000000 ,
+        0x01040306dc004003032d000001000100ea0a6f08640001000f00580202000100 ,
+        0x5802030001004c0065007400740065007200000000000000104041d08b020000 ,
+        0x00000000000000000000000000000000004041d08b0200005d000000f1000000 ,
+        0x1900000000000000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000ffffffff4749533400000000000000000000000044494e55 ,
+        0x2200c80024031c00ac13d8c00000000000000000000000000000000000000000 ,
+        0x0000000000000000050000000000070000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000100000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000c8000000534d544a ,
+        0x000000001000b8007b00330045004500330039003100310034002d0033003000 ,
+        0x420034002d0034003500610034002d0041003100300039002d00310039004400 ,
+        0x3400410034003000460043004300320032007d000000524553444c4c00556e69 ,
+        0x726573444c4c00506170657253697a65004c4554544552004f7269656e746174 ,
+        0x696f6e00504f525452414954005265736f6c7574696f6e004450493630300043 ,
+        0x6f6c6f724d6f6465003234627070000000000000000000000000000000000000 ,
+        0x1c0000005634444d0100000000000000000000000000000000000000
+    End
+    PrtDevNamesW = Begin
+        0x040028003b000100000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000006e0075006c003a000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000
+    End
+    NoSaveCTIWhenDisabled =1
+    Begin
+        Begin Label
+            BackStyle =0
+            TextFontFamily =0
+            FontSize =11
+            BorderColor =8355711
+            ForeColor =6710886
+            FontName ="Aptos"
+            GridlineColor =10921638
+            ThemeFontIndex =1
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =0
+            BorderTint =50.0
+            ForeThemeColorIndex =0
+            ForeTint =60.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin Rectangle
+            SpecialEffect =3
+            BackStyle =0
+            BorderLineStyle =0
+            BorderColor =10921638
+            GridlineColor =10921638
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin CommandButton
+            TextFontFamily =0
+            FontSize =11
+            FontWeight =400
+            ForeColor =4210752
+            FontName ="Aptos"
+            GridlineColor =10921638
+            ForeThemeColorIndex =0
+            ForeTint =75.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+            UseTheme =1
+            Shape =1
+            Gradient =12
+            BackColor =14790982
+            BackThemeColorIndex =4
+            BackTint =60.0
+            BorderLineStyle =0
+            BorderColor =14790982
+            BorderThemeColorIndex =4
+            BorderTint =60.0
+            ThemeFontIndex =1
+            HoverColor =15453059
+            HoverThemeColorIndex =4
+            HoverTint =40.0
+            PressedColor =6440976
+            PressedThemeColorIndex =4
+            PressedShade =75.0
+            HoverForeColor =4210752
+            HoverForeThemeColorIndex =0
+            HoverForeTint =75.0
+            PressedForeColor =4210752
+            PressedForeThemeColorIndex =0
+            PressedForeTint =75.0
+        End
+        Begin TextBox
+            AddColon = NotDefault
+            FELineBreak = NotDefault
+            TextFontFamily =0
+            BorderLineStyle =0
+            LabelX =-1800
+            FontSize =11
+            BorderColor =10921638
+            ForeColor =4210752
+            FontName ="Aptos"
+            AsianLineBreak =1
+            GridlineColor =10921638
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            ThemeFontIndex =1
+            ForeThemeColorIndex =0
+            ForeTint =75.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin ComboBox
+            AddColon = NotDefault
+            TextFontFamily =0
+            BorderLineStyle =0
+            LabelX =-1800
+            FontSize =11
+            BorderColor =10921638
+            ForeColor =2102279
+            FontName ="Aptos"
+            GridlineColor =10921638
+            AllowValueListEdits =1
+            InheritValueList =1
+            ThemeFontIndex =1
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            ForeThemeColorIndex =2
+            ForeShade =50.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin Subform
+            BorderLineStyle =0
+            BorderColor =10921638
+            GridlineColor =10921638
+            BorderThemeColorIndex =1
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+            BorderShade =65.0
+            ShowPageHeaderAndPageFooter =1
+        End
+        Begin FormHeader
+            Height =1560
+            BackColor =14482166
+            Name ="FormHeader"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x8cac3bd0459eaa49840463da8f26b0da
+            End
+            AlternateBackShade =95.0
+            Begin
+                Begin Rectangle
+                    BackStyle =1
+                    OverlapFlags =93
+                    Left =60
+                    Top =360
+                    Width =21600
+                    Height =960
+                    BorderColor =1513239
+                    Name ="Box42"
+                    GUID = Begin
+                        0x1b1f55fe5c87da438170af7472598d4e
+                    End
+                    LayoutCachedLeft =60
+                    LayoutCachedTop =360
+                    LayoutCachedWidth =21660
+                    LayoutCachedHeight =1320
+                    BorderThemeColorIndex =3
+                    BorderShade =10.0
+                End
+                Begin TextBox
+                    OverlapFlags =215
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =1200
+                    Top =720
+                    Width =4082
+                    Height =360
+                    FontSize =12
+                    FontWeight =700
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtSearch"
+                    AfterUpdate ="[Event Procedure]"
+                    FontName ="Segoe UI"
+                    OnKeyDown ="[Event Procedure]"
+                    GUID = Begin
+                        0xba8739131e194c4ea3dbc8222cec3e48
+                    End
+
+                    LayoutCachedLeft =1200
+                    LayoutCachedTop =720
+                    LayoutCachedWidth =5282
+                    LayoutCachedHeight =1080
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =215
+                            TextAlign =3
+                            TextFontFamily =34
+                            Left =180
+                            Top =720
+                            Width =990
+                            Height =360
+                            FontSize =12
+                            FontWeight =700
+                            BackColor =14524133
+                            BorderColor =4855376
+                            ForeColor =4855376
+                            Name ="Label580"
+                            Caption ="Search: "
+                            FontName ="Segoe UI Semibold"
+                            GUID = Begin
+                                0xaadc8ce92efe3142bf306dd435236435
+                            End
+                            LayoutCachedLeft =180
+                            LayoutCachedTop =720
+                            LayoutCachedWidth =1170
+                            LayoutCachedHeight =1080
+                            ThemeFontIndex =-1
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin CommandButton
+                    FontUnderline = NotDefault
+                    OverlapFlags =215
+                    TextFontFamily =34
+                    Left =13980
+                    Top =480
+                    Width =840
+                    Height =714
+                    FontWeight =700
+                    TabIndex =1
+                    ForeColor =16777215
+                    Name ="btnClearFilter"
+                    Caption ="Filter"
+                    OnClick ="[Event Procedure]"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"btnClearFilter\")"
+                    ControlTipText ="Filter"
+                    Picture ="round-button-for-web-icon-delete-filter-button-banner-round-badge-interface-for-"
+                        "application-illustration-on-white-background-vector.jpg"
+                    GUID = Begin
+                        0x550f484a23d27444b1900408b1dcb6da
+                    End
+                    LeftPadding =36
+                    TopPadding =36
+                    RightPadding =108
+                    BottomPadding =108
+                    ImageData = Begin
+                        0xffd8ffe000104a46494600010101006000600000ffe100224578696600004d4d ,
+                        0x002a00000008000101120003000000010001000000000000ffdb004300020101 ,
+                        0x0201010202020202020202030503030303030604040305070607070706070708 ,
+                        0x090b0908080a0807070a0d0a0a0b0c0c0c0c07090e0f0d0c0e0b0c0c0cffdb00 ,
+                        0x4301020202030303060303060c0807080c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c ,
+                        0x0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c ,
+                        0x0c0cffc0001108003f003b03012200021101031101ffc4001f00000105010101 ,
+                        0x01010100000000000000000102030405060708090a0bffc400b5100002010303 ,
+                        0x020403050504040000017d010203000411051221314106135161072271143281 ,
+                        0x91a1082342b1c11552d1f02433627282090a161718191a25262728292a343536 ,
+                        0x3738393a434445464748494a535455565758595a636465666768696a73747576 ,
+                        0x7778797a838485868788898a92939495969798999aa2a3a4a5a6a7a8a9aab2b3 ,
+                        0xb4b5b6b7b8b9bac2c3c4c5c6c7c8c9cad2d3d4d5d6d7d8d9dae1e2e3e4e5e6e7 ,
+                        0xe8e9eaf1f2f3f4f5f6f7f8f9faffc4001f010003010101010101010101000000 ,
+                        0x0000000102030405060708090a0bffc400b51100020102040403040705040400 ,
+                        0x010277000102031104052131061241510761711322328108144291a1b1c10923 ,
+                        0x3352f0156272d10a162434e125f11718191a262728292a35363738393a434445 ,
+                        0x464748494a535455565758595a636465666768696a737475767778797a828384 ,
+                        0x85868788898a92939495969798999aa2a3a4a5a6a7a8a9aab2b3b4b5b6b7b8b9 ,
+                        0xbac2c3c4c5c6c7c8c9cad2d3d4d5d6d7d8d9dae2e3e4e5e6e7e8e9eaf2f3f4f5 ,
+                        0xf6f7f8f9faffda000c03010002110311003f00fdfca28af3ff008b1f1c60f044 ,
+                        0xcda769e91de6ab8f9f71fdddb67a6ec756ff0067f3f700efddc46a5988503a92 ,
+                        0x7005551afd81936fdb6d377a79cb9fe75f37ea3e21d5bc6173e6ea57d7173939 ,
+                        0x085b6c6bf451c0fcaaee99a428c7c83f2a00fa351c3a82a4107a10720d2d78ce ,
+                        0x8125ce9a41b79e7831fdc7207e55d9e8bf1165b128baa00606217ed2a31e59ed ,
+                        0xbc7a7b8a00ece8a447122065219586411d0d2d00737f15bc6a7c09e0db8bc8f0 ,
+                        0x6ee4221b60790646e87e8064fe15f3c5858c9797265959e596672ceec72cec4e ,
+                        0x4926bd4ff6919daef53d22d39f2e3492623d492147e80fe75c5e99a6e08e0d00 ,
+                        0x7cefe1cfda6fe2478be7d62e3c3fe00f044da469fad6a3a45bcba8f8b2e6dee6 ,
+                        0xe3ec7772dab48d1a58baa6e6898801db008e735bd6dfb43fc61b7ff9a73f0d0f ,
+                        0xfdceb79ffcaeaadf18fe086b3fb3febfab78efc11a7dfeb9e12d52e24d47c59e ,
+                        0x14b44335d5a4ce774dab6989d59c9cbdc5a0ff005bcc91012ee4960bff008bbe ,
+                        0x16d37e180f1b49afe9ade126b45be8f558a4f3609e2720218f6825d9d8855450 ,
+                        0x5d9c840bb8e28037f41fdaf3e2168ff10bc17a67897e1f7832cb49f16788ad7c ,
+                        0x3cf77a678aee6eee2cdee049b251149651aba829823783cf15f55db69cb2c651 ,
+                        0xd43a382195864303d41af9aff663fd9a35bf893e31d27e267c49d3eef465d264 ,
+                        0xfb5f83bc1b39c3e8cc54a8d4b5100e1b506466090e4a5aab91f34c5997eaab4b ,
+                        0x4c638a00a1f0f7589344d6ee7c3f72ece90a89acdd8e4b44d9c0ff00809047e0 ,
+                        0x2bb5af38f1fb7f6278c3c337c9f2b492cb6ac7d5480c3f507f3af45864f36256 ,
+                        0xfef0cd0079cfc73d20cdaae9b738ca98de23f5041fea6b99d3b4ee9c1af50f88 ,
+                        0xba37f6bf875d954b496ade6803a903ae3f0fe55c569d661d159790790474c500 ,
+                        0x2e9d66636461b9594e411c107d6be1af877e1bd393f6ecd2b4a5b3b25d3ed7e3 ,
+                        0xcf886e20b4f2d7c88655f0fcf70b22c7f755967669410389097186e6befcb2b2 ,
+                        0xc638ae7f47fd987e1d69bf16e4f1fc1e03f09c3e399e47964d7d34c8975291de ,
+                        0x3f29d8ce06fdcd1fc84e72578e9401ca784bf6daf0278af51d0f4ab26d725f16 ,
+                        0xeb5acc9a13f85cd811ade93710906e5ef20ddfb882146491a766f2d92488c6d2 ,
+                        0x19630dee36f6d8af9f3c09fb054de0df8bd6bf13e2f1cea571f152fef02f89f5 ,
+                        0xa7b35167e22d2b771a4fd8f7ed82de15c7d9d918c914819d9a5f36657fa3269a ,
+                        0x2d3ed659e6912182152f248e70a8a064927d00a00e03e2fcc2e3c61e16b04399 ,
+                        0x16496edc0eca0041f9927f2af46b21b6d2307b28af2af03492fc4bf88977e217 ,
+                        0x475b33882c95860ac2a4e0e3b1624b7e35eb2a36a81e9400bd6b85f137876e3c ,
+                        0x2976f776703dde9b236e9208ff00d65b9ee53d47fb3f9577541008c1e41a00e2 ,
+                        0xbc39aee9faf0c5addc3248bf7a3276c887d0a9e47e55d15bd930fe16fcab3bc4 ,
+                        0xdf0af47f1436f9ed6312f6751861f8d73d3fecff006cff002adf6a023fee7daa ,
+                        0x4c7e59a00e97c49e3ad1bc15016d4750b781fb441b7cce7d150658fe55e7bace ,
+                        0xafabfc6fbb5b48ede6d37c3aae18c4ff00ebaf3078326380bdf68fc7d2ba8d03 ,
+                        0xe03e8fa2cde608119fbb11927f1aec74fd220d3230b122ae3da8029f853c350f ,
+                        0x86f4d486350a5462b568a2803fffd9
+                    End
+
+                    CursorOnHover =1
+                    LayoutCachedLeft =13980
+                    LayoutCachedTop =480
+                    LayoutCachedWidth =14820
+                    LayoutCachedHeight =1194
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    OldBorderStyle =0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =7
+                    WebImagePaddingBottom =7
+                    Overlaps =1
+                End
+                Begin CommandButton
+                    OverlapFlags =215
+                    TextFontFamily =34
+                    Left =18720
+                    Top =720
+                    Width =1320
+                    Height =300
+                    FontWeight =700
+                    TabIndex =2
+                    ForeColor =16777215
+                    Name ="EXIT"
+                    Caption ="EXIT"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"EXIT\")"
+                    GUID = Begin
+                        0xa7ee388231d12840bccd3a26ee2a792d
+                    End
+                    OnClickEmMacro = Begin
+                        Version =196611
+                        ColumnsShown =8
+                        Begin
+                            Action ="Close"
+                            Argument ="-1"
+                            Argument =""
+                            Argument ="0"
+                        End
+                        Begin
+                            Comment ="_AXL:<?xml version=\"1.0\" encoding=\"UTF-16\" standalone=\"no\"?>\015\012<UserI"
+                                "nterfaceMacro For=\"EXIT\" xmlns=\"http://schemas.microsoft.com/office/accessser"
+                                "vices/2009/11/application\"><Statements><Action Name=\"CloseWindow\"/></Statemen"
+                                "ts></UserInterfaceMacro>"
+                        End
+                    End
+
+                    CursorOnHover =1
+                    LayoutCachedLeft =18720
+                    LayoutCachedTop =720
+                    LayoutCachedWidth =20040
+                    LayoutCachedHeight =1020
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    HoverForeTint =100.0
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    PressedForeTint =100.0
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                    Overlaps =1
+                End
+                Begin ComboBox
+                    LimitToList = NotDefault
+                    OverlapFlags =215
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    ColumnCount =2
+                    ListWidth =1440
+                    Left =5460
+                    Top =780
+                    Width =1920
+                    Height =300
+                    FontWeight =700
+                    TabIndex =3
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    ColumnInfo ="\"\";\"\";\"\";\"\";\"10\";\"200\""
+                    GUID = Begin
+                        0x7442cbb99d5e524ea1d59b2f2f361eeb
+                    End
+                    Name ="cboCategoryID"
+                    RowSourceType ="Table/Query"
+                    RowSource ="SELECT\015\012    CategoryID,\015\012    CategoryName\015\012FROM\015\012    T_C"
+                        "ategories\015\012ORDER BY\015\012    CategoryName;"
+                    ColumnWidths ="0;3402"
+                    AfterUpdate ="[Event Procedure]"
+                    FontName ="Segoe UI"
+                    BaseInfo ="\"SELECT\015\012    CategoryID,\015\012    CategoryName\015\012FROM\015\012    T"
+                        "_Categories\015\012ORDER BY\015\012    CategoryName;\";\"T_Categories\";\"\";\"C"
+                        "ategoryID\";\"CategoryName\";\"PrimaryKey\""
+
+                    LayoutCachedLeft =5460
+                    LayoutCachedTop =780
+                    LayoutCachedWidth =7380
+                    LayoutCachedHeight =1080
+                    ThemeFontIndex =-1
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ForeThemeColorIndex =-1
+                    ForeShade =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            BackStyle =1
+                            OverlapFlags =223
+                            TextAlign =2
+                            Left =5454
+                            Top =540
+                            Width =1920
+                            Height =300
+                            FontWeight =700
+                            ForeColor =4855376
+                            Name ="Select Supplier_Label"
+                            Caption ="Category"
+                            EventProcPrefix ="Select_Supplier_Label"
+                            GUID = Begin
+                                0xe05db67968247348ae40275a2cfafadc
+                            End
+                            LayoutCachedLeft =5454
+                            LayoutCachedTop =540
+                            LayoutCachedWidth =7374
+                            LayoutCachedHeight =840
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin ComboBox
+                    LimitToList = NotDefault
+                    OverlapFlags =215
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    ColumnCount =2
+                    Left =7680
+                    Top =780
+                    Width =1680
+                    Height =300
+                    FontWeight =700
+                    TabIndex =4
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    ColumnInfo ="\"\";\"\";\"\";\"\";\"10\";\"240\""
+                    GUID = Begin
+                        0xa6c7eb1980b40a4c80421feb7056b51c
+                    End
+                    Name ="cboWarehouseID"
+                    RowSourceType ="Table/Query"
+                    RowSource ="SELECT\015\012    WarehouseID,\015\012    WarehouseName\015\012FROM\015\012    T"
+                        "_Warehouses\015\012ORDER BY\015\012    WarehouseName;"
+                    ColumnWidths ="0;7200"
+                    AfterUpdate ="[Event Procedure]"
+                    FontName ="Segoe UI"
+                    BaseInfo ="\"SELECT\015\012    WarehouseID,\015\012    WarehouseName\015\012FROM\015\012   "
+                        " T_Warehouses\015\012ORDER BY\015\012    WarehouseName;\";\"T_Warehouses\";\"\";"
+                        "\"WarehouseID\";\"WarehouseName\";\"PrimaryKey\""
+
+                    LayoutCachedLeft =7680
+                    LayoutCachedTop =780
+                    LayoutCachedWidth =9360
+                    LayoutCachedHeight =1080
+                    ThemeFontIndex =-1
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ForeThemeColorIndex =-1
+                    ForeShade =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            BackStyle =1
+                            OverlapFlags =223
+                            TextAlign =2
+                            Left =7674
+                            Top =540
+                            Width =1680
+                            Height =300
+                            FontWeight =700
+                            ForeColor =4855376
+                            Name ="Label8"
+                            Caption ="Warehouse"
+                            GUID = Begin
+                                0xc6bfd74541574f4d9f7e8adae427da52
+                            End
+                            LayoutCachedLeft =7674
+                            LayoutCachedTop =540
+                            LayoutCachedWidth =9354
+                            LayoutCachedHeight =840
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin ComboBox
+                    LimitToList = NotDefault
+                    RowSourceTypeInt =1
+                    OverlapFlags =215
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    ColumnCount =2
+                    ListWidth =1440
+                    Left =9660
+                    Top =780
+                    Width =1920
+                    Height =300
+                    FontWeight =700
+                    TabIndex =5
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    GUID = Begin
+                        0x203557fcddd0fc46a70e8bacb6fc5ca4
+                    End
+                    Name ="cboStockType"
+                    RowSourceType ="Value List"
+                    RowSource ="\"Bulk\";\"Serialized\""
+                    ColumnWidths ="0;3402"
+                    AfterUpdate ="[Event Procedure]"
+                    FontName ="Segoe UI"
+
+                    LayoutCachedLeft =9660
+                    LayoutCachedTop =780
+                    LayoutCachedWidth =11580
+                    LayoutCachedHeight =1080
+                    ThemeFontIndex =-1
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ForeThemeColorIndex =-1
+                    ForeShade =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            BackStyle =1
+                            OverlapFlags =223
+                            TextAlign =2
+                            Left =10020
+                            Top =540
+                            Width =1188
+                            Height =300
+                            FontWeight =700
+                            ForeColor =4855376
+                            Name ="Label3"
+                            Caption ="Stock Type"
+                            GUID = Begin
+                                0x78c0f0308357e84db473f95aba21befb
+                            End
+                            LayoutCachedLeft =10020
+                            LayoutCachedTop =540
+                            LayoutCachedWidth =11208
+                            LayoutCachedHeight =840
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin ComboBox
+                    LimitToList = NotDefault
+                    RowSourceTypeInt =1
+                    OverlapFlags =215
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    ColumnCount =2
+                    Left =11880
+                    Top =780
+                    Width =1680
+                    Height =300
+                    FontWeight =700
+                    TabIndex =6
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    GUID = Begin
+                        0xf8a277e15a47ad4aa1bdcbe2f9656f2f
+                    End
+                    Name ="cboStockStatus"
+                    RowSourceType ="Value List"
+                    RowSource ="\"In Stock\";\"Out of Stock\";\"Issued\";\"Sold\";\"Returned to Supplier\";\"Wri"
+                        "tten Off\";\"Removed from Stock\""
+                    ColumnWidths ="0;2880"
+                    AfterUpdate ="[Event Procedure]"
+                    FontName ="Segoe UI"
+
+                    LayoutCachedLeft =11880
+                    LayoutCachedTop =780
+                    LayoutCachedWidth =13560
+                    LayoutCachedHeight =1080
+                    ThemeFontIndex =-1
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ForeThemeColorIndex =-1
+                    ForeShade =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            BackStyle =1
+                            OverlapFlags =223
+                            TextAlign =2
+                            Left =11880
+                            Top =540
+                            Width =1680
+                            Height =300
+                            FontWeight =700
+                            ForeColor =4855376
+                            Name ="Label5"
+                            Caption ="Stock Status"
+                            GUID = Begin
+                                0x6e0ea4f66ec1ed4ebed04bb6d44dcd1d
+                            End
+                            LayoutCachedLeft =11880
+                            LayoutCachedTop =540
+                            LayoutCachedWidth =13560
+                            LayoutCachedHeight =840
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =223
+                    TextFontFamily =34
+                    Left =14880
+                    Top =720
+                    Width =1680
+                    Height =300
+                    FontWeight =700
+                    TabIndex =7
+                    ForeColor =16777215
+                    Name ="cmdOpenStockIn"
+                    Caption ="RECEIVE STOCK"
+                    OnClick ="[Event Procedure]"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdOpenStockIn\")"
+                    GUID = Begin
+                        0x7a5ba6a388d2864681082da8f27441b5
+                    End
+                    LeftPadding =45
+                    TopPadding =45
+                    RightPadding =150
+                    BottomPadding =150
+
+                    CursorOnHover =1
+                    LayoutCachedLeft =14880
+                    LayoutCachedTop =720
+                    LayoutCachedWidth =16560
+                    LayoutCachedHeight =1020
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    Shadow =1
+                    Overlaps =1
+                End
+                Begin CommandButton
+                    OverlapFlags =215
+                    TextFontFamily =34
+                    Left =16680
+                    Top =720
+                    Width =1680
+                    Height =300
+                    FontWeight =700
+                    TabIndex =8
+                    ForeColor =16777215
+                    Name ="cmdOpenStockOut"
+                    Caption ="ISSUE STOCK"
+                    OnClick ="[Event Procedure]"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdOpenStockOut\")"
+                    GUID = Begin
+                        0xa32513cf0d52504780714293e5764792
+                    End
+                    LeftPadding =45
+                    TopPadding =45
+                    RightPadding =150
+                    BottomPadding =150
+
+                    CursorOnHover =1
+                    LayoutCachedLeft =16680
+                    LayoutCachedTop =720
+                    LayoutCachedWidth =18360
+                    LayoutCachedHeight =1020
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    Shadow =1
+                    Overlaps =1
+                End
+                Begin CommandButton
+                    OverlapFlags =215
+                    TextFontFamily =34
+                    Left =200
+                    Top =60
+                    Width =1400
+                    Height =340
+                    FontWeight =700
+                    TabIndex =9
+                    ForeColor =16777215
+                    Name ="cmdUXBack"
+                    Caption ="Back"
+                    OnClick ="=UX_GoBack()"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdUXBack\")"
+                    GUID = Begin
+                        0x28a31a4d088b6c46be4c9c35e14ed0c3
+                    End
+
+                    LayoutCachedLeft =200
+                    LayoutCachedTop =60
+                    LayoutCachedWidth =1600
+                    LayoutCachedHeight =400
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                    Overlaps =1
+                End
+            End
+        End
+        Begin Section
+            CanGrow = NotDefault
+            Height =8520
+            BackColor =14482166
+            Name ="Detail"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x5975dac4b3272b4a865f3b30e5791d4d
+            End
+            AutoHeight =1
+            AlternateBackColor =14482166
+            AlternateBackShade =95.0
+            Begin
+                Begin Subform
+                    OverlapFlags =215
+                    Left =60
+                    Width =22440
+                    Height =8520
+                    Name ="SF_InventoryList"
+                    SourceObject ="Form.SF_InventoryList"
+                    GUID = Begin
+                        0xf864a96d7f28254585a94b0d9c1bde3a
+                    End
+
+                    LayoutCachedLeft =60
+                    LayoutCachedWidth =22500
+                    LayoutCachedHeight =8520
+                    Begin
+                        Begin Label
+                            OverlapFlags =93
+                            Left =60
+                            Width =1728
+                            Height =300
+                            Name ="SF_InventoryLists Label"
+                            Caption ="SF_InventoryLists"
+                            EventProcPrefix ="SF_InventoryLists_Label"
+                            GUID = Begin
+                                0xd3bd3fcca9d7894dac4525e321be93f7
+                            End
+                            LayoutCachedLeft =60
+                            LayoutCachedWidth =1788
+                            LayoutCachedHeight =300
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =360
+            BackColor =14482166
+            Name ="FormFooter"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0xd93a3c231879ff4084eb9f7e2d458796
+            End
+            AutoHeight =1
+            AlternateBackShade =95.0
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+'=============================================================
+' FORM: F_InventoryList
+'
+' PURPOSE:
+'   Read-only inventory search screen for:
+'       - Bulk stock
+'       - Serialized stock
+'       - Warehouse visibility
+'       - Shelf and bin visibility
+'       - Low-stock alerts
+'
+' QUERY:
+'   Q_InventoryListAll
+'
+' SUBFORM:
+'   SF_InventoryList
+'
+' IMPORTANT:
+'   The subform control name must be SF_InventoryList.
+'=============================================================
+
+Private Const INVENTORY_SUBFORM_CONTROL As String = "SF_InventoryList"
+
+
+
+
+'=============================================================
+' INITIALIZE FORM
+'=============================================================
+Private Sub Form_Load()
+
+    On Error GoTo Err_Handler
+
+    ResetFilters
+    RequeryInventoryList
+
+Exit_Handler:
+
+    Exit Sub
+
+Err_Handler:
+
+    MsgBox _
+        "The inventory list could not be initialized." & _
+        vbCrLf & vbCrLf & _
+        Err.Description, _
+        vbExclamation, _
+        "InventoryList"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' APPLY FILTER BUTTON
+'=============================================================
+Private Sub cmdApplyFilter_Click()
+
+    ApplyInventoryFilter
+
+End Sub
+
+
+'=============================================================
+' CLEAR FILTER BUTTON
+'=============================================================
+Private Sub cmdClearFilter_Click()
+
+    ResetFilters
+    ApplyInventoryFilter
+
+End Sub
+
+
+'=============================================================
+' REFRESH BUTTON
+'=============================================================
+Private Sub cmdRefresh_Click()
+
+    RequeryInventoryList
+
+End Sub
+
+
+'=============================================================
+' OPEN STOCK-IN FORM
+'=============================================================
+Private Sub cmdOpenStockIn_Click()
+
+    DoCmd.OpenForm _
+        "F_StockIn", _
+        acNormal
+
+End Sub
+
+
+'=============================================================
+' OPEN STOCK-OUT FORM
+'=============================================================
+Private Sub cmdOpenStockOut_Click()
+
+    DoCmd.OpenForm _
+        "F_StockOut", _
+        acNormal
+
+End Sub
+
+
+'=============================================================
+' CLOSE FORM
+'=============================================================
+Private Sub cmdClose_Click()
+
+    DoCmd.close _
+        acForm, _
+        Me.Name
+
+End Sub
+
+
+'=============================================================
+' APPLY FILTER IMMEDIATELY AFTER CATEGORY SELECTION
+'=============================================================
+Private Sub cboCategoryID_AfterUpdate()
+
+    ApplyInventoryFilter
+
+End Sub
+
+
+'=============================================================
+' APPLY FILTER IMMEDIATELY AFTER WAREHOUSE SELECTION
+'=============================================================
+Private Sub cboWarehouseID_AfterUpdate()
+
+    ApplyInventoryFilter
+
+End Sub
+
+
+'=============================================================
+' APPLY FILTER IMMEDIATELY AFTER STOCK-TYPE SELECTION
+'=============================================================
+Private Sub cboStockType_AfterUpdate()
+
+    ApplyInventoryFilter
+
+End Sub
+
+
+'=============================================================
+' APPLY FILTER IMMEDIATELY AFTER STATUS SELECTION
+'=============================================================
+Private Sub cboStockStatus_AfterUpdate()
+
+    ApplyInventoryFilter
+
+End Sub
+
+
+'=============================================================
+' APPLY SEARCH AFTER USER LEAVES SEARCH FIELD
+'=============================================================
+Private Sub txtSearch_AfterUpdate()
+
+    ApplyInventoryFilter
+
+End Sub
+
+
+'=============================================================
+' APPLY SEARCH WHEN ENTER IS PRESSED
+'=============================================================
+Private Sub txtSearch_KeyDown( _
+    KeyCode As Integer, _
+    Shift As Integer _
+)
+
+    If KeyCode = vbKeyReturn Then
+
+        ApplyInventoryFilter
+
+        'Prevent the Enter key from moving to another control.
+        KeyCode = 0
+
+    End If
+
+End Sub
+
+
+'=============================================================
+' BUILD AND APPLY SUBFORM FILTER
+'=============================================================
+Private Sub ApplyInventoryFilter()
+
+    On Error GoTo Err_Handler
+
+    Dim inventoryForm As Form
+    Dim filterText As String
+    Dim searchText As String
+    Dim safeSearchText As String
+
+    Set inventoryForm = _
+        Me.Controls(INVENTORY_SUBFORM_CONTROL).Form
+
+    filterText = vbNullString
+
+    '---------------------------------------------------------
+    ' Free-text search:
+    ' SKU, item, category, serial number, warehouse, shelf,
+    ' bin and storage area are searched together.
+    '---------------------------------------------------------
+    searchText = Trim$(Nz(Me.txtSearch, vbNullString))
+
+    If Len(searchText) > 0 Then
+
+        safeSearchText = EscapeLikeText(searchText)
+
+        AppendFilterCondition _
+            filterText, _
+            "(" & _
+                "Nz([InternalSKU], '') Like " & _
+                    SqlText("*" & safeSearchText & "*") & _
+                " OR Nz([ItemName], '') Like " & _
+                    SqlText("*" & safeSearchText & "*") & _
+                " OR Nz([CategoryName], '') Like " & _
+                    SqlText("*" & safeSearchText & "*") & _
+                " OR Nz([SerialNumber], '') Like " & _
+                    SqlText("*" & safeSearchText & "*") & _
+                " OR Nz([WarehouseName], '') Like " & _
+                    SqlText("*" & safeSearchText & "*") & _
+                " OR Nz([LocationName], '') Like " & _
+                    SqlText("*" & safeSearchText & "*") & _
+                " OR Nz([BinNumber], '') Like " & _
+                    SqlText("*" & safeSearchText & "*") & _
+                " OR Nz([ShelfNumber], '') Like " & _
+                    SqlText("*" & safeSearchText & "*") & _
+            ")"
+
+    End If
+
+    '---------------------------------------------------------
+    ' Category filter
+    '---------------------------------------------------------
+    If Not IsNull(Me.cboCategoryID) Then
+    
+        AppendFilterCondition _
+            filterText, _
+            "[CategoryName] = " & SqlText(CStr(Me.cboCategoryID.Column(1)))
+    
+    End If
+    '---------------------------------------------------------
+    ' Warehouse filter
+    '---------------------------------------------------------
+    If Not IsNull(Me.cboWarehouseID) Then
+    
+        AppendFilterCondition _
+            filterText, _
+            "[WarehouseName] = " & SqlText(CStr(Me.cboWarehouseID.Column(1)))
+    
+    End If
+
+    '---------------------------------------------------------
+    ' Stock-type filter
+    '---------------------------------------------------------
+    If Len(Trim$(Nz(Me.cboStockType, vbNullString))) > 0 Then
+
+        AppendFilterCondition _
+            filterText, _
+            "[StockType] = " & _
+                SqlText(CStr(Me.cboStockType))
+
+    End If
+
+    '---------------------------------------------------------
+    ' Stock-status filter
+    '---------------------------------------------------------
+    If Len(Trim$(Nz(Me.cboStockStatus, vbNullString))) > 0 Then
+
+        AppendFilterCondition _
+            filterText, _
+            "[StockStatus] = " & _
+                SqlText(CStr(Me.cboStockStatus))
+
+    End If
+
+    '---------------------------------------------------------
+    ' Apply the completed filter.
+    '---------------------------------------------------------
+    If Len(filterText) = 0 Then
+
+        inventoryForm.FilterOn = False
+        inventoryForm.Filter = vbNullString
+
+    Else
+
+        inventoryForm.Filter = filterText
+        inventoryForm.FilterOn = True
+
+    End If
+
+Exit_Handler:
+
+    Set inventoryForm = Nothing
+
+    Exit Sub
+
+Err_Handler:
+
+    MsgBox _
+        "The inventory filter could not be applied." & _
+        vbCrLf & vbCrLf & _
+        Err.Description, _
+        vbExclamation, _
+        "Inventory Filter"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' CLEAR ALL FILTER CONTROLS
+'=============================================================
+Private Sub ResetFilters()
+
+    Me.txtSearch = Null
+    Me.cboCategoryID = Null
+    Me.cboWarehouseID = Null
+    Me.cboStockType = Null
+    Me.cboStockStatus = Null
+
+End Sub
+
+
+'=============================================================
+' REFRESH QUERY RESULTS AND REAPPLY FILTER
+'=============================================================
+Private Sub RequeryInventoryList()
+
+    On Error GoTo Err_Handler
+
+    Dim inventoryForm As Form
+
+    Set inventoryForm = _
+        Me.Controls(INVENTORY_SUBFORM_CONTROL).Form
+
+    inventoryForm.Requery
+
+    ApplyInventoryFilter
+
+Exit_Handler:
+
+    Set inventoryForm = Nothing
+
+    Exit Sub
+
+Err_Handler:
+
+    MsgBox _
+        "The inventory list could not be refreshed." & _
+        vbCrLf & vbCrLf & _
+        Err.Description, _
+        vbExclamation, _
+        "Inventory Refresh"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' ADD A CONDITION TO AN EXISTING FILTER
+'=============================================================
+Private Sub AppendFilterCondition( _
+    ByRef existingFilter As String, _
+    ByVal newCondition As String _
+)
+
+    If Len(existingFilter) > 0 Then
+        existingFilter = _
+            existingFilter & _
+            " AND "
+    End If
+
+    existingFilter = _
+        existingFilter & _
+        newCondition
+
+End Sub
+
+
+'=============================================================
+' ESCAPE SPECIAL CHARACTERS USED BY ACCESS LIKE
+'
+' Search input is treated as literal text.
+'=============================================================
+Private Function EscapeLikeText( _
+    ByVal value As String _
+) As String
+
+    Dim result As String
+
+    result = value
+
+    result = Replace(result, "[", "[[]")
+    result = Replace(result, "*", "[*]")
+    result = Replace(result, "?", "[?]")
+    result = Replace(result, "#", "[#]")
+
+    EscapeLikeText = result
+
+End Function
+
+
+'=============================================================
+' ESCAPE TEXT FOR ACCESS SQL AND FILTER EXPRESSIONS
+'=============================================================
+Private Function SqlText( _
+    ByVal value As String _
+) As String
+
+    SqlText = _
+        "'" & _
+        Replace(value, "'", "''") & _
+        "'"
+
+End Function
+
+Private Sub btnClearFilter_Click()
+
+    On Error GoTo Err_Handler
+
+    Me.txtSearch = Null
+    Me.cboCategoryID = Null
+    Me.cboWarehouseID = Null
+    Me.cboStockType = Null
+    Me.cboStockStatus = Null
+
+    With Me.Controls(INVENTORY_SUBFORM_CONTROL).Form
+        .FilterOn = False
+        .Filter = vbNullString
+        .Requery
+    End With
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The inventory filters could not be cleared." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Clear Inventory Filter"
+
+    Resume Exit_Handler
+
+End Sub

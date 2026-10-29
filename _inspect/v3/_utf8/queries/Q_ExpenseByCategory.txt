@@ -1,0 +1,11 @@
+﻿dbMemo "SQL" ="SELECT Category, Count(*) AS Items, Sum(Nz(Amount,0)) AS TotalAmount, String(CIn"
+    "t(1+(Sum(Nz(Amount,0))/IIf((SELECT Max(S) FROM (SELECT Sum(Nz(Amount,0)) AS S FR"
+    "OM T_Expenses GROUP BY Category) AS X)=0,1,(SELECT Max(S) FROM (SELECT Sum(Nz(Am"
+    "ount,0)) AS S FROM T_Expenses GROUP BY Category) AS Y)))*28), ChrW(9608)) AS Gra"
+    "ph\015\012FROM T_Expenses\015\012GROUP BY Category\015\012ORDER BY Category;\015"
+    "\012"
+dbMemo "Connect" =""
+dbBoolean "ReturnsRecords" ="-1"
+dbInteger "ODBCTimeout" ="60"
+Begin
+End

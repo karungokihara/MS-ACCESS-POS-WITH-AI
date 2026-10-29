@@ -1,0 +1,158 @@
+﻿dbMemo "SQL" ="SELECT P.CustomerPOID, P.CustomerID, C.CustomerName, P.PONumber, P.PODate, P.POR"
+    "evisionDate, P.POType, P.POStatus, P.GoodsConfirmed, P.GoodsConfirmedOn, P.Payme"
+    "ntTerms, P.ShipVia, P.ShipToName, P.ShipToContactName, P.ShipToPhone, P.ShipToEm"
+    "ail, P.AuthorizedBy, P.AuthorizedByEmail, Nz(L.LineCount,0) AS LineCount, Nz(L.T"
+    "otalQty,0) AS TotalQty, Nz(L.LinesSubtotal,0) AS LinesSubtotal, P.SubtotalAmount"
+    ", P.MiscChargeAmount, P.TaxAmount, P.TotalAmount, SO.SalesOrderID, SO.SalesOrder"
+    "No, INV.InvoiceID, INV.InvoiceNo, INV.InvoiceStatus, P.CreatedOn, P.UpdatedOn\015"
+    "\012FROM (((T_CustomerPOs AS P LEFT JOIN T_Customers AS C ON P.CustomerID = C.Cu"
+    "stomerID) LEFT JOIN (SELECT\015\012                CustomerPOID,\015\012        "
+    "        Count(*) AS LineCount,\015\012                Sum(Nz([QuantityOrdered],0"
+    ")) AS TotalQty,\015\012                Sum(Nz([LineSubtotal],0)) AS LinesSubtota"
+    "l\015\012            FROM T_CustomerPOLines\015\012            GROUP BY Customer"
+    "POID\015\012        )  AS L ON P.CustomerPOID = L.CustomerPOID) LEFT JOIN T_Sale"
+    "sOrders AS SO ON P.CustomerPOID = SO.CustomerPOID) LEFT JOIN T_Invoices AS INV O"
+    "N P.CustomerPOID = INV.CustomerPOID\015\012ORDER BY P.PODate DESC , P.PONumber;\015"
+    "\012"
+dbMemo "Connect" =""
+dbBoolean "ReturnsRecords" ="-1"
+dbInteger "ODBCTimeout" ="60"
+dbBoolean "OrderByOn" ="0"
+dbByte "Orientation" ="0"
+dbByte "DefaultView" ="2"
+dbBinary "GUID" = Begin
+    0x011542b4f983144a9c6e087d14f3ac20
+End
+dbBoolean "FilterOnLoad" ="0"
+dbBoolean "OrderByOnLoad" ="-1"
+dbByte "PublishToWeb" ="1"
+Begin
+    Begin
+        dbText "Name" ="P.ShipToName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.UpdatedOn"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.PONumber"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.ShipVia"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="C.CustomerName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.PODate"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.CustomerPOID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.CustomerID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.PORevisionDate"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.POType"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.POStatus"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.AuthorizedByEmail"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.GoodsConfirmed"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.GoodsConfirmedOn"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.TotalAmount"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.PaymentTerms"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.ShipToContactName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.ShipToPhone"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.ShipToEmail"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.AuthorizedBy"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="LineCount"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="TotalQty"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="LinesSubtotal"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.SubtotalAmount"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.MiscChargeAmount"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.TaxAmount"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="SO.SalesOrderID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="SO.SalesOrderNo"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="INV.InvoiceID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="INV.InvoiceNo"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="INV.InvoiceStatus"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.CreatedOn"
+        dbLong "AggregateType" ="-1"
+    End
+End

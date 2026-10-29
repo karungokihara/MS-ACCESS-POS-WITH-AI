@@ -1,0 +1,734 @@
+﻿Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+'=============================================================
+' FORM: SF_SupplierPOLines
+'
+' PURPOSE:
+'   Maintains the items ordered on one supplier purchase order.
+'
+' IMPORTANT:
+'   The form is bound directly to T_SupplierPOLines.
+'   SupplierPOID is supplied through the parent/subform link.
+'=============================================================
+
+Private Const ITEM_SETUP_FORM As String = "F_ItemSetup"
+
+
+'=============================================================
+' FORM EVENTS
+'=============================================================
+Private Sub Form_Load()
+
+    On Error GoTo Err_Handler
+
+    ConfigureLineControls
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The Supplier PO lines could not be configured." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Supplier PO Lines"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_BeforeInsert(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    If ParentSupplierPOID() <= 0 Then
+        Cancel = True
+        Exit Sub
+    End If
+
+    If Nz(Me.txtLineNumber, 0) <= 0 Then
+        Me.txtLineNumber = GetNextLineNumber()
+    End If
+
+    If Len(Trim$(Nz(Me.cboLineStatus, vbNullString))) = 0 Then
+        Me.cboLineStatus = "Open"
+    End If
+
+    If IsNull(Me.txtDiscountAmount) Then
+        Me.txtDiscountAmount = 0
+    End If
+
+    If IsNull(Me.txtTaxPercent) Then
+        Me.txtTaxPercent = 0
+    End If
+
+    If IsNull(Me.txtCreatedOn) Then
+        Me.txtCreatedOn = Now()
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Cancel = True
+
+    MsgBox _
+        "The Supplier PO line could not be started." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Supplier PO Line"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_BeforeUpdate(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    Dim grossAmount As Currency
+    Dim LineStatus As String
+
+    If Nz(Me.txtSupplierPOID, 0) <= 0 Then
+        MsgBox _
+            "This line is not linked to a saved Supplier PO.", _
+            vbExclamation, _
+            "Supplier PO Required"
+
+        Cancel = True
+        Exit Sub
+    End If
+
+    If Nz(Me.cboItemID, 0) <= 0 Then
+        MsgBox _
+            "Select the item being ordered.", _
+            vbExclamation, _
+            "Item Required"
+
+        Me.cboItemID.SetFocus
+        Cancel = True
+        Exit Sub
+    End If
+
+    If Not IsPositiveNumber(Me.txtOrderedQuantity) Then
+        MsgBox _
+            "Ordered Quantity must be greater than zero.", _
+            vbExclamation, _
+            "Invalid Quantity"
+
+        Me.txtOrderedQuantity.SetFocus
+        Cancel = True
+        Exit Sub
+    End If
+
+    If Nz(Me.cboUnitID, 0) <= 0 Then
+        MsgBox _
+            "Select the unit used for this order line.", _
+            vbExclamation, _
+            "Unit Required"
+
+        Me.cboUnitID.SetFocus
+        Cancel = True
+        Exit Sub
+    End If
+
+    If IsNull(Me.txtUnitPrice) Or _
+       Not IsNumeric(Me.txtUnitPrice) Then
+
+        MsgBox _
+            "Enter a valid Unit Price. Zero is allowed.", _
+            vbExclamation, _
+            "Unit Price Required"
+
+        Me.txtUnitPrice.SetFocus
+        Cancel = True
+        Exit Sub
+    End If
+
+    If CCur(Me.txtUnitPrice) < 0 Then
+        MsgBox _
+            "Unit Price cannot be negative.", _
+            vbExclamation, _
+            "Invalid Unit Price"
+
+        Me.txtUnitPrice.SetFocus
+        Cancel = True
+        Exit Sub
+    End If
+
+    If IsNull(Me.txtDiscountAmount) Then
+        Me.txtDiscountAmount = 0
+    End If
+
+    If Not IsNumeric(Me.txtDiscountAmount) Or _
+       CCur(Me.txtDiscountAmount) < 0 Then
+
+        MsgBox _
+            "Discount Amount must be zero or greater.", _
+            vbExclamation, _
+            "Invalid Discount"
+
+        Me.txtDiscountAmount.SetFocus
+        Cancel = True
+        Exit Sub
+    End If
+
+    grossAmount = CCur( _
+        CDbl(Me.txtOrderedQuantity) * _
+        CCur(Me.txtUnitPrice))
+
+    If CCur(Me.txtDiscountAmount) > grossAmount Then
+        MsgBox _
+            "The discount cannot be greater than the line's gross amount.", _
+            vbExclamation, _
+            "Invalid Discount"
+
+        Me.txtDiscountAmount.SetFocus
+        Cancel = True
+        Exit Sub
+    End If
+
+    If IsNull(Me.txtTaxPercent) Then
+        Me.txtTaxPercent = 0
+    End If
+
+    If Not IsNumeric(Me.txtTaxPercent) Then
+        MsgBox _
+            "Tax Percent must be a number from 0 to 100.", _
+            vbExclamation, _
+            "Invalid Tax"
+
+        Me.txtTaxPercent.SetFocus
+        Cancel = True
+        Exit Sub
+    End If
+
+    If CDbl(Me.txtTaxPercent) < 0 Or _
+       CDbl(Me.txtTaxPercent) > 100 Then
+
+        MsgBox _
+            "Tax Percent must be between 0 and 100.", _
+            vbExclamation, _
+            "Invalid Tax"
+
+        Me.txtTaxPercent.SetFocus
+        Cancel = True
+        Exit Sub
+    End If
+
+    LineStatus = Trim$(Nz(Me.cboLineStatus, vbNullString))
+
+    If Len(LineStatus) = 0 Then
+        LineStatus = "Open"
+    End If
+
+    Select Case UCase$(LineStatus)
+
+        Case "OPEN"
+            Me.cboLineStatus = "Open"
+
+        Case "CLOSED"
+            Me.cboLineStatus = "Closed"
+
+        Case "CANCELLED"
+            Me.cboLineStatus = "Cancelled"
+
+        Case Else
+            MsgBox _
+                "Line Status must be Open, Closed, or Cancelled.", _
+                vbExclamation, _
+                "Invalid Line Status"
+
+            Me.cboLineStatus.SetFocus
+            Cancel = True
+            Exit Sub
+
+    End Select
+
+    If Nz(Me.txtLineNumber, 0) <= 0 Then
+        Me.txtLineNumber = GetNextLineNumber()
+    End If
+
+    If Len(Trim$(Nz( _
+        Me.txtItemDescription, _
+        vbNullString))) = 0 Then
+
+        Me.txtItemDescription = Nz(DLookup( _
+            "ItemName", _
+            "T_Items", _
+            "ItemID=" & CLng(Me.cboItemID)), _
+            vbNullString)
+    End If
+
+    If IsNull(Me.txtCreatedOn) Then
+        Me.txtCreatedOn = Now()
+    End If
+
+    Me.txtUpdatedOn = Now()
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Cancel = True
+
+    MsgBox _
+        "The Supplier PO line could not be validated." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Supplier PO Line"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_AfterUpdate()
+
+    RecalculateParentPO
+
+End Sub
+
+
+Private Sub Form_AfterDelConfirm(Status As Integer)
+
+    RecalculateParentPO
+
+End Sub
+
+
+Private Sub Form_Error( _
+    DataErr As Integer, _
+    Response As Integer _
+)
+
+    Select Case DataErr
+
+        Case 3022
+
+            MsgBox _
+                "This Supplier PO already contains the same line number." & _
+                vbCrLf & _
+                "Enter a different line number.", _
+                vbExclamation, _
+                "Duplicate PO Line"
+
+            Response = acDataErrContinue
+
+        Case 3314
+
+            MsgBox _
+                "A required Supplier PO line field is missing.", _
+                vbExclamation, _
+                "Incomplete PO Line"
+
+            Response = acDataErrContinue
+
+        Case Else
+
+            Response = acDataErrDisplay
+
+    End Select
+
+End Sub
+
+
+'=============================================================
+' ITEM EVENTS
+'=============================================================
+Private Sub cboItemID_AfterUpdate()
+
+    On Error GoTo Err_Handler
+
+    Dim ItemID As Long
+    Dim BaseUnitID As Variant
+    Dim ItemName As String
+
+    ItemID = Nz(Me.cboItemID, 0)
+
+    If ItemID <= 0 Then
+        Exit Sub
+    End If
+
+    ItemName = Nz(DLookup( _
+        "ItemName", _
+        "T_Items", _
+        "ItemID=" & ItemID), _
+        vbNullString)
+
+    If Len(Trim$(Nz( _
+        Me.txtItemDescription, _
+        vbNullString))) = 0 Then
+
+        Me.txtItemDescription = ItemName
+    End If
+
+    BaseUnitID = DLookup( _
+        "BaseUnitID", _
+        "T_Items", _
+        "ItemID=" & ItemID)
+
+    If Not IsNull(BaseUnitID) Then
+        Me.cboUnitID = BaseUnitID
+    End If
+
+    LoadSuggestedSupplierDetails ItemID
+
+    Me.Recalc
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The selected item's defaults could not be loaded." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Supplier PO Item"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cboItemID_NotInList( _
+    NewData As String, _
+    Response As Integer _
+)
+
+    Response = acDataErrContinue
+
+    If HandleComboNotInList( _
+        Me.cboItemID, _
+        NewData, _
+        ITEM_SETUP_FORM, _
+        "T_Items", _
+        "ItemID", _
+        "ItemName", _
+        "InternalSKU") Then
+
+        Response = acDataErrAdded
+    Else
+        On Error Resume Next
+        Me.cboItemID.Undo
+        On Error GoTo 0
+    End If
+
+End Sub
+
+
+Private Sub cboItemID_DblClick(Cancel As Integer)
+
+    Cancel = True
+
+    If Nz(Me.cboItemID, 0) > 0 Then
+
+        EditComboEntry _
+            Me.cboItemID, _
+            ITEM_SETUP_FORM, _
+            "ItemID"
+
+    Else
+
+        AddComboEntry _
+            Me.cboItemID, _
+            ITEM_SETUP_FORM, _
+            "T_Items", _
+            "ItemID"
+
+    End If
+
+End Sub
+
+
+'=============================================================
+' RECALCULATION EVENTS
+'=============================================================
+Private Sub txtOrderedQuantity_AfterUpdate()
+
+    Me.Recalc
+
+End Sub
+
+
+Private Sub txtUnitPrice_AfterUpdate()
+
+    Me.Recalc
+
+End Sub
+
+
+Private Sub txtDiscountAmount_AfterUpdate()
+
+    Me.Recalc
+
+End Sub
+
+
+Private Sub txtTaxPercent_AfterUpdate()
+
+    Me.Recalc
+
+End Sub
+
+
+'=============================================================
+' CONTROL CONFIGURATION
+'=============================================================
+Private Sub ConfigureLineControls()
+
+    With Me.cboItemID
+
+        .RowSourceType = "Table/Query"
+
+        .RowSource = _
+            "SELECT ItemID, ItemName, InternalSKU, " & _
+            "ItemClass, BaseUnitID " & _
+            "FROM T_Items " & _
+            "ORDER BY ItemName, InternalSKU;"
+
+        .BoundColumn = 1
+        .ColumnCount = 5
+        .ColumnWidths = "0cm;6cm;3cm;3cm;0cm"
+        .LimitToList = True
+        .AutoExpand = True
+
+    End With
+
+    With Me.cboUnitID
+
+        .RowSourceType = "Table/Query"
+
+        .RowSource = _
+            "SELECT UnitID, UnitCode, UnitName " & _
+            "FROM T_Units " & _
+            "ORDER BY UnitCode;"
+
+        .BoundColumn = 1
+        .ColumnCount = 3
+        .ColumnWidths = "0cm;2.5cm;4cm"
+        .LimitToList = True
+        .AutoExpand = True
+
+    End With
+
+    With Me.cboLineStatus
+
+        .RowSourceType = "Value List"
+        .RowSource = "Open;Closed;Cancelled"
+        .BoundColumn = 1
+        .ColumnCount = 1
+        .LimitToList = True
+        .AutoExpand = True
+        .defaultValue = """Open"""
+
+    End With
+
+    Me.txtDiscountAmount.defaultValue = "0"
+    Me.txtTaxPercent.defaultValue = "0"
+
+    Me.txtLineTotal.ControlSource = _
+        "=((Nz([OrderedQuantity],0) * " & _
+        "Nz([UnitPrice],0)) - " & _
+        "Nz([DiscountAmount],0)) * " & _
+        "(1 + (Nz([TaxPercent],0) / 100))"
+
+    Me.txtLineTotal.Locked = True
+    Me.txtLineTotal.TabStop = False
+
+    On Error Resume Next
+
+    Me.txtSupplierPOLineID.ColumnHidden = True
+    Me.txtSupplierPOID.ColumnHidden = True
+    Me.txtCreatedOn.ColumnHidden = True
+    Me.txtUpdatedOn.ColumnHidden = True
+
+    On Error GoTo 0
+
+End Sub
+
+
+'=============================================================
+' SUPPLIER ITEM SUGGESTIONS
+'=============================================================
+Private Sub LoadSuggestedSupplierDetails( _
+    ByVal ItemID As Long _
+)
+
+    On Error GoTo Exit_Handler
+
+    Dim SupplierID As Long
+    Dim criteria As String
+    Dim suggestedPrice As Variant
+    Dim SupplierPartNumber As Variant
+
+    SupplierID = ParentSupplierID()
+
+    If SupplierID <= 0 Then
+        Exit Sub
+    End If
+
+    criteria = _
+        "ItemID=" & ItemID & _
+        " AND SupplierID=" & SupplierID
+
+    If IsNull(Me.txtUnitPrice) Or _
+       Nz(Me.txtUnitPrice, 0) = 0 Then
+
+        suggestedPrice = DLookup( _
+            "LastUnitPrice", _
+            "T_ItemSuppliers", _
+            criteria)
+
+        If Not IsNull(suggestedPrice) Then
+            Me.txtUnitPrice = suggestedPrice
+        End If
+    End If
+
+    If Len(Trim$(Nz( _
+        Me.txtSupplierPartNumber, _
+        vbNullString))) = 0 Then
+
+        SupplierPartNumber = DLookup( _
+            "PartNumber", _
+            "T_ItemPartNumbers", _
+            criteria & " AND Nz([IsPrimary],False)=True")
+
+        If IsNull(SupplierPartNumber) Then
+            SupplierPartNumber = DLookup( _
+                "PartNumber", _
+                "T_ItemPartNumbers", _
+                criteria)
+        End If
+
+        If Not IsNull(SupplierPartNumber) Then
+            Me.txtSupplierPartNumber = SupplierPartNumber
+        End If
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+End Sub
+
+
+'=============================================================
+' PARENT HELPERS
+'=============================================================
+Private Function ParentSupplierPOID() As Long
+
+    On Error GoTo Err_Handler
+
+    If Me.Parent Is Nothing Then
+        Err.Raise _
+            vbObjectError + 8101, _
+            "ParentSupplierPOID", _
+            "This form must be opened inside F_SendPO."
+    End If
+
+    ParentSupplierPOID = Nz( _
+        Me.Parent.Recordset.Fields( _
+            "SupplierPOID").value, _
+        0)
+
+    If ParentSupplierPOID <= 0 Then
+        Err.Raise _
+            vbObjectError + 8102, _
+            "ParentSupplierPOID", _
+            "Complete the Supplier PO header before adding lines."
+    End If
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    ParentSupplierPOID = 0
+    Err.Raise Err.Number, Err.Source, Err.Description
+
+End Function
+
+
+Private Function ParentSupplierID() As Long
+
+    On Error GoTo Exit_Handler
+
+    ParentSupplierID = Nz( _
+        Me.Parent.Recordset.Fields( _
+            "SupplierID").value, _
+        0)
+
+Exit_Handler:
+    Exit Function
+
+End Function
+
+
+Private Function GetNextLineNumber() As Long
+
+    Dim SupplierPOID As Long
+    Dim currentMaximum As Variant
+
+    SupplierPOID = ParentSupplierPOID()
+
+    currentMaximum = DMax( _
+        "LineNumber", _
+        "T_SupplierPOLines", _
+        "SupplierPOID=" & SupplierPOID)
+
+    If IsNull(currentMaximum) Then
+        GetNextLineNumber = 10
+    Else
+        GetNextLineNumber = CLng(currentMaximum) + 10
+    End If
+
+End Function
+
+
+Private Sub RecalculateParentPO()
+
+    On Error Resume Next
+
+    Me.Parent.RecalculatePOTotals
+
+    On Error GoTo 0
+
+End Sub
+
+
+'=============================================================
+' VALIDATION HELPER
+'=============================================================
+Private Function IsPositiveNumber( _
+    ByVal fieldValue As Variant _
+) As Boolean
+
+    If IsNull(fieldValue) Then
+        Exit Function
+    End If
+
+    If Len(Trim$(CStr(fieldValue))) = 0 Then
+        Exit Function
+    End If
+
+    If Not IsNumeric(fieldValue) Then
+        Exit Function
+    End If
+
+    IsPositiveNumber = (CDbl(fieldValue) > 0)
+
+End Function

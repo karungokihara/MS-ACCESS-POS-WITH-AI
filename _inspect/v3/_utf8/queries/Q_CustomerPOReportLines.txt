@@ -1,0 +1,16 @@
+﻿dbMemo "SQL" ="SELECT L.CustomerPOLineID AS InvoiceLineID, L.CustomerPOID AS InvoiceID, L.ItemI"
+    "D, Nz(I.InternalSKU,Nz(L.CustomerPartNumber,'')) AS ItemCode, Nz(L.LineDescripti"
+    "on,'') AS LineDescription, Nz(L.QuantityOrdered,0) AS Quantity, L.UnitID, IIf(Le"
+    "n(Trim(Nz(U.UnitCode,'')))=0,Nz(U.UnitName,''),U.UnitCode) AS UnitCode, Nz(L.Uni"
+    "tPrice,0) AS UnitPrice, L.Taxable, Nz(L.LineSubtotal,0) AS LineSubtotal, Trim(II"
+    "f(Len(Trim(Nz(I.ItemName,'')))=0,Nz(L.LineDescription,''),IIf(Len(Trim(Nz(I.Inte"
+    "rnalSKU,'')))=0,I.ItemName,I.InternalSKU & ' - ' & I.ItemName))) AS ReportItem, "
+    "Nz(I.ItemName,'') AS ReportDescription, IIf(Len(Trim(Nz(U.UnitCode,'')))=0,Nz(U."
+    "UnitName,''),U.UnitCode) AS ReportUnit\015\012FROM (T_CustomerPOLines AS L LEFT "
+    "JOIN T_Items AS I ON L.ItemID = I.ItemID) LEFT JOIN T_Units AS U ON L.UnitID = U"
+    ".UnitID;\015\012"
+dbMemo "Connect" =""
+dbBoolean "ReturnsRecords" ="-1"
+dbInteger "ODBCTimeout" ="60"
+Begin
+End

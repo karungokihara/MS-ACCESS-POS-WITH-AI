@@ -1,0 +1,3770 @@
+﻿Version =21
+VersionRequired =20
+PublishOption =1
+Checksum =-1614052492
+Begin Form
+    PopUp = NotDefault
+    RecordSelectors = NotDefault
+    AutoCenter = NotDefault
+    DividingLines = NotDefault
+    AllowDesignChanges = NotDefault
+    DefaultView =0
+    ViewsAllowed =1
+    TabularFamily =0
+    PictureAlignment =2
+    DatasheetGridlinesBehavior =3
+    GridX =24
+    GridY =24
+    Width =24360
+    DatasheetFontHeight =11
+    ItemSuffix =108
+    Top =3015
+    Right =20235
+    Bottom =10920
+    DatasheetGridlinesColor =15263976
+    RecSrcDt = Begin
+        0xbc45881a6d92e640
+    End
+    GUID = Begin
+        0x821a44877a5dbd499d4d3d74f2bb5ec7
+    End
+    RecordSource ="T_SupplierPOs"
+    Caption ="F_CustomerPO"
+    OnCurrent ="[Event Procedure]"
+    BeforeInsert ="[Event Procedure]"
+    BeforeUpdate ="[Event Procedure]"
+    AfterUpdate ="[Event Procedure]"
+    DatasheetFontName ="Aptos"
+    PrtMip = Begin
+        0x6801000068010000680100006801000000000000201c0000e010000001000000 ,
+        0x010000006801000000000000a10700000100000001000000
+    End
+    PrtDevMode = Begin
+        0x0000000000000000a0bbffaf1202000000000000000000002716f341f77f0000 ,
+        0x010403069c004003032d000001000100ea0a6f08640001000f00580202000100 ,
+        0x5802030001004c657474657200000000030000000000c8420000c842e8e8e800 ,
+        0x50a34cb012020000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000ffffffff4749533400000000000000000000000044494e55 ,
+        0x2200c80024031c00ac13d8c00000000000000000000000000000000000000000 ,
+        0x0000000000000000050000000000070000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000100000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000c8000000534d544a ,
+        0x000000001000b8007b00330045004500330039003100310034002d0033003000 ,
+        0x420034002d0034003500610034002d0041003100300039002d00310039004400 ,
+        0x3400410034003000460043004300320032007d000000524553444c4c00556e69 ,
+        0x726573444c4c00506170657253697a65004c4554544552004f7269656e746174 ,
+        0x696f6e00504f525452414954005265736f6c7574696f6e004450493630300043 ,
+        0x6f6c6f724d6f6465003234627070000000000000000000000000000000000000 ,
+        0x1c0000005634444d0100000000000000000000000000000000000000
+    End
+    PrtDevNames = Begin
+        0x08002c003f000100000000000000000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000000000000000006e ,
+        0x756c3a0000000000000000000000000000000000000000000000000000000000
+    End
+    OnLoad ="[Event Procedure]"
+    OnError ="[Event Procedure]"
+    AllowDatasheetView =0
+    FilterOnLoad =0
+    ShowPageMargins =0
+    DisplayOnSharePointSite =1
+    DatasheetAlternateBackColor =15921906
+    DatasheetGridlinesColor12 =0
+    FitToScreen =1
+    DatasheetBackThemeColorIndex =1
+    BorderThemeColorIndex =3
+    ThemeFontIndex =1
+    ForeThemeColorIndex =0
+    AlternateBackThemeColorIndex =1
+    AlternateBackShade =95.0
+    PrtDevModeW = Begin
+        0x0000d7ae1202000010000000f77f0000107c5cb0120200001000000000000000 ,
+        0x60805cb0120200005fedb96dfe7f00000000679d1202000099968fc535000000 ,
+        0x01040306dc004003032d000001000100ea0a6f08640001000f00580202000100 ,
+        0x5802030001004c0065007400740065007200000000000000207c5cb012020000 ,
+        0x00000000000000000000000000000000107c5cb0120200005400000035000000 ,
+        0x1000000000000000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000ffffffff4749533400000000000000000000000044494e55 ,
+        0x2200c80024031c00ac13d8c00000000000000000000000000000000000000000 ,
+        0x0000000000000000050000000000070000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000100000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000c8000000534d544a ,
+        0x000000001000b8007b00330045004500330039003100310034002d0033003000 ,
+        0x420034002d0034003500610034002d0041003100300039002d00310039004400 ,
+        0x3400410034003000460043004300320032007d000000524553444c4c00556e69 ,
+        0x726573444c4c00506170657253697a65004c4554544552004f7269656e746174 ,
+        0x696f6e00504f525452414954005265736f6c7574696f6e004450493630300043 ,
+        0x6f6c6f724d6f6465003234627070000000000000000000000000000000000000 ,
+        0x1c0000005634444d0100000000000000000000000000000000000000
+    End
+    PrtDevNamesW = Begin
+        0x040028003b000100000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000006e0075006c003a000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000
+    End
+    NoSaveCTIWhenDisabled =1
+    Begin
+        Begin Label
+            BackStyle =0
+            TextFontFamily =0
+            FontSize =11
+            BorderColor =8355711
+            ForeColor =6710886
+            FontName ="Aptos"
+            GridlineColor =10921638
+            ThemeFontIndex =1
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =0
+            BorderTint =50.0
+            ForeThemeColorIndex =0
+            ForeTint =60.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin CommandButton
+            TextFontFamily =0
+            FontSize =11
+            FontWeight =400
+            ForeColor =4210752
+            FontName ="Aptos"
+            GridlineColor =10921638
+            ForeThemeColorIndex =0
+            ForeTint =75.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+            UseTheme =1
+            Shape =1
+            Gradient =12
+            BackColor =14790982
+            BackThemeColorIndex =4
+            BackTint =60.0
+            BorderLineStyle =0
+            BorderColor =14790982
+            BorderThemeColorIndex =4
+            BorderTint =60.0
+            ThemeFontIndex =1
+            HoverColor =15453059
+            HoverThemeColorIndex =4
+            HoverTint =40.0
+            PressedColor =6440976
+            PressedThemeColorIndex =4
+            PressedShade =75.0
+            HoverForeColor =4210752
+            HoverForeThemeColorIndex =0
+            HoverForeTint =75.0
+            PressedForeColor =4210752
+            PressedForeThemeColorIndex =0
+            PressedForeTint =75.0
+        End
+        Begin CheckBox
+            BorderLineStyle =0
+            LabelX =230
+            LabelY =-30
+            BorderColor =10921638
+            GridlineColor =10921638
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin TextBox
+            AddColon = NotDefault
+            FELineBreak = NotDefault
+            TextFontFamily =0
+            BorderLineStyle =0
+            LabelX =-1800
+            FontSize =11
+            BorderColor =10921638
+            ForeColor =4210752
+            FontName ="Aptos"
+            AsianLineBreak =1
+            GridlineColor =10921638
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            ThemeFontIndex =1
+            ForeThemeColorIndex =0
+            ForeTint =75.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin ComboBox
+            AddColon = NotDefault
+            TextFontFamily =0
+            BorderLineStyle =0
+            LabelX =-1800
+            FontSize =11
+            BorderColor =10921638
+            ForeColor =2102279
+            FontName ="Aptos"
+            GridlineColor =10921638
+            AllowValueListEdits =1
+            InheritValueList =1
+            ThemeFontIndex =1
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            ForeThemeColorIndex =2
+            ForeShade =50.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin Subform
+            BorderLineStyle =0
+            BorderColor =10921638
+            GridlineColor =10921638
+            BorderThemeColorIndex =1
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+            BorderShade =65.0
+            ShowPageHeaderAndPageFooter =1
+        End
+        Begin FormHeader
+            Height =732
+            BackColor =14482166
+            Name ="FormHeader"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x7a658928df24e8438970c4755659db68
+            End
+            AlternateBackShade =95.0
+            BackTint =20.0
+            Begin
+                Begin Label
+                    OverlapFlags =85
+                    TextAlign =2
+                    Left =6984
+                    Top =120
+                    Width =3900
+                    Height =528
+                    FontSize =20
+                    FontWeight =700
+                    ForeColor =4272139
+                    Name ="Label56"
+                    Caption ="Send Purchase Order"
+                    GUID = Begin
+                        0x293b42d651f44d4889e0d5c0f3fae2a2
+                    End
+                    LayoutCachedLeft =6984
+                    LayoutCachedTop =120
+                    LayoutCachedWidth =10884
+                    LayoutCachedHeight =648
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    ForeShade =50.0
+                End
+                Begin TextBox
+                    Visible = NotDefault
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =12810
+                    Top =180
+                    Width =3648
+                    Height =312
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtSupplierPOID"
+                    ControlSource ="SupplierPOID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xfd12f0f4fb51b0419e0bc6cfcdc732ff
+                    End
+
+                    LayoutCachedLeft =12810
+                    LayoutCachedTop =180
+                    LayoutCachedWidth =16458
+                    LayoutCachedHeight =492
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            Visible = NotDefault
+                            OverlapFlags =85
+                            TextAlign =3
+                            TextFontFamily =34
+                            Left =11100
+                            Top =180
+                            Width =1620
+                            Height =312
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label96"
+                            Caption ="Supplier POID"
+                            GUID = Begin
+                                0x4fa104bb4b0a924f8c3fd554331c823a
+                            End
+                            LayoutCachedLeft =11100
+                            LayoutCachedTop =180
+                            LayoutCachedWidth =12720
+                            LayoutCachedHeight =492
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    Left =200
+                    Top =80
+                    Width =1400
+                    Height =340
+                    FontWeight =700
+                    TabIndex =1
+                    ForeColor =16777215
+                    Name ="cmdUXBack"
+                    Caption ="Back"
+                    OnClick ="=UX_GoBack()"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdUXBack\")"
+                    GUID = Begin
+                        0xe908acba26bed84dac26671bfe732ecb
+                    End
+
+                    LayoutCachedLeft =200
+                    LayoutCachedTop =80
+                    LayoutCachedWidth =1600
+                    LayoutCachedHeight =420
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    Left =1700
+                    Top =80
+                    Width =1800
+                    Height =340
+                    FontWeight =700
+                    TabIndex =2
+                    ForeColor =16777215
+                    Name ="cmdPrintSupplierPO"
+                    Caption ="Print P.O."
+                    OnClick ="=UX_PrintActive(\"R_SupplierPO\",\"txtSupplierPOID\",\"Purchase Order\")"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdPrintSupplierPO\")"
+                    GUID = Begin
+                        0xdea9e2f89f372f42871c42fb3e011ce0
+                    End
+
+                    LayoutCachedLeft =1700
+                    LayoutCachedTop =80
+                    LayoutCachedWidth =3500
+                    LayoutCachedHeight =420
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    Left =3600
+                    Top =80
+                    Width =1800
+                    Height =340
+                    FontWeight =700
+                    TabIndex =3
+                    ForeColor =16777215
+                    Name ="cmdUploadSupplierPO"
+                    Caption ="Upload PO"
+                    OnClick ="=UX_AttachToCurrentForm(\"txtSupplierPOID\",\"SupplierPO\")"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdUploadSupplierPO\")"
+                    GUID = Begin
+                        0x417e845c8531e742834b62da5c5bcd6e
+                    End
+
+                    LayoutCachedLeft =3600
+                    LayoutCachedTop =80
+                    LayoutCachedWidth =5400
+                    LayoutCachedHeight =420
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                End
+            End
+        End
+        Begin Section
+            CanGrow = NotDefault
+            Height =16656
+            BackColor =14482166
+            Name ="Detail"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0xc28b8829b27def4283445103d06a3cc6
+            End
+            AlternateBackColor =14482166
+            AlternateBackShade =95.0
+            Begin
+                Begin TextBox
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =3330
+                    Top =600
+                    Width =3648
+                    Height =312
+                    ColumnWidth =3000
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtPONumber"
+                    ControlSource ="PONumber"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xd48be37207f3de43815f37a340f58135
+                    End
+
+                    LayoutCachedLeft =3330
+                    LayoutCachedTop =600
+                    LayoutCachedWidth =6978
+                    LayoutCachedHeight =912
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =660
+                            Top =600
+                            Width =2580
+                            Height =312
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="PONumber_Label"
+                            Caption ="PONumber"
+                            GUID = Begin
+                                0xea413072f86eeb488e5af6875f191e3a
+                            End
+                            LayoutCachedLeft =660
+                            LayoutCachedTop =600
+                            LayoutCachedWidth =3240
+                            LayoutCachedHeight =912
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =3330
+                    Top =1020
+                    Width =1608
+                    Height =312
+                    ColumnWidth =1608
+                    TabIndex =1
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtPODate"
+                    ControlSource ="PODate"
+                    DefaultValue ="Date()"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xe06e5544a7e4de44bd20aa4c2b95f9da
+                    End
+
+                    LayoutCachedLeft =3330
+                    LayoutCachedTop =1020
+                    LayoutCachedWidth =4938
+                    LayoutCachedHeight =1332
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =660
+                            Top =1020
+                            Width =2580
+                            Height =312
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="PODate_Label"
+                            Caption ="PODate"
+                            GUID = Begin
+                                0x94833e32dad29d4b9e179d8f0326dbbe
+                            End
+                            LayoutCachedLeft =660
+                            LayoutCachedTop =1020
+                            LayoutCachedWidth =3240
+                            LayoutCachedHeight =1332
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =3330
+                    Top =1440
+                    Width =1608
+                    Height =312
+                    ColumnWidth =1608
+                    TabIndex =2
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtPORevisionDate"
+                    ControlSource ="PORevisionDate"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xa9b312b816016b4ba77831a9b401d17d
+                    End
+
+                    LayoutCachedLeft =3330
+                    LayoutCachedTop =1440
+                    LayoutCachedWidth =4938
+                    LayoutCachedHeight =1752
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =660
+                            Top =1440
+                            Width =2580
+                            Height =312
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="PORevisionDate_Label"
+                            Caption ="PO Revision Date"
+                            GUID = Begin
+                                0x5553c8ccd4b0df4990043dbcdc836372
+                            End
+                            LayoutCachedLeft =660
+                            LayoutCachedTop =1440
+                            LayoutCachedWidth =3240
+                            LayoutCachedHeight =1752
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =3330
+                    Top =2280
+                    Width =3690
+                    Height =360
+                    ColumnWidth =3000
+                    TabIndex =3
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtPaymentTerms"
+                    ControlSource ="PaymentTerms"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x35d0bccce989024aab39a3c2bc4554ad
+                    End
+
+                    LayoutCachedLeft =3330
+                    LayoutCachedTop =2280
+                    LayoutCachedWidth =7020
+                    LayoutCachedHeight =2640
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =660
+                            Top =2280
+                            Width =2580
+                            Height =312
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="PaymentTerms_Label"
+                            Caption ="Payment Terms"
+                            GUID = Begin
+                                0x3764b5161a3dc34992c9eea7f397a98f
+                            End
+                            LayoutCachedLeft =660
+                            LayoutCachedTop =2280
+                            LayoutCachedWidth =3240
+                            LayoutCachedHeight =2592
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =3330
+                    Top =2760
+                    Width =3690
+                    Height =360
+                    ColumnWidth =3000
+                    TabIndex =4
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtShipVia"
+                    ControlSource ="ShipVia"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x4221a19aadcc3249a11cdde5ba92f833
+                    End
+
+                    LayoutCachedLeft =3330
+                    LayoutCachedTop =2760
+                    LayoutCachedWidth =7020
+                    LayoutCachedHeight =3120
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =660
+                            Top =2760
+                            Width =2580
+                            Height =312
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="ShipVia_Label"
+                            Caption ="Ship Via"
+                            GUID = Begin
+                                0x60e6e215efc1254e841955b01d55c23d
+                            End
+                            LayoutCachedLeft =660
+                            LayoutCachedTop =2760
+                            LayoutCachedWidth =3240
+                            LayoutCachedHeight =3072
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =3330
+                    Top =4620
+                    Width =3690
+                    Height =360
+                    ColumnWidth =3000
+                    TabIndex =5
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtResaleNo"
+                    ControlSource ="ResaleNo"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xb0a461a4da32fa429476dd3efe1549e4
+                    End
+
+                    LayoutCachedLeft =3330
+                    LayoutCachedTop =4620
+                    LayoutCachedWidth =7020
+                    LayoutCachedHeight =4980
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =660
+                            Top =4620
+                            Width =2580
+                            Height =312
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="ResaleNo_Label"
+                            Caption ="Resale No"
+                            GUID = Begin
+                                0x3ae332cd87b66144a68f5878bf3fb058
+                            End
+                            LayoutCachedLeft =660
+                            LayoutCachedTop =4620
+                            LayoutCachedWidth =3240
+                            LayoutCachedHeight =4932
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =10470
+                    Top =120
+                    Width =3690
+                    Height =360
+                    ColumnWidth =3000
+                    TabIndex =6
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtShipToName"
+                    ControlSource ="ShipToName"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xb840e8a81b0ae345880652eaf5dc95f7
+                    End
+
+                    LayoutCachedLeft =10470
+                    LayoutCachedTop =120
+                    LayoutCachedWidth =14160
+                    LayoutCachedHeight =480
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =7800
+                            Top =120
+                            Width =2580
+                            Height =312
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="ShipToName_Label"
+                            Caption ="Ship To Name"
+                            GUID = Begin
+                                0x5f6f77ecc9386b4495eea56eb343e3af
+                            End
+                            LayoutCachedLeft =7800
+                            LayoutCachedTop =120
+                            LayoutCachedWidth =10380
+                            LayoutCachedHeight =432
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =10470
+                    Top =600
+                    Width =3690
+                    Height =360
+                    ColumnWidth =3000
+                    TabIndex =7
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtShipToAddress"
+                    ControlSource ="ShipToAddress"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xa4dd0aba1e13ff4fa8aea5d281a5d01e
+                    End
+
+                    LayoutCachedLeft =10470
+                    LayoutCachedTop =600
+                    LayoutCachedWidth =14160
+                    LayoutCachedHeight =960
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =7800
+                            Top =600
+                            Width =2580
+                            Height =312
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="ShipToAddress_Label"
+                            Caption ="Ship To Address"
+                            GUID = Begin
+                                0xc1f26ce0d4a83e41a43e82a0787588d8
+                            End
+                            LayoutCachedLeft =7800
+                            LayoutCachedTop =600
+                            LayoutCachedWidth =10380
+                            LayoutCachedHeight =912
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =10470
+                    Top =1080
+                    Width =3690
+                    Height =360
+                    ColumnWidth =3000
+                    TabIndex =8
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtShipToContactName"
+                    ControlSource ="ShipToContactName"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x610523382bb9004293e8a2820967cfc8
+                    End
+
+                    LayoutCachedLeft =10470
+                    LayoutCachedTop =1080
+                    LayoutCachedWidth =14160
+                    LayoutCachedHeight =1440
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =7800
+                            Top =1080
+                            Width =2580
+                            Height =312
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="ShipToContactName_Label"
+                            Caption ="Ship To Contact Name"
+                            GUID = Begin
+                                0x6efc85db0fc4c643afcad86ca6a693a6
+                            End
+                            LayoutCachedLeft =7800
+                            LayoutCachedTop =1080
+                            LayoutCachedWidth =10380
+                            LayoutCachedHeight =1392
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =10470
+                    Top =1560
+                    Width =3690
+                    Height =360
+                    ColumnWidth =3000
+                    TabIndex =9
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtShipToPhone"
+                    ControlSource ="ShipToPhone"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xb00b66d1d2872d4cb23a379ace5a6cf9
+                    End
+
+                    LayoutCachedLeft =10470
+                    LayoutCachedTop =1560
+                    LayoutCachedWidth =14160
+                    LayoutCachedHeight =1920
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =8940
+                            Top =1560
+                            Width =1440
+                            Height =312
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="ShipToPhone_Label"
+                            Caption ="ShipToPhone"
+                            GUID = Begin
+                                0xc385d0d3ad4bbf46bd8d867311cdbe8d
+                            End
+                            LayoutCachedLeft =8940
+                            LayoutCachedTop =1560
+                            LayoutCachedWidth =10380
+                            LayoutCachedHeight =1872
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =10470
+                    Top =2040
+                    Width =3690
+                    Height =360
+                    ColumnWidth =3000
+                    TabIndex =10
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtShipToEmail"
+                    ControlSource ="ShipToEmail"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x2d1af1a0b34e41448ecd1962e3aba456
+                    End
+
+                    LayoutCachedLeft =10470
+                    LayoutCachedTop =2040
+                    LayoutCachedWidth =14160
+                    LayoutCachedHeight =2400
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =8160
+                            Top =2040
+                            Width =2220
+                            Height =312
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="ShipToEmail_Label"
+                            Caption ="Ship To Email"
+                            GUID = Begin
+                                0x2ee5dd083e884c4f94a6dc1d55d85d28
+                            End
+                            LayoutCachedLeft =8160
+                            LayoutCachedTop =2040
+                            LayoutCachedWidth =10380
+                            LayoutCachedHeight =2352
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =10470
+                    Top =2520
+                    Width =3690
+                    Height =360
+                    ColumnWidth =3000
+                    TabIndex =11
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtAuthorizedBy"
+                    ControlSource ="AuthorizedBy"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xb7d9bf31ece9434da4b62e442eb5daec
+                    End
+
+                    LayoutCachedLeft =10470
+                    LayoutCachedTop =2520
+                    LayoutCachedWidth =14160
+                    LayoutCachedHeight =2880
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =8160
+                            Top =2520
+                            Width =2220
+                            Height =312
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="AuthorizedBy_Label"
+                            Caption ="Authorized By"
+                            GUID = Begin
+                                0x97420b9708f9fc49b21c2519287a2c69
+                            End
+                            LayoutCachedLeft =8160
+                            LayoutCachedTop =2520
+                            LayoutCachedWidth =10380
+                            LayoutCachedHeight =2832
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =10470
+                    Top =3000
+                    Width =3690
+                    Height =360
+                    ColumnWidth =3000
+                    TabIndex =12
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtAuthorizedByEmail"
+                    ControlSource ="AuthorizedByEmail"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xcc3c435a988e1f45b99cc460edaf9b3a
+                    End
+
+                    LayoutCachedLeft =10470
+                    LayoutCachedTop =3000
+                    LayoutCachedWidth =14160
+                    LayoutCachedHeight =3360
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =8160
+                            Top =3000
+                            Width =2220
+                            Height =312
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="AuthorizedByEmail_Label"
+                            Caption ="Authorized By Email"
+                            GUID = Begin
+                                0x87e602d2b516c4438ca72c486301662f
+                            End
+                            LayoutCachedLeft =8160
+                            LayoutCachedTop =3000
+                            LayoutCachedWidth =10380
+                            LayoutCachedHeight =3312
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =10470
+                    Top =3480
+                    Width =3648
+                    Height =312
+                    ColumnWidth =3000
+                    TabIndex =13
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtSubtotalAmount"
+                    ControlSource ="SubtotalAmount"
+                    DefaultValue ="0"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x7731b20a316da4488cd2806f36b616f6
+                    End
+
+                    LayoutCachedLeft =10470
+                    LayoutCachedTop =3480
+                    LayoutCachedWidth =14118
+                    LayoutCachedHeight =3792
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =8160
+                            Top =3480
+                            Width =2220
+                            Height =312
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="SubtotalAmount_Label"
+                            Caption ="Subtotal Amount"
+                            GUID = Begin
+                                0x5ba762513249a94a88629fe02f6c88aa
+                            End
+                            LayoutCachedLeft =8160
+                            LayoutCachedTop =3480
+                            LayoutCachedWidth =10380
+                            LayoutCachedHeight =3792
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =10470
+                    Top =3900
+                    Width =3648
+                    Height =312
+                    ColumnWidth =3000
+                    TabIndex =14
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtTaxAmount"
+                    ControlSource ="TaxAmount"
+                    DefaultValue ="0"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x3cb4017c9f3d224b9e8f196669c20632
+                    End
+
+                    LayoutCachedLeft =10470
+                    LayoutCachedTop =3900
+                    LayoutCachedWidth =14118
+                    LayoutCachedHeight =4212
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =8160
+                            Top =3900
+                            Width =2220
+                            Height =312
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="TaxAmount_Label"
+                            Caption ="Tax Amount"
+                            GUID = Begin
+                                0x1d2577be3bac764aa8bb5877c7e93470
+                            End
+                            LayoutCachedLeft =8160
+                            LayoutCachedTop =3900
+                            LayoutCachedWidth =10380
+                            LayoutCachedHeight =4212
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =10470
+                    Top =4320
+                    Width =3648
+                    Height =312
+                    ColumnWidth =3000
+                    TabIndex =15
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtTotalAmount"
+                    ControlSource ="TotalAmount"
+                    DefaultValue ="0"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xe8381f08293e354695e88419456c15d9
+                    End
+
+                    LayoutCachedLeft =10470
+                    LayoutCachedTop =4320
+                    LayoutCachedWidth =14118
+                    LayoutCachedHeight =4632
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =8160
+                            Top =4320
+                            Width =2220
+                            Height =312
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="TotalAmount_Label"
+                            Caption ="Total Amount"
+                            GUID = Begin
+                                0x66acb1d52407614eac96e8f612ba1d4e
+                            End
+                            LayoutCachedLeft =8160
+                            LayoutCachedTop =4320
+                            LayoutCachedWidth =10380
+                            LayoutCachedHeight =4632
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =17430
+                    Top =3000
+                    Width =6570
+                    Height =840
+                    ColumnWidth =3000
+                    TabIndex =17
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtNotes"
+                    ControlSource ="Notes"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xeb593ceaa5e3c843a71670eb10921f77
+                    End
+
+                    LayoutCachedLeft =17430
+                    LayoutCachedTop =3000
+                    LayoutCachedWidth =24000
+                    LayoutCachedHeight =3840
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =15744
+                            Top =3000
+                            Width =1548
+                            Height =312
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Notes_Label"
+                            Caption ="Notes"
+                            GUID = Begin
+                                0x6baa3dc89025ee41ae5d49a5c1698e4c
+                            End
+                            LayoutCachedLeft =15744
+                            LayoutCachedTop =3000
+                            LayoutCachedWidth =17292
+                            LayoutCachedHeight =3312
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin ComboBox
+                    LimitToList = NotDefault
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    ColumnCount =2
+                    Left =3360
+                    Top =180
+                    Width =2760
+                    Height =300
+                    TabIndex =18
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    GUID = Begin
+                        0x4eb6e58da6953b429a361f530b70a9d3
+                    End
+                    Name ="cboSuppierID"
+                    ControlSource ="SupplierID"
+                    RowSourceType ="Table/Query"
+                    ColumnWidths ="0;4536"
+                    AfterUpdate ="[Event Procedure]"
+                    FontName ="Segoe UI"
+
+                    LayoutCachedLeft =3360
+                    LayoutCachedTop =180
+                    LayoutCachedWidth =6120
+                    LayoutCachedHeight =480
+                    ThemeFontIndex =-1
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =420
+                            Top =180
+                            Width =2820
+                            Height =300
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label59"
+                            Caption ="Customer "
+                            GUID = Begin
+                                0x0cb6105f8d885d478daedcd0f14c22e5
+                            End
+                            LayoutCachedLeft =420
+                            LayoutCachedTop =180
+                            LayoutCachedWidth =3240
+                            LayoutCachedHeight =480
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin ComboBox
+                    RowSourceTypeInt =1
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =3360
+                    Top =1860
+                    Width =2760
+                    Height =300
+                    TabIndex =19
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    GUID = Begin
+                        0xec7fdb7188683745a91927b001276146
+                    End
+                    Name ="cboPOType"
+                    ControlSource ="POType"
+                    RowSourceType ="Value List"
+                    RowSource ="Original;Change Order;Revision;Blanket;Release"
+                    ColumnWidths ="2268"
+                    DefaultValue ="\"Original\""
+                    FontName ="Segoe UI"
+
+                    LayoutCachedLeft =3360
+                    LayoutCachedTop =1860
+                    LayoutCachedWidth =6120
+                    LayoutCachedHeight =2160
+                    ThemeFontIndex =-1
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =420
+                            Top =1860
+                            Width =2820
+                            Height =300
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label61"
+                            Caption ="PO Type "
+                            GUID = Begin
+                                0xbc9a18250dd47843acba5d630f78e962
+                            End
+                            LayoutCachedLeft =420
+                            LayoutCachedTop =1860
+                            LayoutCachedWidth =3240
+                            LayoutCachedHeight =2160
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin CheckBox
+                    OverlapFlags =85
+                    Left =3360
+                    Top =4260
+                    Width =2940
+                    TabIndex =20
+                    Name ="chkPrepaidFreight"
+                    DefaultValue ="False"
+                    GUID = Begin
+                        0x8269a52ce0281d4290e1c4d7a15d9637
+                    End
+
+                    LayoutCachedLeft =3360
+                    LayoutCachedTop =4260
+                    LayoutCachedWidth =6300
+                    LayoutCachedHeight =4500
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =540
+                            Top =4200
+                            Width =2700
+                            Height =300
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label63"
+                            Caption ="Prepaid Freight"
+                            GUID = Begin
+                                0x456c040c2388bf4f84ebd62911540626
+                            End
+                            LayoutCachedLeft =540
+                            LayoutCachedTop =4200
+                            LayoutCachedWidth =3240
+                            LayoutCachedHeight =4500
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin ComboBox
+                    RowSourceTypeInt =1
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =10440
+                    Top =5220
+                    Width =2784
+                    Height =300
+                    TabIndex =16
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    GUID = Begin
+                        0xf10ddc3e2aaade41a732fa3289bd3717
+                    End
+                    Name ="cboPOStatus"
+                    ControlSource ="POStatus"
+                    RowSourceType ="Value List"
+                    RowSource ="Received;Goods Confirmed;Sales Order Created;Invoiced;Closed;Cancelled"
+                    ColumnWidths ="2835"
+                    DefaultValue ="\"Received\""
+                    FontName ="Segoe UI"
+
+                    LayoutCachedLeft =10440
+                    LayoutCachedTop =5220
+                    LayoutCachedWidth =13224
+                    LayoutCachedHeight =5520
+                    ThemeFontIndex =-1
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =7884
+                            Top =5220
+                            Width =2460
+                            Height =300
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label65"
+                            Caption ="Customer "
+                            GUID = Begin
+                                0x0bc57a7f6f758949a382b06551cb32bc
+                            End
+                            LayoutCachedLeft =7884
+                            LayoutCachedTop =5220
+                            LayoutCachedWidth =10344
+                            LayoutCachedHeight =5520
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    Left =5880
+                    Top =6240
+                    Width =1620
+                    Height =300
+                    FontWeight =700
+                    TabIndex =21
+                    ForeColor =16777215
+                    Name ="cmdNewPO"
+                    Caption ="New PO"
+                    OnClick ="[Event Procedure]"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdNewPO\")"
+                    GUID = Begin
+                        0xcf91837d97ed184b892092dfb4cdf5fa
+                    End
+                    LeftPadding =90
+                    RightPadding =105
+                    BottomPadding =165
+
+                    LayoutCachedLeft =5880
+                    LayoutCachedTop =6240
+                    LayoutCachedWidth =7500
+                    LayoutCachedHeight =6540
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    HoverForeTint =100.0
+                    HoverForeShade =50.0
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    PressedForeTint =100.0
+                    PressedForeShade =50.0
+                    Shadow =2
+                    Overlaps =1
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    Left =8700
+                    Top =6240
+                    Width =1620
+                    Height =300
+                    FontWeight =700
+                    TabIndex =22
+                    ForeColor =16777215
+                    Name ="cmdSavePO"
+                    Caption ="Save PO"
+                    OnClick ="[Event Procedure]"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdSavePO\")"
+                    GUID = Begin
+                        0x42514ba8d4571147845f89001c3c0c22
+                    End
+                    LeftPadding =90
+                    RightPadding =105
+                    BottomPadding =165
+
+                    LayoutCachedLeft =8700
+                    LayoutCachedTop =6240
+                    LayoutCachedWidth =10320
+                    LayoutCachedHeight =6540
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    HoverForeTint =100.0
+                    HoverForeShade =50.0
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    PressedForeTint =100.0
+                    PressedForeShade =50.0
+                    Shadow =2
+                    Overlaps =1
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    Left =10920
+                    Top =6240
+                    Width =1740
+                    Height =300
+                    FontWeight =700
+                    TabIndex =23
+                    ForeColor =16777215
+                    Name ="cmdReceiveGoods"
+                    Caption ="Receive Goods"
+                    OnClick ="[Event Procedure]"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdReceiveGoods\")"
+                    GUID = Begin
+                        0x4b1e7bc43f330042830d8f988a51a598
+                    End
+                    LeftPadding =90
+                    RightPadding =105
+                    BottomPadding =165
+
+                    LayoutCachedLeft =10920
+                    LayoutCachedTop =6240
+                    LayoutCachedWidth =12660
+                    LayoutCachedHeight =6540
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    HoverForeTint =100.0
+                    HoverForeShade =50.0
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    PressedForeTint =100.0
+                    PressedForeShade =50.0
+                    Shadow =2
+                    Overlaps =1
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    Left =15420
+                    Top =6240
+                    Width =1620
+                    Height =300
+                    FontWeight =700
+                    TabIndex =24
+                    ForeColor =16777215
+                    Name ="cmdClose"
+                    Caption ="Close"
+                    OnClick ="[Event Procedure]"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdClose\")"
+                    GUID = Begin
+                        0x8cb5cf37bf9c954480394a93befb3302
+                    End
+                    LeftPadding =90
+                    RightPadding =105
+                    BottomPadding =165
+
+                    LayoutCachedLeft =15420
+                    LayoutCachedTop =6240
+                    LayoutCachedWidth =17040
+                    LayoutCachedHeight =6540
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    HoverForeTint =100.0
+                    HoverForeShade =50.0
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    PressedForeTint =100.0
+                    PressedForeShade =50.0
+                    Shadow =2
+                    Overlaps =1
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =3354
+                    Top =3240
+                    Width =1890
+                    Height =360
+                    TabIndex =25
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="Text77"
+                    ControlSource ="ExpectedDeliveryDate"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xedf97170ac296d4aa2c0a651cbb415d0
+                    End
+
+                    LayoutCachedLeft =3354
+                    LayoutCachedTop =3240
+                    LayoutCachedWidth =5244
+                    LayoutCachedHeight =3600
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            TextFontFamily =34
+                            Left =780
+                            Top =3240
+                            Width =2484
+                            Height =324
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label78"
+                            Caption ="Expected Delivery Date"
+                            GUID = Begin
+                                0x510b5c3377dc194ab6f77851734f64c1
+                            End
+                            LayoutCachedLeft =780
+                            LayoutCachedTop =3240
+                            LayoutCachedWidth =3264
+                            LayoutCachedHeight =3564
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =17394
+                    Top =540
+                    Width =1890
+                    Height =360
+                    TabIndex =26
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtCreatedByUserID"
+                    ControlSource ="CreatedByUserID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x62d09cc62b3ba24fa00484cd0a8f0adb
+                    End
+
+                    LayoutCachedLeft =17394
+                    LayoutCachedTop =540
+                    LayoutCachedWidth =19284
+                    LayoutCachedHeight =900
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            TextFontFamily =34
+                            Left =16068
+                            Top =540
+                            Width =1236
+                            Height =324
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label84"
+                            Caption ="Created By"
+                            GUID = Begin
+                                0x40984185f7a0c64f9dc8cd260da7cf8c
+                            End
+                            LayoutCachedLeft =16068
+                            LayoutCachedTop =540
+                            LayoutCachedWidth =17304
+                            LayoutCachedHeight =864
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =17454
+                    Top =1020
+                    Width =1890
+                    Height =360
+                    TabIndex =27
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtCreatedOn"
+                    ControlSource ="CreatedOn"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x89f3ca96d0affa4b8cc64e3c2fba8051
+                    End
+
+                    LayoutCachedLeft =17454
+                    LayoutCachedTop =1020
+                    LayoutCachedWidth =19344
+                    LayoutCachedHeight =1380
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            TextFontFamily =34
+                            Left =16116
+                            Top =1020
+                            Width =1248
+                            Height =324
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label86"
+                            Caption ="Created On"
+                            GUID = Begin
+                                0x3b97354f656eaa4ba63fdafeae7dba7d
+                            End
+                            LayoutCachedLeft =16116
+                            LayoutCachedTop =1020
+                            LayoutCachedWidth =17364
+                            LayoutCachedHeight =1344
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin ComboBox
+                    RowSourceTypeInt =1
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =3360
+                    Top =3720
+                    Width =2760
+                    Height =300
+                    TabIndex =28
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    GUID = Begin
+                        0x8f3207aedb50f849b610629ed01cb90f
+                    End
+                    Name ="cboDeliveryLocationID"
+                    ControlSource ="DeliveryLocationID"
+                    RowSourceType ="Value List"
+                    ColumnWidths ="2834"
+                    AfterUpdate ="[Event Procedure]"
+                    OnDblClick ="[Event Procedure]"
+                    DefaultValue ="\"Received\""
+                    FontName ="Segoe UI"
+                    OnNotInList ="[Event Procedure]"
+
+                    LayoutCachedLeft =3360
+                    LayoutCachedTop =3720
+                    LayoutCachedWidth =6120
+                    LayoutCachedHeight =4020
+                    ThemeFontIndex =-1
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            TextFontFamily =34
+                            Left =780
+                            Top =3720
+                            Width =2460
+                            Height =300
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label88"
+                            Caption ="Delivery Location "
+                            GUID = Begin
+                                0xecbc2c238f7f8645bba49eec6b9875da
+                            End
+                            LayoutCachedLeft =780
+                            LayoutCachedTop =3720
+                            LayoutCachedWidth =3240
+                            LayoutCachedHeight =4020
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin ComboBox
+                    RowSourceTypeInt =1
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =17436
+                    Top =120
+                    Width =1824
+                    Height =300
+                    TabIndex =29
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    GUID = Begin
+                        0xfede947b5ea8754291592226a8d928bb
+                    End
+                    Name ="cboCurrencyID"
+                    ControlSource ="CurrencyID"
+                    RowSourceType ="Value List"
+                    ColumnWidths ="2833"
+                    DefaultValue ="\"Received\""
+                    FontName ="Segoe UI"
+
+                    LayoutCachedLeft =17436
+                    LayoutCachedTop =120
+                    LayoutCachedWidth =19260
+                    LayoutCachedHeight =420
+                    ThemeFontIndex =-1
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            TextFontFamily =34
+                            Left =15480
+                            Top =120
+                            Width =1836
+                            Height =300
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label92"
+                            Caption ="Currency "
+                            GUID = Begin
+                                0x02c15e41ec9bee499ad8dec610ae11e8
+                            End
+                            LayoutCachedLeft =15480
+                            LayoutCachedTop =120
+                            LayoutCachedWidth =17316
+                            LayoutCachedHeight =420
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =17454
+                    Top =1500
+                    Width =1890
+                    Height =360
+                    TabIndex =30
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtUpdatedOn"
+                    ControlSource ="UpdatedOn"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xc4676e4d0fd3d544a5650a310fa76682
+                    End
+
+                    LayoutCachedLeft =17454
+                    LayoutCachedTop =1500
+                    LayoutCachedWidth =19344
+                    LayoutCachedHeight =1860
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            TextFontFamily =34
+                            Left =16068
+                            Top =1500
+                            Width =1296
+                            Height =324
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label94"
+                            Caption ="Updated On"
+                            GUID = Begin
+                                0x91edefe2a6bea045a4b40184e67150bd
+                            End
+                            LayoutCachedLeft =16068
+                            LayoutCachedTop =1500
+                            LayoutCachedWidth =17364
+                            LayoutCachedHeight =1824
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =17454
+                    Top =1980
+                    Width =1890
+                    Height =360
+                    TabIndex =31
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtSentOn"
+                    ControlSource ="SentOn"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x47345e8afa9c4c469a0a7098539c2d4c
+                    End
+
+                    LayoutCachedLeft =17454
+                    LayoutCachedTop =1980
+                    LayoutCachedWidth =19344
+                    LayoutCachedHeight =2340
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            TextFontFamily =34
+                            Left =16068
+                            Top =1980
+                            Width =1296
+                            Height =324
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label98"
+                            Caption ="Updated On"
+                            GUID = Begin
+                                0x9cb09dc7f494cc4fb469492087031780
+                            End
+                            LayoutCachedLeft =16068
+                            LayoutCachedTop =1980
+                            LayoutCachedWidth =17364
+                            LayoutCachedHeight =2304
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =17418
+                    Top =2460
+                    Width =4422
+                    Height =360
+                    TabIndex =32
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtSupplierQuoteReference"
+                    ControlSource ="SupplierQuoteReference"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xfa09947ffb9a0f45b4bf4a28fada6dd9
+                    End
+
+                    LayoutCachedLeft =17418
+                    LayoutCachedTop =2460
+                    LayoutCachedWidth =21840
+                    LayoutCachedHeight =2820
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            TextFontFamily =34
+                            Left =14460
+                            Top =2460
+                            Width =2844
+                            Height =324
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label100"
+                            Caption =" Supplier Quote Reference"
+                            GUID = Begin
+                                0x64a7d4304cea874696d2d2d4eecaf18d
+                            End
+                            LayoutCachedLeft =14460
+                            LayoutCachedTop =2460
+                            LayoutCachedWidth =17304
+                            LayoutCachedHeight =2784
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =10470
+                    Top =4740
+                    Width =3690
+                    Height =360
+                    TabIndex =33
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtFreightAmount"
+                    ControlSource ="FreightAmount"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xf5837d56a7af284fab7ddb314965264d
+                    End
+
+                    LayoutCachedLeft =10470
+                    LayoutCachedTop =4740
+                    LayoutCachedWidth =14160
+                    LayoutCachedHeight =5100
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            TextFontFamily =34
+                            Left =7800
+                            Top =4740
+                            Width =2580
+                            Height =312
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Freight Amount"
+                            Caption ="Ship Via"
+                            EventProcPrefix ="Freight_Amount"
+                            GUID = Begin
+                                0x5e06dcbb79508a4e813fd0e19b959042
+                            End
+                            LayoutCachedLeft =7800
+                            LayoutCachedTop =4740
+                            LayoutCachedWidth =10380
+                            LayoutCachedHeight =5052
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin Subform
+                    OverlapFlags =215
+                    Left =480
+                    Top =6780
+                    Width =16800
+                    Height =9876
+                    TabIndex =34
+                    Name ="SF_SupplierPOLines"
+                    SourceObject ="Form.SF_SupplierPOLines"
+                    LinkChildFields ="SupplierPOID"
+                    LinkMasterFields ="SupplierPOID"
+                    GUID = Begin
+                        0xb498eac06eee0a4aa6730df14bab5a3b
+                    End
+
+                    LayoutCachedLeft =480
+                    LayoutCachedTop =6780
+                    LayoutCachedWidth =17280
+                    LayoutCachedHeight =16656
+                    Begin
+                        Begin Label
+                            OverlapFlags =93
+                            Left =480
+                            Top =6540
+                            Width =2076
+                            Height =324
+                            Name ="SF_SupplierPOLines Label"
+                            Caption ="SF_SupplierPOLines"
+                            EventProcPrefix ="SF_SupplierPOLines_Label"
+                            GUID = Begin
+                                0x33b833ef0b407845859baae69ed0a5bd
+                            End
+                            LayoutCachedLeft =480
+                            LayoutCachedTop =6540
+                            LayoutCachedWidth =2556
+                            LayoutCachedHeight =6864
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =14482166
+            Name ="FormFooter"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0xae6d0ce6edaff8499fabf02d2b00acf0
+            End
+            AutoHeight =1
+            AlternateBackShade =95.0
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+Private Const LINE_SUBFORM As String = "SF_SupplierPOLines"
+Private Const SUPPLIER_SETUP_FORM As String = "F_SupplierSetup"
+Private Const LOCATION_SETUP_FORM As String = "F_LocationSetup"
+Private Const GOODS_RECEIPT_FORM As String = "F_GoodsReceipt"
+
+
+
+'=============================================================
+' FORM EVENTS
+'=============================================================
+Private Sub Form_Load()
+
+    On Error GoTo Err_Handler
+
+    ConfigureFormControls
+    ConfigureComboBoxes
+    ConfigureLineSubform
+    RefreshWorkflowState
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The Supplier PO form could not be initialized." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Supplier Purchase Order"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_Current()
+
+    On Error GoTo Err_Handler
+
+    ConfigureLineSubform
+
+    If Not Me.NewRecord Then
+        RecalculatePOTotals
+    End If
+
+    RefreshWorkflowState
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The Supplier PO record could not be displayed." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Supplier Purchase Order"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_BeforeInsert(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    If Len(Trim$(Nz(Me.txtPONumber, vbNullString))) = 0 Then
+        Me.txtPONumber = NextSupplierPONumber()
+    End If
+
+    If IsNull(Me.txtPODate) Then
+        Me.txtPODate = Date
+    End If
+
+    If Len(Trim$(Nz(Me.cboPOType, vbNullString))) = 0 Then
+        Me.cboPOType = "Original"
+    End If
+
+    If Len(Trim$(Nz(Me.cboPOStatus, vbNullString))) = 0 Then
+        Me.cboPOStatus = "Draft"
+    End If
+
+    If IsNull(Me.chkPrepaidFreight) Then
+        Me.chkPrepaidFreight = False
+    End If
+
+    If IsNull(Me.txtSubtotalAmount) Then
+        Me.txtSubtotalAmount = 0
+    End If
+
+    If IsNull(Me.txtFreightAmount) Then
+        Me.txtFreightAmount = 0
+    End If
+
+    If IsNull(Me.txtTaxAmount) Then
+        Me.txtTaxAmount = 0
+    End If
+
+    If IsNull(Me.txtTotalAmount) Then
+        Me.txtTotalAmount = 0
+    End If
+
+    If IsNull(Me.cboCurrencyID) Then
+        If DCount("*", "T_Currencies") = 1 Then
+            Me.cboCurrencyID = DLookup("CurrencyID", "T_Currencies")
+        End If
+    End If
+
+    If IsNull(Me.txtCreatedOn) Then
+        Me.txtCreatedOn = Now()
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Cancel = True
+    MsgBox _
+        "The new Supplier PO could not be started." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "New Supplier PO"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_BeforeUpdate(Cancel As Integer)
+    UX_CoerceBooleans Me
+
+    On Error GoTo Err_Handler
+
+    NormalizeHeaderValues
+
+    If Not ValidateBasicHeader Then
+        Cancel = True
+        Exit Sub
+    End If
+
+    If IsNull(Me.txtCreatedOn) Then
+        Me.txtCreatedOn = Now()
+    End If
+
+    Me.txtUpdatedOn = Now()
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Cancel = True
+    MsgBox _
+        "The Supplier PO header could not be validated." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Supplier PO Validation"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_AfterUpdate()
+
+    On Error Resume Next
+
+    ConfigureLineSubform
+    Me.Controls(LINE_SUBFORM).Form.Requery
+    RefreshWorkflowState
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub Form_Error(DataErr As Integer, Response As Integer)
+    Dim uxHandled As Boolean
+    UX_SuppressFormError DataErr, Response, uxHandled
+    If uxHandled Then Exit Sub
+
+    Select Case DataErr
+
+        Case 3022
+            MsgBox _
+                "That Supplier PO number already exists." & _
+                vbCrLf & _
+                "A new PO number will be generated when you try again.", _
+                vbExclamation, _
+                "Duplicate Supplier PO"
+
+            If Me.NewRecord Then
+                On Error Resume Next
+                Me.txtPONumber = NextSupplierPONumber()
+                On Error GoTo 0
+            End If
+
+            Response = acDataErrContinue
+
+        Case 3314
+            MsgBox _
+                "A required Supplier PO field is missing.", _
+                vbExclamation, _
+                "Incomplete Supplier PO"
+
+            Response = acDataErrContinue
+
+        Case Else
+            Response = acDataErrDisplay
+
+    End Select
+
+End Sub
+
+'=============================================================
+' SUPPLIER EVENTS
+'=============================================================
+Private Sub cboSupplierID_BeforeUpdate(Cancel As Integer)
+
+    On Error GoTo Exit_Handler
+
+    If Nz(Me.txtSupplierPOID, 0) <= 0 Then
+        Exit Sub
+    End If
+
+    If Nz(Me.cboSupplierID.OldValue, 0) <= 0 Then
+        Exit Sub
+    End If
+
+    If Nz(Me.cboSupplierID.OldValue, 0) = _
+       Nz(Me.cboSupplierID.value, 0) Then
+        Exit Sub
+    End If
+
+    If DCount( _
+        "*", _
+        "T_SupplierPOLines", _
+        "SupplierPOID=" & CLng(Me.txtSupplierPOID)) > 0 Then
+
+        If MsgBox( _
+            "This PO already contains item lines." & _
+            vbCrLf & vbCrLf & _
+            "Changing the supplier can make existing supplier part " & _
+            "numbers and suggested prices incorrect." & _
+            vbCrLf & vbCrLf & _
+            "Continue changing the supplier?", _
+            vbQuestion + vbYesNo + vbDefaultButton2, _
+            "Change Supplier") <> vbYes Then
+
+            Cancel = True
+        End If
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+End Sub
+
+
+Private Sub cboSupplierID_AfterUpdate()
+
+    On Error GoTo Err_Handler
+
+    If Nz(Me.cboSupplierID, 0) <= 0 Then
+        Exit Sub
+    End If
+
+    If Len(Trim$(Nz(Me.txtPaymentTerms, vbNullString))) = 0 Then
+        Me.txtPaymentTerms = Nz(DLookup( _
+            "PaymentTerms", _
+            "T_Suppliers", _
+            "SupplierID=" & CLng(Me.cboSupplierID)), _
+            vbNullString)
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The supplier defaults could not be loaded." & _
+        vbCrLf & vbCrLf & Err.Description, _
+        vbExclamation, _
+        "Supplier Purchase Order"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cboSupplierID_NotInList( _
+    NewData As String, _
+    Response As Integer _
+)
+
+    Response = acDataErrContinue
+
+    If HandleComboNotInList( _
+        Me.cboSupplierID, _
+        NewData, _
+        SUPPLIER_SETUP_FORM, _
+        "T_Suppliers", _
+        "SupplierID", _
+        "CompanyName", _
+        "SupplierCode") Then
+
+        Response = acDataErrAdded
+    Else
+        On Error Resume Next
+        Me.cboSupplierID.Undo
+        On Error GoTo 0
+    End If
+
+End Sub
+
+
+Private Sub cboSupplierID_DblClick(Cancel As Integer)
+
+    Cancel = True
+
+    If Nz(Me.cboSupplierID, 0) > 0 Then
+        EditComboEntry _
+            Me.cboSupplierID, _
+            SUPPLIER_SETUP_FORM, _
+            "SupplierID"
+    Else
+        AddComboEntry _
+            Me.cboSupplierID, _
+            SUPPLIER_SETUP_FORM, _
+            "T_Suppliers", _
+            "SupplierID"
+    End If
+
+End Sub
+
+'=============================================================
+' DELIVERY LOCATION EVENTS
+'=============================================================
+Private Sub cboDeliveryLocationID_AfterUpdate()
+
+    On Error GoTo Err_Handler
+
+    Dim WarehouseID As Variant
+
+    If Nz(Me.cboDeliveryLocationID, 0) <= 0 Then
+        Exit Sub
+    End If
+
+    WarehouseID = DLookup( _
+        "WarehouseID", _
+        "T_Locations", _
+        "LocationID=" & CLng(Me.cboDeliveryLocationID))
+
+    If IsNull(WarehouseID) Then
+        Exit Sub
+    End If
+
+    If Len(Trim$(Nz(Me.txtShipToName, vbNullString))) = 0 Then
+        Me.txtShipToName = Nz(DLookup( _
+            "WarehouseName", _
+            "T_Warehouses", _
+            "WarehouseID=" & CLng(WarehouseID)), _
+            vbNullString)
+    End If
+
+    If Len(Trim$(Nz(Me.txtShipToAddress, vbNullString))) = 0 Then
+        Me.txtShipToAddress = Nz(DLookup( _
+            "Address", _
+            "T_Warehouses", _
+            "WarehouseID=" & CLng(WarehouseID)), _
+            vbNullString)
+    End If
+
+    If Len(Trim$(Nz( _
+        Me.txtShipToContactName, _
+        vbNullString))) = 0 Then
+
+        Me.txtShipToContactName = Nz(DLookup( _
+            "ContactPerson", _
+            "T_Warehouses", _
+            "WarehouseID=" & CLng(WarehouseID)), _
+            vbNullString)
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The delivery-location details could not be loaded." & _
+        vbCrLf & vbCrLf & Err.Description, _
+        vbExclamation, _
+        "Supplier PO Delivery"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cboDeliveryLocationID_NotInList( _
+    NewData As String, _
+    Response As Integer _
+)
+
+    Response = acDataErrContinue
+
+    If HandleComboNotInList( _
+        Me.cboDeliveryLocationID, _
+        NewData, _
+        LOCATION_SETUP_FORM, _
+        "T_Locations", _
+        "LocationID", _
+        "LocationName", _
+        "LocationCode") Then
+
+        Response = acDataErrAdded
+    Else
+        On Error Resume Next
+        Me.cboDeliveryLocationID.Undo
+        On Error GoTo 0
+    End If
+
+End Sub
+
+
+Private Sub cboDeliveryLocationID_DblClick(Cancel As Integer)
+
+    Cancel = True
+
+    If Nz(Me.cboDeliveryLocationID, 0) > 0 Then
+        EditComboEntry _
+            Me.cboDeliveryLocationID, _
+            LOCATION_SETUP_FORM, _
+            "LocationID"
+    Else
+        AddComboEntry _
+            Me.cboDeliveryLocationID, _
+            LOCATION_SETUP_FORM, _
+            "T_Locations", _
+            "LocationID"
+    End If
+
+End Sub
+
+'=============================================================
+' SUBFORM EVENT
+'=============================================================
+Private Sub SF_SupplierPOLines_Enter()
+
+    If Not SaveCurrentPO Then
+        On Error Resume Next
+        Me.cboSupplierID.SetFocus
+        On Error GoTo 0
+    End If
+
+End Sub
+
+'=============================================================
+' AMOUNT EVENT
+'=============================================================
+Private Sub txtFreightAmount_AfterUpdate()
+
+    RecalculatePOTotals
+
+End Sub
+
+'=============================================================
+' BUTTON EVENTS
+'=============================================================
+Private Sub cmdNewPO_Click()
+
+    On Error GoTo Err_Handler
+
+    If Not SaveLineSubformIfDirty Then
+        Exit Sub
+    End If
+
+    If Me.Dirty Then
+        If Not SaveCurrentPO Then
+            Exit Sub
+        End If
+    End If
+
+    DoCmd.GoToRecord , , acNewRec
+    RefreshWorkflowState
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "A new Supplier PO could not be opened." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "New Supplier PO"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cmdSavePO_Click()
+
+    On Error GoTo Err_Handler
+
+    If Not SaveCurrentPO Then
+        Exit Sub
+    End If
+
+    If Not SaveLineSubformIfDirty Then
+        Exit Sub
+    End If
+
+    RecalculatePOTotals
+
+    If Me.Dirty Then
+        Me.Dirty = False
+    End If
+
+    RefreshWorkflowState
+
+    MsgBox _
+        "Supplier PO saved successfully.", _
+        vbInformation, _
+        "Supplier PO Saved"
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The Supplier PO could not be saved." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Supplier PO Save Failed"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cmdSendPO_Click()
+
+    On Error GoTo Err_Handler
+
+    If Not SaveCurrentPO Then
+        Exit Sub
+    End If
+
+    If Not SaveLineSubformIfDirty Then
+        Exit Sub
+    End If
+
+    RecalculatePOTotals
+
+    If Me.Dirty Then
+        Me.Dirty = False
+    End If
+
+    If Not ValidatePOForSending Then
+        Exit Sub
+    End If
+
+    If MsgBox( _
+        "Mark PO " & Nz(Me.txtPONumber, vbNullString) & _
+        " as sent to the supplier?" & _
+        vbCrLf & vbCrLf & _
+        "This step records the sent status. PDF preview and email " & _
+        "delivery will be connected after the PO report is built.", _
+        vbQuestion + vbYesNo + vbDefaultButton2, _
+        "Mark Supplier PO as Sent") <> vbYes Then
+
+        Exit Sub
+    End If
+
+    Me.cboPOStatus = "Sent"
+    Me.txtSentOn = Now()
+    Me.txtUpdatedOn = Now()
+
+    If Me.Dirty Then
+        Me.Dirty = False
+    End If
+
+    RefreshWorkflowState
+
+    MsgBox _
+        "The Supplier PO has been marked as Sent." & _
+        vbCrLf & vbCrLf & _
+        "No email was sent during this step.", _
+        vbInformation, _
+        "Supplier PO Sent Status"
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The Supplier PO could not be marked as Sent." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Supplier PO"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cmdReceiveGoods_Click()
+
+    On Error GoTo Err_Handler
+
+    Dim SupplierPOID As Long
+    Dim POStatus As String
+
+    If Not SaveCurrentPO Then
+        Exit Sub
+    End If
+
+    SupplierPOID = CurrentSupplierPOID()
+    POStatus = Trim$(Nz(Me.cboPOStatus, vbNullString))
+
+    If POStatus <> "Sent" And _
+       POStatus <> "Partially Received" Then
+
+        MsgBox _
+            "Only a Sent or Partially Received Supplier PO can " & _
+            "be received.", _
+            vbInformation, _
+            "Supplier PO Not Ready"
+        Exit Sub
+    End If
+
+    If Not FormExists(GOODS_RECEIPT_FORM) Then
+        MsgBox _
+            "The Goods Receipt form has not been created yet." & _
+            vbCrLf & _
+            "It is the next implementation step.", _
+            vbInformation, _
+            "Goods Receipt"
+        Exit Sub
+    End If
+
+    DoCmd.OpenForm _
+        formName:=GOODS_RECEIPT_FORM, _
+        View:=acNormal, _
+        OpenArgs:="SupplierPOID=" & SupplierPOID
+
+    Exit Sub ' <--- Added to stop successful runs from falling into the error handler
+
+Err_Handler:
+    MsgBox _
+        "The Goods Receipt screen could not be opened." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Receive Supplier PO"
+        
+Exit_Handler:
+    Exit Sub ' <--- Added the missing label definition
+
+End Sub
+
+
+Private Sub cmdClose_Click()
+
+    On Error GoTo Err_Handler
+
+    If Not SaveLineSubformIfDirty Then
+        Exit Sub
+    End If
+
+    If Me.Dirty Then
+        If Not SaveCurrentPO Then
+            Exit Sub
+        End If
+    End If
+
+    DoCmd.close acForm, Me.Name, acSaveNo
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The Supplier PO form could not be closed." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Close Supplier PO"
+    Resume Exit_Handler
+
+End Sub
+
+'=============================================================
+' PUBLIC TOTAL RECALCULATION USED BY THE LINE SUBFORM
+'=============================================================
+Public Sub RecalculatePOTotals()
+
+    On Error GoTo Err_Handler
+
+    Dim SupplierPOID As Long
+    Dim calculatedSubtotal As Currency
+    Dim calculatedTax As Currency
+    Dim FreightAmount As Currency
+    Dim calculatedTotal As Currency
+
+    SupplierPOID = CurrentSupplierPOID()
+
+    If SupplierPOID > 0 Then
+        calculatedSubtotal = Nz(DLookup( _
+            "CalculatedSubtotal", _
+            "Q_SupplierPOLineTotals", _
+            "SupplierPOID=" & SupplierPOID), 0)
+
+        calculatedTax = Nz(DLookup( _
+            "CalculatedTax", _
+            "Q_SupplierPOLineTotals", _
+            "SupplierPOID=" & SupplierPOID), 0)
+    End If
+
+    FreightAmount = Nz(Me.txtFreightAmount, 0)
+    calculatedTotal = _
+        calculatedSubtotal + calculatedTax + FreightAmount
+
+    SetCurrencyIfDifferent _
+        Me.txtSubtotalAmount, _
+        calculatedSubtotal
+
+    SetCurrencyIfDifferent _
+        Me.txtTaxAmount, _
+        calculatedTax
+
+    SetCurrencyIfDifferent _
+        Me.txtTotalAmount, _
+        calculatedTotal
+
+    Me.Recalc
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The Supplier PO totals could not be recalculated." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Supplier PO Totals"
+    Resume Exit_Handler
+
+End Sub
+
+'=============================================================
+' FORM CONFIGURATION
+'=============================================================
+Private Sub ConfigureFormControls()
+
+    Me.txtSupplierPOID.Visible = False
+    Me.txtSupplierPOID.Enabled = False
+    Me.txtSupplierPOID.Locked = True
+
+    Me.txtPONumber.Locked = True
+    Me.txtPONumber.TabStop = False
+
+    Me.txtSubtotalAmount.Locked = True
+    Me.txtSubtotalAmount.TabStop = False
+
+    Me.txtTaxAmount.Locked = True
+    Me.txtTaxAmount.TabStop = False
+
+    Me.txtTotalAmount.Locked = True
+    Me.txtTotalAmount.TabStop = False
+
+    Me.cboPOStatus.Locked = True
+    Me.cboPOStatus.TabStop = False
+
+    Me.txtSentOn.Locked = True
+    Me.txtSentOn.TabStop = False
+
+    Me.txtCreatedOn.Visible = False
+    Me.txtUpdatedOn.Visible = False
+    Me.txtCreatedByUserID.Visible = False
+
+    Me.txtNOtes.EnterKeyBehavior = True
+    Me.txtNOtes.ScrollBars = 2
+
+    Me.txtPODate.defaultValue = "=Date()"
+    Me.cboPOType.defaultValue = """Original"""
+    Me.cboPOStatus.defaultValue = """Draft"""
+    Me.chkPrepaidFreight.defaultValue = "False"
+    Me.txtSubtotalAmount.defaultValue = "0"
+    Me.txtFreightAmount.defaultValue = "0"
+    Me.txtTaxAmount.defaultValue = "0"
+    Me.txtTotalAmount.defaultValue = "0"
+
+End Sub
+
+
+Private Sub ConfigureComboBoxes()
+
+    With Me.cboSupplierID
+        .RowSourceType = "Table/Query"
+        .RowSource = _
+            "SELECT SupplierID, CompanyName, SupplierCode, " & _
+            "ContactPerson, Email " & _
+            "FROM T_Suppliers " & _
+            "ORDER BY CompanyName, SupplierCode;"
+        .BoundColumn = 1
+        .ColumnCount = 5
+        .ColumnWidths = "0cm;6cm;3cm;4cm;5cm"
+        .LimitToList = True
+        .AutoExpand = True
+    End With
+
+    With Me.cboDeliveryLocationID
+        .RowSourceType = "Table/Query"
+        .RowSource = _
+            "SELECT L.LocationID, L.LocationName, " & _
+            "L.LocationCode, W.WarehouseName, " & _
+            "L.BinNumber, L.ShelfNumber " & _
+            "FROM T_Warehouses AS W INNER JOIN T_Locations AS L " & _
+            "ON W.WarehouseID=L.WarehouseID " & _
+            "ORDER BY W.WarehouseName, L.LocationName;"
+        .BoundColumn = 1
+        .ColumnCount = 6
+        .ColumnWidths = "0cm;5cm;3cm;4cm;2cm;2cm"
+        .LimitToList = True
+        .AutoExpand = True
+    End With
+
+    With Me.cboCurrencyID
+        .RowSourceType = "Table/Query"
+        .RowSource = _
+            "SELECT CurrencyID, CurrencyCode " & _
+            "FROM T_Currencies " & _
+            "ORDER BY CurrencyCode;"
+        .BoundColumn = 1
+        .ColumnCount = 2
+        .ColumnWidths = "0cm;3cm"
+        .LimitToList = True
+        .AutoExpand = True
+    End With
+
+    With Me.cboPOType
+        .RowSourceType = "Value List"
+        .RowSource = _
+            "Original;Change Order;Revision;Blanket;Release"
+        .BoundColumn = 1
+        .ColumnCount = 1
+        .LimitToList = True
+        .AutoExpand = True
+    End With
+
+    With Me.cboPOStatus
+        .RowSourceType = "Value List"
+        .RowSource = _
+            "Draft;Sent;Partially Received;Received;Closed;Cancelled"
+        .BoundColumn = 1
+        .ColumnCount = 1
+        .LimitToList = True
+        .AutoExpand = True
+    End With
+
+End Sub
+
+
+Private Sub ConfigureLineSubform()
+
+    On Error GoTo Err_Handler
+
+    With Me.Controls(LINE_SUBFORM)
+        If .SourceObject <> "Form.SF_SupplierPOLines" Then
+            .SourceObject = "Form.SF_SupplierPOLines"
+        End If
+        .LinkMasterFields = "txtSupplierPOID"
+        .LinkChildFields = "SupplierPOID"
+        .Enabled = True
+        .Locked = False
+    End With
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Err.Raise _
+        Err.Number, _
+        "ConfigureLineSubform", _
+        "Confirm that the subform control is named '" & _
+        LINE_SUBFORM & "'." & vbCrLf & Err.Description
+
+End Sub
+
+
+Private Sub RefreshWorkflowState()
+
+    On Error Resume Next
+
+    Dim POStatus As String
+    Dim canEdit As Boolean
+    Dim hasSavedPO As Boolean
+
+    POStatus = Trim$(Nz(Me.cboPOStatus, "Draft"))
+    hasSavedPO = (CurrentSupplierPOID() > 0)
+
+    canEdit = _
+        Me.NewRecord Or _
+        POStatus = "Draft"
+
+    Me.cboSupplierID.Locked = Not canEdit
+    Me.txtPODate.Locked = Not canEdit
+    Me.txtPORevisionDate.Locked = Not canEdit
+    Me.cboPOType.Locked = Not canEdit
+    Me.txtExpectedDeliveryDate.Locked = Not canEdit
+    Me.cboDeliveryLocationID.Locked = Not canEdit
+    Me.cboCurrencyID.Locked = Not canEdit
+    Me.txtPaymentTerms.Locked = Not canEdit
+    Me.txtShipVia.Locked = Not canEdit
+    Me.chkPrepaidFreight.Locked = Not canEdit
+    Me.txtResaleNo.Locked = Not canEdit
+    Me.txtSupplierQuoteReference.Locked = Not canEdit
+    Me.txtShipToName.Locked = Not canEdit
+    Me.txtShipToAddress.Locked = Not canEdit
+    Me.txtShipToContactName.Locked = Not canEdit
+    Me.txtShipToPhone.Locked = Not canEdit
+    Me.txtShipToEmail.Locked = Not canEdit
+    Me.txtAuthorizedBy.Locked = Not canEdit
+    Me.txtAuthorizedByEmail.Locked = Not canEdit
+    Me.txtFreightAmount.Locked = Not canEdit
+    Me.txtNOtes.Locked = Not canEdit
+
+    With Me.Controls(LINE_SUBFORM).Form
+        .AllowAdditions = canEdit
+        .AllowEdits = canEdit
+        .AllowDeletions = canEdit
+    End With
+
+    Me.cmdSavePO.Enabled = canEdit
+    Me.cmdSendPO.Enabled = hasSavedPO And POStatus = "Draft"
+
+    Me.cmdReceiveGoods.Enabled = _
+        hasSavedPO And _
+        (POStatus = "Sent" Or _
+         POStatus = "Partially Received")
+
+    If POStatus = "Sent" Then
+        Me.cmdSendPO.Caption = "PO Marked Sent"
+    Else
+        Me.cmdSendPO.Caption = "Mark as Sent"
+    End If
+
+    On Error GoTo 0
+
+End Sub
+
+'=============================================================
+' VALIDATION
+'=============================================================
+Private Function ValidateBasicHeader() As Boolean
+
+    ValidateBasicHeader = False
+
+    If Len(Trim$(Nz(Me.txtPONumber, vbNullString))) = 0 Then
+        Me.txtPONumber = NextSupplierPONumber()
+    End If
+
+    If DCount( _
+        "*", _
+        "T_SupplierPOs", _
+        "PONumber='" & _
+        Replace(Me.txtPONumber, "'", "''") & _
+        "' AND SupplierPOID<>" & _
+        Nz(Me.txtSupplierPOID, 0)) > 0 Then
+
+        MsgBox _
+            "Supplier PO number '" & Me.txtPONumber & _
+            "' already exists.", _
+            vbExclamation, _
+            "Duplicate Supplier PO"
+        Exit Function
+    End If
+
+    If Nz(Me.cboSupplierID, 0) <= 0 Then
+        MsgBox _
+            "Select the supplier for this purchase order.", _
+            vbExclamation, _
+            "Supplier Required"
+        Me.cboSupplierID.SetFocus
+        Exit Function
+    End If
+
+    If IsNull(Me.txtPODate) Then
+        MsgBox _
+            "Enter the PO date.", _
+            vbExclamation, _
+            "PO Date Required"
+        Me.txtPODate.SetFocus
+        Exit Function
+    End If
+
+    If Not IsNull(Me.txtExpectedDeliveryDate) Then
+        If CDate(Me.txtExpectedDeliveryDate) < _
+           CDate(Me.txtPODate) Then
+
+            MsgBox _
+                "Expected Delivery Date cannot be earlier than " & _
+                "the PO Date.", _
+                vbExclamation, _
+                "Invalid Delivery Date"
+            Me.txtExpectedDeliveryDate.SetFocus
+            Exit Function
+        End If
+    End If
+
+    If Nz(Me.txtFreightAmount, 0) < 0 Then
+        MsgBox _
+            "Freight Amount cannot be negative.", _
+            vbExclamation, _
+            "Invalid Freight Amount"
+        Me.txtFreightAmount.SetFocus
+        Exit Function
+    End If
+
+    ValidateBasicHeader = True
+
+End Function
+
+
+Private Function ValidatePOForSending() As Boolean
+
+    Dim SupplierPOID As Long
+
+    ValidatePOForSending = False
+    SupplierPOID = CurrentSupplierPOID()
+
+    If SupplierPOID <= 0 Then
+        Exit Function
+    End If
+
+    If DCount( _
+        "*", _
+        "T_SupplierPOLines", _
+        "SupplierPOID=" & SupplierPOID & _
+        " AND Nz([LineStatus],'Open')<>'Cancelled'") = 0 Then
+
+        MsgBox _
+            "Add at least one active item line before sending the PO.", _
+            vbExclamation, _
+            "PO Lines Required"
+        Exit Function
+    End If
+
+    If Nz(Me.cboDeliveryLocationID, 0) <= 0 Then
+        MsgBox _
+            "Select the delivery location before sending the PO.", _
+            vbExclamation, _
+            "Delivery Location Required"
+        Me.cboDeliveryLocationID.SetFocus
+        Exit Function
+    End If
+
+    If Nz(Me.cboCurrencyID, 0) <= 0 Then
+        MsgBox _
+            "Select the PO currency before sending it.", _
+            vbExclamation, _
+            "Currency Required"
+        Me.cboCurrencyID.SetFocus
+        Exit Function
+    End If
+
+    If Len(Trim$(Nz(Me.txtShipToName, vbNullString))) = 0 Then
+        MsgBox _
+            "Enter the Ship To name before sending the PO.", _
+            vbExclamation, _
+            "Ship To Required"
+        Me.txtShipToName.SetFocus
+        Exit Function
+    End If
+
+    If Len(Trim$(Nz(Me.txtShipToAddress, vbNullString))) = 0 Then
+        MsgBox _
+            "Enter the Ship To address before sending the PO.", _
+            vbExclamation, _
+            "Ship To Address Required"
+        Me.txtShipToAddress.SetFocus
+        Exit Function
+    End If
+
+    If Len(Trim$(Nz(Me.txtAuthorizedBy, vbNullString))) = 0 Then
+        MsgBox _
+            "Enter the person authorizing this PO.", _
+            vbExclamation, _
+            "Authorization Required"
+        Me.txtAuthorizedBy.SetFocus
+        Exit Function
+    End If
+
+    ValidatePOForSending = True
+
+End Function
+
+
+Private Sub NormalizeHeaderValues()
+
+    NormalizeTextControl "txtPONumber"
+    NormalizeTextControl "txtPaymentTerms"
+    NormalizeTextControl "txtShipVia"
+    NormalizeTextControl "txtResaleNo"
+    NormalizeTextControl "txtSupplierQuoteReference"
+    NormalizeTextControl "txtShipToName"
+    NormalizeTextControl "txtShipToAddress"
+    NormalizeTextControl "txtShipToContactName"
+    NormalizeTextControl "txtShipToPhone"
+    NormalizeTextControl "txtShipToEmail"
+    NormalizeTextControl "txtAuthorizedBy"
+    NormalizeTextControl "txtAuthorizedByEmail"
+
+    If Len(Trim$(Nz(Me.cboPOType, vbNullString))) = 0 Then
+        Me.cboPOType = "Original"
+    End If
+
+    If Len(Trim$(Nz(Me.cboPOStatus, vbNullString))) = 0 Then
+        Me.cboPOStatus = "Draft"
+    End If
+
+    If IsNull(Me.txtFreightAmount) Then
+        Me.txtFreightAmount = 0
+    End If
+
+End Sub
+
+'=============================================================
+' SAVE AND SUBFORM HELPERS
+'=============================================================
+Private Function SaveCurrentPO() As Boolean
+
+    On Error GoTo Err_Handler
+
+    SaveCurrentPO = False
+
+    If Me.NewRecord And Not Me.Dirty Then
+        MsgBox _
+            "Select a supplier before saving the purchase order.", _
+            vbInformation, _
+            "Supplier PO"
+        Exit Function
+    End If
+
+    If Me.Dirty Then
+        Me.Dirty = False
+    End If
+
+    SaveCurrentPO = (CurrentSupplierPOID() > 0)
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    MsgBox _
+        "The Supplier PO header could not be saved." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Supplier PO Save"
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function SaveLineSubformIfDirty() As Boolean
+
+    On Error GoTo Err_Handler
+
+    SaveLineSubformIfDirty = True
+
+    With Me.Controls(LINE_SUBFORM).Form
+        If .Dirty Then
+            .Dirty = False
+        End If
+    End With
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    SaveLineSubformIfDirty = False
+    MsgBox _
+        "The current Supplier PO line could not be saved." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Supplier PO Line"
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function CurrentSupplierPOID() As Long
+
+    On Error GoTo Exit_Handler
+
+    CurrentSupplierPOID = Nz(Me.txtSupplierPOID, 0)
+
+Exit_Handler:
+    Exit Function
+
+End Function
+
+'=============================================================
+' PO NUMBER GENERATION
+'=============================================================
+Private Function NextSupplierPONumber() As String
+
+    On Error GoTo Err_Handler
+
+    Dim rs As DAO.Recordset
+    Dim existingNumber As String
+    Dim numericPart As Long
+    Dim maximumNumber As Long
+    Dim candidate As String
+
+    Set rs = CurrentDb.OpenRecordset( _
+        "SELECT PONumber " & _
+        "FROM T_SupplierPOs " & _
+        "WHERE PONumber Like 'SPO-*';", _
+        dbOpenSnapshot)
+
+    Do While Not rs.EOF
+
+        existingNumber = Trim$(Nz(rs!PONumber, vbNullString))
+
+        If UCase$(Left$(existingNumber, 4)) = "SPO-" Then
+            numericPart = Val(Mid$(existingNumber, 5))
+
+            If numericPart > maximumNumber Then
+                maximumNumber = numericPart
+            End If
+        End If
+
+        rs.MoveNext
+    Loop
+
+    candidate = "SPO-" & Format$(maximumNumber + 1, "00000")
+
+    Do While DCount( _
+        "*", _
+        "T_SupplierPOs", _
+        "PONumber='" & Replace(candidate, "'", "''") & "'") > 0
+
+        maximumNumber = maximumNumber + 1
+        candidate = "SPO-" & Format$(maximumNumber + 1, "00000")
+    Loop
+
+    NextSupplierPONumber = candidate
+
+Exit_Handler:
+    On Error Resume Next
+    If Not rs Is Nothing Then
+        rs.close
+    End If
+    Set rs = Nothing
+    On Error GoTo 0
+    Exit Function
+
+Err_Handler:
+    NextSupplierPONumber = _
+        "SPO-" & Format$(Nz(DMax( _
+            "SupplierPOID", _
+            "T_SupplierPOs"), 0) + 1, "00000")
+    Resume Exit_Handler
+
+End Function
+
+'=============================================================
+' GENERIC HELPERS
+'=============================================================
+Private Sub SetCurrencyIfDifferent( _
+    ByVal targetControl As Access.Control, _
+    ByVal newValue As Currency _
+)
+
+    If CCur(Nz(targetControl.value, 0)) <> newValue Then
+        targetControl.value = newValue
+    End If
+
+End Sub
+
+
+Private Sub NormalizeTextControl(ByVal controlName As String)
+
+    If Not ControlExists(controlName) Then
+        Exit Sub
+    End If
+
+    With Me.Controls(controlName)
+        If Len(Trim$(Nz(.value, vbNullString))) = 0 Then
+            .value = Null
+        Else
+            .value = Trim$(CStr(.value))
+        End If
+    End With
+
+End Sub
+
+
+Private Function ControlExists(ByVal controlName As String) As Boolean
+
+    On Error GoTo Not_Found
+
+    Dim controlObject As Access.Control
+
+    Set controlObject = Me.Controls(controlName)
+    ControlExists = True
+
+Exit_Handler:
+    Set controlObject = Nothing
+    Exit Function
+
+Not_Found:
+    ControlExists = False
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function FormExists(ByVal formName As String) As Boolean
+
+    On Error GoTo Not_Found
+
+    Dim formObject As AccessObject
+
+    For Each formObject In CurrentProject.AllForms
+        If StrComp( _
+            formObject.Name, _
+            formName, _
+            vbTextCompare) = 0 Then
+
+            FormExists = True
+            Exit Function
+        End If
+    Next formObject
+
+Not_Found:
+    FormExists = False
+
+End Function

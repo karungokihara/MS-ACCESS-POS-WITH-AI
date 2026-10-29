@@ -1,0 +1,2765 @@
+﻿Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+Private Const RECEIPT_ITEM_SUBFORM As String = "SF_GoodsReceiptItems"
+Private Const SUPPLIER_PO_FORM As String = "F_SendPO"
+
+Private Const STATUS_DRAFT As String = "Draft"
+Private mLoadingForm As Boolean
+
+'=============================================================
+' FORM EVENTS
+'=============================================================
+
+Private Sub Form_Load()
+
+    On Error GoTo Err_Handler
+
+    Dim requestedSupplierPOID As Long
+    Dim loadStage As String
+
+    mLoadingForm = True
+
+    loadStage = "Configuring form controls"
+    ConfigureControls
+
+    loadStage = "Configuring the receipt-items subform"
+    ConfigureReceiptSubform
+
+    loadStage = "Reading Supplier PO information"
+    requestedSupplierPOID = _
+        ReadOpenArgLong("SupplierPOID")
+
+    If requestedSupplierPOID > 0 Then
+        loadStage = "Opening or creating the Draft receipt"
+        OpenOrCreateReceiptForPO requestedSupplierPOID
+    End If
+
+    loadStage = "Displaying Supplier PO information"
+    UpdateSupplierPODisplay
+
+    loadStage = "Calculating the receipt summary"
+    RecalculateReceiptSummary
+
+    loadStage = "Applying the receipt workflow state"
+    RefreshWorkflowState
+
+Exit_Handler:
+    mLoadingForm = False
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The Goods Receipt form could not be opened." & _
+        vbCrLf & vbCrLf & _
+        "Stage: " & loadStage & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Goods Receipt"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_Current()
+
+    On Error GoTo Err_Handler
+
+    If mLoadingForm Then
+        Exit Sub
+    End If
+
+    UpdateSupplierPODisplay
+    RecalculateReceiptSummary
+    RefreshWorkflowState
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The Goods Receipt record could not be displayed." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Goods Receipt"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_BeforeInsert(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    InitializeNewReceipt
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Cancel = True
+
+    MsgBox _
+        "The new Goods Receipt could not be initialized." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Goods Receipt"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_BeforeUpdate(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    Dim currentReceiptID As Long
+    Dim SupplierPOID As Long
+    Dim duplicateDraftID As Long
+
+    If Len(Trim$(Nz(Me.txtReceiptNumber, vbNullString))) = 0 Then
+        Me.txtReceiptNumber = NextReceiptNumber()
+    End If
+
+    SupplierPOID = Nz(Me.cboSupplierPOID, 0)
+
+    If SupplierPOID <= 0 Then
+        MsgBox _
+            "Select the Supplier Purchase Order being received.", _
+            vbExclamation, _
+            "Supplier PO Required"
+
+        Cancel = True
+        Exit Sub
+    End If
+
+    If IsNull(Me.txtReceiptDate) Or _
+       Not IsDate(Me.txtReceiptDate) Then
+
+        MsgBox _
+            "Enter a valid receipt date.", _
+            vbExclamation, _
+            "Receipt Date Required"
+
+        Cancel = True
+        Exit Sub
+    End If
+
+    If Len(Trim$(Nz(Me.cboReceiptStatus, vbNullString))) = 0 Then
+        Me.cboReceiptStatus = STATUS_DRAFT
+    End If
+
+    currentReceiptID = Nz(Me.txtGoodsReceiptID, 0)
+
+    duplicateDraftID = Nz(DMax( _
+        "GoodsReceiptID", _
+        "T_GoodsReceipts", _
+        "SupplierPOID=" & SupplierPOID & _
+        " AND ReceiptStatus='Draft'" & _
+        " AND GoodsReceiptID<>" & currentReceiptID), 0)
+
+    If duplicateDraftID > 0 Then
+        MsgBox _
+            "This Supplier PO already has an unfinished Draft receipt." & _
+            vbCrLf & vbCrLf & _
+            "Open receipt ID " & duplicateDraftID & _
+            " instead of creating another Draft receipt.", _
+            vbExclamation, _
+            "Existing Draft Receipt"
+
+        Cancel = True
+        Exit Sub
+    End If
+
+    If IsNull(Me.txtCreatedOn) Then
+        Me.txtCreatedOn = Now()
+    End If
+
+    Me.txtUpdatedOn = Now()
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Cancel = True
+
+    MsgBox _
+        "The Goods Receipt header could not be validated." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Goods Receipt"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub SF_GoodsReceiptItems_Enter()
+
+    On Error GoTo Err_Handler
+
+    If Not SaveReceiptHeader() Then
+        Exit Sub
+    End If
+
+    If DCount( _
+        "*", _
+        "T_GoodsReceiptItems", _
+        "GoodsReceiptID=" & CurrentGoodsReceiptID()) = 0 Then
+
+        LoadOutstandingPOLines False
+
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The receipt lines could not be opened." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Goods Receipt Items"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' SUPPLIER PO EVENTS
+'=============================================================
+
+Private Sub cboSupplierPOID_BeforeUpdate(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    Dim receiptID As Long
+
+    receiptID = CurrentGoodsReceiptID()
+
+    If receiptID > 0 Then
+        If DCount( _
+            "*", _
+            "T_GoodsReceiptItems", _
+            "GoodsReceiptID=" & receiptID) > 0 Then
+
+            MsgBox _
+                "The Supplier PO cannot be changed after receipt " & _
+                "lines have been loaded." & _
+                vbCrLf & vbCrLf & _
+                "Delete or cancel this Draft receipt and start a " & _
+                "new receipt if the wrong PO was selected.", _
+                vbExclamation, _
+                "Supplier PO Locked"
+
+            Cancel = True
+            Exit Sub
+
+        End If
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Cancel = True
+
+    MsgBox _
+        "The Supplier PO selection could not be validated." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Goods Receipt"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cboSupplierPOID_AfterUpdate()
+
+    On Error GoTo Err_Handler
+
+    Dim SupplierPOID As Long
+
+    SupplierPOID = Nz(Me.cboSupplierPOID, 0)
+
+    If SupplierPOID <= 0 Then
+        UpdateSupplierPODisplay
+        Exit Sub
+    End If
+
+    If Not SupplierPOIsReceivable(SupplierPOID) Then
+        MsgBox _
+            "Only a Sent or Partially Received Supplier PO can " & _
+            "be received.", _
+            vbExclamation, _
+            "Supplier PO Not Ready"
+
+        Me.cboSupplierPOID.Undo
+        UpdateSupplierPODisplay
+        Exit Sub
+    End If
+
+    UpdateSupplierPODisplay
+
+    If Not SaveReceiptHeader() Then
+        Exit Sub
+    End If
+
+    LoadOutstandingPOLines False
+
+Exit_Handler:
+    RefreshWorkflowState
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The Supplier PO could not be loaded into this receipt." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Goods Receipt"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cboSupplierPOID_DblClick(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    Dim SupplierPOID As Long
+
+    Cancel = True
+    SupplierPOID = Nz(Me.cboSupplierPOID, 0)
+
+    If SupplierPOID <= 0 Then
+        Exit Sub
+    End If
+
+    DoCmd.OpenForm _
+        FormName:=SUPPLIER_PO_FORM, _
+        View:=acNormal, _
+        WhereCondition:="SupplierPOID=" & SupplierPOID
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The Supplier PO could not be opened." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Supplier Purchase Order"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' BUTTONS
+'=============================================================
+
+Private Sub cmdLoadOutstanding_Click()
+
+    On Error GoTo Err_Handler
+
+    If Not SaveReceiptHeader() Then
+        Exit Sub
+    End If
+
+    LoadOutstandingPOLines True
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The outstanding Supplier PO lines could not be loaded." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Load Outstanding Lines"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cmdSaveReceipt_Click()
+
+    If SaveReceiptHeader() Then
+        RecalculateReceiptSummary
+        RefreshWorkflowState
+
+        MsgBox _
+            "The Draft Goods Receipt has been saved.", _
+            vbInformation, _
+            "Goods Receipt Saved"
+    End If
+
+End Sub
+
+
+Private Sub cmdPostReceipt_Click()
+
+    On Error GoTo Err_Handler
+
+    Dim ws As DAO.Workspace
+    Dim db As DAO.Database
+    Dim receiptItems As DAO.Recordset
+
+    Dim receiptID As Long
+    Dim SupplierPOID As Long
+    Dim performedByUserID As Long
+    Dim MovementTypeID As Long
+
+    Dim ItemID As Long
+    Dim ItemInstanceID As Long
+    Dim StockMovementID As Long
+    Dim LocationID As Long
+    Dim QuantityReceived As Double
+    Dim RequiresSerial As Boolean
+
+    Dim ReceiptDate As Date
+    Dim SerialNumber As String
+    Dim ReferenceDocument As String
+    Dim MovementNotes As String
+    Dim unitCost As Variant
+
+    Dim transactionStarted As Boolean
+    Dim postingCommitted As Boolean
+    Dim postedLineCount As Long
+
+    Dim errorNumber As Long
+    Dim errorDescription As String
+
+    If Not SaveReceiptHeader() Then
+        Exit Sub
+    End If
+
+    If Not SaveReceiptItemsIfDirty() Then
+        Exit Sub
+    End If
+
+    receiptID = CurrentGoodsReceiptID()
+    SupplierPOID = Nz(Me.cboSupplierPOID, 0)
+
+    Set db = CurrentDb
+
+    ValidateReceiptForPosting _
+        db, _
+        receiptID, _
+        SupplierPOID
+
+    If MsgBox( _
+        "Post Goods Receipt " & _
+        Nz(Me.txtReceiptNumber, vbNullString) & "?" & _
+        vbCrLf & vbCrLf & _
+        "This will permanently:" & vbCrLf & _
+        "- add bulk quantities to stock" & vbCrLf & _
+        "- create serialized item instances" & vbCrLf & _
+        "- create stock-movement audit records" & vbCrLf & _
+        "- update the Supplier PO receiving status" & _
+        vbCrLf & vbCrLf & _
+        "This action cannot be posted twice.", _
+        vbQuestion + vbYesNo + vbDefaultButton2, _
+        "Post Goods Receipt") <> vbYes Then
+
+        GoTo Exit_Handler
+    End If
+
+    performedByUserID = CLng(Me.cboReceivedByUserID)
+    ReceiptDate = CDate(Me.txtReceiptDate)
+
+    ReferenceDocument = _
+        Trim$(Nz(DLookup( _
+            "PONumber", _
+            "T_SupplierPOs", _
+            "SupplierPOID=" & SupplierPOID), _
+            vbNullString)) & _
+        " / " & _
+        Trim$(Nz(Me.txtReceiptNumber, vbNullString))
+
+    Set ws = DBEngine.Workspaces(0)
+
+    MovementTypeID = _
+        GetMovementTypeID(db, "STOCK_IN")
+
+    ws.BeginTrans
+    transactionStarted = True
+
+    Set receiptItems = db.OpenRecordset( _
+        "SELECT * " & _
+        "FROM T_GoodsReceiptItems " & _
+        "WHERE GoodsReceiptID=" & receiptID & " " & _
+        "AND Nz(QuantityReceived,0)>0 " & _
+        "ORDER BY GoodsReceiptItemID;", _
+        dbOpenDynaset)
+
+    Do While Not receiptItems.EOF
+
+        ItemID = CLng(receiptItems!ItemID)
+        LocationID = CLng(receiptItems!LocationID)
+        QuantityReceived = _
+            CDbl(receiptItems!QuantityReceived)
+
+        RequiresSerial = _
+            ItemRequiresSerial(db, ItemID)
+
+        SerialNumber = _
+            Trim$(Nz( _
+                receiptItems!SerialNumber, _
+                vbNullString))
+
+        If IsNull(receiptItems!unitCost) Then
+            unitCost = Null
+        Else
+            unitCost = CCur(receiptItems!unitCost)
+        End If
+
+        MovementNotes = BuildReceiptMovementNotes( _
+            Nz(receiptItems!Notes, vbNullString))
+
+        ItemInstanceID = 0
+
+        If RequiresSerial Then
+
+            ItemInstanceID = InsertSerializedInstance( _
+                db, _
+                ItemID, _
+                SerialNumber, _
+                LocationID, _
+                ReceiptDate, _
+                unitCost, _
+                MovementNotes)
+
+        Else
+
+            UpdateBulkStockBalance _
+                db, _
+                ItemID, _
+                LocationID, _
+                QuantityReceived
+
+        End If
+
+        StockMovementID = InsertStockMovement( _
+            db, _
+            ReceiptDate, _
+            ItemID, _
+            ItemInstanceID, _
+            MovementTypeID, _
+            QuantityReceived, _
+            LocationID, _
+            performedByUserID, _
+            "Purchase Receipt", _
+            ReferenceDocument, _
+            MovementNotes, _
+            unitCost)
+
+        receiptItems.Edit
+
+        If ItemInstanceID > 0 Then
+            receiptItems!ItemInstanceID = ItemInstanceID
+        Else
+            receiptItems!ItemInstanceID = Null
+        End If
+
+        receiptItems!StockMovementID = StockMovementID
+        receiptItems!UpdatedOn = Now()
+        receiptItems.Update
+
+        postedLineCount = postedLineCount + 1
+        receiptItems.MoveNext
+
+    Loop
+
+    receiptItems.close
+    Set receiptItems = Nothing
+
+    MarkReceiptAsPosted _
+        db, _
+        receiptID, _
+        performedByUserID
+
+    UpdateSupplierPOLineStatuses _
+        db, _
+        SupplierPOID
+
+    UpdateSupplierPOStatus _
+        db, _
+        SupplierPOID
+
+    ws.CommitTrans
+    transactionStarted = False
+    postingCommitted = True
+
+    On Error Resume Next
+
+    mLoadingForm = True
+    Me.Requery
+    GoToReceipt receiptID
+    mLoadingForm = False
+
+    UpdateSupplierPODisplay
+    RecalculateReceiptSummary
+    RefreshWorkflowState
+
+    If CurrentProject.AllForms(SUPPLIER_PO_FORM).IsLoaded Then
+        Forms(SUPPLIER_PO_FORM).Refresh
+        Forms(SUPPLIER_PO_FORM).Recalc
+    End If
+
+    On Error GoTo Err_Handler
+
+    MsgBox _
+        "Goods Receipt " & _
+        Nz(Me.txtReceiptNumber, vbNullString) & _
+        " has been posted successfully." & _
+        vbCrLf & vbCrLf & _
+        postedLineCount & _
+        " receipt line(s) were added to stock.", _
+        vbInformation, _
+        "Goods Receipt Posted"
+
+Exit_Handler:
+    On Error Resume Next
+
+    If Not receiptItems Is Nothing Then
+        receiptItems.close
+    End If
+
+    Set receiptItems = Nothing
+    Set db = Nothing
+    Set ws = Nothing
+
+    mLoadingForm = False
+
+    On Error GoTo 0
+    Exit Sub
+
+Err_Handler:
+    errorNumber = Err.Number
+    errorDescription = Err.Description
+
+    On Error Resume Next
+
+    If transactionStarted Then
+        ws.Rollback
+    End If
+
+    If Not receiptItems Is Nothing Then
+        receiptItems.close
+    End If
+
+    Set receiptItems = Nothing
+    Set db = Nothing
+    Set ws = Nothing
+
+    mLoadingForm = False
+
+    On Error GoTo 0
+
+    If postingCommitted Then
+        MsgBox _
+            "The Goods Receipt was posted, but the screen could not " & _
+            "be refreshed." & _
+            vbCrLf & vbCrLf & _
+            "Close and reopen the form." & vbCrLf & vbCrLf & _
+            "Error Number: " & errorNumber & vbCrLf & _
+            "Details: " & errorDescription, _
+            vbExclamation, _
+            "Receipt Posted - Refresh Failed"
+    Else
+        MsgBox _
+            "The Goods Receipt was not posted." & _
+            vbCrLf & vbCrLf & _
+            "All stock changes were rolled back." & _
+            vbCrLf & vbCrLf & _
+            "Error Number: " & errorNumber & vbCrLf & _
+            "Details: " & errorDescription, _
+            vbExclamation, _
+            "Goods Receipt Posting"
+    End If
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cmdClose_Click()
+
+    On Error GoTo Err_Handler
+
+    If Me.Dirty Then
+        If Not SaveReceiptHeader() Then
+            Exit Sub
+        End If
+    End If
+
+    DoCmd.close acForm, Me.Name
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The Goods Receipt form could not be closed." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Goods Receipt"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' PUBLIC METHOD CALLED BY SF_GoodsReceiptItems
+'=============================================================
+
+Public Sub RecalculateReceiptSummary()
+
+    On Error GoTo Err_Handler
+
+    Dim receiptID As Long
+    Dim db As DAO.Database
+    Dim rs As DAO.Recordset
+    Dim SqlText As String
+
+    receiptID = CurrentGoodsReceiptID()
+
+    If receiptID <= 0 Then
+        Me.txtLineCount = 0
+        Me.txtTotalQuantity = 0
+        Me.txtReceiptValue = 0
+        Exit Sub
+    End If
+
+    Me.txtLineCount = DCount( _
+        "*", _
+        "T_GoodsReceiptItems", _
+        "GoodsReceiptID=" & receiptID & _
+        " AND Nz(QuantityReceived,0)>0")
+
+    Me.txtTotalQuantity = Nz(DSum( _
+        "QuantityReceived", _
+        "T_GoodsReceiptItems", _
+        "GoodsReceiptID=" & receiptID), 0)
+
+    SqlText = _
+        "SELECT Sum(" & _
+        "Nz(QuantityReceived,0) * Nz(UnitCost,0)" & _
+        ") AS ReceiptValue " & _
+        "FROM T_GoodsReceiptItems " & _
+        "WHERE GoodsReceiptID=" & receiptID & ";"
+
+    Set db = CurrentDb
+    Set rs = db.OpenRecordset(SqlText, dbOpenSnapshot)
+
+    If Not rs.EOF Then
+        Me.txtReceiptValue = Nz(rs!ReceiptValue, 0)
+    Else
+        Me.txtReceiptValue = 0
+    End If
+
+    Me.Recalc
+
+    If Not mLoadingForm Then
+        RefreshWorkflowState
+    End If
+
+Exit_Handler:
+    On Error Resume Next
+
+    If Not rs Is Nothing Then
+        rs.close
+    End If
+
+    Set rs = Nothing
+    Set db = Nothing
+
+    On Error GoTo 0
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The Goods Receipt summary could not be recalculated." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Goods Receipt Summary"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' OPEN OR CREATE RECEIPT
+'=============================================================
+
+Private Sub OpenOrCreateReceiptForPO( _
+    ByVal SupplierPOID As Long _
+)
+
+    On Error GoTo Err_Handler
+
+    Dim existingDraftID As Long
+
+    existingDraftID = Nz(DMax( _
+        "GoodsReceiptID", _
+        "T_GoodsReceipts", _
+        "SupplierPOID=" & SupplierPOID & _
+        " AND ReceiptStatus='Draft'"), 0)
+
+    If existingDraftID > 0 Then
+        GoToReceipt existingDraftID
+
+        If DCount( _
+            "*", _
+            "T_GoodsReceiptItems", _
+            "GoodsReceiptID=" & existingDraftID) = 0 Then
+
+            LoadOutstandingPOLines False
+
+        End If
+
+        Exit Sub
+    End If
+
+    If Not SupplierPOIsReceivable(SupplierPOID) Then
+        MsgBox _
+            "Only a Sent or Partially Received Supplier PO can " & _
+            "be received.", _
+            vbExclamation, _
+            "Supplier PO Not Ready"
+
+        Exit Sub
+    End If
+
+    DoCmd.GoToRecord _
+        ObjectType:=acDataForm, _
+        ObjectName:=Me.Name, _
+        Record:=acNewRec
+
+    InitializeNewReceipt
+    Me.cboSupplierPOID = SupplierPOID
+    UpdateSupplierPODisplay
+
+    If Not SaveReceiptHeader() Then
+        Exit Sub
+    End If
+
+    LoadOutstandingPOLines False
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Err.Raise _
+        Err.Number, _
+        "OpenOrCreateReceiptForPO", _
+        Err.Description
+
+End Sub
+
+
+Private Sub GoToReceipt(ByVal GoodsReceiptID As Long)
+
+    On Error GoTo Err_Handler
+
+    Dim rs As DAO.Recordset
+    Dim errorNumber As Long
+    Dim errorDescription As String
+
+    Set rs = Me.RecordsetClone
+
+    rs.FindFirst _
+        "GoodsReceiptID=" & GoodsReceiptID
+
+    If rs.NoMatch Then
+        Err.Raise _
+            vbObjectError + 7201, _
+            "GoToReceipt", _
+            "Goods Receipt ID " & GoodsReceiptID & _
+            " could not be found."
+    End If
+
+    Me.Bookmark = rs.Bookmark
+
+Exit_Handler:
+    On Error Resume Next
+
+    If Not rs Is Nothing Then
+        rs.close
+    End If
+
+    Set rs = Nothing
+
+    On Error GoTo 0
+    Exit Sub
+
+Err_Handler:
+    errorNumber = Err.Number
+    errorDescription = Err.Description
+
+    On Error Resume Next
+
+    If Not rs Is Nothing Then
+        rs.close
+    End If
+
+    Set rs = Nothing
+
+    On Error GoTo 0
+
+    Err.Raise _
+        errorNumber, _
+        "GoToReceipt", _
+        errorDescription
+
+End Sub
+
+
+'=============================================================
+' LOAD OUTSTANDING SUPPLIER PO LINES
+'=============================================================
+
+Private Sub LoadOutstandingPOLines( _
+    ByVal showCompletionMessage As Boolean _
+)
+
+    On Error GoTo Err_Handler
+
+    Dim ws As DAO.Workspace
+    Dim db As DAO.Database
+    Dim sourceRows As DAO.Recordset
+    Dim targetRows As DAO.Recordset
+
+    Dim receiptID As Long
+    Dim SupplierPOID As Long
+    Dim DefaultLocationID As Long
+
+    Dim SupplierPOLineID As Long
+    Dim ItemID As Long
+    Dim UnitID As Long
+    Dim remainingQuantity As Double
+    Dim RequiresSerial As Boolean
+    Dim serialRowCount As Long
+    Dim rowIndex As Long
+
+    Dim loadedRowCount As Long
+    Dim transactionStarted As Boolean
+
+    Dim sourceSql As String
+    Dim errorNumber As Long
+    Dim errorDescription As String
+
+    receiptID = CurrentGoodsReceiptID()
+    SupplierPOID = Nz(Me.cboSupplierPOID, 0)
+
+    If receiptID <= 0 Or SupplierPOID <= 0 Then
+        MsgBox _
+            "Save the Goods Receipt header and select a Supplier PO first.", _
+            vbExclamation, _
+            "Receipt Header Required"
+        Exit Sub
+    End If
+
+    If Not ReceiptCanBeEdited() Then
+        MsgBox _
+            "Posted or cancelled receipts cannot load additional lines.", _
+            vbExclamation, _
+            "Receipt Locked"
+        Exit Sub
+    End If
+
+    DefaultLocationID = Nz(DLookup( _
+        "DeliveryLocationID", _
+        "T_SupplierPOs", _
+        "SupplierPOID=" & SupplierPOID), 0)
+
+    sourceSql = _
+        "SELECT O.SupplierPOLineID, O.ItemID, " & _
+        "O.UnitID, O.UnitPrice, O.RemainingQuantity, " & _
+        "Nz(I.RequiresSerial,False) AS RequiresSerial " & _
+        "FROM Q_SupplierPOOutstandingLines AS O " & _
+        "INNER JOIN T_Items AS I " & _
+        "ON O.ItemID=I.ItemID " & _
+        "WHERE O.SupplierPOID=" & SupplierPOID & " " & _
+        "AND O.RemainingQuantity>0 " & _
+        "ORDER BY O.SupplierPOLineID;"
+
+    Set ws = DBEngine.Workspaces(0)
+    Set db = CurrentDb
+
+    Set sourceRows = db.OpenRecordset( _
+        sourceSql, _
+        dbOpenSnapshot)
+
+    If sourceRows.EOF Then
+        MsgBox _
+            "This Supplier PO has no outstanding lines to receive.", _
+            vbInformation, _
+            "Nothing Outstanding"
+        GoTo Exit_Handler
+    End If
+
+    Set targetRows = db.OpenRecordset( _
+        "T_GoodsReceiptItems", _
+        dbOpenDynaset)
+
+    ws.BeginTrans
+    transactionStarted = True
+
+    Do While Not sourceRows.EOF
+
+        SupplierPOLineID = _
+            CLng(sourceRows!SupplierPOLineID)
+
+        If DCount( _
+            "*", _
+            "T_GoodsReceiptItems", _
+            "GoodsReceiptID=" & receiptID & _
+            " AND SupplierPOLineID=" & SupplierPOLineID) = 0 Then
+
+            ItemID = CLng(sourceRows!ItemID)
+            UnitID = CLng(sourceRows!UnitID)
+            remainingQuantity = _
+                CDbl(sourceRows!remainingQuantity)
+            RequiresSerial = _
+                Nz(sourceRows!RequiresSerial, False)
+
+            If RequiresSerial Then
+
+                If Abs(remainingQuantity - Fix(remainingQuantity)) _
+                   > 0.0000001 Then
+
+                    Err.Raise _
+                        vbObjectError + 7202, _
+                        "LoadOutstandingPOLines", _
+                        "Serialized item ID " & ItemID & _
+                        " has a non-whole outstanding quantity of " & _
+                        Format$(remainingQuantity, "0.####") & "." & _
+                        vbCrLf & vbCrLf & _
+                        "Serialized PO quantities must be whole numbers."
+
+                End If
+
+                serialRowCount = _
+                    CLng(Fix(remainingQuantity))
+
+                For rowIndex = 1 To serialRowCount
+
+                    AddReceiptItemRow _
+                        targetRows, _
+                        receiptID, _
+                        SupplierPOLineID, _
+                        ItemID, _
+                        UnitID, _
+                        1, _
+                        sourceRows!UnitPrice, _
+                        DefaultLocationID
+
+                    loadedRowCount = loadedRowCount + 1
+
+                Next rowIndex
+
+            Else
+
+                AddReceiptItemRow _
+                    targetRows, _
+                    receiptID, _
+                    SupplierPOLineID, _
+                    ItemID, _
+                    UnitID, _
+                    remainingQuantity, _
+                    sourceRows!UnitPrice, _
+                    DefaultLocationID
+
+                loadedRowCount = loadedRowCount + 1
+
+            End If
+
+        End If
+
+        sourceRows.MoveNext
+
+    Loop
+
+    ws.CommitTrans
+    transactionStarted = False
+
+    Me.Controls(RECEIPT_ITEM_SUBFORM).Form.Requery
+
+    RecalculateReceiptSummary
+    RefreshWorkflowState
+
+    If showCompletionMessage Then
+
+        If loadedRowCount > 0 Then
+            MsgBox _
+                loadedRowCount & _
+                " outstanding receipt row(s) were loaded.", _
+                vbInformation, _
+                "Outstanding Lines Loaded"
+        Else
+            MsgBox _
+                "All outstanding lines for this PO are already " & _
+                "present on this Draft receipt.", _
+                vbInformation, _
+                "No Additional Lines"
+        End If
+
+    End If
+
+Exit_Handler:
+    On Error Resume Next
+
+    If Not targetRows Is Nothing Then
+        targetRows.close
+    End If
+
+    If Not sourceRows Is Nothing Then
+        sourceRows.close
+    End If
+
+    Set targetRows = Nothing
+    Set sourceRows = Nothing
+    Set db = Nothing
+    Set ws = Nothing
+
+    On Error GoTo 0
+    Exit Sub
+
+Err_Handler:
+    errorNumber = Err.Number
+    errorDescription = Err.Description
+
+    On Error Resume Next
+
+    If transactionStarted Then
+        ws.Rollback
+    End If
+
+    On Error GoTo 0
+
+    MsgBox _
+        "The outstanding Supplier PO lines could not be loaded." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & errorNumber & vbCrLf & _
+        "Details: " & errorDescription, _
+        vbExclamation, _
+        "Load Outstanding Lines"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub AddReceiptItemRow( _
+    ByVal targetRows As DAO.Recordset, _
+    ByVal GoodsReceiptID As Long, _
+    ByVal SupplierPOLineID As Long, _
+    ByVal ItemID As Long, _
+    ByVal UnitID As Long, _
+    ByVal QuantityReceived As Double, _
+    ByVal unitCost As Variant, _
+    ByVal LocationID As Long _
+)
+
+    targetRows.addnew
+
+    targetRows!GoodsReceiptID = GoodsReceiptID
+    targetRows!SupplierPOLineID = SupplierPOLineID
+    targetRows!ItemID = ItemID
+    targetRows!UnitID = UnitID
+    targetRows!QuantityReceived = QuantityReceived
+
+    If Not IsNull(unitCost) Then
+        targetRows!unitCost = unitCost
+    End If
+
+    If LocationID > 0 Then
+        targetRows!LocationID = LocationID
+    End If
+
+    targetRows!CreatedOn = Now()
+    targetRows!UpdatedOn = Now()
+
+    targetRows.Update
+
+End Sub
+
+
+'=============================================================
+' SAVE AND VALIDATE RECEIPT BEFORE POSTING
+'=============================================================
+
+Private Function SaveReceiptItemsIfDirty() As Boolean
+
+    On Error GoTo Err_Handler
+
+    SaveReceiptItemsIfDirty = False
+
+    With Me.Controls(RECEIPT_ITEM_SUBFORM).Form
+        If .Dirty Then
+            .Dirty = False
+        End If
+    End With
+
+    SaveReceiptItemsIfDirty = True
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    MsgBox _
+        "The current receipt line could not be saved." & _
+        vbCrLf & vbCrLf & _
+        "Correct the highlighted line before posting." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Receipt Line Not Saved"
+
+    Resume Exit_Handler
+
+End Function
+
+
+Private Sub ValidateReceiptForPosting( _
+    ByVal db As DAO.Database, _
+    ByVal receiptID As Long, _
+    ByVal SupplierPOID As Long _
+)
+
+    Dim groupRows As DAO.Recordset
+    Dim itemRows As DAO.Recordset
+
+    Dim SupplierPOLineID As Long
+    Dim lineSupplierPOID As Long
+    Dim ItemID As Long
+    Dim expectedItemID As Long
+    Dim UnitID As Long
+    Dim expectedUnitID As Long
+    Dim receiptItemID As Long
+
+    Dim OrderedQuantity As Double
+    Dim previouslyReceived As Double
+    Dim thisReceiptQuantity As Double
+    Dim QuantityReceived As Double
+
+    Dim SerialNumber As String
+    Dim RequiresSerial As Boolean
+
+    If receiptID <= 0 Then
+        Err.Raise _
+            vbObjectError + 7401, _
+            "ValidateReceiptForPosting", _
+            "Save the Goods Receipt header before posting."
+    End If
+
+    If SupplierPOID <= 0 Then
+        Err.Raise _
+            vbObjectError + 7402, _
+            "ValidateReceiptForPosting", _
+            "The Goods Receipt does not have a Supplier PO."
+    End If
+
+    If Not ReceiptCanBeEdited() Then
+        Err.Raise _
+            vbObjectError + 7403, _
+            "ValidateReceiptForPosting", _
+            "Only a Draft Goods Receipt can be posted."
+    End If
+
+    If Not SupplierPOIsReceivable(SupplierPOID) Then
+        Err.Raise _
+            vbObjectError + 7404, _
+            "ValidateReceiptForPosting", _
+            "The Supplier PO must be Sent or Partially Received."
+    End If
+
+    If IsNull(Me.txtReceiptDate) Or _
+       Not IsDate(Me.txtReceiptDate) Then
+
+        Err.Raise _
+            vbObjectError + 7405, _
+            "ValidateReceiptForPosting", _
+            "Enter a valid receipt date."
+    End If
+
+    If Nz(Me.cboReceivedByUserID, 0) <= 0 Then
+        Err.Raise _
+            vbObjectError + 7406, _
+            "ValidateReceiptForPosting", _
+            "Select the user who received the goods."
+    End If
+
+    If DCount( _
+        "*", _
+        "T_GoodsReceiptItems", _
+        "GoodsReceiptID=" & receiptID & _
+        " AND Nz(QuantityReceived,0)>0") = 0 Then
+
+        Err.Raise _
+            vbObjectError + 7407, _
+            "ValidateReceiptForPosting", _
+            "Enter a received quantity greater than zero for at " & _
+            "least one receipt line."
+    End If
+
+    '---------------------------------------------------------
+    ' Validate total quantity for every Supplier PO line.
+    '---------------------------------------------------------
+    Set groupRows = db.OpenRecordset( _
+        "SELECT SupplierPOLineID, " & _
+        "Sum(Nz(QuantityReceived,0)) AS ThisReceiptQuantity " & _
+        "FROM T_GoodsReceiptItems " & _
+        "WHERE GoodsReceiptID=" & receiptID & " " & _
+        "GROUP BY SupplierPOLineID;", _
+        dbOpenSnapshot)
+
+    Do While Not groupRows.EOF
+
+        SupplierPOLineID = _
+            Nz(groupRows!SupplierPOLineID, 0)
+
+        If SupplierPOLineID <= 0 Then
+            Err.Raise _
+                vbObjectError + 7408, _
+                "ValidateReceiptForPosting", _
+                "A receipt row is not connected to a Supplier PO line."
+        End If
+
+        lineSupplierPOID = Nz(DLookup( _
+            "SupplierPOID", _
+            "T_SupplierPOLines", _
+            "SupplierPOLineID=" & SupplierPOLineID), 0)
+
+        If lineSupplierPOID <> SupplierPOID Then
+            Err.Raise _
+                vbObjectError + 7409, _
+                "ValidateReceiptForPosting", _
+                "Supplier PO line ID " & SupplierPOLineID & _
+                " does not belong to the selected Supplier PO."
+        End If
+
+        OrderedQuantity = Nz(DLookup( _
+            "OrderedQuantity", _
+            "T_SupplierPOLines", _
+            "SupplierPOLineID=" & SupplierPOLineID), 0)
+
+        previouslyReceived = Nz(DLookup( _
+            "QuantityReceivedToDate", _
+            "Q_SupplierPOLineReceived", _
+            "SupplierPOLineID=" & SupplierPOLineID), 0)
+
+        thisReceiptQuantity = _
+            Nz(groupRows!thisReceiptQuantity, 0)
+
+        If thisReceiptQuantity < 0 Then
+            Err.Raise _
+                vbObjectError + 7410, _
+                "ValidateReceiptForPosting", _
+                "Supplier PO line ID " & SupplierPOLineID & _
+                " has a negative receipt quantity."
+        End If
+
+        If previouslyReceived + thisReceiptQuantity > _
+           OrderedQuantity + 0.0000001 Then
+
+            Err.Raise _
+                vbObjectError + 7411, _
+                "ValidateReceiptForPosting", _
+                "Supplier PO line ID " & SupplierPOLineID & _
+                " would be over-received." & _
+                vbCrLf & vbCrLf & _
+                "Ordered: " & _
+                Format$(OrderedQuantity, "0.####") & vbCrLf & _
+                "Previously received: " & _
+                Format$(previouslyReceived, "0.####") & vbCrLf & _
+                "This receipt: " & _
+                Format$(thisReceiptQuantity, "0.####")
+        End If
+
+        groupRows.MoveNext
+
+    Loop
+
+    groupRows.close
+    Set groupRows = Nothing
+
+    '---------------------------------------------------------
+    ' Validate every positive receipt row.
+    '---------------------------------------------------------
+    Set itemRows = db.OpenRecordset( _
+        "SELECT * " & _
+        "FROM T_GoodsReceiptItems " & _
+        "WHERE GoodsReceiptID=" & receiptID & " " & _
+        "AND Nz(QuantityReceived,0)>0 " & _
+        "ORDER BY GoodsReceiptItemID;", _
+        dbOpenSnapshot)
+
+    Do While Not itemRows.EOF
+
+        receiptItemID = _
+            CLng(itemRows!GoodsReceiptItemID)
+
+        SupplierPOLineID = _
+            Nz(itemRows!SupplierPOLineID, 0)
+
+        ItemID = Nz(itemRows!ItemID, 0)
+        UnitID = Nz(itemRows!UnitID, 0)
+        QuantityReceived = _
+            Nz(itemRows!QuantityReceived, 0)
+
+        If SupplierPOLineID <= 0 Or _
+           ItemID <= 0 Or _
+           UnitID <= 0 Then
+
+            Err.Raise _
+                vbObjectError + 7412, _
+                "ValidateReceiptForPosting", _
+                "Receipt item ID " & receiptItemID & _
+                " is missing its PO line, item, or unit."
+        End If
+
+        expectedItemID = Nz(DLookup( _
+            "ItemID", _
+            "T_SupplierPOLines", _
+            "SupplierPOLineID=" & SupplierPOLineID), 0)
+
+        expectedUnitID = Nz(DLookup( _
+            "UnitID", _
+            "T_SupplierPOLines", _
+            "SupplierPOLineID=" & SupplierPOLineID), 0)
+
+        If ItemID <> expectedItemID Then
+            Err.Raise _
+                vbObjectError + 7413, _
+                "ValidateReceiptForPosting", _
+                "Receipt item ID " & receiptItemID & _
+                " does not match the item ordered on its Supplier PO line."
+        End If
+
+        If UnitID <> expectedUnitID Then
+            Err.Raise _
+                vbObjectError + 7414, _
+                "ValidateReceiptForPosting", _
+                "Receipt item ID " & receiptItemID & _
+                " does not use the unit ordered on its Supplier PO line."
+        End If
+
+        If Nz(itemRows!LocationID, 0) <= 0 Then
+            Err.Raise _
+                vbObjectError + 7415, _
+                "ValidateReceiptForPosting", _
+                "Select a receiving location for receipt item ID " & _
+                receiptItemID & "."
+        End If
+
+        If IsNull(itemRows!unitCost) Or _
+           Not IsNumeric(itemRows!unitCost) Then
+
+            Err.Raise _
+                vbObjectError + 7416, _
+                "ValidateReceiptForPosting", _
+                "Enter a valid unit cost for receipt item ID " & _
+                receiptItemID & "."
+        End If
+
+        If CCur(itemRows!unitCost) < 0 Then
+            Err.Raise _
+                vbObjectError + 7417, _
+                "ValidateReceiptForPosting", _
+                "Unit cost cannot be negative for receipt item ID " & _
+                receiptItemID & "."
+        End If
+
+        If Nz(itemRows!StockMovementID, 0) > 0 Then
+            Err.Raise _
+                vbObjectError + 7418, _
+                "ValidateReceiptForPosting", _
+                "Receipt item ID " & receiptItemID & _
+                " already has a stock movement and cannot be posted again."
+        End If
+
+        If Nz(itemRows!ItemInstanceID, 0) > 0 Then
+            Err.Raise _
+                vbObjectError + 7419, _
+                "ValidateReceiptForPosting", _
+                "Receipt item ID " & receiptItemID & _
+                " already has a serialized item instance."
+        End If
+
+        RequiresSerial = _
+            ItemRequiresSerial(db, ItemID)
+
+        SerialNumber = _
+            Trim$(Nz( _
+                itemRows!SerialNumber, _
+                vbNullString))
+
+        If RequiresSerial Then
+
+            If Abs(QuantityReceived - 1) > 0.0000001 Then
+                Err.Raise _
+                    vbObjectError + 7420, _
+                    "ValidateReceiptForPosting", _
+                    "Serialized receipt item ID " & receiptItemID & _
+                    " must have quantity one."
+            End If
+
+            If Len(SerialNumber) = 0 Then
+                Err.Raise _
+                    vbObjectError + 7421, _
+                    "ValidateReceiptForPosting", _
+                    "Enter the serial number for receipt item ID " & _
+                    receiptItemID & "."
+            End If
+
+            If SerialExistsInStock(db, SerialNumber) Then
+                Err.Raise _
+                    vbObjectError + 7422, _
+                    "ValidateReceiptForPosting", _
+                    "Serial number '" & SerialNumber & _
+                    "' already exists in stock."
+            End If
+
+            If DCount( _
+                "*", _
+                "T_GoodsReceiptItems", _
+                "GoodsReceiptID=" & receiptID & _
+                " AND Nz(QuantityReceived,0)>0" & _
+                " AND SerialNumber=" & _
+                SqlText(SerialNumber)) > 1 Then
+
+                Err.Raise _
+                    vbObjectError + 7423, _
+                    "ValidateReceiptForPosting", _
+                    "Serial number '" & SerialNumber & _
+                    "' is repeated within this Goods Receipt."
+            End If
+
+            If SerialExistsInAnotherActiveReceipt( _
+                db, _
+                SerialNumber, _
+                receiptItemID) Then
+
+                Err.Raise _
+                    vbObjectError + 7424, _
+                    "ValidateReceiptForPosting", _
+                    "Serial number '" & SerialNumber & _
+                    "' is already entered on another active receipt."
+            End If
+
+        ElseIf Len(SerialNumber) > 0 Then
+
+            Err.Raise _
+                vbObjectError + 7425, _
+                "ValidateReceiptForPosting", _
+                "Receipt item ID " & receiptItemID & _
+                " is a bulk item and must not have a serial number."
+        End If
+
+        itemRows.MoveNext
+
+    Loop
+
+    itemRows.close
+    Set itemRows = Nothing
+
+End Sub
+
+
+'=============================================================
+' STOCK POSTING HELPERS
+'=============================================================
+
+Private Sub UpdateBulkStockBalance( _
+    ByVal db As DAO.Database, _
+    ByVal ItemID As Long, _
+    ByVal LocationID As Long, _
+    ByVal QuantityReceived As Double _
+)
+
+    Dim rs As DAO.Recordset
+    Dim existingLocationID As Long
+    Dim currentQuantity As Double
+
+    Set rs = db.OpenRecordset( _
+        "SELECT * " & _
+        "FROM T_StockBalances " & _
+        "WHERE ItemID=" & ItemID & ";", _
+        dbOpenDynaset)
+
+    If Not rs.EOF Then
+        rs.MoveLast
+
+        If rs.recordCount > 1 Then
+            rs.close
+            Set rs = Nothing
+
+            Err.Raise _
+                vbObjectError + 7430, _
+                "UpdateBulkStockBalance", _
+                "More than one stock-balance row exists for bulk " & _
+                "item ID " & ItemID & "." & _
+                vbCrLf & vbCrLf & _
+                "Each bulk item must have only one row in T_StockBalances."
+        End If
+
+        rs.MoveFirst
+    End If
+
+    If rs.EOF Then
+
+        rs.addnew
+        rs!ItemID = ItemID
+        rs!CurrentLocationID = LocationID
+        rs!QuantityOnHand = QuantityReceived
+        rs!QuantityReserved = 0
+        rs!LastUpdated = Now()
+        rs.Update
+
+    Else
+
+        existingLocationID = _
+            Nz(rs!CurrentLocationID, 0)
+
+        currentQuantity = _
+            Nz(rs!QuantityOnHand, 0)
+
+        If existingLocationID = 0 And _
+           currentQuantity <> 0 Then
+
+            rs.close
+            Set rs = Nothing
+
+            Err.Raise _
+                vbObjectError + 7431, _
+                "UpdateBulkStockBalance", _
+                "Bulk item ID " & ItemID & _
+                " has stock on hand but no current location."
+        End If
+
+        If existingLocationID <> 0 And _
+           existingLocationID <> LocationID And _
+           currentQuantity <> 0 Then
+
+            rs.close
+            Set rs = Nothing
+
+            Err.Raise _
+                vbObjectError + 7432, _
+                "UpdateBulkStockBalance", _
+                "Bulk item ID " & ItemID & _
+                " already has stock in another location." & _
+                vbCrLf & vbCrLf & _
+                "Current location: " & _
+                GetLocationDescription(db, existingLocationID) & _
+                vbCrLf & _
+                "Current quantity: " & _
+                Format$(currentQuantity, "0.####") & _
+                vbCrLf & vbCrLf & _
+                "Use the transfer form before receiving this item " & _
+                "into a different location."
+        End If
+
+        rs.Edit
+        rs!CurrentLocationID = LocationID
+        rs!QuantityOnHand = _
+            currentQuantity + QuantityReceived
+        rs!LastUpdated = Now()
+        rs.Update
+
+    End If
+
+    rs.close
+    Set rs = Nothing
+
+End Sub
+
+
+Private Function InsertSerializedInstance( _
+    ByVal db As DAO.Database, _
+    ByVal ItemID As Long, _
+    ByVal SerialNumber As String, _
+    ByVal LocationID As Long, _
+    ByVal acquisitionDate As Date, _
+    ByVal unitCost As Variant, _
+    ByVal Notes As String _
+) As Long
+
+    Dim rs As DAO.Recordset
+
+    If SerialExistsInStock(db, SerialNumber) Then
+        Err.Raise _
+            vbObjectError + 7433, _
+            "InsertSerializedInstance", _
+            "Serial number '" & SerialNumber & _
+            "' already exists in T_ItemInstances."
+    End If
+
+    Set rs = db.OpenRecordset( _
+        "T_ItemInstances", _
+        dbOpenDynaset)
+
+    rs.addnew
+    rs!ItemID = ItemID
+    rs!SerialNumber = SerialNumber
+    rs!CurrentLocationID = LocationID
+    rs!currentStatus = "In Stock"
+    rs!acquisitionDate = acquisitionDate
+
+    If Not IsNull(unitCost) Then
+        rs!unitCost = unitCost
+    End If
+
+    If Len(Trim$(Notes)) > 0 Then
+        rs!Notes = Notes
+    End If
+
+    rs.Update
+    rs.Bookmark = rs.LastModified
+
+    InsertSerializedInstance = _
+        CLng(rs!ItemInstanceID)
+
+    rs.close
+    Set rs = Nothing
+
+End Function
+
+
+Private Function InsertStockMovement( _
+    ByVal db As DAO.Database, _
+    ByVal MovementDate As Date, _
+    ByVal ItemID As Long, _
+    ByVal ItemInstanceID As Long, _
+    ByVal MovementTypeID As Long, _
+    ByVal QuantityReceived As Double, _
+    ByVal LocationID As Long, _
+    ByVal performedByUserID As Long, _
+    ByVal Reason As String, _
+    ByVal ReferenceDocument As String, _
+    ByVal Notes As String, _
+    ByVal unitCost As Variant _
+) As Long
+
+    Dim rs As DAO.Recordset
+
+    Set rs = db.OpenRecordset( _
+        "T_StockMovements", _
+        dbOpenDynaset)
+
+    rs.addnew
+    rs!MovementDate = MovementDate
+    rs!ItemID = ItemID
+
+    If ItemInstanceID > 0 Then
+        rs!ItemInstanceID = ItemInstanceID
+    End If
+
+    rs!MovementTypeID = MovementTypeID
+    rs!Quantity = QuantityReceived
+    rs!ToLocationID = LocationID
+    rs!performedByUserID = performedByUserID
+    rs!Reason = Reason
+
+    If Len(Trim$(ReferenceDocument)) > 0 Then
+        rs!ReferenceDocument = ReferenceDocument
+    End If
+
+    If Len(Trim$(Notes)) > 0 Then
+        rs!Notes = Notes
+    End If
+
+    If Not IsNull(unitCost) Then
+        rs!unitCost = unitCost
+    End If
+
+    rs.Update
+    rs.Bookmark = rs.LastModified
+
+    InsertStockMovement = _
+        CLng(rs!StockMovementID)
+
+    rs.close
+    Set rs = Nothing
+
+End Function
+
+
+Private Function GetMovementTypeID( _
+    ByVal db As DAO.Database, _
+    ByVal MovementTypeCode As String _
+) As Long
+
+    Dim rs As DAO.Recordset
+
+    Set rs = db.OpenRecordset( _
+        "SELECT MovementTypeID " & _
+        "FROM T_StockMovementTypes " & _
+        "WHERE MovementTypeCode=" & _
+        SqlText(MovementTypeCode) & ";", _
+        dbOpenSnapshot)
+
+    If rs.EOF Then
+        rs.close
+        Set rs = Nothing
+
+        Err.Raise _
+            vbObjectError + 7434, _
+            "GetMovementTypeID", _
+            "Movement type code '" & MovementTypeCode & _
+            "' was not found in T_StockMovementTypes."
+    End If
+
+    GetMovementTypeID = _
+        CLng(rs!MovementTypeID)
+
+    rs.close
+    Set rs = Nothing
+
+End Function
+
+
+Private Function ItemRequiresSerial( _
+    ByVal db As DAO.Database, _
+    ByVal ItemID As Long _
+) As Boolean
+
+    Dim rs As DAO.Recordset
+
+    Set rs = db.OpenRecordset( _
+        "SELECT RequiresSerial " & _
+        "FROM T_Items " & _
+        "WHERE ItemID=" & ItemID & ";", _
+        dbOpenSnapshot)
+
+    If rs.EOF Then
+        rs.close
+        Set rs = Nothing
+
+        Err.Raise _
+            vbObjectError + 7435, _
+            "ItemRequiresSerial", _
+            "Item ID " & ItemID & _
+            " was not found in T_Items."
+    End If
+
+    ItemRequiresSerial = _
+        Nz(rs!RequiresSerial, False)
+
+    rs.close
+    Set rs = Nothing
+
+End Function
+
+
+Private Function SerialExistsInStock( _
+    ByVal db As DAO.Database, _
+    ByVal SerialNumber As String _
+) As Boolean
+
+    Dim rs As DAO.Recordset
+
+    Set rs = db.OpenRecordset( _
+        "SELECT TOP 1 ItemInstanceID " & _
+        "FROM T_ItemInstances " & _
+        "WHERE SerialNumber=" & _
+        SqlText(SerialNumber) & ";", _
+        dbOpenSnapshot)
+
+    SerialExistsInStock = Not rs.EOF
+
+    rs.close
+    Set rs = Nothing
+
+End Function
+
+
+Private Function SerialExistsInAnotherActiveReceipt( _
+    ByVal db As DAO.Database, _
+    ByVal SerialNumber As String, _
+    ByVal currentReceiptItemID As Long _
+) As Boolean
+
+    Dim rs As DAO.Recordset
+    Dim sqlTextValue As String
+
+    sqlTextValue = _
+        "SELECT TOP 1 RI.GoodsReceiptItemID " & _
+        "FROM T_GoodsReceiptItems AS RI " & _
+        "INNER JOIN T_GoodsReceipts AS RH " & _
+        "ON RI.GoodsReceiptID=RH.GoodsReceiptID " & _
+        "WHERE Nz(RH.ReceiptStatus,'Draft')<>'Cancelled' " & _
+        "AND Nz(RI.QuantityReceived,0)>0 " & _
+        "AND RI.SerialNumber=" & _
+        SqlText(SerialNumber) & " " & _
+        "AND RI.GoodsReceiptItemID<>" & _
+        currentReceiptItemID & ";"
+
+    Set rs = db.OpenRecordset( _
+        sqlTextValue, _
+        dbOpenSnapshot)
+
+    SerialExistsInAnotherActiveReceipt = _
+        Not rs.EOF
+
+    rs.close
+    Set rs = Nothing
+
+End Function
+
+
+'=============================================================
+' UPDATE RECEIPT AND SUPPLIER PO STATUSES
+'=============================================================
+
+Private Sub MarkReceiptAsPosted( _
+    ByVal db As DAO.Database, _
+    ByVal receiptID As Long, _
+    ByVal PostedByUserID As Long _
+)
+
+    Dim rs As DAO.Recordset
+
+    Set rs = db.OpenRecordset( _
+        "SELECT * " & _
+        "FROM T_GoodsReceipts " & _
+        "WHERE GoodsReceiptID=" & receiptID & ";", _
+        dbOpenDynaset)
+
+    If rs.EOF Then
+        rs.close
+        Set rs = Nothing
+
+        Err.Raise _
+            vbObjectError + 7440, _
+            "MarkReceiptAsPosted", _
+            "The Goods Receipt header could not be found."
+    End If
+
+    If StrComp( _
+        Trim$(Nz(rs!ReceiptStatus, vbNullString)), _
+        STATUS_DRAFT, _
+        vbTextCompare) <> 0 Then
+
+        rs.close
+        Set rs = Nothing
+
+        Err.Raise _
+            vbObjectError + 7441, _
+            "MarkReceiptAsPosted", _
+            "The Goods Receipt is no longer in Draft status."
+    End If
+
+    rs.Edit
+    rs!ReceiptStatus = "Posted"
+    rs!PostedOn = Now()
+    rs!PostedByUserID = PostedByUserID
+    rs!UpdatedOn = Now()
+    rs.Update
+
+    rs.close
+    Set rs = Nothing
+
+End Sub
+
+
+Private Sub UpdateSupplierPOLineStatuses( _
+    ByVal db As DAO.Database, _
+    ByVal SupplierPOID As Long _
+)
+
+    Dim lineRows As DAO.Recordset
+    Dim receivedRows As DAO.Recordset
+
+    Dim SupplierPOLineID As Long
+    Dim OrderedQuantity As Double
+    Dim receivedQuantity As Double
+    Dim newLineStatus As String
+
+    Set lineRows = db.OpenRecordset( _
+        "SELECT * " & _
+        "FROM T_SupplierPOLines " & _
+        "WHERE SupplierPOID=" & SupplierPOID & " " & _
+        "ORDER BY LineNumber;", _
+        dbOpenDynaset)
+
+    Do While Not lineRows.EOF
+
+        If StrComp( _
+            Trim$(Nz(lineRows!LineStatus, vbNullString)), _
+            "Cancelled", _
+            vbTextCompare) <> 0 Then
+
+            SupplierPOLineID = _
+                CLng(lineRows!SupplierPOLineID)
+
+            OrderedQuantity = _
+                Nz(lineRows!OrderedQuantity, 0)
+
+            receivedQuantity = 0
+
+            Set receivedRows = db.OpenRecordset( _
+                "SELECT QuantityReceivedToDate " & _
+                "FROM Q_SupplierPOLineReceived " & _
+                "WHERE SupplierPOLineID=" & _
+                SupplierPOLineID & ";", _
+                dbOpenSnapshot)
+
+            If Not receivedRows.EOF Then
+                receivedQuantity = _
+                    Nz(receivedRows!QuantityReceivedToDate, 0)
+            End If
+
+            receivedRows.close
+            Set receivedRows = Nothing
+
+            If receivedQuantity >= _
+               OrderedQuantity - 0.0000001 Then
+
+                newLineStatus = "Received"
+
+            ElseIf receivedQuantity > 0 Then
+
+                newLineStatus = "Partially Received"
+
+            Else
+
+                newLineStatus = "Open"
+
+            End If
+
+            lineRows.Edit
+            lineRows!LineStatus = newLineStatus
+            lineRows!UpdatedOn = Now()
+            lineRows.Update
+
+        End If
+
+        lineRows.MoveNext
+
+    Loop
+
+    lineRows.close
+    Set lineRows = Nothing
+
+End Sub
+
+
+Private Sub UpdateSupplierPOStatus( _
+    ByVal db As DAO.Database, _
+    ByVal SupplierPOID As Long _
+)
+
+    Dim countRows As DAO.Recordset
+    Dim poRows As DAO.Recordset
+    Dim outstandingLineCount As Long
+    Dim newPOStatus As String
+
+    Set countRows = db.OpenRecordset( _
+        "SELECT Count(*) AS OutstandingLineCount " & _
+        "FROM T_SupplierPOLines " & _
+        "WHERE SupplierPOID=" & SupplierPOID & " " & _
+        "AND Nz(LineStatus,'Open') " & _
+        "Not In ('Received','Cancelled');", _
+        dbOpenSnapshot)
+
+    outstandingLineCount = _
+        Nz(countRows!outstandingLineCount, 0)
+
+    countRows.close
+    Set countRows = Nothing
+
+    If outstandingLineCount = 0 Then
+        newPOStatus = "Received"
+    Else
+        newPOStatus = "Partially Received"
+    End If
+
+    Set poRows = db.OpenRecordset( _
+        "SELECT * " & _
+        "FROM T_SupplierPOs " & _
+        "WHERE SupplierPOID=" & SupplierPOID & ";", _
+        dbOpenDynaset)
+
+    If poRows.EOF Then
+        poRows.close
+        Set poRows = Nothing
+
+        Err.Raise _
+            vbObjectError + 7442, _
+            "UpdateSupplierPOStatus", _
+            "The Supplier PO header could not be found."
+    End If
+
+    poRows.Edit
+    poRows!POStatus = newPOStatus
+    poRows!UpdatedOn = Now()
+    poRows.Update
+
+    poRows.close
+    Set poRows = Nothing
+
+End Sub
+
+
+'=============================================================
+' POSTING TEXT AND DISPLAY HELPERS
+'=============================================================
+
+Private Function BuildReceiptMovementNotes( _
+    ByVal LineNotes As String _
+) As String
+
+    Dim result As String
+    Dim deliveryNote As String
+    Dim supplierInvoice As String
+
+    result = _
+        "Goods Receipt: " & _
+        Trim$(Nz(Me.txtReceiptNumber, vbNullString))
+
+    deliveryNote = _
+        Trim$(Nz( _
+            Me.txtSupplierDeliveryNote, _
+            vbNullString))
+
+    supplierInvoice = _
+        Trim$(Nz( _
+            Me.txtSupplierInvoiceNumber, _
+            vbNullString))
+
+    If Len(deliveryNote) > 0 Then
+        result = result & _
+            vbCrLf & _
+            "Supplier delivery note: " & deliveryNote
+    End If
+
+    If Len(supplierInvoice) > 0 Then
+        result = result & _
+            vbCrLf & _
+            "Supplier invoice: " & supplierInvoice
+    End If
+
+    If Len(Trim$(LineNotes)) > 0 Then
+        result = result & _
+            vbCrLf & _
+            "Line notes: " & Trim$(LineNotes)
+    End If
+
+    BuildReceiptMovementNotes = result
+
+End Function
+
+
+Private Function GetLocationDescription( _
+    ByVal db As DAO.Database, _
+    ByVal LocationID As Long _
+) As String
+
+    On Error GoTo Err_Handler
+
+    Dim rs As DAO.Recordset
+    Dim result As String
+
+    Set rs = db.OpenRecordset( _
+        "SELECT W.WarehouseName, L.LocationCode, " & _
+        "L.LocationName, L.BinNumber, L.ShelfNumber " & _
+        "FROM T_Warehouses AS W " & _
+        "INNER JOIN T_Locations AS L " & _
+        "ON W.WarehouseID=L.WarehouseID " & _
+        "WHERE L.LocationID=" & LocationID & ";", _
+        dbOpenSnapshot)
+
+    If rs.EOF Then
+        result = "Location ID " & LocationID
+    Else
+        result = Nz(rs!WarehouseName, vbNullString)
+
+        If Len(Trim$(Nz(rs!LocationCode, vbNullString))) > 0 Then
+            result = result & " - " & rs!LocationCode
+        End If
+
+        If Len(Trim$(Nz(rs!LocationName, vbNullString))) > 0 Then
+            result = result & " - " & rs!LocationName
+        End If
+
+        If Len(Trim$(Nz(rs!BinNumber, vbNullString))) > 0 Then
+            result = result & " | Bin: " & rs!BinNumber
+        End If
+
+        If Len(Trim$(Nz(rs!ShelfNumber, vbNullString))) > 0 Then
+            result = result & " | Shelf: " & rs!ShelfNumber
+        End If
+    End If
+
+    rs.close
+    Set rs = Nothing
+
+    GetLocationDescription = result
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    GetLocationDescription = _
+        "Location ID " & LocationID
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' FORM CONFIGURATION
+'=============================================================
+
+Private Sub ConfigureControls()
+
+    RequireComboBox "cboSupplierPOID"
+    RequireComboBox "cboReceivedByUserID"
+    RequireComboBox "cboPostedByUserID"
+    RequireComboBox "cboReceiptStatus"
+
+    With Me.cboSupplierPOID
+        .RowSourceType = "Table/Query"
+        .RowSource = _
+            "SELECT P.SupplierPOID, P.PONumber, " & _
+            "S.CompanyName, P.PODate, P.POStatus " & _
+            "FROM T_SupplierPOs AS P " & _
+            "INNER JOIN T_Suppliers AS S " & _
+            "ON P.SupplierID=S.SupplierID " & _
+            "ORDER BY P.PODate DESC, P.PONumber DESC;"
+        .BoundColumn = 1
+        .ColumnCount = 5
+        .ColumnWidths = "0cm;3cm;6cm;2.8cm;3cm"
+        .LimitToList = True
+        .AutoExpand = True
+    End With
+
+    ConfigureUserCombo Me.cboReceivedByUserID
+    ConfigureUserCombo Me.cboPostedByUserID
+
+    With Me.cboReceiptStatus
+        .RowSourceType = "Value List"
+        .RowSource = "Draft;Posted;Cancelled"
+        .BoundColumn = 1
+        .ColumnCount = 1
+        .LimitToList = True
+        .Locked = True
+        .TabStop = False
+    End With
+
+    'Set these controls to Visible = No in Design View:
+    'txtGoodsReceiptID, txtCreatedOn, txtUpdatedOn.
+    'Do not hide them during Form_Load because Access may have
+    'already placed focus on the first control (error 2165).
+
+    Me.txtReceiptNumber.Locked = True
+    Me.txtReceiptNumber.TabStop = False
+
+    Me.txtPostedOn.Locked = True
+    Me.txtPostedOn.TabStop = False
+
+    Me.cboPostedByUserID.Locked = True
+    Me.cboPostedByUserID.TabStop = False
+
+    Me.txtSupplierName.Locked = True
+    Me.txtSupplierName.TabStop = False
+
+    Me.txtPOStatusDisplay.Locked = True
+    Me.txtPOStatusDisplay.TabStop = False
+
+    Me.txtLineCount.Locked = True
+    Me.txtLineCount.TabStop = False
+
+    Me.txtTotalQuantity.Locked = True
+    Me.txtTotalQuantity.TabStop = False
+
+    Me.txtReceiptValue.Locked = True
+    Me.txtReceiptValue.TabStop = False
+
+    Me.txtNOtes.EnterKeyBehavior = True
+    Me.txtNOtes.ScrollBars = 2
+
+    Me.txtReceiptDate.defaultValue = "=Date()"
+    Me.cboReceiptStatus.defaultValue = """Draft"""
+
+End Sub
+
+
+Private Sub ConfigureUserCombo(ByVal userCombo As Control)
+
+    With userCombo
+        .RowSourceType = "Table/Query"
+        .RowSource = _
+            "SELECT UserID, UserName " & _
+            "FROM T_Users " & _
+            "ORDER BY UserName;"
+        .BoundColumn = 1
+        .ColumnCount = 2
+        .ColumnWidths = "0cm;5cm"
+        .LimitToList = True
+        .AutoExpand = True
+    End With
+
+End Sub
+
+
+Private Sub RequireComboBox(ByVal controlName As String)
+
+    Dim controlObject As Control
+
+    On Error GoTo Missing_Control
+
+    Set controlObject = Me.Controls(controlName)
+
+    If controlObject.ControlType <> acComboBox Then
+        Err.Raise _
+            vbObjectError + 7301, _
+            "RequireComboBox", _
+            "Control '" & controlName & "' is a " & _
+            TypeName(controlObject) & ", but it must be a Combo Box." & _
+            vbCrLf & vbCrLf & _
+            "Open F_GoodsReceipt in Design View, delete that control, " & _
+            "add a Combo Box, give it the same name, and set its " & _
+            "Control Source correctly."
+    End If
+
+Exit_Handler:
+    Set controlObject = Nothing
+    Exit Sub
+
+Missing_Control:
+    If Err.Number = 2465 Then
+        Err.Raise _
+            vbObjectError + 7302, _
+            "RequireComboBox", _
+            "Required Combo Box '" & controlName & _
+            "' is missing from F_GoodsReceipt."
+    Else
+        Err.Raise Err.Number, Err.Source, Err.Description
+    End If
+
+End Sub
+
+
+Private Sub ConfigureReceiptSubform()
+
+    On Error GoTo Err_Handler
+
+    With Me.Controls(RECEIPT_ITEM_SUBFORM)
+
+        If .SourceObject <> _
+           "Form.SF_GoodsReceiptItems" Then
+
+            .SourceObject = _
+                "Form.SF_GoodsReceiptItems"
+
+        End If
+
+        .LinkMasterFields = "txtGoodsReceiptID"
+        .LinkChildFields = "GoodsReceiptID"
+        .Enabled = True
+        .Locked = False
+
+    End With
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Err.Raise _
+        Err.Number, _
+        "ConfigureReceiptSubform", _
+        "Confirm that the subform control is named '" & _
+        RECEIPT_ITEM_SUBFORM & "'." & _
+        vbCrLf & Err.Description
+
+End Sub
+
+
+Private Sub InitializeNewReceipt()
+
+    If Len(Trim$(Nz(Me.txtReceiptNumber, vbNullString))) = 0 Then
+        Me.txtReceiptNumber = NextReceiptNumber()
+    End If
+
+    If IsNull(Me.txtReceiptDate) Then
+        Me.txtReceiptDate = Date
+    End If
+
+    If Len(Trim$(Nz(Me.cboReceiptStatus, vbNullString))) = 0 Then
+        Me.cboReceiptStatus = STATUS_DRAFT
+    End If
+
+    If IsNull(Me.txtCreatedOn) Then
+        Me.txtCreatedOn = Now()
+    End If
+
+End Sub
+
+
+Private Sub RefreshWorkflowState()
+
+    On Error Resume Next
+
+    Dim canEdit As Boolean
+    Dim hasReceipt As Boolean
+    Dim hasLines As Boolean
+    Dim hasPositiveLines As Boolean
+    Dim receiptID As Long
+
+    receiptID = CurrentGoodsReceiptID()
+    hasReceipt = (receiptID > 0)
+
+    If hasReceipt Then
+        hasLines = _
+            (DCount( _
+                "*", _
+                "T_GoodsReceiptItems", _
+                "GoodsReceiptID=" & receiptID) > 0)
+
+        hasPositiveLines = _
+            (DCount( _
+                "*", _
+                "T_GoodsReceiptItems", _
+                "GoodsReceiptID=" & receiptID & _
+                " AND Nz(QuantityReceived,0)>0") > 0)
+    End If
+
+    canEdit = ReceiptCanBeEdited()
+
+    Me.cboSupplierPOID.Locked = _
+        (Not canEdit) Or hasLines
+
+    Me.txtReceiptDate.Locked = Not canEdit
+    Me.txtSupplierDeliveryNote.Locked = Not canEdit
+    Me.txtSupplierInvoiceNumber.Locked = Not canEdit
+    Me.cboReceivedByUserID.Locked = Not canEdit
+    Me.txtNOtes.Locked = Not canEdit
+
+    With Me.Controls(RECEIPT_ITEM_SUBFORM).Form
+        .AllowAdditions = False
+        .AllowEdits = canEdit
+        .AllowDeletions = canEdit
+    End With
+
+    Me.cmdLoadOutstanding.Enabled = _
+        canEdit And hasReceipt
+
+    Me.cmdSaveReceipt.Enabled = canEdit
+
+    Me.cmdPostReceipt.Enabled = _
+        canEdit And _
+        hasReceipt And _
+        hasPositiveLines
+
+    On Error GoTo 0
+
+End Sub
+
+
+'=============================================================
+' DISPLAY SUPPLIER PO DETAILS
+'=============================================================
+
+Private Sub UpdateSupplierPODisplay()
+
+    On Error GoTo Err_Handler
+
+    Dim db As DAO.Database
+    Dim rs As DAO.Recordset
+    Dim SupplierPOID As Long
+    Dim SqlText As String
+
+    Me.txtSupplierName = Null
+    Me.txtPOStatusDisplay = Null
+
+    SupplierPOID = Nz(Me.cboSupplierPOID, 0)
+
+    If SupplierPOID <= 0 Then
+        GoTo Exit_Handler
+    End If
+
+    SqlText = _
+        "SELECT S.CompanyName, P.POStatus " & _
+        "FROM T_SupplierPOs AS P " & _
+        "INNER JOIN T_Suppliers AS S " & _
+        "ON P.SupplierID=S.SupplierID " & _
+        "WHERE P.SupplierPOID=" & SupplierPOID & ";"
+
+    Set db = CurrentDb
+
+    Set rs = db.OpenRecordset( _
+        SqlText, _
+        dbOpenSnapshot)
+
+    If Not rs.EOF Then
+        Me.txtSupplierName = _
+            Nz(rs!CompanyName, vbNullString)
+
+        Me.txtPOStatusDisplay = _
+            Nz(rs!POStatus, vbNullString)
+    End If
+
+Exit_Handler:
+    On Error Resume Next
+
+    If Not rs Is Nothing Then
+        rs.close
+    End If
+
+    Set rs = Nothing
+    Set db = Nothing
+
+    On Error GoTo 0
+    Exit Sub
+
+Err_Handler:
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' SAVE AND STATUS HELPERS
+'=============================================================
+
+Private Function SaveReceiptHeader() As Boolean
+
+    On Error GoTo Err_Handler
+
+    SaveReceiptHeader = False
+
+    If Nz(Me.cboSupplierPOID, 0) <= 0 Then
+        MsgBox _
+            "Select the Supplier Purchase Order first.", _
+            vbExclamation, _
+            "Supplier PO Required"
+        Exit Function
+    End If
+
+    InitializeNewReceipt
+
+    If Me.Dirty Then
+        Me.Dirty = False
+    End If
+
+    SaveReceiptHeader = _
+        (CurrentGoodsReceiptID() > 0)
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    MsgBox _
+        "The Goods Receipt header could not be saved." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Goods Receipt"
+
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function CurrentGoodsReceiptID() As Long
+
+    CurrentGoodsReceiptID = _
+        Nz(Me.txtGoodsReceiptID, 0)
+
+End Function
+
+
+Private Function ReceiptCanBeEdited() As Boolean
+
+    Dim ReceiptStatus As String
+
+    ReceiptStatus = _
+        Trim$(Nz(Me.cboReceiptStatus, STATUS_DRAFT))
+
+    ReceiptCanBeEdited = _
+        (StrComp( _
+            ReceiptStatus, _
+            STATUS_DRAFT, _
+            vbTextCompare) = 0)
+
+End Function
+
+
+Private Function SupplierPOIsReceivable( _
+    ByVal SupplierPOID As Long _
+) As Boolean
+
+    Dim POStatus As String
+
+    POStatus = Trim$(Nz(DLookup( _
+        "POStatus", _
+        "T_SupplierPOs", _
+        "SupplierPOID=" & SupplierPOID), _
+        vbNullString))
+
+    SupplierPOIsReceivable = _
+        (StrComp( _
+            POStatus, _
+            "Sent", _
+            vbTextCompare) = 0) Or _
+        (StrComp( _
+            POStatus, _
+            "Partially Received", _
+            vbTextCompare) = 0)
+
+End Function
+
+
+'=============================================================
+' RECEIPT NUMBER
+'=============================================================
+
+Private Function NextReceiptNumber() As String
+
+    Dim nextNumber As Long
+    Dim candidate As String
+
+    nextNumber = Nz(DMax( _
+        "GoodsReceiptID", _
+        "T_GoodsReceipts"), 0) + 1
+
+    Do
+        candidate = _
+            "GRN-" & Format$(nextNumber, "00000")
+
+        If DCount( _
+            "*", _
+            "T_GoodsReceipts", _
+            "ReceiptNumber=" & SqlText(candidate)) = 0 Then
+
+            Exit Do
+        End If
+
+        nextNumber = nextNumber + 1
+    Loop
+
+    NextReceiptNumber = candidate
+
+End Function
+
+
+'=============================================================
+' OPENARGS
+'=============================================================
+
+Private Function ReadOpenArgLong( _
+    ByVal argumentName As String _
+) As Long
+
+    On Error GoTo Exit_Handler
+
+    Dim openArgumentText As String
+    Dim argumentParts As Variant
+    Dim argumentPart As Variant
+    Dim equalsPosition As Long
+    Dim currentName As String
+    Dim currentValue As String
+
+    openArgumentText = _
+        Trim$(Nz(Me.OpenArgs, vbNullString))
+
+    If Len(openArgumentText) = 0 Then
+        Exit Function
+    End If
+
+    argumentParts = Split(openArgumentText, ";")
+
+    For Each argumentPart In argumentParts
+
+        equalsPosition = _
+            InStr(1, CStr(argumentPart), "=", vbBinaryCompare)
+
+        If equalsPosition > 0 Then
+
+            currentName = Trim$(Left$( _
+                CStr(argumentPart), _
+                equalsPosition - 1))
+
+            currentValue = Trim$(Mid$( _
+                CStr(argumentPart), _
+                equalsPosition + 1))
+
+            If StrComp( _
+                currentName, _
+                argumentName, _
+                vbTextCompare) = 0 Then
+
+                If IsNumeric(currentValue) Then
+                    ReadOpenArgLong = CLng(currentValue)
+                End If
+
+                Exit Function
+
+            End If
+
+        End If
+
+    Next argumentPart
+
+Exit_Handler:
+    If ReadOpenArgLong < 0 Then
+        ReadOpenArgLong = 0
+    End If
+
+End Function
+
+
+'=============================================================
+' SQL HELPER
+'=============================================================
+
+Private Function SqlText( _
+    ByVal textValue As String _
+) As String
+
+    SqlText = _
+        "'" & Replace(textValue, "'", "''") & "'"
+
+End Function

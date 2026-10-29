@@ -1,0 +1,4 @@
+﻿SELECT P.ProjectID, P.ProjectCode, P.ProjectName, P.CustomerID, P.StartDate, P.EndDate, P.Status, P.Budget, P.IsActive, P.FinishedItemID, I.InternalSKU AS FinishedItemSKU, I.ItemName AS FinishedItemName, P.AssemblyTemplateID, T.TemplateCode, T.TemplateName, P.BuildQuantity, P.OutputLocationID, L.LocationCode AS OutputLocationCode, L.LocationName AS OutputLocationName, W.WarehouseName, P.CustomerPOReference, P.CustomerPOID, P.CustomerPOLineID, P.SalesOrderID, P.QuantityShipped, P.ShippedDate, P.WorkInstructions, P.Notes
+FROM (((T_Projects AS P LEFT JOIN T_Items AS I ON P.FinishedItemID = I.ItemID) LEFT JOIN T_AssemblyTemplates AS T ON P.AssemblyTemplateID = T.AssemblyTemplateID) LEFT JOIN T_Locations AS L ON P.OutputLocationID = L.LocationID) LEFT JOIN T_Warehouses AS W ON L.WarehouseID = W.WarehouseID
+ORDER BY P.ProjectName, P.ProjectCode;
+

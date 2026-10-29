@@ -1,0 +1,122 @@
+﻿Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+'=============================================================
+' FORM: SF_ProjectIssueItems
+' STEP 3 - SHARED ISSUE / RETURN LINE VALIDATION
+'
+' F_ProjectIssue supplies this form's RecordSource and binds the
+' existing generic datasheet controls.
+'=============================================================
+
+Private Const QUANTITY_EPSILON As Double = 0.000001
+
+
+Private Sub Form_Load()
+
+    Me.AllowAdditions = False
+    Me.AllowDeletions = False
+    Me.AllowEdits = True
+
+End Sub
+
+
+Private Sub Form_BeforeUpdate(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    Dim actionWord As String
+
+    actionWord = CurrentActionWord()
+
+    If Nz(Me!IssueQty, 0) < 0 Then
+        MsgBox _
+            UCase$(Left$(actionWord, 1)) & Mid$(actionWord, 2) & _
+            " quantity cannot be negative.", _
+            vbExclamation, _
+            "Invalid Quantity"
+        Me.Controls("Text8").SetFocus
+        Cancel = True
+        Exit Sub
+    End If
+
+    If Nz(Me!selected, False) And Nz(Me!IssueQty, 0) <= 0 Then
+        MsgBox _
+            "Enter a " & actionWord & _
+            " quantity greater than zero, or clear Select.", _
+            vbExclamation, _
+            "Quantity Required"
+        Me.Controls("Text8").SetFocus
+        Cancel = True
+        Exit Sub
+    End If
+
+    If Nz(Me!selected, False) And _
+       Nz(Me!IssueQty, 0) > Nz(Me!availableQty, 0) Then
+
+        MsgBox _
+            UCase$(Left$(actionWord, 1)) & Mid$(actionWord, 2) & _
+            " quantity cannot be greater than the available quantity.", _
+            vbExclamation, _
+            "Quantity Not Available"
+        Me.Controls("Text8").SetFocus
+        Cancel = True
+        Exit Sub
+    End If
+
+    If Nz(Me!selected, False) And _
+       Nz(Me!ItemInstanceID, 0) > 0 And _
+       Abs(Nz(Me!IssueQty, 0) - 1) > QUANTITY_EPSILON Then
+
+        MsgBox _
+            "A serialized item must have quantity 1.", _
+            vbExclamation, _
+            "Serialized Quantity"
+        Me.Controls("Text8").SetFocus
+        Cancel = True
+        Exit Sub
+    End If
+
+    Me!Notes = Trim$(Nz(Me!Notes, vbNullString))
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Cancel = True
+    MsgBox _
+        "The project item line could not be validated." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Project Item"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Function CurrentActionWord() As String
+
+    On Error GoTo Use_Issue
+
+    If StrComp( _
+        Nz(Me.Parent!txtIssueType, vbNullString), _
+        "Tool Return", _
+        vbTextCompare) = 0 Then
+
+        CurrentActionWord = "return"
+    Else
+        CurrentActionWord = "issue"
+    End If
+
+    Exit Function
+
+Use_Issue:
+    CurrentActionWord = "issue"
+
+End Function

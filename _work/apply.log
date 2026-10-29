@@ -1,0 +1,97 @@
+safety copy created
+== schema
+  added : ManufacturerPartNumber
+  added : VendorPartNumber
+  added : InternalPartNumber
+  added : AutoGeneratePartNumber
+== query Q_UnitList
+  created
+== modules
+  imported M_Fixes
+  imported M_Backup
+== form code F_LocationSetup
+  lines now: 921
+== patch F_Warehouses
+  patched: Form_F_Warehouses :: keep incoming filter
+  skip (already patched): Form_F_Warehouses :: restore incoming filter
+== patch F_ItemSetup
+  skip (already patched): Form_F_ItemSetup :: declare max ids
+  skip (already patched): Form_F_ItemSetup :: remember max id
+  skip (already patched): Form_F_ItemSetup :: resolve saved id
+== patch F_CustomerSetup
+  patched: Form_F_CustomerSetup :: highlight missing
+== patch F_AssemblyTemplate
+  patched: Form_F_AssemblyTemplate :: status list
+  patched: Form_F_AssemblyTemplate :: normalize part numbers
+  patched: Form_F_AssemblyTemplate :: lock internal part number
+  patched: Form_F_AssemblyTemplate :: part number helpers
+== patch M_UX
+  patched: M_UX :: list form guard
+== patch F_SystemSettings
+  patched: Form_F_SystemSettings :: next action order
+  patched: Form_F_SystemSettings :: customer criteria
+  patched: Form_F_SystemSettings :: supplier criteria
+  patched: Form_F_SystemSettings :: category criteria
+  patched: Form_F_SystemSettings :: unit criteria
+  patched: Form_F_SystemSettings :: item criteria
+  patched: Form_F_SystemSettings :: template criteria
+  patched: Form_F_SystemSettings :: warehouse criteria
+  patched: Form_F_SystemSettings :: location criteria
+  patched: Form_F_SystemSettings :: form load wiring
+  patched: Form_F_SystemSettings :: refresh wiring
+  patched: Form_F_SystemSettings :: drilldown wiring sub
+  patched: Form_F_SystemSettings :: customer button
+  patched: Form_F_SystemSettings :: supplier button
+  patched: Form_F_SystemSettings :: category button
+  patched: Form_F_SystemSettings :: unit button
+  patched: Form_F_SystemSettings :: item button
+  patched: Form_F_SystemSettings :: template button
+  patched: Form_F_SystemSettings :: warehouse button
+  patched: Form_F_SystemSettings :: location button
+  patched: Form_F_SystemSettings :: next action routing
+  added backup/restore handlers
+== design F_SystemSettings
+  created cmdBackupData
+  created cmdRestoreData
+== design F_AssemblyTemplate
+  created lblPartNumbersTitle
+  created lblManufacturerPartNumber
+  created txtManufacturerPartNumber
+  created lblVendorPartNumber
+  created txtVendorPartNumber
+  created lblInternalPartNumber
+  created txtInternalPartNumber
+  created chkAutoGeneratePartNumber
+The property 'Caption' cannot be found on this object. Verify that the property exists and can be set.
+At C:\Users\user\Downloads\LLC\_work\apply.ps1:895 char:1
++ $existing.Caption = "Auto generate internal part number"
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : PropertyAssignmentException
+ 
+The property 'FontName' cannot be found on this object. Verify that the property exists and can be set.
+At C:\Users\user\Downloads\LLC\_work\apply.ps1:896 char:1
++ $existing.FontName = "Segoe UI"
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : PropertyAssignmentException
+ 
+The property 'FontSize' cannot be found on this object. Verify that the property exists and can be set.
+At C:\Users\user\Downloads\LLC\_work\apply.ps1:897 char:1
++ $existing.FontSize = 10
++ ~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : PropertyAssignmentException
+ 
+== scrollbars
+  SF_CustomerList ok
+  SF_SupplierList ok
+  SF_ItemSetupList ok
+  SF_TemplateList ok
+  SF_WarehouseList ok
+  SF_ProjectList ok
+  SF_InventoryList ok
+  SF_WarehouseLocations FAILED The object you have selected is already open for design as a subform or subreport. To open this object in Design view, select the subform or subreport in the object in which it is already open, and then on the Design tab, in the Tools group, click Subform in New Window.
+== compile
+IsCompiled = False
+DONE

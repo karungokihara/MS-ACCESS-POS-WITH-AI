@@ -1,0 +1,158 @@
+﻿Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+Private Const SUBFORM_CONTROL As String = "subSupplierList"
+
+Private Sub Form_Load()
+    ApplyFilter
+End Sub
+
+Private Sub txtSearch_AfterUpdate()
+    ApplyFilter
+End Sub
+
+Private Sub txtSearch_KeyDown(KeyCode As Integer, Shift As Integer)
+
+    If KeyCode = vbKeyReturn Then
+        KeyCode = 0
+        ApplyFilter
+    End If
+
+End Sub
+
+Private Sub btnClearFilter_Click()
+
+    Me.txtSearch = Null
+
+    With Me.Controls(SUBFORM_CONTROL).Form
+        .FilterOn = False
+        .Filter = vbNullString
+        .Requery
+    End With
+
+End Sub
+
+Private Sub btnRefresh_Click()
+
+    Me.Controls(SUBFORM_CONTROL).Form.Requery
+
+End Sub
+
+Private Sub btnNew_Click()
+
+    OpenSupplierFormNew
+
+End Sub
+
+Private Sub btnClose_Click()
+
+    DoCmd.close acForm, Me.Name
+
+End Sub
+
+Private Sub ApplyFilter()
+
+    On Error GoTo Err_Handler
+
+    Dim searchText As String
+    Dim filterText As String
+
+    searchText = Trim$(Nz(Me.txtSearch, vbNullString))
+
+    If Len(searchText) > 0 Then
+
+        searchText = Replace(searchText, "'", "''")
+
+        filterText = _
+            "([SupplierCode] Like '*" & searchText & "*'" & _
+            " OR [CompanyName] Like '*" & searchText & "*'" & _
+            " OR [ContactPerson] Like '*" & searchText & "*'" & _
+            " OR [Phone] Like '*" & searchText & "*'" & _
+            " OR [Email] Like '*" & searchText & "*'" & _
+            " OR [PaymentTerms] Like '*" & searchText & "*')"
+
+        With Me.Controls(SUBFORM_CONTROL).Form
+            .Filter = filterText
+            .FilterOn = True
+            .Requery
+        End With
+
+    Else
+
+        With Me.Controls(SUBFORM_CONTROL).Form
+            .FilterOn = False
+            .Filter = vbNullString
+            .Requery
+        End With
+
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The supplier list filter could not be applied." & vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Supplier List Filter"
+
+    Resume Exit_Handler
+
+End Sub
+
+Private Sub OpenSupplierFormNew()
+
+    On Error GoTo Err_Handler
+
+    If FormExists("F_SupplierSetup") Then
+        DoCmd.OpenForm "F_SupplierSetup", acNormal, , , acFormAdd
+    ElseIf FormExists("F_Supplier") Then
+        DoCmd.OpenForm "F_Supplier", acNormal, , , acFormAdd
+    Else
+        MsgBox _
+            "No supplier detail form was found." & vbCrLf & vbCrLf & _
+            "Expected one of these forms:" & vbCrLf & _
+            "F_SupplierSetup" & vbCrLf & _
+            "F_Supplier", _
+            vbExclamation, _
+            "Supplier Form Missing"
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The new supplier form could not be opened." & vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "New Supplier"
+
+    Resume Exit_Handler
+
+End Sub
+
+Private Function FormExists(ByVal FormName As String) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim tmp As String
+    tmp = CurrentProject.AllForms(FormName).Name
+
+    FormExists = True
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    FormExists = False
+    Resume Exit_Handler
+
+End Function

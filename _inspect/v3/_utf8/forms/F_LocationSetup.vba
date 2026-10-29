@@ -1,0 +1,1336 @@
+﻿Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+'=============================================================
+' FORM: F_LocationSetup
+'
+' PURPOSE:
+'   Creates and edits stock locations.
+'
+' IMPORTANT DESIGN NAMES:
+'   Warehouse combo:     cboWarehouseID
+'   Location code:       LocationCode or txtLocationCode
+'   Location name:       LocationName or txtLocationName
+'   Bin number:          BinNumber or txtBinNumber
+'   Shelf number:        ShelfNumber or txtShelfNumber
+'   Save and Close:      cmdSaveClose
+'   Close without save:  cmdClose
+'
+' QUICK ADD FROM ITEM SETUP:
+'   F_ItemSetup opens this form with:
+'
+'       QUICKADD|typed location name
+'
+'   This module automatically fills the typed Location Name.
+'
+' WAREHOUSE QUICK ADD:
+'   Typing a warehouse that is not in cboWarehouseID asks whether
+'   it should be created. It then opens F_Warehouses using the
+'   same standard HandleComboNotInList helper already used by the
+'   rest of the application.
+'=============================================================
+
+Private Const WAREHOUSE_SETUP_FORM As String = "F_Warehouses"
+Private Const WAREHOUSE_TABLE As String = "T_Warehouses"
+
+Private mQuickAddMode As Boolean
+Private mInitializing As Boolean
+
+
+'=============================================================
+' FORM EVENTS
+'=============================================================
+
+Private Sub Form_Load()
+    UX_MarkRequired Me, "LocationName", "cboWarehouseID"
+
+    On Error GoTo Err_Handler
+
+    mInitializing = True
+    mQuickAddMode = IsQuickAddRequest()
+
+    ConfigureFormControls
+    ConfigureWarehouseCombo
+
+    If Me.NewRecord Then
+        ApplyNewRecordDefaults
+        ApplyQuickAddLocationName
+        EnsureLocationCode
+    End If
+
+    mInitializing = False
+    SetInitialFocus
+
+Exit_Handler:
+    mInitializing = False
+    Exit Sub
+
+Err_Handler:
+    mInitializing = False
+
+    MsgBox _
+        "Location Setup could not be initialized." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Location Setup"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_Current()
+
+    On Error GoTo Err_Handler
+
+    If Me.NewRecord Then
+        ApplyNewRecordDefaults
+        EnsureLocationCode
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The location record could not be displayed." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Location Setup"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_BeforeInsert(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    If RecordsetHasField("CreatedOn") Then
+        If IsNull(Me.Recordset.Fields("CreatedOn").value) Then
+            Me.Recordset.Fields("CreatedOn").value = Now()
+        End If
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Cancel = True
+
+    MsgBox _
+        "The new location record could not be started." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Location Setup"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_BeforeUpdate(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    NormalizeLocationValues
+    EnsureLocationCode
+
+    If Not ValidateLocationRecord Then
+        Cancel = True
+        Exit Sub
+    End If
+
+    If RecordsetHasField("UpdatedOn") Then
+        Me.Recordset.Fields("UpdatedOn").value = Now()
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Cancel = True
+
+    MsgBox _
+        "The location could not be validated." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Location Setup"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_Error( _
+    DataErr As Integer, _
+    Response As Integer _
+)
+
+    If DataErr = 3022 Then
+
+        MsgBox _
+            "The location code already exists.", _
+            vbExclamation, _
+            "Duplicate Location"
+
+        Response = acDataErrContinue
+
+    Else
+
+        Response = acDataErrDisplay
+
+    End If
+
+End Sub
+
+
+'=============================================================
+' WAREHOUSE COMBO EVENTS
+'=============================================================
+
+Private Sub cboWarehouseID_NotInList( _
+    NewData As String, _
+    Response As Integer _
+)
+
+    On Error GoTo Err_Handler
+
+    Response = acDataErrContinue
+
+    If HandleComboNotInList( _
+        Me.cboWarehouseID, _
+        NewData, _
+        WAREHOUSE_SETUP_FORM, _
+        WAREHOUSE_TABLE, _
+        "WarehouseID", _
+        "WarehouseName", _
+        "WarehouseCode") Then
+
+        Response = acDataErrAdded
+
+    Else
+
+        Me.cboWarehouseID.Undo
+
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Response = acDataErrContinue
+
+    MsgBox _
+        "The warehouse could not be created." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Warehouse Quick Add"
+
+    On Error Resume Next
+    Me.cboWarehouseID.Undo
+    On Error GoTo 0
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cboWarehouseID_DblClick(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    Cancel = True
+
+    If Nz(Me.cboWarehouseID, 0) > 0 Then
+
+        EditComboEntry _
+            Me.cboWarehouseID, _
+            WAREHOUSE_SETUP_FORM, _
+            "WarehouseID"
+
+    Else
+
+        AddComboEntry _
+            Me.cboWarehouseID, _
+            WAREHOUSE_SETUP_FORM, _
+            WAREHOUSE_TABLE, _
+            "WarehouseID"
+
+    End If
+
+    Me.cboWarehouseID.Requery
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "Warehouse Setup could not be opened." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Warehouse Setup"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cboWarehouseID_AfterUpdate()
+
+    On Error Resume Next
+    Me.cboWarehouseID.Requery
+    On Error GoTo 0
+
+End Sub
+
+
+'=============================================================
+' LOCATION NAME EVENTS
+'=============================================================
+
+Private Sub txtLocationName_AfterUpdate()
+
+    If Not mInitializing And Me.NewRecord Then
+        EnsureLocationCode
+    End If
+
+End Sub
+
+
+Private Sub LocationName_AfterUpdate()
+
+    If Not mInitializing And Me.NewRecord Then
+        EnsureLocationCode
+    End If
+
+End Sub
+
+
+'=============================================================
+' BUTTON EVENTS
+'=============================================================
+
+Private Sub cmdSaveClose_Click()
+
+    SaveAndCloseLocation
+
+End Sub
+
+
+'Supports the button currently shown with the name Save.
+Private Sub Save_Click()
+
+    SaveAndCloseLocation
+
+End Sub
+
+
+'Supports an existing button named cmdSave.
+Private Sub cmdSave_Click()
+
+    SaveAndCloseLocation
+
+End Sub
+
+
+Private Sub cmdClose_Click()
+
+    CloseLocationWithoutForcedSave
+
+End Sub
+
+
+Private Sub close_Click()
+
+    CloseLocationWithoutForcedSave
+
+End Sub
+
+
+Private Sub cmdNew_Click()
+
+    OpenNewLocationRecord
+
+End Sub
+
+
+Private Sub addnew_Click()
+
+    OpenNewLocationRecord
+
+End Sub
+
+
+'=============================================================
+' SAVE AND CLOSE
+'=============================================================
+
+Private Sub SaveAndCloseLocation()
+
+    On Error GoTo Err_Handler
+
+    If Not SaveLocationRecord Then
+        Exit Sub
+    End If
+
+    DoCmd.close _
+        acForm, _
+        Me.Name, _
+        acSaveNo
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The location could not be saved and closed." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Location Setup"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Function SaveLocationRecord() As Boolean
+
+    On Error GoTo Err_Handler
+
+    SaveLocationRecord = False
+
+    NormalizeLocationValues
+    EnsureLocationCode
+
+    If Not ValidateLocationRecord Then
+        Exit Function
+    End If
+
+    If Me.Dirty Then
+        Me.Dirty = False
+    End If
+
+    SaveLocationRecord = _
+        (CurrentLocationID() > 0)
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    MsgBox _
+        "The location record could not be saved." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Location Setup"
+
+    Resume Exit_Handler
+
+End Function
+
+
+Private Sub CloseLocationWithoutForcedSave()
+
+    On Error GoTo Err_Handler
+
+    Dim responseValue As VbMsgBoxResult
+
+    If Me.Dirty Then
+
+        responseValue = MsgBox( _
+            "Save the location changes before closing?", _
+            vbQuestion + vbYesNoCancel, _
+            "Close Location Setup")
+
+        Select Case responseValue
+
+            Case vbYes
+
+                If Not SaveLocationRecord Then
+                    Exit Sub
+                End If
+
+            Case vbNo
+
+                Me.Undo
+
+            Case vbCancel
+
+                Exit Sub
+
+        End Select
+
+    End If
+
+    DoCmd.close _
+        acForm, _
+        Me.Name, _
+        acSaveNo
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "Location Setup could not be closed." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Location Setup"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub OpenNewLocationRecord()
+
+    On Error GoTo Err_Handler
+
+    If Me.Dirty Then
+        If Not SaveLocationRecord Then
+            Exit Sub
+        End If
+    End If
+
+    DoCmd.GoToRecord _
+        acDataForm, _
+        Me.Name, _
+        acNewRec
+
+    mQuickAddMode = False
+    ApplyNewRecordDefaults
+    SetInitialFocus
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "A new location could not be opened." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Location Setup"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' FORM CONFIGURATION
+'=============================================================
+
+Private Sub ConfigureFormControls()
+
+    Dim controlName As String
+
+    'Only the location primary key is hidden.
+    controlName = FirstExistingControlName( _
+        "txtLocationID", _
+        "LocationID")
+
+    If Len(controlName) > 0 Then
+
+        If StrComp( _
+            controlName, _
+            "LocationID", _
+            vbTextCompare) = 0 Then
+
+            'Do not accidentally hide a visible business field
+            'when no dedicated LocationID textbox exists.
+            If ControlSourceIs( _
+                Me.Controls(controlName), _
+                "LocationID") Then
+
+                With Me.Controls(controlName)
+                    .Visible = False
+                    .Enabled = False
+                    .Locked = True
+                    .TabStop = False
+                End With
+
+            End If
+
+        Else
+
+            With Me.Controls(controlName)
+                .Visible = False
+                .Enabled = False
+                .Locked = True
+                .TabStop = False
+            End With
+
+        End If
+
+    End If
+
+    'Location code is generated automatically.
+    controlName = FirstExistingControlName( _
+        "txtLocationCode", _
+        "LocationCode")
+
+    If Len(controlName) > 0 Then
+
+        With Me.Controls(controlName)
+            .Visible = True
+            .Enabled = True
+            .Locked = True
+            .TabStop = False
+        End With
+
+    End If
+
+    'Warehouse must always remain visible and editable.
+    If ControlExists("cboWarehouseID") Then
+
+        With Me.cboWarehouseID
+            .Visible = True
+            .Enabled = True
+            .Locked = False
+            .TabStop = True
+        End With
+
+    End If
+
+End Sub
+
+
+Private Sub ConfigureWarehouseCombo()
+
+    On Error GoTo Err_Handler
+
+    If Not ControlExists("cboWarehouseID") Then
+
+        Err.Raise _
+            vbObjectError + 7401, _
+            "ConfigureWarehouseCombo", _
+            "The combo box cboWarehouseID was not found." & _
+            vbCrLf & vbCrLf & _
+            "Convert the WarehouseID textbox to a combo box " & _
+            "and name it cboWarehouseID."
+
+    End If
+
+    If Me.cboWarehouseID.ControlType <> acComboBox Then
+
+        Err.Raise _
+            vbObjectError + 7402, _
+            "ConfigureWarehouseCombo", _
+            "cboWarehouseID must be a combo box."
+
+    End If
+
+    With Me.cboWarehouseID
+
+        .ControlSource = "WarehouseID"
+
+        .RowSourceType = "Table/Query"
+        .RowSource = _
+            "SELECT WarehouseID, WarehouseName, WarehouseCode " & _
+            "FROM T_Warehouses " & _
+            "ORDER BY WarehouseName, WarehouseCode;"
+
+        .BoundColumn = 1
+        .ColumnCount = 3
+        .ColumnWidths = "0cm;6cm;3cm"
+
+        .LimitToList = True
+        .AutoExpand = True
+
+        .Visible = True
+        .Enabled = True
+        .Locked = False
+        .TabStop = True
+
+        .Requery
+
+    End With
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Err.Raise _
+        Err.Number, _
+        "ConfigureWarehouseCombo", _
+        Err.Description
+
+End Sub
+
+
+'=============================================================
+' QUICK ADD FROM ITEM SETUP
+'=============================================================
+
+Private Function IsQuickAddRequest() As Boolean
+
+    IsQuickAddRequest = _
+        (StrComp( _
+            Left$(Trim$(Nz(Me.OpenArgs, vbNullString)), 9), _
+            "QUICKADD|", _
+            vbTextCompare) = 0)
+
+End Function
+
+
+Private Function QuickAddTypedText() As String
+
+    Dim openArguments As String
+
+    openArguments = _
+        Trim$(Nz(Me.OpenArgs, vbNullString))
+
+    If StrComp( _
+        Left$(openArguments, 9), _
+        "QUICKADD|", _
+        vbTextCompare) = 0 Then
+
+        QuickAddTypedText = _
+            Trim$(Mid$(openArguments, 10))
+
+    Else
+
+        QuickAddTypedText = vbNullString
+
+    End If
+
+End Function
+
+
+Private Sub ApplyQuickAddLocationName()
+
+    Dim typedLocationName As String
+    Dim controlName As String
+
+    typedLocationName = QuickAddTypedText()
+
+    If Len(typedLocationName) = 0 Then
+        Exit Sub
+    End If
+
+    controlName = FirstExistingControlName( _
+        "txtLocationName", _
+        "LocationName")
+
+    If Len(controlName) = 0 Then
+
+        Err.Raise _
+            vbObjectError + 7403, _
+            "ApplyQuickAddLocationName", _
+            "The Location Name control could not be found."
+
+    End If
+
+    Me.Controls(controlName).value = typedLocationName
+
+    EnsureLocationCode
+
+    On Error Resume Next
+    Me.Controls(controlName).SetFocus
+    Me.Controls(controlName).SelStart = _
+        Len(Nz(Me.Controls(controlName).value, vbNullString))
+    On Error GoTo 0
+
+End Sub
+
+
+'=============================================================
+' DEFAULTS / NORMALIZATION / VALIDATION
+'=============================================================
+
+Private Sub ApplyNewRecordDefaults()
+
+    If Not Me.NewRecord Then
+        Exit Sub
+    End If
+
+    'When only one warehouse exists, select it automatically.
+    If DCount("*", WAREHOUSE_TABLE) = 1 Then
+
+        If Nz(Me.cboWarehouseID, 0) <= 0 Then
+
+            Me.cboWarehouseID = _
+                DLookup("WarehouseID", WAREHOUSE_TABLE)
+
+        End If
+
+    End If
+
+    If RecordsetHasField("CreatedOn") Then
+
+        If IsNull(Me.Recordset.Fields("CreatedOn").value) Then
+            Me.Recordset.Fields("CreatedOn").value = Now()
+        End If
+
+    End If
+
+End Sub
+
+
+Private Sub NormalizeLocationValues()
+
+    NormalizeRequiredText _
+        "LocationName", _
+        Array("txtLocationName", "LocationName"), _
+        False
+
+    NormalizeRequiredText _
+        "LocationCode", _
+        Array("txtLocationCode", "LocationCode"), _
+        True
+
+    NormalizeOptionalText _
+        "BinNumber", _
+        Array("txtBinNumber", "BinNumber")
+
+    NormalizeOptionalText _
+        "ShelfNumber", _
+        Array("txtShelfNumber", "ShelfNumber")
+
+    NormalizeOptionalText _
+        "Notes", _
+        Array("txtNotes", "txtNOtes", "Notes")
+
+End Sub
+
+
+Private Sub NormalizeRequiredText( _
+    ByVal fieldName As String, _
+    ByVal candidateControls As Variant, _
+    ByVal makeUpperCase As Boolean _
+)
+
+    Dim valueText As String
+
+    valueText = Trim$(Nz(ReadFormValue( _
+        fieldName, _
+        candidateControls), _
+        vbNullString))
+
+    If makeUpperCase Then
+        valueText = UCase$(valueText)
+    End If
+
+    WriteFormValue _
+        fieldName, _
+        candidateControls, _
+        valueText, _
+        False
+
+End Sub
+
+
+Private Sub NormalizeOptionalText( _
+    ByVal fieldName As String, _
+    ByVal candidateControls As Variant _
+)
+
+    Dim valueText As String
+
+    valueText = Trim$(Nz(ReadFormValue( _
+        fieldName, _
+        candidateControls), _
+        vbNullString))
+
+    If Len(valueText) = 0 Then
+
+        WriteFormValue _
+            fieldName, _
+            candidateControls, _
+            Null, _
+            True
+
+    Else
+
+        WriteFormValue _
+            fieldName, _
+            candidateControls, _
+            valueText, _
+            True
+
+    End If
+
+End Sub
+
+
+Private Function ValidateLocationRecord() As Boolean
+
+    Dim warehouseIDValue As Long
+    Dim locationIDValue As Long
+    Dim locationNameValue As String
+    Dim locationCodeValue As String
+
+    ValidateLocationRecord = False
+
+    warehouseIDValue = Nz(Me.cboWarehouseID, 0)
+
+    If warehouseIDValue <= 0 Then
+
+        MsgBox _
+            "Select or create the warehouse for this location.", _
+            vbExclamation, _
+            "Warehouse Required"
+
+        Me.cboWarehouseID.SetFocus
+        Exit Function
+
+    End If
+
+    locationNameValue = Trim$(Nz(ReadFormValue( _
+        "LocationName", _
+        Array("txtLocationName", "LocationName")), _
+        vbNullString))
+
+    If Len(locationNameValue) = 0 Then
+
+        MsgBox _
+            "Enter the location name.", _
+            vbExclamation, _
+            "Location Name Required"
+
+        FocusControlIfExists _
+            "txtLocationName", _
+            "LocationName"
+
+        Exit Function
+
+    End If
+
+    locationCodeValue = UCase$(Trim$(Nz(ReadFormValue( _
+        "LocationCode", _
+        Array("txtLocationCode", "LocationCode")), _
+        vbNullString)))
+
+    If Len(locationCodeValue) = 0 Then
+
+        MsgBox _
+            "The location code could not be generated.", _
+            vbExclamation, _
+            "Location Code Required"
+
+        Exit Function
+
+    End If
+
+    locationIDValue = CurrentLocationID()
+
+    If DCount( _
+        "*", _
+        "T_Locations", _
+        "[LocationCode]=" & SqlText(locationCodeValue) & _
+        " AND [LocationID]<>" & CStr(locationIDValue)) > 0 Then
+
+        MsgBox _
+            "The location code already exists.", _
+            vbExclamation, _
+            "Duplicate Location Code"
+
+        Exit Function
+
+    End If
+
+    ValidateLocationRecord = True
+
+End Function
+
+
+'=============================================================
+' LOCATION CODE
+'=============================================================
+
+Private Sub EnsureLocationCode()
+
+    Dim locationNameValue As String
+    Dim locationCodeValue As String
+
+    If Not Me.NewRecord Then
+        Exit Sub
+    End If
+
+    locationNameValue = Trim$(Nz(ReadFormValue( _
+        "LocationName", _
+        Array("txtLocationName", "LocationName")), _
+        vbNullString))
+
+    If Len(locationNameValue) = 0 Then
+        Exit Sub
+    End If
+
+    locationCodeValue = Trim$(Nz(ReadFormValue( _
+        "LocationCode", _
+        Array("txtLocationCode", "LocationCode")), _
+        vbNullString))
+
+    If Len(locationCodeValue) > 0 Then
+        Exit Sub
+    End If
+
+    WriteFormValue _
+        "LocationCode", _
+        Array("txtLocationCode", "LocationCode"), _
+        GenerateLocationCode(locationNameValue), _
+        False
+
+End Sub
+
+
+Private Function GenerateLocationCode( _
+    ByVal LocationName As String _
+) As String
+
+    Dim prefix As String
+    Dim nextNumber As Long
+    Dim existingMaximum As Variant
+    Dim candidate As String
+
+    prefix = FourCharacterPrefix( _
+        LocationName, _
+        "LOCA")
+
+    existingMaximum = DMax( _
+        "Val(Mid([LocationCode],6))", _
+        "T_Locations", _
+        "[LocationCode] Like " & _
+            SqlText(prefix & "-*") & _
+        " AND IsNumeric(Mid([LocationCode],6))")
+
+    If IsNull(existingMaximum) Then
+        nextNumber = 1
+    Else
+        nextNumber = CLng(existingMaximum) + 1
+    End If
+
+    Do
+
+        candidate = _
+            prefix & "-" & _
+            Format$(nextNumber, "00000")
+
+        If DCount( _
+            "*", _
+            "T_Locations", _
+            "[LocationCode]=" & _
+                SqlText(candidate)) = 0 Then
+
+            Exit Do
+
+        End If
+
+        nextNumber = nextNumber + 1
+
+    Loop
+
+    GenerateLocationCode = candidate
+
+End Function
+
+
+Private Function FourCharacterPrefix( _
+    ByVal sourceText As String, _
+    ByVal fallbackPrefix As String _
+) As String
+
+    Dim resultText As String
+    Dim oneCharacter As String
+    Dim position As Long
+
+    sourceText = UCase$(Trim$(sourceText))
+
+    For position = 1 To Len(sourceText)
+
+        oneCharacter = Mid$(sourceText, position, 1)
+
+        If oneCharacter Like "[A-Z]" Then
+
+            resultText = resultText & oneCharacter
+
+            If Len(resultText) = 4 Then
+                Exit For
+            End If
+
+        End If
+
+    Next position
+
+    If Len(resultText) = 0 Then
+
+        resultText = _
+            Left$(fallbackPrefix & "XXXX", 4)
+
+    ElseIf Len(resultText) < 4 Then
+
+        resultText = _
+            resultText & _
+            String$(4 - Len(resultText), "X")
+
+    End If
+
+    FourCharacterPrefix = resultText
+
+End Function
+
+
+'=============================================================
+' SAFE CONTROL / FIELD HELPERS
+'=============================================================
+
+Private Function FirstExistingControlName( _
+    ParamArray controlNames() As Variant _
+) As String
+
+    Dim controlName As Variant
+
+    For Each controlName In controlNames
+
+        If ControlExists(CStr(controlName)) Then
+
+            FirstExistingControlName = _
+                CStr(controlName)
+
+            Exit Function
+
+        End If
+
+    Next controlName
+
+    FirstExistingControlName = vbNullString
+
+End Function
+
+
+Private Function ControlExists( _
+    ByVal controlName As String _
+) As Boolean
+
+    On Error GoTo Not_Found
+
+    Dim controlObject As Access.Control
+
+    Set controlObject = Me.Controls(controlName)
+    ControlExists = True
+
+Exit_Handler:
+    Set controlObject = Nothing
+    Exit Function
+
+Not_Found:
+    ControlExists = False
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function ControlSourceIs( _
+    ByVal controlObject As Access.Control, _
+    ByVal expectedSource As String _
+) As Boolean
+
+    On Error GoTo Not_Match
+
+    ControlSourceIs = _
+        (StrComp( _
+            Replace(Replace( _
+                Trim$(Nz(controlObject.ControlSource, vbNullString)), _
+                "[", _
+                vbNullString), _
+                "]", _
+                vbNullString), _
+            expectedSource, _
+            vbTextCompare) = 0)
+
+    Exit Function
+
+Not_Match:
+    ControlSourceIs = False
+
+End Function
+
+
+Private Function RecordsetHasField( _
+    ByVal fieldName As String _
+) As Boolean
+
+    On Error GoTo Not_Found
+
+    Dim testName As String
+
+    testName = _
+        Me.Recordset.Fields(fieldName).Name
+
+    RecordsetHasField = True
+    Exit Function
+
+Not_Found:
+    RecordsetHasField = False
+
+End Function
+
+
+Private Function ReadFormValue( _
+    ByVal fieldName As String, _
+    ByVal candidateControls As Variant _
+) As Variant
+
+    Dim controlName As Variant
+
+    For Each controlName In candidateControls
+
+        If ControlExists(CStr(controlName)) Then
+
+            ReadFormValue = _
+                Me.Controls(CStr(controlName)).value
+
+            Exit Function
+
+        End If
+
+    Next controlName
+
+    If RecordsetHasField(fieldName) Then
+
+        ReadFormValue = _
+            Me.Recordset.Fields(fieldName).value
+
+    Else
+
+        ReadFormValue = Null
+
+    End If
+
+End Function
+
+
+Private Sub WriteFormValue( _
+    ByVal fieldName As String, _
+    ByVal candidateControls As Variant, _
+    ByVal newValue As Variant, _
+    ByVal optionalField As Boolean _
+)
+
+    Dim controlName As Variant
+
+    For Each controlName In candidateControls
+
+        If ControlExists(CStr(controlName)) Then
+
+            Me.Controls(CStr(controlName)).value = newValue
+            Exit Sub
+
+        End If
+
+    Next controlName
+
+    If RecordsetHasField(fieldName) Then
+
+        Me.Recordset.Fields(fieldName).value = newValue
+        Exit Sub
+
+    End If
+
+    If Not optionalField Then
+
+        Err.Raise _
+            vbObjectError + 7404, _
+            "WriteFormValue", _
+            "The field or control '" & fieldName & _
+            "' could not be found."
+
+    End If
+
+End Sub
+
+
+Private Function CurrentLocationID() As Long
+
+    If Me.NewRecord Then
+        CurrentLocationID = 0
+        Exit Function
+    End If
+
+    If RecordsetHasField("LocationID") Then
+        CurrentLocationID = Nz(Me.Recordset.Fields("LocationID").value, 0)
+    Else
+        CurrentLocationID = 0
+    End If
+
+End Function
+
+
+Private Sub FocusControlIfExists( _
+    ParamArray controlNames() As Variant _
+)
+
+    Dim controlName As Variant
+
+    On Error Resume Next
+
+    For Each controlName In controlNames
+
+        If ControlExists(CStr(controlName)) Then
+
+            Me.Controls(CStr(controlName)).SetFocus
+            Exit For
+
+        End If
+
+    Next controlName
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub SetInitialFocus()
+
+    If Nz(Me.cboWarehouseID, 0) <= 0 Then
+
+        Me.cboWarehouseID.SetFocus
+
+    ElseIf Len(QuickAddTypedText()) > 0 Then
+
+        FocusControlIfExists _
+            "txtLocationName", _
+            "LocationName"
+
+    Else
+
+        Me.cboWarehouseID.SetFocus
+
+    End If
+
+End Sub
+
+
+Private Function SqlText( _
+    ByVal value As String _
+) As String
+
+    SqlText = _
+        "'" & Replace(value, "'", "''") & "'"
+
+End Function

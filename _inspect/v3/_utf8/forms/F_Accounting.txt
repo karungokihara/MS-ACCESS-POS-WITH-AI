@@ -1,0 +1,331 @@
+﻿Version =21
+VersionRequired =20
+PublishOption =1
+Checksum =-433415385
+Begin Form
+    DividingLines = NotDefault
+    AllowDesignChanges = NotDefault
+    DefaultView =0
+    PictureAlignment =2
+    DatasheetGridlinesBehavior =3
+    GridX =24
+    GridY =24
+    Width =10000
+    DatasheetFontHeight =11
+    ItemSuffix =6
+    Right =15090
+    Bottom =4695
+    DatasheetGridlinesColor =15263976
+    RecSrcDt = Begin
+        0x338e1bb2749ce640
+    End
+    GUID = Begin
+        0xdc4a7e6855af6240a48edecca39256ee
+    End
+    Caption ="Accounting"
+    DatasheetFontName ="Aptos"
+    FilterOnLoad =0
+    ShowPageMargins =0
+    DisplayOnSharePointSite =1
+    DatasheetAlternateBackColor =15921906
+    DatasheetGridlinesColor12 =0
+    FitToScreen =1
+    DatasheetBackThemeColorIndex =1
+    BorderThemeColorIndex =3
+    ThemeFontIndex =1
+    ForeThemeColorIndex =0
+    AlternateBackThemeColorIndex =1
+    AlternateBackShade =95.0
+    NoSaveCTIWhenDisabled =1
+    Begin
+        Begin Label
+            BackStyle =0
+            FontSize =11
+            BorderColor =8355711
+            ForeColor =6710886
+            FontName ="Aptos"
+            GridlineColor =10921638
+            ThemeFontIndex =1
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =0
+            BorderTint =50.0
+            ForeThemeColorIndex =0
+            ForeTint =60.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin CommandButton
+            FontSize =11
+            FontWeight =400
+            ForeColor =4210752
+            FontName ="Aptos"
+            GridlineColor =10921638
+            ForeThemeColorIndex =0
+            ForeTint =75.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+            UseTheme =1
+            Shape =1
+            Gradient =12
+            BackColor =14790982
+            BackThemeColorIndex =4
+            BackTint =60.0
+            BorderLineStyle =0
+            BorderColor =14790982
+            BorderThemeColorIndex =4
+            BorderTint =60.0
+            ThemeFontIndex =1
+            HoverColor =15453059
+            HoverThemeColorIndex =4
+            HoverTint =40.0
+            PressedColor =6440976
+            PressedThemeColorIndex =4
+            PressedShade =75.0
+            HoverForeColor =4210752
+            HoverForeThemeColorIndex =0
+            HoverForeTint =75.0
+            PressedForeColor =4210752
+            PressedForeThemeColorIndex =0
+            PressedForeTint =75.0
+        End
+        Begin Section
+            Height =4200
+            BackColor =14482166
+            Name ="Detail"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x2922b1c21a88644e99d5f501e1780ef9
+            End
+            AutoHeight =1
+            AlternateBackColor =14482166
+            AlternateBackShade =95.0
+            Begin
+                Begin Label
+                    OverlapFlags =85
+                    Left =300
+                    Top =200
+                    Width =5000
+                    Height =420
+                    FontSize =22
+                    FontWeight =700
+                    ForeColor =3947580
+                    Name ="lblTitle"
+                    Caption ="Accounting"
+                    GUID = Begin
+                        0xb81f3902e64c0349902d6b9e6b16ec51
+                    End
+                    LayoutCachedLeft =300
+                    LayoutCachedTop =200
+                    LayoutCachedWidth =5300
+                    LayoutCachedHeight =620
+                    ForeThemeColorIndex =-1
+                End
+                Begin Label
+                    OverlapFlags =85
+                    Left =300
+                    Top =680
+                    Width =9000
+                    Height =300
+                    ForeColor =3947580
+                    Name ="lblSub"
+                    Caption ="Expenses, staff attendance, leave, and statistics."
+                    GUID = Begin
+                        0xb0969a4eed4bf9488357ed206bb62e83
+                    End
+                    LayoutCachedLeft =300
+                    LayoutCachedTop =680
+                    LayoutCachedWidth =9300
+                    LayoutCachedHeight =980
+                    ForeThemeColorIndex =-1
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =300
+                    Top =1300
+                    Width =2800
+                    Height =700
+                    FontWeight =700
+                    ForeColor =16777215
+                    Name ="cmdExpenses"
+                    Caption ="Expenses"
+                    OnClick ="=UX_OpenForm(\"F_Expenses\")"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdExpenses\")"
+                    GUID = Begin
+                        0x20b5d39988c215408173f6633ab2cad0
+                    End
+
+                    LayoutCachedLeft =300
+                    LayoutCachedTop =1300
+                    LayoutCachedWidth =3100
+                    LayoutCachedHeight =2000
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =3300
+                    Top =1300
+                    Width =2800
+                    Height =700
+                    FontWeight =700
+                    TabIndex =1
+                    ForeColor =16777215
+                    Name ="cmdHR"
+                    Caption ="Staff and Leave"
+                    OnClick ="=UX_OpenForm(\"F_HR\")"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdHR\")"
+                    GUID = Begin
+                        0xbbbca1b6a82b4746a063fb0776309a19
+                    End
+
+                    LayoutCachedLeft =3300
+                    LayoutCachedTop =1300
+                    LayoutCachedWidth =6100
+                    LayoutCachedHeight =2000
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =6300
+                    Top =1300
+                    Width =2800
+                    Height =700
+                    FontWeight =700
+                    TabIndex =2
+                    ForeColor =16777215
+                    Name ="cmdStats"
+                    Caption ="Statistics"
+                    OnClick ="=UX_OpenForm(\"F_Statistics\")"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdStats\")"
+                    GUID = Begin
+                        0x19812b0a34db2940add9df77c2f17897
+                    End
+
+                    LayoutCachedLeft =6300
+                    LayoutCachedTop =1300
+                    LayoutCachedWidth =9100
+                    LayoutCachedHeight =2000
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =5600
+                    Top =180
+                    Width =1500
+                    Height =400
+                    FontWeight =700
+                    TabIndex =3
+                    ForeColor =16777215
+                    Name ="cmdUXBack"
+                    Caption ="Back"
+                    OnClick ="=UX_GoBack()"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdUXBack\")"
+                    GUID = Begin
+                        0x972e67c8d5e58e4385425bae32ff8eb9
+                    End
+
+                    LayoutCachedLeft =5600
+                    LayoutCachedTop =180
+                    LayoutCachedWidth =7100
+                    LayoutCachedHeight =580
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                End
+            End
+        End
+    End
+End

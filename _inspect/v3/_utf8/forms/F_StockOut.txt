@@ -1,0 +1,4631 @@
+﻿Version =21
+VersionRequired =20
+PublishOption =1
+Checksum =-1659803165
+Begin Form
+    PopUp = NotDefault
+    RecordSelectors = NotDefault
+    DividingLines = NotDefault
+    AllowDesignChanges = NotDefault
+    DefaultView =0
+    TabularFamily =0
+    PictureAlignment =2
+    DatasheetGridlinesBehavior =3
+    GridX =24
+    GridY =24
+    Width =21480
+    DatasheetFontHeight =11
+    ItemSuffix =38
+    Left =2655
+    Top =4065
+    Right =17745
+    Bottom =8760
+    DatasheetGridlinesColor =15263976
+    RecSrcDt = Begin
+        0x1126b23c588de640
+    End
+    GUID = Begin
+        0x00249a372a3d0b4da6e336ed258f4ee0
+    End
+    DatasheetFontName ="Aptos"
+    PrtMip = Begin
+        0x6801000068010000680100006801000000000000201c0000e010000001000000 ,
+        0x010000006801000000000000a10700000100000001000000
+    End
+    PrtDevMode = Begin
+        0x0000000000000000308490d58b0200000000000000000000e70a7e35f77f0000 ,
+        0x010403069c004003032d000001000100ea0a6f08640001000f00580202000100 ,
+        0x5802030001004c657474657200000000030000000000c8420000c842e8e8e800 ,
+        0x90fabce28b020000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000ffffffff4749533400000000000000000000000044494e55 ,
+        0x2200c80024031c00ac13d8c00000000000000000000000000000000000000000 ,
+        0x0000000000000000050000000000070000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000100000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000c8000000534d544a ,
+        0x000000001000b8007b00330045004500330039003100310034002d0033003000 ,
+        0x420034002d0034003500610034002d0041003100300039002d00310039004400 ,
+        0x3400410034003000460043004300320032007d000000524553444c4c00556e69 ,
+        0x726573444c4c00506170657253697a65004c4554544552004f7269656e746174 ,
+        0x696f6e00504f525452414954005265736f6c7574696f6e004450493630300043 ,
+        0x6f6c6f724d6f6465003234627070000000000000000000000000000000000000 ,
+        0x1c0000005634444d0100000000000000000000000000000000000000
+    End
+    PrtDevNames = Begin
+        0x08002c003f000100000000000000000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000000000000000006e ,
+        0x756c3a0000000000000000000000000000000000000000000000000000000000
+    End
+    OnLoad ="[Event Procedure]"
+    FilterOnLoad =0
+    ShowPageMargins =0
+    DisplayOnSharePointSite =1
+    DatasheetAlternateBackColor =15921906
+    DatasheetGridlinesColor12 =0
+    FitToScreen =1
+    DatasheetBackThemeColorIndex =1
+    BorderThemeColorIndex =3
+    ThemeFontIndex =1
+    ForeThemeColorIndex =0
+    AlternateBackThemeColorIndex =1
+    AlternateBackShade =95.0
+    PrtDevModeW = Begin
+        0x000074e28b0200001a000000f77f0000f06bb9e28b0200001a00000000000000 ,
+        0x4070b9e28b0200005fed3db5f97f0000000008c48b020000796d2ff7f1000000 ,
+        0x01040306dc004003032d000001000100ea0a6f08640001000f00580202000100 ,
+        0x5802030001004c0065007400740065007200000000000000006cb9e28b020000 ,
+        0x00000000000000000000000000000000f06bb9e28b0200005e000000f1000000 ,
+        0x1a00000000000000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000ffffffff4749533400000000000000000000000044494e55 ,
+        0x2200c80024031c00ac13d8c00000000000000000000000000000000000000000 ,
+        0x0000000000000000050000000000070000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000100000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000c8000000534d544a ,
+        0x000000001000b8007b00330045004500330039003100310034002d0033003000 ,
+        0x420034002d0034003500610034002d0041003100300039002d00310039004400 ,
+        0x3400410034003000460043004300320032007d000000524553444c4c00556e69 ,
+        0x726573444c4c00506170657253697a65004c4554544552004f7269656e746174 ,
+        0x696f6e00504f525452414954005265736f6c7574696f6e004450493630300043 ,
+        0x6f6c6f724d6f6465003234627070000000000000000000000000000000000000 ,
+        0x1c0000005634444d0100000000000000000000000000000000000000
+    End
+    PrtDevNamesW = Begin
+        0x040028003b000100000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000006e0075006c003a000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000
+    End
+    NoSaveCTIWhenDisabled =1
+    Begin
+        Begin Label
+            BackStyle =0
+            TextFontFamily =0
+            FontSize =11
+            BorderColor =8355711
+            ForeColor =6710886
+            FontName ="Aptos"
+            GridlineColor =10921638
+            ThemeFontIndex =1
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =0
+            BorderTint =50.0
+            ForeThemeColorIndex =0
+            ForeTint =60.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin CommandButton
+            TextFontFamily =0
+            FontSize =11
+            FontWeight =400
+            ForeColor =4210752
+            FontName ="Aptos"
+            GridlineColor =10921638
+            ForeThemeColorIndex =0
+            ForeTint =75.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+            UseTheme =1
+            Shape =1
+            Gradient =12
+            BackColor =14790982
+            BackThemeColorIndex =4
+            BackTint =60.0
+            BorderLineStyle =0
+            BorderColor =14790982
+            BorderThemeColorIndex =4
+            BorderTint =60.0
+            ThemeFontIndex =1
+            HoverColor =15453059
+            HoverThemeColorIndex =4
+            HoverTint =40.0
+            PressedColor =6440976
+            PressedThemeColorIndex =4
+            PressedShade =75.0
+            HoverForeColor =4210752
+            HoverForeThemeColorIndex =0
+            HoverForeTint =75.0
+            PressedForeColor =4210752
+            PressedForeThemeColorIndex =0
+            PressedForeTint =75.0
+        End
+        Begin CheckBox
+            BorderLineStyle =0
+            LabelX =230
+            LabelY =-30
+            BorderColor =10921638
+            GridlineColor =10921638
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin TextBox
+            AddColon = NotDefault
+            FELineBreak = NotDefault
+            TextFontFamily =0
+            BorderLineStyle =0
+            LabelX =-1800
+            FontSize =11
+            BorderColor =10921638
+            ForeColor =4210752
+            FontName ="Aptos"
+            AsianLineBreak =1
+            GridlineColor =10921638
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            ThemeFontIndex =1
+            ForeThemeColorIndex =0
+            ForeTint =75.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin ComboBox
+            AddColon = NotDefault
+            TextFontFamily =0
+            BorderLineStyle =0
+            LabelX =-1800
+            FontSize =11
+            BorderColor =10921638
+            ForeColor =2102279
+            FontName ="Aptos"
+            GridlineColor =10921638
+            AllowValueListEdits =1
+            InheritValueList =1
+            ThemeFontIndex =1
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            ForeThemeColorIndex =2
+            ForeShade =50.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin Subform
+            BorderLineStyle =0
+            BorderColor =10921638
+            GridlineColor =10921638
+            BorderThemeColorIndex =1
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+            BorderShade =65.0
+            ShowPageHeaderAndPageFooter =1
+        End
+        Begin FormHeader
+            Height =840
+            BackColor =14482166
+            Name ="FormHeader"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0xa6aff1f211b38f4a94609c892fe324ab
+            End
+            AlternateBackShade =95.0
+            BackTint =20.0
+            Begin
+                Begin Label
+                    OverlapFlags =85
+                    TextAlign =2
+                    Left =8220
+                    Top =240
+                    Width =2388
+                    Height =480
+                    FontSize =18
+                    FontWeight =700
+                    ForeColor =4272139
+                    Name ="Label0"
+                    Caption ="ISSUE STOCK "
+                    GUID = Begin
+                        0x3aea1ab505840046967bfbfa184e691e
+                    End
+                    LayoutCachedLeft =8220
+                    LayoutCachedTop =240
+                    LayoutCachedWidth =10608
+                    LayoutCachedHeight =720
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    ForeShade =50.0
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    Left =200
+                    Top =80
+                    Width =1400
+                    FontWeight =700
+                    ForeColor =16777215
+                    Name ="cmdUXBack"
+                    Caption ="Back"
+                    OnClick ="=UX_GoBack()"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdUXBack\")"
+                    GUID = Begin
+                        0x41cb8177473d2e44ba465fdb0c858af1
+                    End
+
+                    LayoutCachedLeft =200
+                    LayoutCachedTop =80
+                    LayoutCachedWidth =1600
+                    LayoutCachedHeight =440
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                End
+            End
+        End
+        Begin Section
+            CanGrow = NotDefault
+            Height =12540
+            BackColor =14482166
+            Name ="Detail"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x4f2e4f7f0d8e034fadedd8e472949522
+            End
+            AutoHeight =1
+            AlternateBackColor =14482166
+            AlternateBackShade =95.0
+            Begin
+                Begin ComboBox
+                    LimitToList = NotDefault
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    ColumnCount =3
+                    Left =3000
+                    Top =300
+                    Width =3780
+                    Height =300
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    ColumnInfo ="\"\";\"\";\"\";\"\";\"\";\"\";\"10\";\"100\""
+                    GUID = Begin
+                        0x19f07f8c748d194fba9c9b7aeb398860
+                    End
+                    Name ="cboItemID"
+                    RowSourceType ="Table/Query"
+                    RowSource ="SELECT\015\012    I.ItemID,\015\012    I.InternalSKU,\015\012    I.ItemName\015\012"
+                        "FROM\015\012    T_Items AS I\015\012ORDER BY\015\012    I.InternalSKU,\015\012  "
+                        "  I.ItemName;"
+                    ColumnWidths ="0;1701;3969"
+                    AfterUpdate ="[Event Procedure]"
+                    FontName ="Segoe UI"
+                    BaseInfo ="\"SELECT\015\012    I.ItemID,\015\012    I.InternalSKU,\015\012    I.ItemName\015"
+                        "\012FROM\015\012    T_Items AS I\015\012ORDER BY\015\012    I.InternalSKU,\015\012"
+                        "    I.ItemName;\";\"T_Items\";\"\";\"ItemID\";\"InternalSKU\";\"PrimaryKey\""
+
+                    LayoutCachedLeft =3000
+                    LayoutCachedTop =300
+                    LayoutCachedWidth =6780
+                    LayoutCachedHeight =600
+                    ThemeFontIndex =-1
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =1680
+                            Top =300
+                            Width =1260
+                            Height =300
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label1"
+                            Caption ="Item"
+                            GUID = Begin
+                                0x2010c05cd6dbe44c8dec38e658640d30
+                            End
+                            LayoutCachedLeft =1680
+                            LayoutCachedTop =300
+                            LayoutCachedWidth =2940
+                            LayoutCachedHeight =600
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    Enabled = NotDefault
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =3000
+                    Top =1500
+                    Width =3780
+                    Height =300
+                    TabIndex =1
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtAvailableQuantity"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x97865b2c78a8954bba18a8613ac371be
+                    End
+
+                    LayoutCachedLeft =3000
+                    LayoutCachedTop =1500
+                    LayoutCachedWidth =6780
+                    LayoutCachedHeight =1800
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =720
+                            Top =1500
+                            Width =2208
+                            Height =300
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label3"
+                            Caption ="Available Quantity"
+                            GUID = Begin
+                                0xbba9c05460dea546afb5e5d253a87ae5
+                            End
+                            LayoutCachedLeft =720
+                            LayoutCachedTop =1500
+                            LayoutCachedWidth =2928
+                            LayoutCachedHeight =1800
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =3000
+                    Top =1920
+                    Width =3780
+                    Height =300
+                    TabIndex =2
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtCurrentLocation"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x49c0fac8725c8f47aef56f7033ac2b24
+                    End
+
+                    LayoutCachedLeft =3000
+                    LayoutCachedTop =1920
+                    LayoutCachedWidth =6780
+                    LayoutCachedHeight =2220
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =720
+                            Top =1920
+                            Width =2208
+                            Height =300
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label5"
+                            Caption ="Current Location"
+                            GUID = Begin
+                                0xfbc0b037cf16564f89730c932d324a20
+                            End
+                            LayoutCachedLeft =720
+                            LayoutCachedTop =1920
+                            LayoutCachedWidth =2928
+                            LayoutCachedHeight =2220
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    Visible = NotDefault
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =15540
+                    Top =1500
+                    Width =1140
+                    Height =300
+                    TabIndex =3
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtFromLocationID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xc82ad838b664f5498e0dd88a9318b0dd
+                    End
+
+                    LayoutCachedLeft =15540
+                    LayoutCachedTop =1500
+                    LayoutCachedWidth =16680
+                    LayoutCachedHeight =1800
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =14280
+                            Top =1500
+                            Width =1188
+                            Height =300
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label7"
+                            Caption ="Source LocationID"
+                            GUID = Begin
+                                0xc88fc053b76af34c9d22e8e07869ed22
+                            End
+                            LayoutCachedLeft =14280
+                            LayoutCachedTop =1500
+                            LayoutCachedWidth =15468
+                            LayoutCachedHeight =1800
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin ComboBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    ColumnCount =4
+                    Left =3000
+                    Top =1080
+                    Width =2340
+                    Height =300
+                    TabIndex =4
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    ColumnInfo ="\"\";\"\";\"\";\"\";\"\";\"\";\"\";\"\";\"10\";\"200\""
+                    GUID = Begin
+                        0xe1ae03996059b840aefbe634fae919ae
+                    End
+                    Name ="cboItemInstanceID"
+                    RowSourceType ="Table/Query"
+                    RowSource ="SELECT\015\012    II.ItemInstanceID,\015\012    II.SerialNumber,\015\012    L.Lo"
+                        "cationCode,\015\012    L.LocationName\015\012FROM\015\012    T_ItemInstances AS "
+                        "II\015\012    LEFT JOIN T_Locations AS L\015\012        ON II.CurrentLocationID "
+                        "= L.LocationID\015\012WHERE\015\012    II.ItemID = Nz([Forms]![F_StockOut]![cboI"
+                        "temID], 0)\015\012    AND II.CurrentLocationID Is Not Null\015\012    AND Nz(II."
+                        "CurrentStatus, \"\") = \"In Stock\"\015\012ORDER BY\015\012    II.SerialNumber;"
+                    ColumnWidths ="0;2268;2268;2835"
+                    AfterUpdate ="[Event Procedure]"
+                    FontName ="Segoe UI"
+                    BaseInfo ="\"SELECT\015\012    II.ItemInstanceID,\015\012    II.SerialNumber,\015\012    L."
+                        "LocationCode,\015\012    L.LocationName\015\012FROM\015\012    T_ItemInstances A"
+                        "S II\015\012    LEFT JOIN T_Locations AS L\015\012        ON II.CurrentLocationI"
+                        "D = L.LocationID\015\012WHERE\015\012    II.ItemID = Nz([Forms]![F_StockOut]![cb"
+                        "oItemID], 0)\015\012    AND II.CurrentLocationID Is Not Null\015\012    AND Nz(I"
+                        "I.CurrentStatus, \"\"\"\") = \"\"In Stock\"\"\015\012ORDER BY\015\012    II.Seri"
+                        "alNumber;\";\"T_ItemInstances\";\"T_Locations\";\"\""
+                    AllowValueListEdits =0
+
+                    LayoutCachedLeft =3000
+                    LayoutCachedTop =1080
+                    LayoutCachedWidth =5340
+                    LayoutCachedHeight =1380
+                    ThemeFontIndex =-1
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =1200
+                            Top =1080
+                            Width =1740
+                            Height =300
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label9"
+                            Caption ="Serial Number"
+                            GUID = Begin
+                                0x94a58d98d98f204eb4760fff24812e52
+                            End
+                            LayoutCachedLeft =1200
+                            LayoutCachedTop =1080
+                            LayoutCachedWidth =2940
+                            LayoutCachedHeight =1380
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin ComboBox
+                    RowSourceTypeInt =1
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =11280
+                    Top =300
+                    Width =2340
+                    Height =300
+                    TabIndex =5
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    GUID = Begin
+                        0x758a6a24651ec54abf7583cafe04e4ae
+                    End
+                    Name ="cboReason"
+                    RowSourceType ="Value List"
+                    RowSource ="\"Issue to Project\";\"Tool Issue\";\"Sale\";\"Supplier Return\";\"Damage Write-"
+                        "Off\";\"Negative Adjustment\";\"Other\""
+                    AfterUpdate ="[Event Procedure]"
+                    FontName ="Segoe UI"
+                    AllowValueListEdits =0
+
+                    LayoutCachedLeft =11280
+                    LayoutCachedTop =300
+                    LayoutCachedWidth =13620
+                    LayoutCachedHeight =600
+                    ThemeFontIndex =-1
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =9540
+                            Top =300
+                            Width =1680
+                            Height =300
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label11"
+                            Caption ="Reason"
+                            GUID = Begin
+                                0x99815da8c57990459f86d26801a671ee
+                            End
+                            LayoutCachedLeft =9540
+                            LayoutCachedTop =300
+                            LayoutCachedWidth =11220
+                            LayoutCachedHeight =600
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =3000
+                    Top =2760
+                    Width =2340
+                    Height =300
+                    TabIndex =6
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtQuantity"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xeee42a0aae92c64d917ed084058496f7
+                    End
+
+                    LayoutCachedLeft =3000
+                    LayoutCachedTop =2760
+                    LayoutCachedWidth =5340
+                    LayoutCachedHeight =3060
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =960
+                            Top =2760
+                            Width =1980
+                            Height =300
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label13"
+                            Caption ="Quantity to Issue"
+                            GUID = Begin
+                                0xaebd58420af9cb45b96653a6b6d0c47e
+                            End
+                            LayoutCachedLeft =960
+                            LayoutCachedTop =2760
+                            LayoutCachedWidth =2940
+                            LayoutCachedHeight =3060
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =3000
+                    Top =3180
+                    Width =2340
+                    Height =300
+                    TabIndex =7
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtMovementDate"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xa1d09efe69f0d340a5d27c513fadf7f7
+                    End
+
+                    LayoutCachedLeft =3000
+                    LayoutCachedTop =3180
+                    LayoutCachedWidth =5340
+                    LayoutCachedHeight =3480
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =1200
+                            Top =3180
+                            Width =1740
+                            Height =300
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label15"
+                            Caption ="Date of Issue"
+                            GUID = Begin
+                                0xd335d22707c14c44ad88d21b6e914dc5
+                            End
+                            LayoutCachedLeft =1200
+                            LayoutCachedTop =3180
+                            LayoutCachedWidth =2940
+                            LayoutCachedHeight =3480
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =11280
+                    Top =720
+                    Width =2340
+                    Height =300
+                    TabIndex =8
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtReferenceDocument"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x47221f2881e9d04fa77c7a978fca02aa
+                    End
+
+                    LayoutCachedLeft =11280
+                    LayoutCachedTop =720
+                    LayoutCachedWidth =13620
+                    LayoutCachedHeight =1020
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =8760
+                            Top =720
+                            Width =2460
+                            Height =300
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label17"
+                            Caption ="Reference Document"
+                            GUID = Begin
+                                0xf32a1298af77cc44875991e2db53703a
+                            End
+                            LayoutCachedLeft =8760
+                            LayoutCachedTop =720
+                            LayoutCachedWidth =11220
+                            LayoutCachedHeight =1020
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin ComboBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    ColumnCount =2
+                    Left =11280
+                    Top =1140
+                    Width =2340
+                    Height =300
+                    TabIndex =9
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    ColumnInfo ="\"\";\"\";\"\";\"\";\"10\";\"240\""
+                    GUID = Begin
+                        0x3883160d820806468eb50e641c69caf5
+                    End
+                    Name ="cboPerformedByUserID"
+                    RowSourceType ="Table/Query"
+                    RowSource ="SELECT\015\012    UserID,\015\012    FullName\015\012FROM\015\012    T_Users\015"
+                        "\012ORDER BY\015\012    FullName;"
+                    ColumnWidths ="0;2835"
+                    FontName ="Segoe UI"
+                    BaseInfo ="\"SELECT\015\012    UserID,\015\012    FullName\015\012FROM\015\012    T_Users\015"
+                        "\012ORDER BY\015\012    FullName;\";\"T_Users\";\"\";\"UserID\";\"FullName\";\"P"
+                        "rimaryKey\""
+                    AllowValueListEdits =0
+
+                    LayoutCachedLeft =11280
+                    LayoutCachedTop =1140
+                    LayoutCachedWidth =13620
+                    LayoutCachedHeight =1440
+                    ThemeFontIndex =-1
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =9480
+                            Top =1140
+                            Width =1740
+                            Height =300
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label19"
+                            Caption ="Issued By"
+                            GUID = Begin
+                                0x9af0b69f21271f45927649723d937735
+                            End
+                            LayoutCachedLeft =9480
+                            LayoutCachedTop =1140
+                            LayoutCachedWidth =11220
+                            LayoutCachedHeight =1440
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =11280
+                    Top =1560
+                    Width =2340
+                    Height =300
+                    TabIndex =10
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtIssuedTo"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x2a20570def3c6a4fbb459d4f408a70cc
+                    End
+
+                    LayoutCachedLeft =11280
+                    LayoutCachedTop =1560
+                    LayoutCachedWidth =13620
+                    LayoutCachedHeight =1860
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =9480
+                            Top =1560
+                            Width =1740
+                            Height =300
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label21"
+                            Caption ="Recepient"
+                            GUID = Begin
+                                0xe4aef26db5433c449ce1b2765c1e9373
+                            End
+                            LayoutCachedLeft =9480
+                            LayoutCachedTop =1560
+                            LayoutCachedWidth =11220
+                            LayoutCachedHeight =1860
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =8040
+                    Top =2760
+                    Width =8700
+                    Height =1320
+                    TabIndex =11
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtNotes"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x5b987adf1adb874080fdbee96e6304f4
+                    End
+
+                    LayoutCachedLeft =8040
+                    LayoutCachedTop =2760
+                    LayoutCachedWidth =16740
+                    LayoutCachedHeight =4080
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =2
+                            Left =11640
+                            Top =2400
+                            Width =1740
+                            Height =300
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label23"
+                            Caption ="Notes"
+                            GUID = Begin
+                                0x5f709f6f7b00384f8b6a3ee00eff0533
+                            End
+                            LayoutCachedLeft =11640
+                            LayoutCachedTop =2400
+                            LayoutCachedWidth =13380
+                            LayoutCachedHeight =2700
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    Left =4140
+                    Top =4260
+                    Width =1680
+                    Height =300
+                    FontWeight =700
+                    TabIndex =12
+                    ForeColor =16777215
+                    Name ="cmdPostStockOut"
+                    Caption ="Issue Item"
+                    OnClick ="[Event Procedure]"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdPostStockOut\")"
+                    GUID = Begin
+                        0x195735ddf7c4e04db45f1d541af472a2
+                    End
+                    LeftPadding =90
+                    RightPadding =105
+                    BottomPadding =165
+
+                    LayoutCachedLeft =4140
+                    LayoutCachedTop =4260
+                    LayoutCachedWidth =5820
+                    LayoutCachedHeight =4560
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    HoverForeTint =100.0
+                    HoverForeShade =50.0
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    PressedForeTint =100.0
+                    PressedForeShade =50.0
+                    Shadow =2
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    Left =6480
+                    Top =4260
+                    Width =1680
+                    Height =300
+                    FontWeight =700
+                    TabIndex =13
+                    ForeColor =16777215
+                    Name ="cmdClear"
+                    Caption ="Clear"
+                    OnClick ="[Event Procedure]"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdClear\")"
+                    GUID = Begin
+                        0x3877edad036eb84691a9011690dfe2e7
+                    End
+                    LeftPadding =90
+                    RightPadding =105
+                    BottomPadding =165
+
+                    LayoutCachedLeft =6480
+                    LayoutCachedTop =4260
+                    LayoutCachedWidth =8160
+                    LayoutCachedHeight =4560
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    HoverForeTint =100.0
+                    HoverForeShade =50.0
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    PressedForeTint =100.0
+                    PressedForeShade =50.0
+                    Shadow =2
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    Left =8760
+                    Top =4260
+                    Width =1680
+                    Height =300
+                    FontWeight =700
+                    TabIndex =14
+                    ForeColor =16777215
+                    Name ="cmdClose"
+                    Caption ="Close"
+                    OnClick ="[Event Procedure]"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdClose\")"
+                    GUID = Begin
+                        0xf57e8e9c61ee374a95a3180458f81235
+                    End
+                    LeftPadding =90
+                    RightPadding =105
+                    BottomPadding =165
+
+                    LayoutCachedLeft =8760
+                    LayoutCachedTop =4260
+                    LayoutCachedWidth =10440
+                    LayoutCachedHeight =4560
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    HoverForeTint =100.0
+                    HoverForeShade =50.0
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    PressedForeTint =100.0
+                    PressedForeShade =50.0
+                    Shadow =2
+                End
+                Begin CheckBox
+                    Enabled = NotDefault
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    Left =3000
+                    Top =660
+                    Width =720
+                    Height =300
+                    TabIndex =15
+                    Name ="chkRequiresSerial"
+                    GUID = Begin
+                        0x78e0bf3224d2c74a85e59c55b3b2b71c
+                    End
+
+                    LayoutCachedLeft =3000
+                    LayoutCachedTop =660
+                    LayoutCachedWidth =3720
+                    LayoutCachedHeight =960
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =660
+                            Width =2580
+                            Height =300
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label28"
+                            Caption ="Requires Serial Number"
+                            GUID = Begin
+                                0x0640dd792640ff45bde9205ea49a94b0
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =660
+                            LayoutCachedWidth =2940
+                            LayoutCachedHeight =960
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin Subform
+                    OverlapFlags =85
+                    Left =60
+                    Top =4800
+                    Width =20160
+                    Height =7740
+                    TabIndex =16
+                    Name ="SF_RecentStockOut"
+                    SourceObject ="Form.SF_RecentStockOut"
+                    GUID = Begin
+                        0x3076c890e640854686e1a78d6a49e8cc
+                    End
+
+                    LayoutCachedLeft =60
+                    LayoutCachedTop =4800
+                    LayoutCachedWidth =20220
+                    LayoutCachedHeight =12540
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =3000
+                    Top =2340
+                    Width =3780
+                    Height =300
+                    TabIndex =17
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtShelfLocation"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xc7044961d4853e498b88d8e95938c08a
+                    End
+
+                    LayoutCachedLeft =3000
+                    LayoutCachedTop =2340
+                    LayoutCachedWidth =6780
+                    LayoutCachedHeight =2640
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =732
+                            Top =2340
+                            Width =2148
+                            Height =300
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label32"
+                            Caption ="Shelf / BIN Location"
+                            GUID = Begin
+                                0x21c25a3fd55a97499eeb0d84ab3b694f
+                            End
+                            LayoutCachedLeft =732
+                            LayoutCachedTop =2340
+                            LayoutCachedWidth =2880
+                            LayoutCachedHeight =2640
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin ComboBox
+                    LimitToList = NotDefault
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    ColumnCount =3
+                    Left =11304
+                    Top =1980
+                    Width =3780
+                    Height =300
+                    TabIndex =18
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    ColumnInfo ="\"\";\"\";\"\";\"\";\"\";\"\";\"10\";\"60\""
+                    GUID = Begin
+                        0x54e0d1af3274934787b33048a9a201cb
+                    End
+                    Name ="cboProjectID"
+                    RowSourceType ="Table/Query"
+                    RowSource ="SELECT\015\012    ProjectID,\015\012    ProjectCode,\015\012    ProjectName\015\012"
+                        "FROM\015\012    T_Projects\015\012WHERE\015\012    Nz([Status], \"\") = \"Active"
+                        "\"\015\012ORDER BY\015\012    ProjectCode,\015\012    ProjectName;"
+                    ColumnWidths ="0;1701;3969"
+                    FontName ="Segoe UI"
+                    AllowValueListEdits =0
+
+                    LayoutCachedLeft =11304
+                    LayoutCachedTop =1980
+                    LayoutCachedWidth =15084
+                    LayoutCachedHeight =2280
+                    ThemeFontIndex =-1
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            TextFontFamily =34
+                            Left =9480
+                            Top =1980
+                            Width =1764
+                            Height =300
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label34"
+                            Caption ="Issue to Project"
+                            GUID = Begin
+                                0xc03d5d8abf806c4e8b56b9895b857f19
+                            End
+                            LayoutCachedLeft =9480
+                            LayoutCachedTop =1980
+                            LayoutCachedWidth =11244
+                            LayoutCachedHeight =2280
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =3000
+                    Top =3600
+                    Width =2340
+                    Height =300
+                    TabIndex =19
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtExpectedReturnDate"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x206080ffe5da5540aa858947ab817d16
+                    End
+
+                    LayoutCachedLeft =3000
+                    LayoutCachedTop =3600
+                    LayoutCachedWidth =5340
+                    LayoutCachedHeight =3900
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =312
+                            Top =3600
+                            Width =2628
+                            Height =300
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label36"
+                            Caption ="Expected Date of Return"
+                            GUID = Begin
+                                0x7b0ebaaf6ba4c94db26330862b574701
+                            End
+                            LayoutCachedLeft =312
+                            LayoutCachedTop =3600
+                            LayoutCachedWidth =2940
+                            LayoutCachedHeight =3900
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =360
+            BackColor =14482166
+            Name ="FormFooter"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0xd37539fa314ab64b99985bc576afc0e8
+            End
+            AutoHeight =1
+            AlternateBackShade =95.0
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+'=============================================================
+' FORM: F_StockOut
+'
+' PURPOSE:
+'   Posts negative inventory movements:
+'       - Issue to project
+'       - Tool issue
+'       - Sale
+'       - Supplier return
+'       - Damage write-off
+'       - Negative adjustment
+'       - Partial or complete project shipment
+'
+' TABLES UPDATED:
+'   T_StockBalances   - bulk items only
+'   T_ItemInstances   - serialized items only
+'   T_StockMovements  - permanent audit trail
+'
+' SERIAL-NUMBER RULE:
+'   RequiresSerial is stored directly on T_Items.
+'
+' TOOL RETURN NOTIFICATION RULE:
+'   ExpectedReturnDate is optional.
+'   It is only saved for returnable stock-out reasons such as:
+'       - Issue to Project
+'       - Tool Issue
+'       - Project Tool Issue
+'       - Issued to Project
+'
+' IMPORTANT:
+'   No IsActive fields are used.
+'   No legacy finished-item field is used. Shipment derives its item
+'   and available quantity from Production Receipt movements.
+'=============================================================
+
+Private Const RECENT_SUBFORM_CONTROL As String = "SF_RecentStockOut"
+Private Const PROJECT_FORM As String = "F_Projects"
+
+Private Const CONTEXT_PROJECT_SHIPMENT As String = "ProjectShipment"
+Private Const REASON_PRODUCTION_RECEIPT As String = "Production Receipt"
+Private Const REASON_PROJECT_SHIPMENT As String = "Project Shipment"
+Private Const SOURCE_PROJECT As String = "Project"
+Private Const QUANTITY_TOLERANCE As Double = 0.000001
+
+Private mProjectShipmentMode As Boolean
+Private mProjectID As Long
+Private mProjectOutputItemID As Long
+Private mProjectOutputLocationID As Long
+Private mProjectCustomerID As Long
+Private mProjectAssemblyTemplateID As Long
+Private mProjectSalesOrderID As Long
+Private mProjectBuildQuantity As Double
+Private mProjectReceivedQuantity As Double
+Private mProjectShippedQuantity As Double
+Private mProjectCode As String
+
+
+'=============================================================
+' INITIALIZE FORM
+'=============================================================
+Private Sub Form_Load()
+
+    ResetForm
+    ApplyStockOutOpenArgs
+
+End Sub
+
+
+'=============================================================
+' PROJECT SHIPMENT HANDOFF
+'=============================================================
+
+Private Sub ApplyStockOutOpenArgs()
+
+    Dim contextText As String
+    Dim ProjectID As Long
+
+    contextText = GetStockOutOpenArgValue("Context")
+
+    If StrComp( _
+        contextText, _
+        CONTEXT_PROJECT_SHIPMENT, _
+        vbTextCompare) <> 0 Then
+
+        Exit Sub
+    End If
+
+    ProjectID = CLng(Val(GetStockOutOpenArgValue("ProjectID")))
+
+    If ProjectID <= 0 Then
+        MsgBox _
+            "F_StockOut was opened for a project shipment " & _
+            "without a valid ProjectID.", _
+            vbExclamation, _
+            "Project Shipment"
+        Exit Sub
+    End If
+
+    LoadProjectShipment ProjectID
+
+End Sub
+
+
+Public Sub LoadProjectShipment(ByVal ProjectID As Long)
+
+    On Error GoTo Err_Handler
+
+    Dim db As DAO.Database
+    Dim rs As DAO.Recordset
+    Dim projectStatus As String
+    Dim unshippedQuantity As Double
+    Dim CustomerName As String
+
+    If ProjectID <= 0 Then
+        Err.Raise _
+            vbObjectError + 8201, _
+            "LoadProjectShipment", _
+            "A valid ProjectID is required."
+    End If
+
+    ResetForm
+
+    Set db = CurrentDb
+    Set rs = db.OpenRecordset( _
+        "SELECT * FROM T_Projects " & _
+        "WHERE ProjectID=" & ProjectID & ";", _
+        dbOpenSnapshot)
+
+    If rs.EOF Then
+        Err.Raise _
+            vbObjectError + 8202, _
+            "LoadProjectShipment", _
+            "Project ID " & ProjectID & " was not found."
+    End If
+
+    mProjectID = ProjectID
+    mProjectCode = Trim$(Nz(rs!ProjectCode, vbNullString))
+    mProjectCustomerID = Nz(rs!CustomerID, 0)
+    mProjectAssemblyTemplateID = Nz(rs!AssemblyTemplateID, 0)
+    mProjectOutputLocationID = Nz(rs!OutputLocationID, 0)
+    mProjectBuildQuantity = Nz(rs!BuildQuantity, 0)
+    projectStatus = UCase$(Trim$(Nz(rs!Status, vbNullString)))
+
+    mProjectSalesOrderID = _
+        ResolveLinkedSalesOrderID(db, rs, mProjectID)
+
+    rs.close
+    Set rs = Nothing
+
+    If projectStatus = "CANCELLED" Then
+        Err.Raise _
+            vbObjectError + 8203, _
+            "LoadProjectShipment", _
+            "A cancelled project cannot be shipped."
+    End If
+
+    If projectStatus = "SHIPPED" Then
+        Err.Raise _
+            vbObjectError + 8204, _
+            "LoadProjectShipment", _
+            "This project is already fully shipped."
+    End If
+
+    If projectStatus <> "READY TO SHIP" Then
+        Err.Raise _
+            vbObjectError + 8205, _
+            "LoadProjectShipment", _
+            "Mark the project Ready to Ship first."
+    End If
+
+    GetProjectOutputSummary _
+        db, _
+        mProjectID, _
+        mProjectOutputItemID, _
+        mProjectReceivedQuantity, _
+        mProjectShippedQuantity
+
+    If mProjectOutputItemID <= 0 Then
+        Err.Raise _
+            vbObjectError + 8206, _
+            "LoadProjectShipment", _
+            "No production receipt exists for this project."
+    End If
+
+    unshippedQuantity = ProjectUnshippedQuantity()
+
+    If unshippedQuantity <= QUANTITY_TOLERANCE Then
+        Err.Raise _
+            vbObjectError + 8207, _
+            "LoadProjectShipment", _
+            "There is no received project output waiting to ship."
+    End If
+
+    mProjectShipmentMode = True
+
+    EnsureValueListItem Me.cboReason, REASON_PROJECT_SHIPMENT
+
+    Me.cboReason = REASON_PROJECT_SHIPMENT
+    Me.cboReason.Enabled = True
+    Me.cboReason.Locked = True
+
+    Me.cboProjectID.Requery
+    Me.cboProjectID = mProjectID
+    Me.cboProjectID.Enabled = True
+    Me.cboProjectID.Locked = True
+
+    Me.cboItemID.Requery
+    Me.cboItemID = mProjectOutputItemID
+    Me.cboItemID.Locked = True
+
+    Me.txtReferenceDocument = mProjectCode
+    Me.txtExpectedReturnDate = Null
+    Me.txtExpectedReturnDate.Enabled = False
+    Me.txtExpectedReturnDate.Locked = True
+
+    CustomerName = vbNullString
+
+    If mProjectCustomerID > 0 Then
+        CustomerName = Nz(DLookup( _
+            "CustomerName", _
+            "T_Customers", _
+            "CustomerID=" & mProjectCustomerID), vbNullString)
+    End If
+
+    Me.txtIssuedTo = CustomerName
+    Me.Caption = "Project Shipment - " & mProjectCode
+
+    LoadSelectedItem
+    ApplyProjectShipmentControlValues
+
+    On Error Resume Next
+
+    If ItemRequiresSerial(mProjectOutputItemID) Then
+        Me.cboItemInstanceID.SetFocus
+    Else
+        Me.txtQuantity.SetFocus
+    End If
+
+    On Error GoTo 0
+
+Exit_Handler:
+    On Error Resume Next
+    If Not (rs Is Nothing) Then rs.close
+    Set rs = Nothing
+    Set db = Nothing
+    On Error GoTo 0
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The project shipment could not be prepared." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Project Shipment"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Function GetStockOutOpenArgValue( _
+    ByVal keyName As String _
+) As String
+
+    Dim rawArguments As String
+    Dim argumentParts() As String
+    Dim onePart As Variant
+    Dim equalsPosition As Long
+    Dim thisKey As String
+
+    rawArguments = Nz(Me.OpenArgs, vbNullString)
+
+    If Len(Trim$(rawArguments)) = 0 Then
+        Exit Function
+    End If
+
+    argumentParts = Split(rawArguments, ";")
+
+    For Each onePart In argumentParts
+        equalsPosition = InStr(1, CStr(onePart), "=", vbBinaryCompare)
+
+        If equalsPosition > 0 Then
+            thisKey = Left$(CStr(onePart), equalsPosition - 1)
+
+            If StrComp(thisKey, keyName, vbTextCompare) = 0 Then
+                GetStockOutOpenArgValue = _
+                    Mid$(CStr(onePart), equalsPosition + 1)
+                Exit Function
+            End If
+        End If
+    Next onePart
+
+End Function
+
+
+'=============================================================
+' ITEM SELECTED
+'=============================================================
+Private Sub cboItemID_AfterUpdate()
+
+    LoadSelectedItem
+
+End Sub
+
+
+'=============================================================
+' SERIAL NUMBER SELECTED
+'=============================================================
+Private Sub cboItemInstanceID_AfterUpdate()
+
+    LoadSelectedSerializedInstance
+
+End Sub
+
+
+'=============================================================
+' REASON SELECTED
+'=============================================================
+Private Sub cboReason_AfterUpdate()
+
+    ConfigureProjectControl
+    ConfigureExpectedReturnControl
+
+End Sub
+
+
+'=============================================================
+' POST STOCK-OUT TRANSACTION
+'=============================================================
+Private Sub cmdPostStockOut_Click()
+    gSkipInventory = UX_ProjectSkipsInventory(Nz(mProjectID, 0))
+
+    On Error GoTo Err_Handler
+
+    Dim ws As DAO.Workspace
+    Dim db As DAO.Database
+
+    Dim ItemID As Long
+    Dim ItemInstanceID As Long
+    Dim FromLocationID As Long
+    Dim performedByUserID As Long
+    Dim MovementTypeID As Long
+    Dim ProjectID As Long
+
+    Dim Quantity As Double
+    Dim MovementDate As Date
+    Dim ExpectedReturnDate As Variant
+    Dim RequiresSerial As Boolean
+
+    Dim Reason As String
+    Dim ReferenceDocument As String
+    Dim MovementNotes As String
+
+    Dim UnitCost As Variant
+    Dim transactionStarted As Boolean
+
+    Dim originalErrorNumber As Long
+    Dim originalErrorDescription As String
+    Dim originalErrorSource As String
+
+    '---------------------------------------------------------
+    ' Validate all values before changing any table.
+    '---------------------------------------------------------
+    If Not ValidateEntry( _
+        ItemID, _
+        ItemInstanceID, _
+        FromLocationID, _
+        performedByUserID, _
+        ProjectID, _
+        Quantity, _
+        MovementDate, _
+        ExpectedReturnDate, _
+        RequiresSerial, _
+        Reason, _
+        ReferenceDocument, _
+        MovementNotes, _
+        UnitCost _
+    ) Then
+        Exit Sub
+    End If
+
+    Set ws = DBEngine.Workspaces(0)
+    Set db = CurrentDb
+
+    MovementTypeID = GetMovementTypeID(db, "STOCK_OUT")
+
+    '---------------------------------------------------------
+    ' Begin transaction.
+    ' Every table update succeeds or every update rolls back.
+    '---------------------------------------------------------
+    ws.BeginTrans
+    transactionStarted = True
+
+    If RequiresSerial Then
+
+        IssueSerializedInstance _
+            db, _
+            ItemID, _
+            ItemInstanceID, _
+            FromLocationID, _
+            Reason, _
+            MovementDate, _
+            MovementNotes
+
+    Else
+
+        ReduceBulkStockBalance _
+            db, _
+            ItemID, _
+            FromLocationID, _
+            Quantity
+
+    End If
+
+    '---------------------------------------------------------
+    ' Create permanent audit record.
+    '---------------------------------------------------------
+    InsertStockMovement _
+        db, _
+        MovementDate, _
+        ExpectedReturnDate, _
+        ItemID, _
+        ItemInstanceID, _
+        MovementTypeID, _
+        Quantity, _
+        FromLocationID, _
+        performedByUserID, _
+        ProjectID, _
+        Reason, _
+        ReferenceDocument, _
+        MovementNotes, _
+        UnitCost
+
+    If mProjectShipmentMode Then
+        If mProjectSalesOrderID > 0 Then
+            ApplyShipmentToLinkedSalesOrder _
+                db, _
+                mProjectSalesOrderID, _
+                ItemID, _
+                Quantity, _
+                MovementDate
+        End If
+
+        UpdateProjectShipmentStatus db, Quantity, MovementDate
+    End If
+
+    ws.CommitTrans
+    transactionStarted = False
+
+    '---------------------------------------------------------
+    ' Refresh display after committed transaction.
+    '---------------------------------------------------------
+    On Error Resume Next
+
+    RefreshSelectedItemStatus
+    RequeryRecentSubform
+
+    If mProjectShipmentMode Then
+        mProjectShippedQuantity = _
+            mProjectShippedQuantity + Quantity
+        PrepareNextProjectShipment RequiresSerial
+        RefreshProjectFormIfOpen
+    Else
+        PrepareNextEntry RequiresSerial
+    End If
+
+    On Error GoTo 0
+
+    If mProjectShipmentMode Then
+        MsgBox _
+            "Project shipment posted successfully." & _
+            vbCrLf & vbCrLf & _
+            "Shipped for project: " & _
+                Format$(mProjectShippedQuantity, "0.######") & _
+            vbCrLf & _
+            "Build quantity: " & _
+                Format$(mProjectBuildQuantity, "0.######"), _
+            vbInformation, _
+            "Project Shipment Completed"
+
+        If ProjectUnshippedQuantity() <= QUANTITY_TOLERANCE Then
+            RefreshProjectFormIfOpen
+            On Error Resume Next
+            DoCmd.close acForm, Me.Name, acSaveNo
+            On Error GoTo 0
+        End If
+    Else
+        MsgBox _
+            "Stock-out transaction posted successfully.", _
+            vbInformation, _
+            "Stock Out Completed"
+    End If
+
+Exit_Handler:
+
+    Set db = Nothing
+    Set ws = Nothing
+
+    Exit Sub
+
+Err_Handler:
+
+    originalErrorNumber = Err.Number
+    originalErrorDescription = Err.Description
+    originalErrorSource = Err.Source
+
+    On Error Resume Next
+
+    If transactionStarted Then
+
+        If Not (ws Is Nothing) Then
+            ws.Rollback
+        End If
+
+    End If
+
+    On Error GoTo 0
+
+    MsgBox _
+        "The stock-out transaction was not posted." & vbCrLf & vbCrLf & _
+        "Error Number: " & originalErrorNumber & vbCrLf & _
+        "Source: " & originalErrorSource & vbCrLf & _
+        "Details: " & originalErrorDescription, _
+        vbExclamation, _
+        "Stock Out Failed"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' CLEAR FORM
+'=============================================================
+Private Sub cmdClear_Click()
+
+    Dim ProjectID As Long
+
+    If mProjectShipmentMode Then
+        ProjectID = mProjectID
+        LoadProjectShipment ProjectID
+    Else
+        ResetForm
+    End If
+
+End Sub
+
+
+'=============================================================
+' CLOSE FORM
+'=============================================================
+Private Sub cmdClose_Click()
+
+    If mProjectShipmentMode Then
+        RefreshProjectFormIfOpen
+    End If
+
+    DoCmd.close acForm, Me.Name
+
+End Sub
+
+
+'=============================================================
+' VALIDATE ENTRY
+'=============================================================
+Private Function ValidateEntry( _
+    ByRef ItemID As Long, _
+    ByRef ItemInstanceID As Long, _
+    ByRef FromLocationID As Long, _
+    ByRef performedByUserID As Long, _
+    ByRef ProjectID As Long, _
+    ByRef Quantity As Double, _
+    ByRef MovementDate As Date, _
+    ByRef ExpectedReturnDate As Variant, _
+    ByRef RequiresSerial As Boolean, _
+    ByRef Reason As String, _
+    ByRef ReferenceDocument As String, _
+    ByRef MovementNotes As String, _
+    ByRef UnitCost As Variant _
+) As Boolean
+
+    Dim issuedTo As String
+    Dim Notes As String
+
+    ValidateEntry = False
+    ExpectedReturnDate = Null
+
+    '---------------------------------------------------------
+    ' Item
+    '---------------------------------------------------------
+    If IsNull(Me.cboItemID) Then
+
+        MsgBox _
+            "Select the item being issued.", _
+            vbExclamation, _
+            "Item Required"
+
+        Me.cboItemID.SetFocus
+        Exit Function
+
+    End If
+
+    ItemID = CLng(Me.cboItemID)
+
+    RequiresSerial = ItemRequiresSerial(ItemID)
+
+    Me.chkRequiresSerial = RequiresSerial
+
+    '---------------------------------------------------------
+    ' Movement date
+    '---------------------------------------------------------
+    If IsNull(Me.txtMovementDate) Or _
+       Not IsDate(Me.txtMovementDate) Then
+
+        MsgBox _
+            "Enter a valid movement date.", _
+            vbExclamation, _
+            "Movement Date Required"
+
+        Me.txtMovementDate.SetFocus
+        Exit Function
+
+    End If
+
+    MovementDate = CDate(Me.txtMovementDate)
+
+    '---------------------------------------------------------
+    ' Reason
+    '---------------------------------------------------------
+    Reason = Trim$(Nz(Me.cboReason, vbNullString))
+
+    If Len(Reason) = 0 Then
+
+        MsgBox _
+            "Select the reason for the stock-out transaction.", _
+            vbExclamation, _
+            "Reason Required"
+
+        Me.cboReason.SetFocus
+        Exit Function
+
+    End If
+
+    If mProjectShipmentMode And _
+       StrComp( _
+            Reason, _
+            REASON_PROJECT_SHIPMENT, _
+            vbTextCompare) <> 0 Then
+
+        MsgBox _
+            "Project output must be shipped with Reason = " & _
+            REASON_PROJECT_SHIPMENT & ".", _
+            vbExclamation, _
+            "Project Shipment Reason"
+
+        Me.cboReason = REASON_PROJECT_SHIPMENT
+        Exit Function
+    End If
+
+    If Not mProjectShipmentMode And _
+       StrComp( _
+            Reason, _
+            REASON_PROJECT_SHIPMENT, _
+            vbTextCompare) = 0 Then
+
+        MsgBox _
+            "Open Stock Out from the project's Post Shipment " & _
+            "button when posting a Project Shipment.", _
+            vbExclamation, _
+            "Project Context Required"
+        Exit Function
+    End If
+
+    '---------------------------------------------------------
+    ' Expected return date.
+    '
+    ' Optional, but only relevant for returnable issue reasons.
+    ' If entered, it must be a valid date and cannot be before
+    ' the movement date.
+    '---------------------------------------------------------
+    If IsReturnableIssueReason(Reason) Then
+
+        If Len(Trim$(Nz(Me.txtExpectedReturnDate, vbNullString))) > 0 Then
+
+            If Not IsDate(Me.txtExpectedReturnDate) Then
+
+                MsgBox _
+                    "Enter a valid expected return date, or leave it blank.", _
+                    vbExclamation, _
+                    "Invalid Expected Return Date"
+
+                Me.txtExpectedReturnDate.SetFocus
+                Exit Function
+
+            End If
+
+            ExpectedReturnDate = CDate(Me.txtExpectedReturnDate)
+
+            If DateValue(CDate(ExpectedReturnDate)) < DateValue(MovementDate) Then
+
+                MsgBox _
+                    "Expected return date cannot be earlier than the movement date.", _
+                    vbExclamation, _
+                    "Invalid Expected Return Date"
+
+                Me.txtExpectedReturnDate.SetFocus
+                Exit Function
+
+            End If
+
+        End If
+
+    Else
+
+        Me.txtExpectedReturnDate = Null
+        ExpectedReturnDate = Null
+
+    End If
+
+    '---------------------------------------------------------
+    ' Project:
+    ' Mandatory only for project issue reasons.
+    '---------------------------------------------------------
+    ProjectID = 0
+
+    If IsProjectIssueReason(Reason) Then
+
+        If IsNull(Me.cboProjectID) Then
+
+            MsgBox _
+                "Select the project receiving the stock.", _
+                vbExclamation, _
+                "Project Required"
+
+            Me.cboProjectID.SetFocus
+            Exit Function
+
+        End If
+
+        ProjectID = CLng(Me.cboProjectID)
+
+    End If
+
+    '---------------------------------------------------------
+    ' Issued by
+    '---------------------------------------------------------
+    If IsNull(Me.cboPerformedByUserID) Then
+
+        MsgBox _
+            "Select the user issuing or recording the stock.", _
+            vbExclamation, _
+            "Issued By Required"
+
+        Me.cboPerformedByUserID.SetFocus
+        Exit Function
+
+    End If
+
+    performedByUserID = CLng(Me.cboPerformedByUserID)
+
+    '---------------------------------------------------------
+    ' Optional text fields
+    '---------------------------------------------------------
+    ReferenceDocument = Trim$(Nz( _
+        Me.txtReferenceDocument, _
+        vbNullString _
+    ))
+
+    issuedTo = Trim$(Nz(Me.txtIssuedTo, vbNullString))
+    Notes = Trim$(Nz(Me.txtNOtes, vbNullString))
+
+    '---------------------------------------------------------
+    ' Recipient remains mandatory for direct tool issues and sales.
+    '
+    ' For project issues, ProjectID is the required reference.
+    ' A recipient can still be entered optionally.
+    '---------------------------------------------------------
+    If UCase$(Reason) = "TOOL ISSUE" Or _
+       UCase$(Reason) = "SALE" Then
+
+        If Len(issuedTo) = 0 Then
+
+            MsgBox _
+                "Enter the recipient, department, or customer.", _
+                vbExclamation, _
+                "Recipient Required"
+
+            Me.txtIssuedTo.SetFocus
+            Exit Function
+
+        End If
+
+    End If
+
+    MovementNotes = BuildMovementNotes(issuedTo, Notes)
+
+    '---------------------------------------------------------
+    ' Serialized item
+    '---------------------------------------------------------
+    If RequiresSerial Then
+
+        Quantity = 1
+        Me.txtQuantity = 1
+
+        If IsNull(Me.cboItemInstanceID) Then
+
+            MsgBox _
+                "Select the serial number being issued.", _
+                vbExclamation, _
+                "Serial Number Required"
+
+            Me.cboItemInstanceID.SetFocus
+            Exit Function
+
+        End If
+
+        ItemInstanceID = CLng(Me.cboItemInstanceID)
+
+        If Not ValidateSerializedInstance( _
+            ItemID, _
+            ItemInstanceID, _
+            FromLocationID, _
+            UnitCost _
+        ) Then
+            Exit Function
+        End If
+
+    Else
+
+        '-----------------------------------------------------
+        ' Bulk item
+        '-----------------------------------------------------
+        ItemInstanceID = 0
+        UnitCost = Null
+
+        If IsNull(Me.txtQuantity) Or _
+           Len(Trim$(Nz(Me.txtQuantity, vbNullString))) = 0 Then
+
+            MsgBox _
+                "Enter the quantity being issued.", _
+                vbExclamation, _
+                "Quantity Required"
+
+            Me.txtQuantity.SetFocus
+            Exit Function
+
+        End If
+
+        If Not IsNumeric(Me.txtQuantity) Then
+
+            MsgBox _
+                "Quantity must be numeric.", _
+                vbExclamation, _
+                "Invalid Quantity"
+
+            Me.txtQuantity.SetFocus
+            Exit Function
+
+        End If
+
+        Quantity = CDbl(Me.txtQuantity)
+
+        If Quantity <= 0 Then
+
+            MsgBox _
+                "Quantity must be greater than zero.", _
+                vbExclamation, _
+                "Invalid Quantity"
+
+            Me.txtQuantity.SetFocus
+            Exit Function
+
+        End If
+
+        If Not ValidateBulkQuantity( _
+            ItemID, _
+            Quantity, _
+            FromLocationID _
+        ) Then
+            Exit Function
+        End If
+
+    End If
+
+    If mProjectShipmentMode Then
+        If Not ValidateProjectShipmentEntry( _
+            ItemID, _
+            ItemInstanceID, _
+            ProjectID, _
+            Quantity) Then
+
+            Exit Function
+        End If
+    End If
+
+    Me.txtFromLocationID = FromLocationID
+
+    ValidateEntry = True
+
+End Function
+
+
+'=============================================================
+' VALIDATE BULK QUANTITY
+'=============================================================
+Private Function ValidateBulkQuantity( _
+    ByVal ItemID As Long, _
+    ByVal requestedQuantity As Double, _
+    ByRef FromLocationID As Long _
+) As Boolean
+
+    Dim db As DAO.Database
+    Dim rs As DAO.Recordset
+
+    Dim QuantityOnHand As Double
+    Dim QuantityReserved As Double
+    Dim quantityAvailable As Double
+
+    ValidateBulkQuantity = False
+
+    Set db = CurrentDb
+
+    Set rs = db.OpenRecordset( _
+        "SELECT " & _
+            "CurrentLocationID, " & _
+            "QuantityOnHand, " & _
+            "QuantityReserved " & _
+        "FROM T_StockBalances " & _
+        "WHERE ItemID = " & ItemID & ";", _
+        dbOpenSnapshot _
+    )
+
+    If rs.EOF Then
+
+        rs.close
+        Set rs = Nothing
+        Set db = Nothing
+
+        MsgBox _
+            "This bulk item does not have a stock balance.", _
+            vbExclamation, _
+            "No Stock Available"
+
+        Exit Function
+
+    End If
+
+    rs.MoveLast
+
+    If rs.recordCount > 1 Then
+
+        rs.close
+        Set rs = Nothing
+        Set db = Nothing
+
+        MsgBox _
+            "More than one stock-balance row exists for this item.", _
+            vbExclamation, _
+            "Stock-Balance Data Issue"
+
+        Exit Function
+
+    End If
+
+    rs.MoveFirst
+
+    FromLocationID = Nz(rs!CurrentLocationID, 0)
+    QuantityOnHand = Nz(rs!QuantityOnHand, 0)
+    QuantityReserved = Nz(rs!QuantityReserved, 0)
+
+    quantityAvailable = QuantityOnHand - QuantityReserved
+
+    rs.close
+    Set rs = Nothing
+    Set db = Nothing
+
+    If FromLocationID = 0 Then
+
+        MsgBox _
+            "This item has stock but no source location.", _
+            vbExclamation, _
+            "Location Required"
+
+        Exit Function
+
+    End If
+
+    If quantityAvailable <= 0 Then
+
+        MsgBox _
+            "No unreserved stock is currently available.", _
+            vbExclamation, _
+            "No Available Stock"
+
+        Exit Function
+
+    End If
+
+    If requestedQuantity > quantityAvailable Then
+
+        MsgBox _
+            "The requested quantity exceeds available stock." & _
+            vbCrLf & vbCrLf & _
+            "Quantity on hand: " & QuantityOnHand & vbCrLf & _
+            "Quantity reserved: " & QuantityReserved & vbCrLf & _
+            "Available quantity: " & quantityAvailable & vbCrLf & _
+            "Requested quantity: " & requestedQuantity, _
+            vbExclamation, _
+            "Insufficient Stock"
+
+        Exit Function
+
+    End If
+
+    ValidateBulkQuantity = True
+
+End Function
+
+
+'=============================================================
+' VALIDATE SERIALIZED ITEM
+'=============================================================
+Private Function ValidateSerializedInstance( _
+    ByVal ItemID As Long, _
+    ByVal ItemInstanceID As Long, _
+    ByRef FromLocationID As Long, _
+    ByRef UnitCost As Variant _
+) As Boolean
+
+    Dim db As DAO.Database
+    Dim rs As DAO.Recordset
+
+    ValidateSerializedInstance = False
+
+    Set db = CurrentDb
+
+    Set rs = db.OpenRecordset( _
+        "SELECT " & _
+            "ItemID, " & _
+            "CurrentLocationID, " & _
+            "CurrentStatus, " & _
+            "UnitCost " & _
+        "FROM T_ItemInstances " & _
+        "WHERE ItemInstanceID = " & ItemInstanceID & ";", _
+        dbOpenSnapshot _
+    )
+
+    If rs.EOF Then
+
+        rs.close
+        Set rs = Nothing
+        Set db = Nothing
+
+        MsgBox _
+            "The selected serial number could not be found.", _
+            vbExclamation, _
+            "Serial Number Not Found"
+
+        Exit Function
+
+    End If
+
+    If Nz(rs!ItemID, 0) <> ItemID Then
+
+        rs.close
+        Set rs = Nothing
+        Set db = Nothing
+
+        MsgBox _
+            "The selected serial number does not belong to this item.", _
+            vbExclamation, _
+            "Serial Number Mismatch"
+
+        Exit Function
+
+    End If
+
+    FromLocationID = Nz(rs!CurrentLocationID, 0)
+
+    If FromLocationID = 0 Then
+
+        rs.close
+        Set rs = Nothing
+        Set db = Nothing
+
+        MsgBox _
+            "The selected serial number is not stored in a warehouse.", _
+            vbExclamation, _
+            "Serialized Item Unavailable"
+
+        Exit Function
+
+    End If
+
+    If Nz(rs!currentStatus, vbNullString) <> "In Stock" Then
+
+        rs.close
+        Set rs = Nothing
+        Set db = Nothing
+
+        MsgBox _
+            "The selected serial number is not marked as In Stock.", _
+            vbExclamation, _
+            "Serialized Item Unavailable"
+
+        Exit Function
+
+    End If
+
+    If IsNull(rs!UnitCost) Then
+        UnitCost = Null
+    Else
+        UnitCost = rs!UnitCost
+    End If
+
+    rs.close
+    Set rs = Nothing
+    Set db = Nothing
+
+    ValidateSerializedInstance = True
+
+End Function
+
+
+'=============================================================
+' REDUCE BULK STOCK BALANCE
+'=============================================================
+Private Sub ReduceBulkStockBalance( _
+    ByVal db As DAO.Database, _
+    ByVal ItemID As Long, _
+    ByVal FromLocationID As Long, _
+    ByVal Quantity As Double _
+)
+    If gSkipInventory Then Exit Sub
+
+    Dim rs As DAO.Recordset
+
+    Dim existingLocationID As Long
+    Dim QuantityOnHand As Double
+    Dim QuantityReserved As Double
+    Dim quantityAvailable As Double
+
+    Set rs = db.OpenRecordset( _
+        "SELECT * " & _
+        "FROM T_StockBalances " & _
+        "WHERE ItemID = " & ItemID & ";", _
+        dbOpenDynaset _
+    )
+
+    If rs.EOF Then
+
+        rs.close
+        Set rs = Nothing
+
+        Err.Raise _
+            vbObjectError + 2001, _
+            "ReduceBulkStockBalance", _
+            "This bulk item does not have a stock-balance row."
+
+    End If
+
+    rs.MoveLast
+
+    If rs.recordCount > 1 Then
+
+        rs.close
+        Set rs = Nothing
+
+        Err.Raise _
+            vbObjectError + 2002, _
+            "ReduceBulkStockBalance", _
+            "More than one stock-balance row exists for this item."
+
+    End If
+
+    rs.MoveFirst
+
+    existingLocationID = Nz(rs!CurrentLocationID, 0)
+    QuantityOnHand = Nz(rs!QuantityOnHand, 0)
+    QuantityReserved = Nz(rs!QuantityReserved, 0)
+
+    quantityAvailable = QuantityOnHand - QuantityReserved
+
+    If existingLocationID <> FromLocationID Then
+
+        rs.close
+        Set rs = Nothing
+
+        Err.Raise _
+            vbObjectError + 2003, _
+            "ReduceBulkStockBalance", _
+            "The source location changed before posting."
+
+    End If
+
+    If Quantity > quantityAvailable Then
+
+        rs.close
+        Set rs = Nothing
+
+        Err.Raise _
+            vbObjectError + 2004, _
+            "ReduceBulkStockBalance", _
+            "The requested quantity now exceeds available stock."
+
+    End If
+
+    rs.Edit
+
+    rs!QuantityOnHand = QuantityOnHand - Quantity
+    rs!LastUpdated = Now()
+
+    rs.Update
+
+    rs.close
+    Set rs = Nothing
+
+End Sub
+
+
+'=============================================================
+' ISSUE SERIALIZED ITEM
+'=============================================================
+Private Sub IssueSerializedInstance( _
+    ByVal db As DAO.Database, _
+    ByVal ItemID As Long, _
+    ByVal ItemInstanceID As Long, _
+    ByVal FromLocationID As Long, _
+    ByVal Reason As String, _
+    ByVal MovementDate As Date, _
+    ByVal MovementNotes As String _
+)
+    If gSkipInventory Then Exit Sub
+
+    Dim rs As DAO.Recordset
+    Dim newStatus As String
+    Dim instanceNote As String
+
+    newStatus = GetIssuedInstanceStatus(Reason)
+
+    Set rs = db.OpenRecordset( _
+        "SELECT * " & _
+        "FROM T_ItemInstances " & _
+        "WHERE ItemInstanceID = " & ItemInstanceID & ";", _
+        dbOpenDynaset _
+    )
+
+    If rs.EOF Then
+
+        rs.close
+        Set rs = Nothing
+
+        Err.Raise _
+            vbObjectError + 2101, _
+            "IssueSerializedInstance", _
+            "The selected serialized item could not be found."
+
+    End If
+
+    If Nz(rs!ItemID, 0) <> ItemID Then
+
+        rs.close
+        Set rs = Nothing
+
+        Err.Raise _
+            vbObjectError + 2102, _
+            "IssueSerializedInstance", _
+            "The selected serial number does not belong to this item."
+
+    End If
+
+    If Nz(rs!CurrentLocationID, 0) <> FromLocationID Then
+
+        rs.close
+        Set rs = Nothing
+
+        Err.Raise _
+            vbObjectError + 2103, _
+            "IssueSerializedInstance", _
+            "The serialized-item location changed before posting."
+
+    End If
+
+    If Nz(rs!currentStatus, vbNullString) <> "In Stock" Then
+
+        rs.close
+        Set rs = Nothing
+
+        Err.Raise _
+            vbObjectError + 2104, _
+            "IssueSerializedInstance", _
+            "The serialized item is no longer marked as In Stock."
+
+    End If
+
+    instanceNote = _
+        "Stock out posted on " & _
+        Format$(MovementDate, "yyyy-mm-dd hh:nn") & _
+        ". Status changed to: " & newStatus & "."
+
+    If Len(MovementNotes) > 0 Then
+        instanceNote = instanceNote & vbCrLf & MovementNotes
+    End If
+
+    rs.Edit
+
+    rs!CurrentLocationID = Null
+    rs!currentStatus = newStatus
+    rs!Notes = AppendNote( _
+        Nz(rs!Notes, vbNullString), _
+        instanceNote _
+    )
+
+    rs.Update
+
+    rs.close
+    Set rs = Nothing
+
+End Sub
+
+
+'=============================================================
+' INSERT STOCK MOVEMENT
+'=============================================================
+Private Sub InsertStockMovement( _
+    ByVal db As DAO.Database, _
+    ByVal MovementDate As Date, _
+    ByVal ExpectedReturnDate As Variant, _
+    ByVal ItemID As Long, _
+    ByVal ItemInstanceID As Long, _
+    ByVal MovementTypeID As Long, _
+    ByVal Quantity As Double, _
+    ByVal FromLocationID As Long, _
+    ByVal performedByUserID As Long, _
+    ByVal ProjectID As Long, _
+    ByVal Reason As String, _
+    ByVal ReferenceDocument As String, _
+    ByVal Notes As String, _
+    ByVal UnitCost As Variant _
+)
+    If gSkipInventory Then Exit Sub
+
+    Dim rs As DAO.Recordset
+
+    Set rs = db.OpenRecordset( _
+        "T_StockMovements", _
+        dbOpenDynaset _
+    )
+
+    rs.addnew
+
+    rs!MovementDate = MovementDate
+    rs!ItemID = ItemID
+
+    If Not IsNull(ExpectedReturnDate) Then
+        rs!ExpectedReturnDate = CDate(ExpectedReturnDate)
+    End If
+
+    If ItemInstanceID > 0 Then
+        rs!ItemInstanceID = ItemInstanceID
+    End If
+
+    If ProjectID > 0 Then
+        rs!ProjectID = ProjectID
+    End If
+
+    rs!MovementTypeID = MovementTypeID
+    rs!Quantity = Quantity
+    rs!FromLocationID = FromLocationID
+    rs!performedByUserID = performedByUserID
+    rs!Reason = Reason
+
+    If mProjectShipmentMode Then
+        SetRecordsetFieldIfExists _
+            rs, _
+            "CustomerID", _
+            NullIfZero(mProjectCustomerID)
+
+        SetRecordsetFieldIfExists _
+            rs, _
+            "AssemblyTemplateID", _
+            NullIfZero(mProjectAssemblyTemplateID)
+
+        SetRecordsetFieldIfExists _
+            rs, _
+            "SalesOrderID", _
+            NullIfZero(mProjectSalesOrderID)
+
+        SetRecordsetFieldIfExists _
+            rs, _
+            "SourceDocumentType", _
+            SOURCE_PROJECT
+
+        SetRecordsetFieldIfExists _
+            rs, _
+            "MovementNotes", _
+            "Finished output shipped for project " & mProjectCode & "."
+    End If
+
+    If Len(ReferenceDocument) > 0 Then
+        rs!ReferenceDocument = ReferenceDocument
+    End If
+
+    If Len(Notes) > 0 Then
+        rs!Notes = Notes
+    End If
+
+    If Not IsNull(UnitCost) Then
+        rs!UnitCost = UnitCost
+    End If
+
+    rs.Update
+
+    rs.close
+    Set rs = Nothing
+
+End Sub
+
+
+'=============================================================
+' RETRIEVE MOVEMENT TYPE
+'=============================================================
+Private Function GetMovementTypeID( _
+    ByVal db As DAO.Database, _
+    ByVal MovementTypeCode As String _
+) As Long
+
+    Dim rs As DAO.Recordset
+
+    Set rs = db.OpenRecordset( _
+        "SELECT MovementTypeID " & _
+        "FROM T_StockMovementTypes " & _
+        "WHERE MovementTypeCode = " & _
+            SqlText(MovementTypeCode) & ";", _
+        dbOpenSnapshot _
+    )
+
+    If rs.EOF Then
+
+        rs.close
+        Set rs = Nothing
+
+        Err.Raise _
+            vbObjectError + 2201, _
+            "GetMovementTypeID", _
+            "Movement type '" & MovementTypeCode & "' was not found."
+
+    End If
+
+    GetMovementTypeID = CLng(rs!MovementTypeID)
+
+    rs.close
+    Set rs = Nothing
+
+End Function
+
+
+'=============================================================
+' LOAD SELECTED ITEM
+'=============================================================
+Private Sub LoadSelectedItem()
+
+    Dim ItemID As Long
+    Dim RequiresSerial As Boolean
+
+    If IsNull(Me.cboItemID) Then
+
+        ResetItemStatusDisplay
+
+        If mProjectShipmentMode Then
+            ApplyProjectShipmentControlValues
+        End If
+
+        Exit Sub
+
+    End If
+
+    ItemID = CLng(Me.cboItemID)
+
+    RequiresSerial = ItemRequiresSerial(ItemID)
+
+    Me.chkRequiresSerial = RequiresSerial
+
+    ConfigureSerialControls RequiresSerial
+
+    RefreshSelectedItemStatus
+
+    If mProjectShipmentMode Then
+        ApplyProjectShipmentControlValues
+    End If
+
+End Sub
+
+
+'=============================================================
+' SHOW CURRENT STOCK STATUS
+'=============================================================
+Private Sub RefreshSelectedItemStatus()
+
+    On Error GoTo Err_Handler
+
+    Dim db As DAO.Database
+    Dim rs As DAO.Recordset
+
+    Dim ItemID As Long
+    Dim RequiresSerial As Boolean
+
+    Dim FromLocationID As Long
+    Dim QuantityOnHand As Double
+    Dim QuantityReserved As Double
+    Dim quantityAvailable As Double
+
+    If IsNull(Me.cboItemID) Then
+
+        ResetItemStatusDisplay
+        Exit Sub
+
+    End If
+
+    ItemID = CLng(Me.cboItemID)
+
+    RequiresSerial = ItemRequiresSerial(ItemID)
+
+    Me.chkRequiresSerial = RequiresSerial
+
+    If RequiresSerial Then
+
+        Me.txtAvailableQuantity = DCount( _
+            "*", _
+            "T_ItemInstances", _
+            "ItemID = " & ItemID & _
+            " AND CurrentLocationID Is Not Null" & _
+            " AND CurrentStatus = 'In Stock'" _
+        )
+
+        Me.txtCurrentLocation = _
+            "Select an available serial number"
+
+        Me.txtShelfLocation = _
+            "Select an available serial number"
+
+        Me.txtFromLocationID = Null
+
+        PopulateSerialNumberCombo ItemID
+
+        If mProjectShipmentMode Then
+            Me.txtAvailableQuantity = _
+                Me.cboItemInstanceID.ListCount
+        End If
+
+    Else
+
+        Me.cboItemInstanceID = Null
+        Me.cboItemInstanceID.RowSource = vbNullString
+
+        Set db = CurrentDb
+
+        Set rs = db.OpenRecordset( _
+            "SELECT " & _
+                "CurrentLocationID, " & _
+                "QuantityOnHand, " & _
+                "QuantityReserved " & _
+            "FROM T_StockBalances " & _
+            "WHERE ItemID = " & ItemID & ";", _
+            dbOpenSnapshot _
+        )
+
+        If rs.EOF Then
+
+            Me.txtAvailableQuantity = 0
+            Me.txtCurrentLocation = "No stock recorded"
+            Me.txtShelfLocation = "No shelf location recorded"
+            Me.txtFromLocationID = Null
+
+        Else
+
+            rs.MoveLast
+
+            If rs.recordCount > 1 Then
+
+                Me.txtAvailableQuantity = Null
+                Me.txtCurrentLocation = _
+                    "Data issue: multiple stock-balance rows found"
+                Me.txtShelfLocation = _
+                    "Data issue: multiple stock-balance rows found"
+                Me.txtFromLocationID = Null
+
+            Else
+
+                rs.MoveFirst
+
+                FromLocationID = Nz(rs!CurrentLocationID, 0)
+                QuantityOnHand = Nz(rs!QuantityOnHand, 0)
+                QuantityReserved = Nz(rs!QuantityReserved, 0)
+
+                quantityAvailable = _
+                    QuantityOnHand - QuantityReserved
+
+                Me.txtAvailableQuantity = quantityAvailable
+
+                If FromLocationID > 0 Then
+
+                    Me.txtFromLocationID = FromLocationID
+
+                    Me.txtCurrentLocation = _
+                        GetWarehouseName(FromLocationID)
+
+                    Me.txtShelfLocation = _
+                        GetShelfLocationDescription(FromLocationID)
+
+                Else
+
+                    Me.txtFromLocationID = Null
+                    Me.txtCurrentLocation = "No warehouse recorded"
+                    Me.txtShelfLocation = "No shelf location recorded"
+
+                End If
+
+            End If
+
+        End If
+
+        rs.close
+        Set rs = Nothing
+        Set db = Nothing
+
+    End If
+
+Exit_Handler:
+
+    Exit Sub
+
+Err_Handler:
+
+    Me.txtAvailableQuantity = Null
+    Me.txtCurrentLocation = "Unable to retrieve warehouse"
+    Me.txtShelfLocation = "Unable to retrieve shelf location"
+    Me.txtFromLocationID = Null
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' LOAD SELECTED SERIAL NUMBER LOCATION
+'=============================================================
+Private Sub LoadSelectedSerializedInstance()
+
+    On Error GoTo Err_Handler
+
+    Dim db As DAO.Database
+    Dim rs As DAO.Recordset
+
+    Dim ItemInstanceID As Long
+    Dim FromLocationID As Long
+
+    If IsNull(Me.cboItemInstanceID) Then
+
+        Me.txtFromLocationID = Null
+        Me.txtCurrentLocation = _
+            "Select an available serial number"
+        Me.txtShelfLocation = _
+            "Select an available serial number"
+
+        Exit Sub
+
+    End If
+
+    ItemInstanceID = CLng(Me.cboItemInstanceID)
+
+    Set db = CurrentDb
+
+    Set rs = db.OpenRecordset( _
+        "SELECT CurrentLocationID " & _
+        "FROM T_ItemInstances " & _
+        "WHERE ItemInstanceID = " & ItemInstanceID & ";", _
+        dbOpenSnapshot _
+    )
+
+    If rs.EOF Then
+
+        Me.txtFromLocationID = Null
+        Me.txtCurrentLocation = _
+            "Selected serial number could not be found"
+        Me.txtShelfLocation = _
+            "Selected serial number could not be found"
+
+    Else
+
+        FromLocationID = Nz(rs!CurrentLocationID, 0)
+
+        If FromLocationID > 0 Then
+
+            Me.txtFromLocationID = FromLocationID
+
+            Me.txtCurrentLocation = _
+                GetWarehouseName(FromLocationID)
+
+            Me.txtShelfLocation = _
+                GetShelfLocationDescription(FromLocationID)
+
+        Else
+
+            Me.txtFromLocationID = Null
+            Me.txtCurrentLocation = _
+                "Selected serial number has no warehouse"
+            Me.txtShelfLocation = _
+                "Selected serial number has no shelf location"
+
+        End If
+
+    End If
+
+    rs.close
+    Set rs = Nothing
+    Set db = Nothing
+
+Exit_Handler:
+
+    Exit Sub
+
+Err_Handler:
+
+    Me.txtFromLocationID = Null
+    Me.txtCurrentLocation = "Unable to retrieve warehouse"
+    Me.txtShelfLocation = "Unable to retrieve shelf location"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' CONFIGURE SERIAL CONTROLS
+'=============================================================
+Private Sub ConfigureSerialControls( _
+    ByVal RequiresSerial As Boolean _
+)
+
+    If RequiresSerial Then
+
+        Me.txtQuantity = 1
+        Me.txtQuantity.Locked = True
+
+        Me.cboItemInstanceID.Enabled = True
+        Me.cboItemInstanceID.Locked = False
+
+    Else
+
+        Me.txtQuantity = Null
+        Me.txtQuantity.Locked = False
+
+        Me.cboItemInstanceID = Null
+        Me.cboItemInstanceID.RowSource = vbNullString
+        Me.cboItemInstanceID.Enabled = False
+        Me.cboItemInstanceID.Locked = True
+
+    End If
+
+End Sub
+
+
+'=============================================================
+' CONFIGURE PROJECT CONTROL
+'=============================================================
+Private Sub ConfigureProjectControl()
+
+    Dim Reason As String
+
+    If mProjectShipmentMode Then
+        Me.cboProjectID = mProjectID
+        Me.cboProjectID.Enabled = True
+        Me.cboProjectID.Locked = True
+        Exit Sub
+    End If
+
+    Reason = Trim$(Nz(Me.cboReason, vbNullString))
+
+    If IsProjectIssueReason(Reason) Then
+
+        Me.cboProjectID.Enabled = True
+        Me.cboProjectID.Locked = False
+        Me.cboProjectID.Requery
+
+    Else
+
+        Me.cboProjectID = Null
+        Me.cboProjectID.Enabled = False
+        Me.cboProjectID.Locked = True
+
+    End If
+
+End Sub
+
+
+'=============================================================
+' CONFIGURE EXPECTED RETURN DATE CONTROL
+'=============================================================
+Private Sub ConfigureExpectedReturnControl()
+
+    Dim Reason As String
+
+    If mProjectShipmentMode Then
+        Me.txtExpectedReturnDate = Null
+        Me.txtExpectedReturnDate.Enabled = False
+        Me.txtExpectedReturnDate.Locked = True
+        Exit Sub
+    End If
+
+    Reason = Trim$(Nz(Me.cboReason, vbNullString))
+
+    If IsReturnableIssueReason(Reason) Then
+
+        Me.txtExpectedReturnDate.Enabled = True
+        Me.txtExpectedReturnDate.Locked = False
+
+    Else
+
+        Me.txtExpectedReturnDate = Null
+        Me.txtExpectedReturnDate.Enabled = False
+        Me.txtExpectedReturnDate.Locked = True
+
+    End If
+
+End Sub
+
+
+'=============================================================
+' RETURNABLE ISSUE REASON CHECK
+'=============================================================
+Private Function IsReturnableIssueReason( _
+    ByVal Reason As String _
+) As Boolean
+
+    Dim r As String
+
+    r = UCase$(Trim$(Nz(Reason, vbNullString)))
+
+    IsReturnableIssueReason = _
+        r = "ISSUE TO PROJECT" _
+        Or r = "PROJECT ISSUE" _
+        Or r = "PROJECT TOOL ISSUE" _
+        Or r = "ISSUED TO PROJECT" _
+        Or r = "TOOL ISSUE"
+
+End Function
+
+
+'=============================================================
+' PROJECT ISSUE REASON CHECK
+'=============================================================
+Private Function IsProjectIssueReason( _
+    ByVal Reason As String _
+) As Boolean
+
+    Dim r As String
+
+    r = UCase$(Trim$(Nz(Reason, vbNullString)))
+
+    IsProjectIssueReason = _
+        r = "ISSUE TO PROJECT" _
+        Or r = "PROJECT ISSUE" _
+        Or r = "PROJECT TOOL ISSUE" _
+        Or r = "ISSUED TO PROJECT" _
+        Or r = "PROJECT SHIPMENT"
+
+End Function
+
+
+'=============================================================
+' POPULATE SERIAL-NUMBER COMBO
+'=============================================================
+Private Sub PopulateSerialNumberCombo( _
+    ByVal ItemID As Long _
+)
+
+    Me.cboItemInstanceID = Null
+
+    Me.cboItemInstanceID.RowSource = _
+        "SELECT II.ItemInstanceID, II.SerialNumber, " & _
+            "L.LocationCode, L.LocationName " & _
+        "FROM T_ItemInstances AS II " & _
+        "LEFT JOIN T_Locations AS L " & _
+            "ON II.CurrentLocationID=L.LocationID " & _
+        "WHERE II.ItemID=" & ItemID & " " & _
+            "AND II.CurrentLocationID Is Not Null " & _
+            "AND II.CurrentStatus='In Stock' "
+
+    If mProjectShipmentMode Then
+        Me.cboItemInstanceID.RowSource = _
+            Me.cboItemInstanceID.RowSource & _
+            "AND II.ItemInstanceID In (" & _
+                "SELECT M.ItemInstanceID " & _
+                "FROM T_StockMovements AS M " & _
+                "INNER JOIN T_StockMovementTypes AS MT " & _
+                    "ON M.MovementTypeID=MT.MovementTypeID " & _
+                "WHERE M.ProjectID=" & mProjectID & " " & _
+                    "AND MT.MovementTypeCode='STOCK_IN' " & _
+                    "AND M.Reason=" & _
+                        SqlText(REASON_PRODUCTION_RECEIPT) & _
+                    " AND M.ItemInstanceID Is Not Null) "
+    End If
+
+    Me.cboItemInstanceID.RowSource = _
+        Me.cboItemInstanceID.RowSource & _
+        "ORDER BY II.SerialNumber;"
+
+    Me.cboItemInstanceID.Requery
+
+End Sub
+
+
+'=============================================================
+' PROJECT SHIPMENT HELPERS
+'=============================================================
+
+Private Sub GetProjectOutputSummary( _
+    ByVal db As DAO.Database, _
+    ByVal ProjectID As Long, _
+    ByRef outputItemID As Long, _
+    ByRef receivedQuantity As Double, _
+    ByRef shippedQuantity As Double _
+)
+
+    On Error GoTo Err_Handler
+
+    Dim rs As DAO.Recordset
+    Dim itemCount As Long
+    Dim movementItemID As Long
+    Dim errorNumber As Long
+    Dim errorDescription As String
+    Dim errorSource As String
+
+    outputItemID = 0
+    receivedQuantity = 0
+    shippedQuantity = 0
+
+    Set rs = db.OpenRecordset( _
+        "SELECT M.ItemID, Sum(Nz(M.Quantity,0)) " & _
+            "AS MovementQuantity " & _
+        "FROM T_StockMovements AS M " & _
+        "INNER JOIN T_StockMovementTypes AS MT " & _
+            "ON M.MovementTypeID=MT.MovementTypeID " & _
+        "WHERE M.ProjectID=" & ProjectID & " " & _
+            "AND MT.MovementTypeCode='STOCK_IN' " & _
+            "AND M.Reason=" & _
+                SqlText(REASON_PRODUCTION_RECEIPT) & " " & _
+        "GROUP BY M.ItemID;", _
+        dbOpenSnapshot)
+
+    Do While Not rs.EOF
+        itemCount = itemCount + 1
+
+        If itemCount = 1 Then
+            outputItemID = Nz(rs!ItemID, 0)
+        End If
+
+        receivedQuantity = _
+            receivedQuantity + Nz(rs!MovementQuantity, 0)
+
+        rs.MoveNext
+    Loop
+
+    rs.close
+    Set rs = Nothing
+
+    If itemCount > 1 Then
+        Err.Raise _
+            vbObjectError + 8210, _
+            "GetProjectOutputSummary", _
+            "The project has production receipts for more than " & _
+            "one output item. Correct the movement history first."
+    End If
+
+    Set rs = db.OpenRecordset( _
+        "SELECT M.ItemID, Sum(Nz(M.Quantity,0)) " & _
+            "AS MovementQuantity " & _
+        "FROM T_StockMovements AS M " & _
+        "INNER JOIN T_StockMovementTypes AS MT " & _
+            "ON M.MovementTypeID=MT.MovementTypeID " & _
+        "WHERE M.ProjectID=" & ProjectID & " " & _
+            "AND MT.MovementTypeCode='STOCK_OUT' " & _
+            "AND M.Reason=" & _
+                SqlText(REASON_PROJECT_SHIPMENT) & " " & _
+        "GROUP BY M.ItemID;", _
+        dbOpenSnapshot)
+
+    Do While Not rs.EOF
+        movementItemID = Nz(rs!ItemID, 0)
+
+        If outputItemID <= 0 Or movementItemID <> outputItemID Then
+            Err.Raise _
+                vbObjectError + 8211, _
+                "GetProjectOutputSummary", _
+                "A project shipment is not linked to the " & _
+                "project's received output item. Correct the " & _
+                "movement history first."
+        End If
+
+        shippedQuantity = _
+            shippedQuantity + Nz(rs!MovementQuantity, 0)
+
+        rs.MoveNext
+    Loop
+
+    If shippedQuantity > receivedQuantity + QUANTITY_TOLERANCE Then
+        Err.Raise _
+            vbObjectError + 8223, _
+            "GetProjectOutputSummary", _
+            "Project shipment quantity exceeds its production " & _
+            "receipt quantity. Correct the movement history first."
+    End If
+
+Exit_Handler:
+    On Error Resume Next
+    If Not (rs Is Nothing) Then rs.close
+    Set rs = Nothing
+    On Error GoTo 0
+    Exit Sub
+
+Err_Handler:
+    errorNumber = Err.Number
+    errorDescription = Err.Description
+    errorSource = Err.Source
+
+    On Error Resume Next
+    If Not (rs Is Nothing) Then rs.close
+    Set rs = Nothing
+    On Error GoTo 0
+
+    Err.Raise errorNumber, errorSource, errorDescription
+
+End Sub
+
+
+Private Function ProjectUnshippedQuantity() As Double
+
+    ProjectUnshippedQuantity = _
+        mProjectReceivedQuantity - mProjectShippedQuantity
+
+    If ProjectUnshippedQuantity < 0 Then
+        ProjectUnshippedQuantity = 0
+    End If
+
+End Function
+
+
+Private Function ValidateProjectShipmentEntry( _
+    ByVal ItemID As Long, _
+    ByVal ItemInstanceID As Long, _
+    ByVal ProjectID As Long, _
+    ByVal Quantity As Double _
+) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim db As DAO.Database
+    Dim rs As DAO.Recordset
+    Dim outputItemID As Long
+    Dim receivedQuantity As Double
+    Dim shippedQuantity As Double
+    Dim unshippedQuantity As Double
+    Dim projectStatus As String
+
+    ValidateProjectShipmentEntry = False
+
+    If Not mProjectShipmentMode Or mProjectID <= 0 Then
+        Err.Raise _
+            vbObjectError + 8212, _
+            "ValidateProjectShipmentEntry", _
+            "The project shipment context is not active."
+    End If
+
+    If ProjectID <> mProjectID Then
+        MsgBox _
+            "Use the project supplied by the Project form.", _
+            vbExclamation, _
+            "Project Shipment"
+
+        Me.cboProjectID = mProjectID
+        Exit Function
+    End If
+
+    If ItemID <> mProjectOutputItemID Then
+        MsgBox _
+            "Only the output item established by the project's " & _
+            "production receipts can be shipped.", _
+            vbExclamation, _
+            "Project Output Item"
+
+        Me.cboItemID = mProjectOutputItemID
+        LoadSelectedItem
+        Exit Function
+    End If
+
+    Set db = CurrentDb
+    Set rs = db.OpenRecordset( _
+        "SELECT * FROM T_Projects " & _
+        "WHERE ProjectID=" & mProjectID & ";", _
+        dbOpenSnapshot)
+
+    If rs.EOF Then
+        Err.Raise _
+            vbObjectError + 8213, _
+            "ValidateProjectShipmentEntry", _
+            "The project no longer exists."
+    End If
+
+    projectStatus = UCase$(Trim$(Nz(rs!Status, vbNullString)))
+    mProjectBuildQuantity = Nz(rs!BuildQuantity, 0)
+    mProjectSalesOrderID = _
+        ResolveLinkedSalesOrderID(db, rs, mProjectID)
+
+    rs.close
+    Set rs = Nothing
+
+    If projectStatus <> "READY TO SHIP" Then
+        MsgBox _
+            "The project status must be Ready to Ship.", _
+            vbExclamation, _
+            "Project Not Ready"
+        Exit Function
+    End If
+
+    GetProjectOutputSummary _
+        db, _
+        mProjectID, _
+        outputItemID, _
+        receivedQuantity, _
+        shippedQuantity
+
+    If outputItemID <> ItemID Then
+        Err.Raise _
+            vbObjectError + 8214, _
+            "ValidateProjectShipmentEntry", _
+            "The project output item changed before posting."
+    End If
+
+    unshippedQuantity = receivedQuantity - shippedQuantity
+
+    If unshippedQuantity <= QUANTITY_TOLERANCE Then
+        MsgBox _
+            "There is no received project output waiting to ship.", _
+            vbInformation, _
+            "Nothing to Ship"
+        Exit Function
+    End If
+
+    If Quantity > unshippedQuantity + QUANTITY_TOLERANCE Then
+        MsgBox _
+            "The shipment quantity exceeds the received quantity " & _
+            "still waiting to ship." & vbCrLf & vbCrLf & _
+            "Available for this project: " & _
+                Format$(unshippedQuantity, "0.######") & vbCrLf & _
+            "Entered quantity: " & _
+                Format$(Quantity, "0.######"), _
+            vbExclamation, _
+            "Shipment Quantity Too High"
+
+        Me.txtQuantity = unshippedQuantity
+        Exit Function
+    End If
+
+    If ItemInstanceID > 0 Then
+        If Not SerializedInstanceBelongsToProject( _
+            db, _
+            ItemInstanceID, _
+            mProjectID) Then
+
+            MsgBox _
+                "The selected serial number was not received for " & _
+                "this project.", _
+                vbExclamation, _
+                "Project Serial Number"
+            Exit Function
+        End If
+    End If
+
+    If mProjectSalesOrderID > 0 Then
+        ValidateLinkedSalesOrderShipment _
+            db, _
+            mProjectSalesOrderID, _
+            ItemID, _
+            Quantity
+    End If
+
+    mProjectReceivedQuantity = receivedQuantity
+    mProjectShippedQuantity = shippedQuantity
+    ValidateProjectShipmentEntry = True
+
+Exit_Handler:
+    On Error Resume Next
+    If Not (rs Is Nothing) Then rs.close
+    Set rs = Nothing
+    Set db = Nothing
+    On Error GoTo 0
+    Exit Function
+
+Err_Handler:
+    ValidateProjectShipmentEntry = False
+    MsgBox _
+        "The project shipment could not be validated." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Project Shipment"
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function SerializedInstanceBelongsToProject( _
+    ByVal db As DAO.Database, _
+    ByVal ItemInstanceID As Long, _
+    ByVal ProjectID As Long _
+) As Boolean
+
+    Dim rs As DAO.Recordset
+
+    Set rs = db.OpenRecordset( _
+        "SELECT M.StockMovementID " & _
+        "FROM T_StockMovements AS M " & _
+        "INNER JOIN T_StockMovementTypes AS MT " & _
+            "ON M.MovementTypeID=MT.MovementTypeID " & _
+        "WHERE M.ProjectID=" & ProjectID & " " & _
+            "AND M.ItemInstanceID=" & ItemInstanceID & " " & _
+            "AND MT.MovementTypeCode='STOCK_IN' " & _
+            "AND M.Reason=" & _
+                SqlText(REASON_PRODUCTION_RECEIPT) & ";", _
+        dbOpenSnapshot)
+
+    SerializedInstanceBelongsToProject = Not rs.EOF
+
+    rs.close
+    Set rs = Nothing
+
+End Function
+
+
+Private Function ResolveLinkedSalesOrderID( _
+    ByVal db As DAO.Database, _
+    ByVal projectRecordset As DAO.Recordset, _
+    ByVal ProjectID As Long _
+) As Long
+
+    On Error GoTo Err_Handler
+
+    Dim rs As DAO.Recordset
+    Dim foundID As Long
+    Dim CustomerID As Long
+    Dim CustomerPOReference As String
+    Dim errorNumber As Long
+    Dim errorDescription As String
+    Dim errorSource As String
+
+    ResolveLinkedSalesOrderID = 0
+
+    If RecordsetHasField(projectRecordset, "SalesOrderID") Then
+        foundID = Nz(projectRecordset.Fields("SalesOrderID").value, 0)
+
+        If foundID > 0 Then
+            If DCount( _
+                "*", _
+                "T_SalesOrders", _
+                "SalesOrderID=" & foundID) = 0 Then
+
+                Err.Raise _
+                    vbObjectError + 8215, _
+                    "ResolveLinkedSalesOrderID", _
+                    "The SalesOrderID saved on this project no " & _
+                    "longer exists."
+            End If
+
+            ResolveLinkedSalesOrderID = foundID
+            GoTo Exit_Handler
+        End If
+    End If
+
+    If TableHasField(db, "T_SalesOrders", "ProjectID") Then
+        Set rs = db.OpenRecordset( _
+            "SELECT SalesOrderID FROM T_SalesOrders " & _
+            "WHERE ProjectID=" & ProjectID & " " & _
+            "ORDER BY SalesOrderID;", _
+            dbOpenSnapshot)
+
+        If Not rs.EOF Then
+            foundID = Nz(rs!SalesOrderID, 0)
+            rs.MoveNext
+
+            If Not rs.EOF Then
+                Err.Raise _
+                    vbObjectError + 8216, _
+                    "ResolveLinkedSalesOrderID", _
+                    "More than one Sales Order is linked to this project."
+            End If
+
+            ResolveLinkedSalesOrderID = foundID
+            GoTo Exit_Handler
+        End If
+
+        rs.close
+        Set rs = Nothing
+    End If
+
+    'Existing databases may link a project through its Customer PO
+    'reference instead of a direct SalesOrderID or ProjectID field.
+    If Not RecordsetHasField( _
+        projectRecordset, _
+        "CustomerPOReference") Then
+
+        GoTo Exit_Handler
+    End If
+
+    CustomerPOReference = Trim$(Nz( _
+        projectRecordset.Fields("CustomerPOReference").value, _
+        vbNullString))
+    CustomerID = Nz(RecordsetValue( _
+        projectRecordset, _
+        "CustomerID", _
+        0), 0)
+
+    If Len(CustomerPOReference) = 0 Or CustomerID <= 0 Then
+        GoTo Exit_Handler
+    End If
+
+    If Not TableHasField(db, "T_CustomerPOs", "PONumber") Or _
+       Not TableHasField(db, "T_CustomerPOs", "SalesOrderID") Then
+
+        GoTo Exit_Handler
+    End If
+
+    Set rs = db.OpenRecordset( _
+        "SELECT SalesOrderID FROM T_CustomerPOs " & _
+        "WHERE CustomerID=" & CustomerID & " " & _
+            "AND PONumber=" & SqlText(CustomerPOReference) & " " & _
+            "AND SalesOrderID Is Not Null " & _
+        "ORDER BY CustomerPOID;", _
+        dbOpenSnapshot)
+
+    If rs.EOF Then
+        GoTo Exit_Handler
+    End If
+
+    foundID = Nz(rs!SalesOrderID, 0)
+    rs.MoveNext
+
+    If Not rs.EOF Then
+        Err.Raise _
+            vbObjectError + 8222, _
+            "ResolveLinkedSalesOrderID", _
+            "More than one Customer PO with this reference is " & _
+            "linked to a Sales Order."
+    End If
+
+    ResolveLinkedSalesOrderID = foundID
+
+Exit_Handler:
+    On Error Resume Next
+    If Not (rs Is Nothing) Then rs.close
+    Set rs = Nothing
+    On Error GoTo 0
+    Exit Function
+
+Err_Handler:
+    errorNumber = Err.Number
+    errorDescription = Err.Description
+    errorSource = Err.Source
+
+    On Error Resume Next
+    If Not (rs Is Nothing) Then rs.close
+    Set rs = Nothing
+    On Error GoTo 0
+
+    Err.Raise errorNumber, errorSource, errorDescription
+
+End Function
+
+
+Private Sub ValidateLinkedSalesOrderShipment( _
+    ByVal db As DAO.Database, _
+    ByVal SalesOrderID As Long, _
+    ByVal ItemID As Long, _
+    ByVal Quantity As Double _
+)
+
+    Dim rs As DAO.Recordset
+    Dim lineRemaining As Double
+    Dim totalRemaining As Double
+
+    Set rs = db.OpenRecordset( _
+        "SELECT * FROM T_SalesOrderLines " & _
+        "WHERE SalesOrderID=" & SalesOrderID & " " & _
+            "AND ItemID=" & ItemID & ";", _
+        dbOpenSnapshot)
+
+    Do While Not rs.EOF
+        lineRemaining = _
+            CDbl(Nz(RecordsetValue( _
+                rs, _
+                "QuantityOrdered", _
+                0), 0)) - _
+            CDbl(Nz(RecordsetValue( _
+                rs, _
+                "QuantityShipped", _
+                0), 0))
+
+        If lineRemaining > 0 Then
+            totalRemaining = totalRemaining + lineRemaining
+        End If
+
+        rs.MoveNext
+    Loop
+
+    rs.close
+    Set rs = Nothing
+
+    If totalRemaining + QUANTITY_TOLERANCE < Quantity Then
+        Err.Raise _
+            vbObjectError + 8217, _
+            "ValidateLinkedSalesOrderShipment", _
+            "Linked Sales Order " & SalesOrderID & _
+            " does not have enough remaining quantity for this " & _
+            "project output item." & vbCrLf & vbCrLf & _
+            "Sales Order remaining: " & _
+                Format$(totalRemaining, "0.######") & vbCrLf & _
+            "Shipment quantity: " & _
+                Format$(Quantity, "0.######")
+    End If
+
+End Sub
+
+
+Private Sub ApplyShipmentToLinkedSalesOrder( _
+    ByVal db As DAO.Database, _
+    ByVal SalesOrderID As Long, _
+    ByVal ItemID As Long, _
+    ByVal Quantity As Double, _
+    ByVal MovementDate As Date _
+)
+
+    Dim rs As DAO.Recordset
+    Dim rsHeader As DAO.Recordset
+    Dim quantityToAllocate As Double
+    Dim lineOrdered As Double
+    Dim lineShipped As Double
+    Dim lineRemaining As Double
+    Dim allocatedQuantity As Double
+    Dim allLinesShipped As Boolean
+
+    quantityToAllocate = Quantity
+
+    Set rs = db.OpenRecordset( _
+        "SELECT * FROM T_SalesOrderLines " & _
+        "WHERE SalesOrderID=" & SalesOrderID & " " & _
+            "AND ItemID=" & ItemID & " " & _
+        "ORDER BY SalesOrderLineID;", _
+        dbOpenDynaset)
+
+    Do While Not rs.EOF And _
+             quantityToAllocate > QUANTITY_TOLERANCE
+
+        lineOrdered = CDbl(Nz(RecordsetValue( _
+            rs, _
+            "QuantityOrdered", _
+            0), 0))
+        lineShipped = CDbl(Nz(RecordsetValue( _
+            rs, _
+            "QuantityShipped", _
+            0), 0))
+        lineRemaining = lineOrdered - lineShipped
+
+        If lineRemaining > QUANTITY_TOLERANCE Then
+            If lineRemaining >= quantityToAllocate Then
+                allocatedQuantity = quantityToAllocate
+            Else
+                allocatedQuantity = lineRemaining
+            End If
+
+            rs.Edit
+            SetRecordsetFieldIfExists _
+                rs, _
+                "QuantityShipped", _
+                lineShipped + allocatedQuantity
+
+            If lineShipped + allocatedQuantity + _
+               QUANTITY_TOLERANCE >= lineOrdered Then
+
+                SetRecordsetFieldIfExists rs, "LineStatus", "Shipped"
+            Else
+                SetRecordsetFieldIfExists _
+                    rs, _
+                    "LineStatus", _
+                    "Partially Shipped"
+            End If
+
+            rs.Update
+            quantityToAllocate = _
+                quantityToAllocate - allocatedQuantity
+        End If
+
+        rs.MoveNext
+    Loop
+
+    rs.close
+    Set rs = Nothing
+
+    If quantityToAllocate > QUANTITY_TOLERANCE Then
+        Err.Raise _
+            vbObjectError + 8218, _
+            "ApplyShipmentToLinkedSalesOrder", _
+            "The linked Sales Order quantity changed before posting."
+    End If
+
+    allLinesShipped = SalesOrderAllLinesShipped(db, SalesOrderID)
+
+    Set rsHeader = db.OpenRecordset( _
+        "SELECT * FROM T_SalesOrders " & _
+        "WHERE SalesOrderID=" & SalesOrderID & ";", _
+        dbOpenDynaset)
+
+    If rsHeader.EOF Then
+        Err.Raise _
+            vbObjectError + 8219, _
+            "ApplyShipmentToLinkedSalesOrder", _
+            "The linked Sales Order no longer exists."
+    End If
+
+    rsHeader.Edit
+
+    If allLinesShipped Then
+        SetRecordsetFieldIfExists _
+            rsHeader, _
+            "SalesOrderStatus", _
+            "Shipped"
+        SetRecordsetFieldIfExists _
+            rsHeader, _
+            "ShipDate", _
+            DateValue(MovementDate)
+    Else
+        SetRecordsetFieldIfExists _
+            rsHeader, _
+            "SalesOrderStatus", _
+            "Partially Shipped"
+    End If
+
+    SetRecordsetFieldIfExists rsHeader, "UpdatedOn", Now()
+    rsHeader.Update
+
+    rsHeader.close
+    Set rsHeader = Nothing
+
+End Sub
+
+
+Private Function SalesOrderAllLinesShipped( _
+    ByVal db As DAO.Database, _
+    ByVal SalesOrderID As Long _
+) As Boolean
+
+    Dim rs As DAO.Recordset
+    Dim LineCount As Long
+    Dim OrderedQuantity As Double
+    Dim shippedQuantity As Double
+
+    SalesOrderAllLinesShipped = False
+
+    Set rs = db.OpenRecordset( _
+        "SELECT * FROM T_SalesOrderLines " & _
+        "WHERE SalesOrderID=" & SalesOrderID & ";", _
+        dbOpenSnapshot)
+
+    Do While Not rs.EOF
+        LineCount = LineCount + 1
+        OrderedQuantity = CDbl(Nz(RecordsetValue( _
+            rs, _
+            "QuantityOrdered", _
+            0), 0))
+        shippedQuantity = CDbl(Nz(RecordsetValue( _
+            rs, _
+            "QuantityShipped", _
+            0), 0))
+
+        If shippedQuantity + QUANTITY_TOLERANCE < _
+           OrderedQuantity Then
+
+            GoTo Exit_Handler
+        End If
+
+        rs.MoveNext
+    Loop
+
+    SalesOrderAllLinesShipped = (LineCount > 0)
+
+Exit_Handler:
+    On Error Resume Next
+    If Not (rs Is Nothing) Then rs.close
+    Set rs = Nothing
+    On Error GoTo 0
+
+End Function
+
+
+Private Sub UpdateProjectShipmentStatus( _
+    ByVal db As DAO.Database, _
+    ByVal quantityJustShipped As Double, _
+    ByVal MovementDate As Date _
+)
+
+    Dim rs As DAO.Recordset
+    Dim shippedAfterPosting As Double
+    Dim currentStatus As String
+
+    shippedAfterPosting = _
+        mProjectShippedQuantity + quantityJustShipped
+
+    Set rs = db.OpenRecordset( _
+        "SELECT * FROM T_Projects " & _
+        "WHERE ProjectID=" & mProjectID & ";", _
+        dbOpenDynaset)
+
+    If rs.EOF Then
+        Err.Raise _
+            vbObjectError + 8220, _
+            "UpdateProjectShipmentStatus", _
+            "The project could not be found while updating shipment status."
+    End If
+
+    currentStatus = UCase$(Trim$(Nz(rs!Status, vbNullString)))
+
+    If currentStatus <> "READY TO SHIP" Then
+        Err.Raise _
+            vbObjectError + 8221, _
+            "UpdateProjectShipmentStatus", _
+            "The project status changed before shipment posting."
+    End If
+
+    rs.Edit
+    SetRecordsetFieldIfExists _
+        rs, _
+        "QuantityShipped", _
+        shippedAfterPosting
+
+    If shippedAfterPosting + QUANTITY_TOLERANCE >= _
+       mProjectBuildQuantity Then
+
+        rs!Status = "Shipped"
+        SetRecordsetFieldIfExists rs, "ShippedDate", MovementDate
+    Else
+        rs!Status = "Ready to Ship"
+        SetRecordsetFieldIfExists rs, "ShippedDate", Null
+    End If
+
+    SetRecordsetFieldIfExists rs, "UpdatedOn", Now()
+    rs.Update
+
+    rs.close
+    Set rs = Nothing
+
+End Sub
+
+
+Private Sub ApplyProjectShipmentControlValues()
+
+    If Not mProjectShipmentMode Then
+        Exit Sub
+    End If
+
+    Me.cboItemID = mProjectOutputItemID
+    Me.cboItemID.Enabled = True
+    Me.cboItemID.Locked = True
+
+    Me.cboReason = REASON_PROJECT_SHIPMENT
+    Me.cboReason.Enabled = True
+    Me.cboReason.Locked = True
+
+    Me.cboProjectID = mProjectID
+    Me.cboProjectID.Enabled = True
+    Me.cboProjectID.Locked = True
+
+    Me.txtReferenceDocument = mProjectCode
+    Me.txtExpectedReturnDate = Null
+    Me.txtExpectedReturnDate.Enabled = False
+    Me.txtExpectedReturnDate.Locked = True
+
+    If ItemRequiresSerial(mProjectOutputItemID) Then
+        Me.txtQuantity = 1
+    Else
+        Me.txtQuantity = ProjectUnshippedQuantity()
+    End If
+
+End Sub
+
+
+Private Sub PrepareNextProjectShipment( _
+    ByVal RequiresSerial As Boolean _
+)
+
+    Dim remainingQuantity As Double
+
+    remainingQuantity = ProjectUnshippedQuantity()
+    Me.txtNOtes = Null
+
+    If remainingQuantity <= QUANTITY_TOLERANCE Then
+        Me.cmdPostStockOut.Enabled = False
+        Exit Sub
+    End If
+
+    If RequiresSerial Then
+        Me.cboItemInstanceID = Null
+        Me.txtQuantity = 1
+        PopulateSerialNumberCombo mProjectOutputItemID
+        Me.cboItemInstanceID.SetFocus
+    Else
+        Me.txtQuantity = remainingQuantity
+        Me.txtQuantity.SetFocus
+    End If
+
+End Sub
+
+
+Private Sub RefreshProjectFormIfOpen()
+
+    On Error Resume Next
+
+    If (SysCmd( _
+        acSysCmdGetObjectState, _
+        acForm, _
+        PROJECT_FORM) And acObjStateOpen) <> 0 Then
+
+        Forms(PROJECT_FORM).Refresh
+        Forms(PROJECT_FORM).Recalc
+    End If
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub EnsureValueListItem( _
+    ByVal comboControl As Access.ComboBox, _
+    ByVal listValue As String _
+)
+
+    Dim entries() As String
+    Dim entry As Variant
+    Dim currentRowSource As String
+
+    If StrComp( _
+        comboControl.RowSourceType, _
+        "Value List", _
+        vbTextCompare) <> 0 Then
+
+        comboControl.LimitToList = False
+        Exit Sub
+    End If
+
+    currentRowSource = Nz(comboControl.RowSource, vbNullString)
+    entries = Split(currentRowSource, ";")
+
+    For Each entry In entries
+        If StrComp( _
+            Trim$(CStr(entry)), _
+            listValue, _
+            vbTextCompare) = 0 Then
+
+            Exit Sub
+        End If
+    Next entry
+
+    If Len(Trim$(currentRowSource)) > 0 Then
+        currentRowSource = currentRowSource & ";"
+    End If
+
+    comboControl.RowSource = currentRowSource & listValue
+
+End Sub
+
+
+Private Function TableHasField( _
+    ByVal db As DAO.Database, _
+    ByVal tableName As String, _
+    ByVal fieldName As String _
+) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim fieldObject As DAO.Field
+
+    Set fieldObject = _
+        db.TableDefs(tableName).Fields(fieldName)
+    TableHasField = True
+
+Exit_Handler:
+    Set fieldObject = Nothing
+    Exit Function
+
+Err_Handler:
+    TableHasField = False
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function RecordsetHasField( _
+    ByVal rs As DAO.Recordset, _
+    ByVal fieldName As String _
+) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim testName As String
+
+    testName = rs.Fields(fieldName).Name
+    RecordsetHasField = True
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    RecordsetHasField = False
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function RecordsetValue( _
+    ByVal rs As DAO.Recordset, _
+    ByVal fieldName As String, _
+    ByVal defaultValue As Variant _
+) As Variant
+
+    If RecordsetHasField(rs, fieldName) Then
+        If IsNull(rs.Fields(fieldName).value) Then
+            RecordsetValue = defaultValue
+        Else
+            RecordsetValue = rs.Fields(fieldName).value
+        End If
+    Else
+        RecordsetValue = defaultValue
+    End If
+
+End Function
+
+
+Private Sub SetRecordsetFieldIfExists( _
+    ByVal rs As DAO.Recordset, _
+    ByVal fieldName As String, _
+    ByVal fieldValue As Variant _
+)
+
+    If RecordsetHasField(rs, fieldName) Then
+        rs.Fields(fieldName).value = fieldValue
+    End If
+
+End Sub
+
+
+Private Function NullIfZero(ByVal numberValue As Long) As Variant
+
+    If numberValue > 0 Then
+        NullIfZero = numberValue
+    Else
+        NullIfZero = Null
+    End If
+
+End Function
+
+
+'=============================================================
+' PREPARE NEXT ENTRY
+'=============================================================
+Private Sub PrepareNextEntry( _
+    ByVal RequiresSerial As Boolean _
+)
+
+    Me.txtReferenceDocument = Null
+    Me.txtIssuedTo = Null
+    Me.txtNOtes = Null
+    Me.txtExpectedReturnDate = Null
+
+    ConfigureExpectedReturnControl
+
+    If RequiresSerial Then
+
+        Me.cboItemInstanceID = Null
+        Me.txtQuantity = 1
+
+        PopulateSerialNumberCombo CLng(Me.cboItemID)
+
+        Me.cboItemInstanceID.SetFocus
+
+    Else
+
+        Me.txtQuantity = Null
+        Me.txtQuantity.SetFocus
+
+    End If
+
+End Sub
+
+
+'=============================================================
+' RESET FORM
+'=============================================================
+Private Sub ResetForm()
+
+    mProjectShipmentMode = False
+    mProjectID = 0
+    mProjectOutputItemID = 0
+    mProjectOutputLocationID = 0
+    mProjectCustomerID = 0
+    mProjectAssemblyTemplateID = 0
+    mProjectSalesOrderID = 0
+    mProjectBuildQuantity = 0
+    mProjectReceivedQuantity = 0
+    mProjectShippedQuantity = 0
+    mProjectCode = vbNullString
+
+    Me.Caption = "Stock Out"
+    Me.cboItemID.Enabled = True
+    Me.cboItemID.Locked = False
+    Me.cboReason.Enabled = True
+    Me.cboReason.Locked = False
+    Me.cboProjectID.Locked = False
+
+    On Error Resume Next
+    Me.cmdPostStockOut.Enabled = True
+    On Error GoTo 0
+
+    Me.cboItemID = Null
+    Me.chkRequiresSerial = False
+
+    Me.txtAvailableQuantity = Null
+    Me.txtCurrentLocation = Null
+    Me.txtShelfLocation = Null
+    Me.txtFromLocationID = Null
+
+    Me.cboItemInstanceID = Null
+    Me.cboItemInstanceID.RowSource = vbNullString
+    Me.cboItemInstanceID.Enabled = False
+    Me.cboItemInstanceID.Locked = True
+
+    Me.txtQuantity = Null
+    Me.txtQuantity.Locked = False
+
+    Me.txtMovementDate = Now()
+    Me.cboReason = "Issue to Project"
+
+    Me.cboProjectID = Null
+
+    Me.txtReferenceDocument = Null
+    Me.cboPerformedByUserID = Null
+    Me.txtIssuedTo = Null
+    Me.txtNOtes = Null
+    Me.txtExpectedReturnDate = Null
+
+    ConfigureProjectControl
+    ConfigureExpectedReturnControl
+
+    On Error Resume Next
+    Me.cboItemID.SetFocus
+    On Error GoTo 0
+
+End Sub
+
+
+'=============================================================
+' RESET ITEM DISPLAY
+'=============================================================
+Private Sub ResetItemStatusDisplay()
+
+    Me.chkRequiresSerial = False
+
+    Me.txtAvailableQuantity = Null
+    Me.txtCurrentLocation = Null
+    Me.txtShelfLocation = Null
+    Me.txtFromLocationID = Null
+
+    Me.cboItemInstanceID = Null
+    Me.cboItemInstanceID.RowSource = vbNullString
+    Me.cboItemInstanceID.Enabled = False
+    Me.cboItemInstanceID.Locked = True
+
+    Me.txtQuantity = Null
+    Me.txtQuantity.Locked = False
+
+End Sub
+
+
+'=============================================================
+' REQUERY RECENT TRANSACTIONS
+'=============================================================
+Private Sub RequeryRecentSubform()
+
+    On Error Resume Next
+
+    Me.Controls(RECENT_SUBFORM_CONTROL).Form.Requery
+
+    On Error GoTo 0
+
+End Sub
+
+
+'=============================================================
+' ITEM SERIAL RULE
+'=============================================================
+Private Function ItemRequiresSerial( _
+    ByVal ItemID As Long _
+) As Boolean
+
+    Dim db As DAO.Database
+    Dim rs As DAO.Recordset
+
+    Set db = CurrentDb
+
+    Set rs = db.OpenRecordset( _
+        "SELECT RequiresSerial " & _
+        "FROM T_Items " & _
+        "WHERE ItemID=" & ItemID & ";", _
+        dbOpenSnapshot)
+
+    If rs.EOF Then
+
+        rs.close
+        Set rs = Nothing
+        Set db = Nothing
+
+        Err.Raise _
+            vbObjectError + 2301, _
+            "ItemRequiresSerial", _
+            "The selected item could not be found."
+
+    End If
+
+    ItemRequiresSerial = Nz(rs!RequiresSerial, False)
+
+    rs.close
+    Set rs = Nothing
+    Set db = Nothing
+
+End Function
+
+
+'=============================================================
+' STATUS AFTER SERIALIZED ISSUE
+'=============================================================
+Private Function GetIssuedInstanceStatus( _
+    ByVal Reason As String _
+) As String
+
+    Select Case UCase$(Trim$(Reason))
+
+        Case "ISSUE TO PROJECT", "PROJECT ISSUE", "PROJECT TOOL ISSUE", "ISSUED TO PROJECT", "TOOL ISSUE"
+            GetIssuedInstanceStatus = "Issued"
+
+        Case "SALE", "PROJECT SHIPMENT"
+            GetIssuedInstanceStatus = "Sold"
+
+        Case "SUPPLIER RETURN"
+            GetIssuedInstanceStatus = "Returned to Supplier"
+
+        Case "DAMAGE WRITE-OFF"
+            GetIssuedInstanceStatus = "Written Off"
+
+        Case "NEGATIVE ADJUSTMENT"
+            GetIssuedInstanceStatus = "Removed from Stock"
+
+        Case Else
+            GetIssuedInstanceStatus = "Issued"
+
+    End Select
+
+End Function
+
+
+'=============================================================
+' BUILD MOVEMENT NOTES
+'=============================================================
+Private Function BuildMovementNotes( _
+    ByVal issuedTo As String, _
+    ByVal userNotes As String _
+) As String
+
+    Dim result As String
+
+    result = vbNullString
+
+    If Len(issuedTo) > 0 Then
+        result = "Issued To / Recipient: " & issuedTo
+    End If
+
+    If Len(userNotes) > 0 Then
+
+        If Len(result) > 0 Then
+            result = result & vbCrLf
+        End If
+
+        result = result & userNotes
+
+    End If
+
+    BuildMovementNotes = result
+
+End Function
+
+
+'=============================================================
+' APPEND NOTE
+'=============================================================
+Private Function AppendNote( _
+    ByVal existingText As String, _
+    ByVal newText As String _
+) As String
+
+    If Len(Trim$(existingText)) = 0 Then
+
+        AppendNote = newText
+
+    ElseIf Len(Trim$(newText)) = 0 Then
+
+        AppendNote = existingText
+
+    Else
+
+        AppendNote = _
+            existingText & _
+            vbCrLf & _
+            String$(40, "-") & _
+            vbCrLf & _
+            newText
+
+    End If
+
+End Function
+
+
+'=============================================================
+' RETURN WAREHOUSE NAME
+'=============================================================
+Private Function GetWarehouseName( _
+    ByVal LocationID As Long _
+) As String
+
+    GetWarehouseName = Nz( _
+        DLookup( _
+            "WarehouseName", _
+            "T_Warehouses", _
+            "WarehouseID = " & _
+                Nz( _
+                    DLookup( _
+                        "WarehouseID", _
+                        "T_Locations", _
+                        "LocationID = " & LocationID _
+                    ), _
+                    0 _
+                ) _
+        ), _
+        "Warehouse not found" _
+    )
+
+End Function
+
+
+'=============================================================
+' RETURN SHELF / BIN DESCRIPTION
+'=============================================================
+Private Function GetShelfLocationDescription( _
+    ByVal LocationID As Long _
+) As String
+
+    Dim db As DAO.Database
+    Dim rs As DAO.Recordset
+    Dim result As String
+
+    Set db = CurrentDb
+
+    Set rs = db.OpenRecordset( _
+        "SELECT " & _
+            "LocationName, " & _
+            "BinNumber, " & _
+            "ShelfNumber " & _
+        "FROM T_Locations " & _
+        "WHERE LocationID = " & LocationID & ";", _
+        dbOpenSnapshot _
+    )
+
+    If rs.EOF Then
+
+        result = "Shelf location not found"
+
+    Else
+
+        result = Nz(rs!LocationName, vbNullString)
+
+        If Len(Trim$(Nz(rs!BinNumber, vbNullString))) > 0 Then
+
+            If Len(result) > 0 Then
+                result = result & " | "
+            End If
+
+            result = result & "Bin: " & rs!BinNumber
+
+        End If
+
+        If Len(Trim$(Nz(rs!ShelfNumber, vbNullString))) > 0 Then
+
+            If Len(result) > 0 Then
+                result = result & " | "
+            End If
+
+            result = result & "Shelf: " & rs!ShelfNumber
+
+        End If
+
+        If Len(Trim$(result)) = 0 Then
+            result = "Shelf location not recorded"
+        End If
+
+    End If
+
+    rs.close
+    Set rs = Nothing
+    Set db = Nothing
+
+    GetShelfLocationDescription = result
+
+End Function
+
+
+'=============================================================
+' ESCAPE TEXT FOR SQL
+'=============================================================
+Private Function SqlText( _
+    ByVal value As String _
+) As String
+
+    SqlText = "'" & Replace(value, "'", "''") & "'"
+
+End Function

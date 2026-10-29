@@ -1,0 +1,8 @@
+﻿dbMemo "SQL" ="SELECT A.AttendanceID, A.WorkDate, S.StaffName, A.TimeIn, A.TimeOut, A.Notes\015"
+    "\012FROM T_Attendance AS A LEFT JOIN T_Staff AS S ON A.StaffID = S.StaffID\015\012"
+    "ORDER BY A.WorkDate DESC;\015\012"
+dbMemo "Connect" =""
+dbBoolean "ReturnsRecords" ="-1"
+dbInteger "ODBCTimeout" ="60"
+Begin
+End

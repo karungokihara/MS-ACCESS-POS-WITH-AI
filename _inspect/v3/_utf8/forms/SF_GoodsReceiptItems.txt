@@ -1,0 +1,2065 @@
+﻿Version =21
+VersionRequired =20
+PublishOption =1
+Checksum =-1564276269
+Begin Form
+    AutoCenter = NotDefault
+    NavigationButtons = NotDefault
+    DividingLines = NotDefault
+    AllowDesignChanges = NotDefault
+    DefaultView =2
+    ViewsAllowed =2
+    PictureAlignment =2
+    DatasheetGridlinesBehavior =3
+    GridX =24
+    GridY =24
+    Width =10206
+    DatasheetFontHeight =11
+    ItemSuffix =47
+    Right =15090
+    Bottom =4695
+    DatasheetGridlinesColor =15263976
+    AfterDelConfirm ="[Event Procedure]"
+    RecSrcDt = Begin
+        0x52a6f9fa6e92e640
+    End
+    GUID = Begin
+        0x0c531b56ddba35419859b4c5793a49f7
+    End
+    RecordSource ="T_GoodsReceiptItems"
+    Caption ="SF_GoodsReceiptItems"
+    OnCurrent ="[Event Procedure]"
+    BeforeInsert ="[Event Procedure]"
+    OnDelete ="[Event Procedure]"
+    BeforeUpdate ="[Event Procedure]"
+    AfterUpdate ="[Event Procedure]"
+    DatasheetFontName ="Aptos"
+    PrtMip = Begin
+        0x6801000068010000680100006801000000000000201c0000e010000001000000 ,
+        0x010000006801000000000000a10700000100000001000000
+    End
+    PrtDevMode = Begin
+        0x0000000000000000308490d58b0200000000000000000000e70a7e35f77f0000 ,
+        0x010403069c004003032d000001000100ea0a6f08640001000f00580202000100 ,
+        0x5802030001004c657474657200000000030000000000c8420000c842e8e8e800 ,
+        0xf0d1fbe18b020000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000ffffffff4749533400000000000000000000000044494e55 ,
+        0x2200c80024031c00ac13d8c00000000000000000000000000000000000000000 ,
+        0x0000000000000000050000000000070000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000100000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000c8000000534d544a ,
+        0x000000001000b8007b00330045004500330039003100310034002d0033003000 ,
+        0x420034002d0034003500610034002d0041003100300039002d00310039004400 ,
+        0x3400410034003000460043004300320032007d000000524553444c4c00556e69 ,
+        0x726573444c4c00506170657253697a65004c4554544552004f7269656e746174 ,
+        0x696f6e00504f525452414954005265736f6c7574696f6e004450493630300043 ,
+        0x6f6c6f724d6f6465003234627070000000000000000000000000000000000000 ,
+        0x1c0000005634444d0100000000000000000000000000000000000000
+    End
+    PrtDevNames = Begin
+        0x08002c003f000100000000000000000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000000000000000006e ,
+        0x756c3a0000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000
+    End
+    OnLoad ="[Event Procedure]"
+    OnError ="[Event Procedure]"
+    AllowFormView =0
+    FilterOnLoad =0
+    ShowPageMargins =0
+    DisplayOnSharePointSite =1
+    DatasheetAlternateBackColor =15921906
+    DatasheetGridlinesColor12 =0
+    FitToScreen =1
+    DatasheetBackThemeColorIndex =1
+    BorderThemeColorIndex =3
+    ThemeFontIndex =1
+    ForeThemeColorIndex =0
+    AlternateBackThemeColorIndex =1
+    AlternateBackShade =95.0
+    PrtDevModeW = Begin
+        0x000055c78b020000b88a2636f77f0000704adc35f77f00000900000000000000 ,
+        0x08000000000000005fed3db5f97f000050000000000000004000000000000000 ,
+        0x01040306dc004003032d000001000100ea0a6f08640001000f00580202000100 ,
+        0x5802030001004c0065007400740065007200000000000000b0dcd5e28b020000 ,
+        0x00000000000000000000000000000000a0dcd5e28b02000044000000f1000000 ,
+        0x4400000000000000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000ffffffff4749533400000000000000000000000044494e55 ,
+        0x2200c80024031c00ac13d8c00000000000000000000000000000000000000000 ,
+        0x0000000000000000050000000000070000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000100000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000c8000000534d544a ,
+        0x000000001000b8007b00330045004500330039003100310034002d0033003000 ,
+        0x420034002d0034003500610034002d0041003100300039002d00310039004400 ,
+        0x3400410034003000460043004300320032007d000000524553444c4c00556e69 ,
+        0x726573444c4c00506170657253697a65004c4554544552004f7269656e746174 ,
+        0x696f6e00504f525452414954005265736f6c7574696f6e004450493630300043 ,
+        0x6f6c6f724d6f6465003234627070000000000000000000000000000000000000 ,
+        0x1c0000005634444d0100000000000000000000000000000000000000
+    End
+    PrtDevNamesW = Begin
+        0x040028003b000100000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000006e0075006c003a000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000
+    End
+    NoSaveCTIWhenDisabled =1
+    Begin
+        Begin Label
+            BackStyle =0
+            FontSize =11
+            BorderColor =8355711
+            ForeColor =6710886
+            FontName ="Aptos"
+            GridlineColor =10921638
+            ThemeFontIndex =1
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =0
+            BorderTint =50.0
+            ForeThemeColorIndex =0
+            ForeTint =60.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin TextBox
+            AddColon = NotDefault
+            FELineBreak = NotDefault
+            BorderLineStyle =0
+            LabelX =-1800
+            FontSize =11
+            BorderColor =10921638
+            ForeColor =4210752
+            FontName ="Aptos"
+            AsianLineBreak =1
+            GridlineColor =10921638
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            ThemeFontIndex =1
+            ForeThemeColorIndex =0
+            ForeTint =75.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin ComboBox
+            AddColon = NotDefault
+            BorderLineStyle =0
+            LabelX =-1800
+            FontSize =11
+            BorderColor =10921638
+            ForeColor =2102279
+            FontName ="Aptos"
+            GridlineColor =10921638
+            AllowValueListEdits =1
+            InheritValueList =1
+            ThemeFontIndex =1
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            ForeThemeColorIndex =2
+            ForeShade =50.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin FormHeader
+            Height =1080
+            BackColor =14482166
+            Name ="FormHeader"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x80e9234888ebf5409b365b75882c2ca6
+            End
+            AutoHeight =1
+            AlternateBackShade =95.0
+            BackTint =20.0
+            Begin
+                Begin Label
+                    OverlapFlags =85
+                    Left =60
+                    Top =60
+                    Width =4939
+                    Height =1020
+                    FontSize =20
+                    Name ="Label32"
+                    Caption ="SF_GoodsReceiptItems"
+                    GUID = Begin
+                        0x745cf1ffbb641a4c85bedf3317fec642
+                    End
+                    LayoutCachedLeft =60
+                    LayoutCachedTop =60
+                    LayoutCachedWidth =4999
+                    LayoutCachedHeight =1080
+                    ForeThemeColorIndex =-1
+                End
+            End
+        End
+        Begin Section
+            Height =10320
+            BackColor =14482166
+            Name ="Detail"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x3fccd717391b0b489a5a1a034e42c88d
+            End
+            AlternateBackColor =14482166
+            AlternateBackShade =95.0
+            Begin
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =8718
+                    Top =660
+                    Height =300
+                    ColumnWidth =1440
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtGoodsReceiptItemID"
+                    ControlSource ="GoodsReceiptItemID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x2184be2471471043ad18ad52fc8043af
+                    End
+
+                    LayoutCachedLeft =8718
+                    LayoutCachedTop =660
+                    LayoutCachedWidth =10158
+                    LayoutCachedHeight =960
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =6180
+                            Top =660
+                            Width =2448
+                            Height =324
+                            Name ="GoodsReceiptItemID_Label"
+                            Caption ="GoodsReceiptItemID"
+                            GUID = Begin
+                                0xd9948e9973acf84fa2f964ce58667134
+                            End
+                            LayoutCachedLeft =6180
+                            LayoutCachedTop =660
+                            LayoutCachedWidth =8628
+                            LayoutCachedHeight =984
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =2718
+                    Top =300
+                    Width =1488
+                    Height =324
+                    ColumnWidth =1488
+                    TabIndex =1
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtGoodsReceiptID"
+                    ControlSource ="GoodsReceiptID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x516c7bd3ae99bc4fad3452707de906fd
+                    End
+
+                    LayoutCachedLeft =2718
+                    LayoutCachedTop =300
+                    LayoutCachedWidth =4206
+                    LayoutCachedHeight =624
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =180
+                            Top =300
+                            Width =2448
+                            Height =324
+                            Name ="GoodsReceiptID_Label"
+                            Caption ="GoodsReceiptID"
+                            GUID = Begin
+                                0xbbf03283841c81499039224142e7f2e6
+                            End
+                            LayoutCachedLeft =180
+                            LayoutCachedTop =300
+                            LayoutCachedWidth =2628
+                            LayoutCachedHeight =624
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =2874
+                    Top =1200
+                    Width =2220
+                    Height =324
+                    ColumnWidth =1488
+                    TabIndex =3
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtPurchaseOrderItemID"
+                    ControlSource ="PurchaseOrderItemID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x35ccfff8f2d13f4e86025818a4b5e4cd
+                    End
+
+                    LayoutCachedLeft =2874
+                    LayoutCachedTop =1200
+                    LayoutCachedWidth =5094
+                    LayoutCachedHeight =1524
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =1200
+                            Width =2448
+                            Height =324
+                            Name ="PurchaseOrderItemID_Label"
+                            Caption ="PurchaseOrderItemID"
+                            GUID = Begin
+                                0x5baa862b31bb1149be79ba31fccb28c1
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =1200
+                            LayoutCachedWidth =2808
+                            LayoutCachedHeight =1524
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =2874
+                    Top =1620
+                    Width =2220
+                    Height =324
+                    ColumnWidth =3000
+                    TabIndex =4
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtQuantityReceived"
+                    ControlSource ="QuantityReceived"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xc6120b0ef2cee141b332694cfc5e81a3
+                    End
+
+                    LayoutCachedLeft =2874
+                    LayoutCachedTop =1620
+                    LayoutCachedWidth =5094
+                    LayoutCachedHeight =1944
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =1620
+                            Width =2448
+                            Height =324
+                            Name ="QuantityReceived_Label"
+                            Caption ="QuantityReceived"
+                            GUID = Begin
+                                0x295d0f36be4e59459a596118917600a4
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =1620
+                            LayoutCachedWidth =2808
+                            LayoutCachedHeight =1944
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =2874
+                    Top =3300
+                    Width =2220
+                    Height =360
+                    ColumnWidth =3000
+                    TabIndex =8
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtBatchNumber"
+                    ControlSource ="BatchNumber"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x08e23b50f0b7d94ca55a7106ab0ef422
+                    End
+
+                    LayoutCachedLeft =2874
+                    LayoutCachedTop =3300
+                    LayoutCachedWidth =5094
+                    LayoutCachedHeight =3660
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =3300
+                            Width =2448
+                            Height =324
+                            Name ="BatchNumber_Label"
+                            Caption ="BatchNumber"
+                            GUID = Begin
+                                0x560cbd72c8d94640b8b6a74c226417d9
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =3300
+                            LayoutCachedWidth =2808
+                            LayoutCachedHeight =3624
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =2874
+                    Top =2460
+                    Width =2220
+                    Height =324
+                    ColumnWidth =3000
+                    TabIndex =6
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtUnitCost"
+                    ControlSource ="UnitCost"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xd8f3f812aebe8142a761c5b9d4ed44f0
+                    End
+
+                    LayoutCachedLeft =2874
+                    LayoutCachedTop =2460
+                    LayoutCachedWidth =5094
+                    LayoutCachedHeight =2784
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =2460
+                            Width =2448
+                            Height =324
+                            Name ="UnitCost_Label"
+                            Caption ="UnitCost"
+                            GUID = Begin
+                                0x4c41d37832990c4bbdc54625c47a9e6b
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =2460
+                            LayoutCachedWidth =2808
+                            LayoutCachedHeight =2784
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =2898
+                    Top =4440
+                    Width =4776
+                    Height =1152
+                    ColumnWidth =3000
+                    TabIndex =10
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtNotes"
+                    ControlSource ="Notes"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x6763efcc5533ff418ac4e884b29f5862
+                    End
+
+                    LayoutCachedLeft =2898
+                    LayoutCachedTop =4440
+                    LayoutCachedWidth =7674
+                    LayoutCachedHeight =5592
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =4440
+                            Width =2448
+                            Height =324
+                            Name ="Notes_Label"
+                            Caption ="Notes"
+                            GUID = Begin
+                                0xee789121eb8c604180908ae1ef42c210
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =4440
+                            LayoutCachedWidth =2808
+                            LayoutCachedHeight =4764
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    Visible = NotDefault
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =8298
+                    Top =180
+                    Width =1488
+                    Height =324
+                    ColumnWidth =1488
+                    TabIndex =11
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtSupplierPOLineID"
+                    ControlSource ="SupplierPOLineID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x39de76adccd6974cbbb16f96c82e0d27
+                    End
+
+                    LayoutCachedLeft =8298
+                    LayoutCachedTop =180
+                    LayoutCachedWidth =9786
+                    LayoutCachedHeight =504
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =6840
+                            Top =180
+                            Width =1368
+                            Height =324
+                            Name ="SupplierPOLineID_Label"
+                            Caption ="SupplierPOLineID"
+                            GUID = Begin
+                                0x34d1fb223f2d6845af1bc144bf151393
+                            End
+                            LayoutCachedLeft =6840
+                            LayoutCachedTop =180
+                            LayoutCachedWidth =8208
+                            LayoutCachedHeight =504
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =2874
+                    Top =3780
+                    Width =2220
+                    Height =300
+                    ColumnWidth =3000
+                    TabIndex =9
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtSerialNumber"
+                    ControlSource ="SerialNumber"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x7412a4e1e500e64095256075e095a2bf
+                    End
+
+                    LayoutCachedLeft =2874
+                    LayoutCachedTop =3780
+                    LayoutCachedWidth =5094
+                    LayoutCachedHeight =4080
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =3780
+                            Width =2448
+                            Height =324
+                            Name ="SerialNumber_Label"
+                            Caption ="SerialNumber"
+                            GUID = Begin
+                                0xf1786b96e38ef344b46549f5b34ed7a8
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =3780
+                            LayoutCachedWidth =2808
+                            LayoutCachedHeight =4104
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =8118
+                    Top =7020
+                    Width =1488
+                    Height =324
+                    ColumnWidth =1488
+                    TabIndex =12
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtItemInstanceID"
+                    ControlSource ="ItemInstanceID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x10c7864d46eb7d42a26755d0e29ffc39
+                    End
+
+                    LayoutCachedLeft =8118
+                    LayoutCachedTop =7020
+                    LayoutCachedWidth =9606
+                    LayoutCachedHeight =7344
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =5580
+                            Top =7020
+                            Width =2448
+                            Height =324
+                            Name ="ItemInstanceID_Label"
+                            Caption ="ItemInstanceID"
+                            GUID = Begin
+                                0xfe9a5d88ecc14c4f81aed086e2df80ca
+                            End
+                            LayoutCachedLeft =5580
+                            LayoutCachedTop =7020
+                            LayoutCachedWidth =8028
+                            LayoutCachedHeight =7344
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =8118
+                    Top =7440
+                    Width =1488
+                    Height =324
+                    ColumnWidth =1488
+                    TabIndex =13
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtStockMovementID"
+                    ControlSource ="StockMovementID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x16b37a31f8458d4ba641db763fa33683
+                    End
+
+                    LayoutCachedLeft =8118
+                    LayoutCachedTop =7440
+                    LayoutCachedWidth =9606
+                    LayoutCachedHeight =7764
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =5580
+                            Top =7440
+                            Width =2448
+                            Height =324
+                            Name ="StockMovementID_Label"
+                            Caption ="StockMovementID"
+                            GUID = Begin
+                                0x6ad636cf8dc63a49a1bf337be60796ba
+                            End
+                            LayoutCachedLeft =5580
+                            LayoutCachedTop =7440
+                            LayoutCachedWidth =8028
+                            LayoutCachedHeight =7764
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =8118
+                    Top =7860
+                    Width =1608
+                    Height =324
+                    ColumnWidth =1608
+                    TabIndex =14
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtCreatedOn"
+                    ControlSource ="CreatedOn"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x8f8339a2f3c9bc4b9858af3ef1259037
+                    End
+
+                    LayoutCachedLeft =8118
+                    LayoutCachedTop =7860
+                    LayoutCachedWidth =9726
+                    LayoutCachedHeight =8184
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =5580
+                            Top =7860
+                            Width =2448
+                            Height =324
+                            Name ="CreatedOn_Label"
+                            Caption ="CreatedOn"
+                            GUID = Begin
+                                0xf0371a292e580d4bb93274aa2e950161
+                            End
+                            LayoutCachedLeft =5580
+                            LayoutCachedTop =7860
+                            LayoutCachedWidth =8028
+                            LayoutCachedHeight =8184
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =8118
+                    Top =8280
+                    Width =1608
+                    Height =324
+                    ColumnWidth =1608
+                    TabIndex =15
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtUpdatedOn"
+                    ControlSource ="UpdatedOn"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xdcf33f0e280764448876b14f08dddb8c
+                    End
+
+                    LayoutCachedLeft =8118
+                    LayoutCachedTop =8280
+                    LayoutCachedWidth =9726
+                    LayoutCachedHeight =8604
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =5580
+                            Top =8280
+                            Width =2448
+                            Height =324
+                            Name ="UpdatedOn_Label"
+                            Caption ="UpdatedOn"
+                            GUID = Begin
+                                0xa21c3ea9c1f4774cb73d4253a2fb97c2
+                            End
+                            LayoutCachedLeft =5580
+                            LayoutCachedTop =8280
+                            LayoutCachedWidth =8028
+                            LayoutCachedHeight =8604
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin ComboBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =2880
+                    Top =2040
+                    Width =2220
+                    Height =300
+                    TabIndex =5
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    GUID = Begin
+                        0x9ad5e1c2fc9c294fae470efec0cec39a
+                    End
+                    Name ="cboUnitID"
+                    ControlSource ="UnitID"
+                    RowSourceType ="Table/Query"
+                    FontName ="Segoe UI"
+
+                    LayoutCachedLeft =2880
+                    LayoutCachedTop =2040
+                    LayoutCachedWidth =5100
+                    LayoutCachedHeight =2340
+                    ThemeFontIndex =-1
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =1080
+                            Top =2040
+                            Width =984
+                            Height =300
+                            Name ="Label34"
+                            Caption ="Unit"
+                            GUID = Begin
+                                0xb9196ee24a419640948fca00fd4eb57c
+                            End
+                            LayoutCachedLeft =1080
+                            LayoutCachedTop =2040
+                            LayoutCachedWidth =2064
+                            LayoutCachedHeight =2340
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin ComboBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =2880
+                    Top =780
+                    Width =2220
+                    Height =300
+                    TabIndex =2
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    GUID = Begin
+                        0x2d6157316d8be14dbd5980ad6631825e
+                    End
+                    Name ="cboItemID"
+                    ControlSource ="ItemID"
+                    RowSourceType ="Table/Query"
+                    FontName ="Segoe UI"
+
+                    LayoutCachedLeft =2880
+                    LayoutCachedTop =780
+                    LayoutCachedWidth =5100
+                    LayoutCachedHeight =1080
+                    ThemeFontIndex =-1
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =1080
+                            Top =780
+                            Width =984
+                            Height =300
+                            Name ="Label36"
+                            Caption ="Unit"
+                            GUID = Begin
+                                0xbd32b25f04fd67458c8bed4ad7380db7
+                            End
+                            LayoutCachedLeft =1080
+                            LayoutCachedTop =780
+                            LayoutCachedWidth =2064
+                            LayoutCachedHeight =1080
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin ComboBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =2880
+                    Top =2880
+                    Width =2220
+                    Height =300
+                    TabIndex =7
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    GUID = Begin
+                        0x3620d24813d340439ac2e309cf9d43e6
+                    End
+                    Name ="cboLocationID"
+                    ControlSource ="LocationID"
+                    RowSourceType ="Table/Query"
+                    FontName ="Segoe UI"
+
+                    LayoutCachedLeft =2880
+                    LayoutCachedTop =2880
+                    LayoutCachedWidth =5100
+                    LayoutCachedHeight =3180
+                    ThemeFontIndex =-1
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =1080
+                            Top =2880
+                            Width =984
+                            Height =300
+                            Name ="Label38"
+                            Caption ="Location"
+                            GUID = Begin
+                                0xbd66cf12831ce440abb09a008e3c79d0
+                            End
+                            LayoutCachedLeft =1080
+                            LayoutCachedTop =2880
+                            LayoutCachedWidth =2064
+                            LayoutCachedHeight =3180
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =2958
+                    Top =5760
+                    Width =1488
+                    Height =324
+                    TabIndex =16
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtOrderedQuantity"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x6edafbf127754a4283f084681831a58d
+                    End
+
+                    LayoutCachedLeft =2958
+                    LayoutCachedTop =5760
+                    LayoutCachedWidth =4446
+                    LayoutCachedHeight =6084
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =420
+                            Top =5760
+                            Width =2448
+                            Height =324
+                            Name ="Label40"
+                            Caption =" Ordered Quantity"
+                            GUID = Begin
+                                0x93afa8f5a9c1c147bf8899231ac577de
+                            End
+                            LayoutCachedLeft =420
+                            LayoutCachedTop =5760
+                            LayoutCachedWidth =2868
+                            LayoutCachedHeight =6084
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =2958
+                    Top =6180
+                    Width =1488
+                    Height =324
+                    TabIndex =17
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtPreviouslyReceived"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x398124e5b66ea44daa4b868758f3809f
+                    End
+
+                    LayoutCachedLeft =2958
+                    LayoutCachedTop =6180
+                    LayoutCachedWidth =4446
+                    LayoutCachedHeight =6504
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =420
+                            Top =6180
+                            Width =2448
+                            Height =324
+                            Name ="Label42"
+                            Caption ="Previously Received"
+                            GUID = Begin
+                                0xb33ac22ae383e4458f4ffd9711c20236
+                            End
+                            LayoutCachedLeft =420
+                            LayoutCachedTop =6180
+                            LayoutCachedWidth =2868
+                            LayoutCachedHeight =6504
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =2958
+                    Top =6600
+                    Width =1608
+                    Height =324
+                    TabIndex =18
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtRemainingBefore"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xbfd86d49ae441d4a865853f07f4e11ea
+                    End
+
+                    LayoutCachedLeft =2958
+                    LayoutCachedTop =6600
+                    LayoutCachedWidth =4566
+                    LayoutCachedHeight =6924
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =420
+                            Top =6600
+                            Width =2448
+                            Height =324
+                            Name ="Label44"
+                            Caption ="Remaining Before"
+                            GUID = Begin
+                                0x05526223e2e1c84e8b17f292310580ab
+                            End
+                            LayoutCachedLeft =420
+                            LayoutCachedTop =6600
+                            LayoutCachedWidth =2868
+                            LayoutCachedHeight =6924
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =2958
+                    Top =7020
+                    Width =1608
+                    Height =324
+                    TabIndex =19
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtRemainingAfter"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xc7b7d42ccb61d3418ce5e97b29dd77f9
+                    End
+
+                    LayoutCachedLeft =2958
+                    LayoutCachedTop =7020
+                    LayoutCachedWidth =4566
+                    LayoutCachedHeight =7344
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =420
+                            Top =7020
+                            Width =2448
+                            Height =324
+                            Name ="Label46"
+                            Caption ="Remaining After"
+                            GUID = Begin
+                                0x7e00e1554ed4e846bbf5cb6692918ad7
+                            End
+                            LayoutCachedLeft =420
+                            LayoutCachedTop =7020
+                            LayoutCachedWidth =2868
+                            LayoutCachedHeight =7344
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =14482166
+            Name ="FormFooter"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x299fc32882f5a14f84d3e057dd8f8c7f
+            End
+            AutoHeight =1
+            AlternateBackShade =95.0
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+'=============================================================
+' FORM: SF_GoodsReceiptItems
+'
+' PURPOSE:
+'   Maintains the editable receipt lines loaded from a
+'   Supplier Purchase Order.
+'
+' IMPORTANT:
+'   This form does not post stock. Stock posting will be
+'   performed later by F_GoodsReceipt in one transaction.
+'=============================================================
+
+Private Const RECEIPT_STATUS_DRAFT As String = "Draft"
+Private Const RECEIPT_STATUS_POSTED As String = "Posted"
+Private Const RECEIPT_STATUS_CANCELLED As String = "Cancelled"
+
+
+Private Sub Form_Load()
+
+    On Error GoTo Err_Handler
+
+    ConfigureControls
+    ApplyEditState
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The goods-receipt items subform could not be configured." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Goods Receipt Items"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_Current()
+
+    On Error GoTo Err_Handler
+
+    ApplyEditState
+    Me.Recalc
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The receipt line could not be displayed correctly." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Goods Receipt Items"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_BeforeInsert(Cancel As Integer)
+
+    Cancel = True
+
+    MsgBox _
+        "Receipt lines must be loaded from the selected Supplier PO." & _
+        vbCrLf & vbCrLf & _
+        "Use the Load Outstanding Lines button on the Goods Receipt form.", _
+        vbInformation, _
+        "Load Supplier PO Lines"
+
+End Sub
+
+
+Private Sub Form_BeforeUpdate(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    Dim GoodsReceiptID As Long
+    Dim GoodsReceiptItemID As Long
+    Dim SupplierPOLineID As Long
+    Dim ItemID As Long
+
+    Dim QuantityReceived As Double
+    Dim otherReceiptQuantity As Double
+    Dim totalReceiptQuantity As Double
+    Dim remainingBefore As Double
+
+    Dim SerialNumber As String
+    Dim RequiresSerial As Boolean
+
+    '---------------------------------------------------------
+    ' Receipt status
+    '---------------------------------------------------------
+    If Not ReceiptCanBeEdited() Then
+
+        MsgBox _
+            "This receipt is already posted or cancelled and cannot be edited.", _
+            vbExclamation, _
+            "Receipt Locked"
+
+        Cancel = True
+        Exit Sub
+
+    End If
+
+    '---------------------------------------------------------
+    ' Parent receipt
+    '---------------------------------------------------------
+    GoodsReceiptID = Nz(Me!GoodsReceiptID, 0)
+
+    If GoodsReceiptID <= 0 Then
+
+        MsgBox _
+            "This line is not linked to a saved goods receipt.", _
+            vbExclamation, _
+            "Receipt Link Required"
+
+        Cancel = True
+        Exit Sub
+
+    End If
+
+    GoodsReceiptItemID = Nz(Me!GoodsReceiptItemID, 0)
+    SupplierPOLineID = Nz(Me!SupplierPOLineID, 0)
+    ItemID = Nz(Me!ItemID, 0)
+
+    '---------------------------------------------------------
+    ' Supplier PO line
+    '---------------------------------------------------------
+    If SupplierPOLineID <= 0 Then
+
+        MsgBox _
+            "This receipt line is not connected to a Supplier PO line.", _
+            vbExclamation, _
+            "Supplier PO Line Required"
+
+        Cancel = True
+        Exit Sub
+
+    End If
+
+    '---------------------------------------------------------
+    ' Item
+    '---------------------------------------------------------
+    If ItemID <= 0 Then
+
+        MsgBox _
+            "The receipt line does not have a valid item.", _
+            vbExclamation, _
+            "Item Required"
+
+        Cancel = True
+        Exit Sub
+
+    End If
+
+    '---------------------------------------------------------
+    ' Unit
+    '---------------------------------------------------------
+    If Nz(Me!UnitID, 0) <= 0 Then
+
+        MsgBox _
+            "The receipt line does not have a valid unit.", _
+            vbExclamation, _
+            "Unit Required"
+
+        Cancel = True
+        Exit Sub
+
+    End If
+
+    '---------------------------------------------------------
+    ' Quantity
+    '
+    ' Zero is allowed because the user may receive only some
+    ' of the PO lines. Negative quantities are not allowed.
+    '---------------------------------------------------------
+    If IsNull(Me!QuantityReceived) Then
+
+        MsgBox _
+            "Enter the quantity being received." & vbCrLf & _
+            "Enter zero if this line is not being received now.", _
+            vbExclamation, _
+            "Quantity Required"
+
+        Cancel = True
+        Exit Sub
+
+    End If
+
+    If Not IsNumeric(Me!QuantityReceived) Then
+
+        MsgBox _
+            "Quantity received must be numeric.", _
+            vbExclamation, _
+            "Invalid Quantity"
+
+        Cancel = True
+        Exit Sub
+
+    End If
+
+    QuantityReceived = CDbl(Me!QuantityReceived)
+
+    If QuantityReceived < 0 Then
+
+        MsgBox _
+            "Quantity received cannot be negative.", _
+            vbExclamation, _
+            "Invalid Quantity"
+
+        Cancel = True
+        Exit Sub
+
+    End If
+
+    '---------------------------------------------------------
+    ' Prevent over-receiving.
+    '
+    ' This includes other rows in the same draft receipt.
+    ' It therefore also supports serialized items represented
+    ' by several quantity-one rows.
+    '---------------------------------------------------------
+    remainingBefore = GetRemainingBefore(SupplierPOLineID)
+
+    otherReceiptQuantity = GetOtherReceiptQuantity( _
+        GoodsReceiptID, _
+        SupplierPOLineID, _
+        GoodsReceiptItemID)
+
+    totalReceiptQuantity = otherReceiptQuantity + QuantityReceived
+
+    If totalReceiptQuantity > remainingBefore + 0.0000001 Then
+
+        MsgBox _
+            "The total quantity entered for this Supplier PO line " & _
+            "is greater than its outstanding quantity." & _
+            vbCrLf & vbCrLf & _
+            "Outstanding before this receipt: " & _
+            Format$(remainingBefore, "0.####") & vbCrLf & _
+            "Other rows in this receipt: " & _
+            Format$(otherReceiptQuantity, "0.####") & vbCrLf & _
+            "Quantity on this row: " & _
+            Format$(QuantityReceived, "0.####"), _
+            vbExclamation, _
+            "Quantity Exceeds Outstanding"
+
+        Cancel = True
+        Exit Sub
+
+    End If
+
+    '---------------------------------------------------------
+    ' Validate fields needed only when quantity is received.
+    '---------------------------------------------------------
+    If QuantityReceived > 0 Then
+
+        If Nz(Me!LocationID, 0) <= 0 Then
+
+            MsgBox _
+                "Select the location where this item is being received.", _
+                vbExclamation, _
+                "Receiving Location Required"
+
+            Cancel = True
+            Exit Sub
+
+        End If
+
+        If IsNull(Me!UnitCost) Then
+
+            MsgBox _
+                "Enter the unit cost for the received item.", _
+                vbExclamation, _
+                "Unit Cost Required"
+
+            Cancel = True
+            Exit Sub
+
+        End If
+
+        If Not IsNumeric(Me!UnitCost) Then
+
+            MsgBox _
+                "Unit cost must be numeric.", _
+                vbExclamation, _
+                "Invalid Unit Cost"
+
+            Cancel = True
+            Exit Sub
+
+        End If
+
+        If CCur(Me!UnitCost) < 0 Then
+
+            MsgBox _
+                "Unit cost cannot be negative.", _
+                vbExclamation, _
+                "Invalid Unit Cost"
+
+            Cancel = True
+            Exit Sub
+
+        End If
+
+    End If
+
+    '---------------------------------------------------------
+    ' Serialized-item validation
+    '---------------------------------------------------------
+    RequiresSerial = ItemRequiresSerial(ItemID)
+    SerialNumber = Trim$(Nz(Me!SerialNumber, vbNullString))
+
+    If RequiresSerial Then
+
+        If QuantityReceived = 0 Then
+
+            Me!SerialNumber = Null
+
+        Else
+
+            If Abs(QuantityReceived - 1) > 0.0000001 Then
+
+                MsgBox _
+                    "A serialized receipt row must have a quantity of one." & _
+                    vbCrLf & vbCrLf & _
+                    "Each physical serial number must have its own row.", _
+                    vbExclamation, _
+                    "Serialized Quantity"
+
+                Cancel = True
+                Exit Sub
+
+            End If
+
+            If Len(SerialNumber) = 0 Then
+
+                MsgBox _
+                    "Enter the serial number for this item.", _
+                    vbExclamation, _
+                    "Serial Number Required"
+
+                Cancel = True
+                Exit Sub
+
+            End If
+
+            Me!SerialNumber = SerialNumber
+
+            If SerialExistsInStock(SerialNumber) Then
+
+                MsgBox _
+                    "Serial number '" & SerialNumber & _
+                    "' already exists in T_ItemInstances.", _
+                    vbExclamation, _
+                    "Duplicate Serial Number"
+
+                Cancel = True
+                Exit Sub
+
+            End If
+
+            If SerialExistsInAnotherReceipt( _
+                SerialNumber, _
+                GoodsReceiptItemID) Then
+
+                MsgBox _
+                    "Serial number '" & SerialNumber & _
+                    "' is already entered on another active receipt line.", _
+                    vbExclamation, _
+                    "Duplicate Serial Number"
+
+                Cancel = True
+                Exit Sub
+
+            End If
+
+        End If
+
+    Else
+
+        'Bulk items must not carry serial numbers.
+        Me!SerialNumber = Null
+
+    End If
+
+    '---------------------------------------------------------
+    ' Audit dates
+    '---------------------------------------------------------
+    If IsNull(Me!CreatedOn) Then
+        Me!CreatedOn = Now()
+    End If
+
+    Me!UpdatedOn = Now()
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Cancel = True
+
+    MsgBox _
+        "The goods-receipt line could not be validated." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Goods Receipt Item"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_Delete(Cancel As Integer)
+
+    If Not ReceiptCanBeEdited() Then
+
+        Cancel = True
+
+        MsgBox _
+            "Posted or cancelled receipt lines cannot be deleted.", _
+            vbExclamation, _
+            "Receipt Locked"
+
+    End If
+
+End Sub
+
+
+Private Sub Form_AfterUpdate()
+
+    On Error Resume Next
+
+    Me.Recalc
+    RefreshParentReceipt
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub Form_AfterDelConfirm(Status As Integer)
+
+    On Error Resume Next
+
+    Me.Recalc
+    RefreshParentReceipt
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub Form_Error(DataErr As Integer, Response As Integer)
+
+    Select Case DataErr
+
+        Case 3314
+
+            MsgBox _
+                "A required receipt-line field is missing.", _
+                vbExclamation, _
+                "Incomplete Receipt Line"
+
+            Response = acDataErrContinue
+
+        Case Else
+
+            Response = acDataErrDisplay
+
+    End Select
+
+End Sub
+
+
+'=============================================================
+' CONTROL CONFIGURATION
+'=============================================================
+
+Private Sub ConfigureControls()
+
+    '---------------------------------------------------------
+    ' Item display
+    '---------------------------------------------------------
+    With Me.cboItemID
+
+        .RowSourceType = "Table/Query"
+
+        .RowSource = _
+            "SELECT ItemID, InternalSKU, ItemName, " & _
+            "IIf(Nz([RequiresSerial],False)," & _
+            "'Serialized','Bulk') AS TrackingType " & _
+            "FROM T_Items " & _
+            "ORDER BY InternalSKU, ItemName;"
+
+        .BoundColumn = 1
+        .ColumnCount = 4
+        .ColumnWidths = "0cm;3cm;7cm;2.5cm"
+        .LimitToList = True
+        .AutoExpand = True
+        .Locked = True
+        .TabStop = False
+
+    End With
+
+    '---------------------------------------------------------
+    ' Unit display
+    '---------------------------------------------------------
+    With Me.cboUnitID
+
+        .RowSourceType = "Table/Query"
+
+        .RowSource = _
+            "SELECT UnitID, UnitCode, UnitName " & _
+            "FROM T_Units " & _
+            "ORDER BY UnitCode, UnitName;"
+
+        .BoundColumn = 1
+        .ColumnCount = 3
+        .ColumnWidths = "0cm;2cm;4cm"
+        .LimitToList = True
+        .AutoExpand = True
+        .Locked = True
+        .TabStop = False
+
+    End With
+
+    '---------------------------------------------------------
+    ' Receiving location
+    '---------------------------------------------------------
+    With Me.cboLocationID
+
+        .RowSourceType = "Table/Query"
+
+        .RowSource = _
+            "SELECT L.LocationID, L.LocationCode, " & _
+            "L.LocationName, W.WarehouseName " & _
+            "FROM T_Locations AS L " & _
+            "LEFT JOIN T_Warehouses AS W " & _
+            "ON L.WarehouseID = W.WarehouseID " & _
+            "ORDER BY W.WarehouseName, " & _
+            "L.LocationName, L.LocationCode;"
+
+        .BoundColumn = 1
+        .ColumnCount = 4
+        .ColumnWidths = "0cm;2.5cm;4cm;4cm"
+        .LimitToList = True
+        .AutoExpand = True
+
+    End With
+
+    '---------------------------------------------------------
+    ' Calculated display columns
+    '---------------------------------------------------------
+    Me.txtOrderedQuantity.ControlSource = _
+        "=Nz(DLookUp(""OrderedQuantity""," & _
+        """T_SupplierPOLines""," & _
+        """SupplierPOLineID="" & " & _
+        "Nz([SupplierPOLineID],0)),0)"
+
+    Me.txtPreviouslyReceived.ControlSource = _
+        "=Nz(DLookUp(""QuantityReceivedToDate""," & _
+        """Q_SupplierPOLineReceived""," & _
+        """SupplierPOLineID="" & " & _
+        "Nz([SupplierPOLineID],0)),0)"
+
+    Me.txtRemainingBefore.ControlSource = _
+        "=Nz([txtOrderedQuantity],0)-" & _
+        "Nz([txtPreviouslyReceived],0)"
+
+    Me.txtRemainingAfter.ControlSource = _
+        "=Nz([txtRemainingBefore],0)-" & _
+        "Nz(DSum(""QuantityReceived""," & _
+        """T_GoodsReceiptItems""," & _
+        """GoodsReceiptID="" & Nz([GoodsReceiptID],0) & " & _
+        """ AND SupplierPOLineID="" & " & _
+        "Nz([SupplierPOLineID],0)),0)"
+
+    Me.txtOrderedQuantity.Locked = True
+    Me.txtOrderedQuantity.TabStop = False
+
+    Me.txtPreviouslyReceived.Locked = True
+    Me.txtPreviouslyReceived.TabStop = False
+
+    Me.txtRemainingBefore.Locked = True
+    Me.txtRemainingBefore.TabStop = False
+
+    Me.txtRemainingAfter.Locked = True
+    Me.txtRemainingAfter.TabStop = False
+
+    '---------------------------------------------------------
+    ' Hide system fields
+    '---------------------------------------------------------
+    HideControl "txtSupplierPOLineID"
+    HideControl "txtItemInstanceID"
+    HideControl "txtStockMovementID"
+    HideControl "txtCreatedOn"
+    HideControl "txtUpdatedOn"
+
+End Sub
+
+
+Private Sub ApplyEditState()
+
+    Dim canEdit As Boolean
+
+    canEdit = ReceiptCanBeEdited()
+
+    Me.AllowEdits = canEdit
+    Me.AllowDeletions = canEdit
+
+    'Rows must only be loaded from a Supplier PO.
+    Me.AllowAdditions = False
+
+    Me.cboItemID.Locked = True
+    Me.cboUnitID.Locked = True
+
+    Me.txtQuantityReceived.Locked = Not canEdit
+    Me.txtUnitCost.Locked = Not canEdit
+    Me.cboLocationID.Locked = Not canEdit
+    Me.txtBatchNumber.Locked = Not canEdit
+    Me.txtSerialNumber.Locked = Not canEdit
+    Me.txtNOtes.Locked = Not canEdit
+
+End Sub
+
+
+'=============================================================
+' RECEIPT STATUS
+'=============================================================
+
+Private Function ReceiptCanBeEdited() As Boolean
+
+    Dim ReceiptStatus As String
+
+    ReceiptStatus = ParentReceiptStatus()
+
+    ReceiptCanBeEdited = _
+        (StrComp( _
+            ReceiptStatus, _
+            RECEIPT_STATUS_DRAFT, _
+            vbTextCompare) = 0)
+
+End Function
+
+
+Private Function ParentReceiptStatus() As String
+
+    On Error GoTo Default_Value
+
+    Dim statusValue As String
+
+    statusValue = Trim$(Nz( _
+        Me.Parent.Recordset.Fields("ReceiptStatus").value, _
+        vbNullString))
+
+    If Len(statusValue) = 0 Then
+        statusValue = RECEIPT_STATUS_DRAFT
+    End If
+
+    ParentReceiptStatus = statusValue
+    Exit Function
+
+Default_Value:
+    ParentReceiptStatus = RECEIPT_STATUS_DRAFT
+
+End Function
+
+
+'=============================================================
+' QUANTITY HELPERS
+'=============================================================
+
+Private Function GetRemainingBefore( _
+    ByVal SupplierPOLineID As Long _
+) As Double
+
+    Dim OrderedQuantity As Double
+    Dim previouslyReceived As Double
+
+    OrderedQuantity = Nz(DLookup( _
+        "OrderedQuantity", _
+        "T_SupplierPOLines", _
+        "SupplierPOLineID=" & SupplierPOLineID), 0)
+
+    previouslyReceived = Nz(DLookup( _
+        "QuantityReceivedToDate", _
+        "Q_SupplierPOLineReceived", _
+        "SupplierPOLineID=" & SupplierPOLineID), 0)
+
+    GetRemainingBefore = OrderedQuantity - previouslyReceived
+
+    If GetRemainingBefore < 0 Then
+        GetRemainingBefore = 0
+    End If
+
+End Function
+
+
+Private Function GetOtherReceiptQuantity( _
+    ByVal GoodsReceiptID As Long, _
+    ByVal SupplierPOLineID As Long, _
+    ByVal currentGoodsReceiptItemID As Long _
+) As Double
+
+    Dim criteria As String
+    Dim resultValue As Variant
+
+    criteria = _
+        "GoodsReceiptID=" & GoodsReceiptID & _
+        " AND SupplierPOLineID=" & SupplierPOLineID
+
+    If currentGoodsReceiptItemID > 0 Then
+
+        criteria = criteria & _
+            " AND GoodsReceiptItemID<>" & _
+            currentGoodsReceiptItemID
+
+    End If
+
+    resultValue = DSum( _
+        "QuantityReceived", _
+        "T_GoodsReceiptItems", _
+        criteria)
+
+    GetOtherReceiptQuantity = Nz(resultValue, 0)
+
+End Function
+
+
+'=============================================================
+' SERIAL-NUMBER HELPERS
+'=============================================================
+
+Private Function ItemRequiresSerial( _
+    ByVal ItemID As Long _
+) As Boolean
+
+    ItemRequiresSerial = Nz(DLookup( _
+        "RequiresSerial", _
+        "T_Items", _
+        "ItemID=" & ItemID), False)
+
+End Function
+
+
+Private Function SerialExistsInStock( _
+    ByVal SerialNumber As String _
+) As Boolean
+
+    SerialExistsInStock = _
+        (DCount( _
+            "*", _
+            "T_ItemInstances", _
+            "SerialNumber=" & SqlText(SerialNumber)) > 0)
+
+End Function
+
+
+Private Function SerialExistsInAnotherReceipt( _
+    ByVal SerialNumber As String, _
+    ByVal currentGoodsReceiptItemID As Long _
+) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim db As DAO.Database
+    Dim rs As DAO.Recordset
+    Dim sqlTextValue As String
+
+    sqlTextValue = _
+        "SELECT TOP 1 RI.GoodsReceiptItemID " & _
+        "FROM T_GoodsReceiptItems AS RI " & _
+        "INNER JOIN T_GoodsReceipts AS RH " & _
+        "ON RI.GoodsReceiptID = RH.GoodsReceiptID " & _
+        "WHERE Nz(RH.ReceiptStatus,'Draft') " & _
+        "<> 'Cancelled' " & _
+        "AND RI.SerialNumber = " & _
+        SqlText(SerialNumber) & " "
+
+    If currentGoodsReceiptItemID > 0 Then
+
+        sqlTextValue = sqlTextValue & _
+            "AND RI.GoodsReceiptItemID <> " & _
+            currentGoodsReceiptItemID & " "
+
+    End If
+
+    sqlTextValue = sqlTextValue & ";"
+
+    Set db = CurrentDb
+
+    Set rs = db.OpenRecordset( _
+        sqlTextValue, _
+        dbOpenSnapshot)
+
+    SerialExistsInAnotherReceipt = Not rs.EOF
+
+Exit_Handler:
+    On Error Resume Next
+
+    If Not rs Is Nothing Then
+        rs.close
+    End If
+
+    Set rs = Nothing
+    Set db = Nothing
+
+    On Error GoTo 0
+    Exit Function
+
+Err_Handler:
+    SerialExistsInAnotherReceipt = False
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' PARENT REFRESH
+'=============================================================
+
+Private Sub RefreshParentReceipt()
+
+    On Error Resume Next
+
+    CallByName _
+        Me.Parent, _
+        "RecalculateReceiptSummary", _
+        VbMethod
+
+    On Error GoTo 0
+
+End Sub
+
+
+'=============================================================
+' SAFE CONTROL HELPERS
+'=============================================================
+
+Private Sub HideControl(ByVal controlName As String)
+
+    If ControlExists(controlName) Then
+        Me.Controls(controlName).Visible = False
+    End If
+
+End Sub
+
+
+Private Function ControlExists( _
+    ByVal controlName As String _
+) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim controlObject As Control
+
+    Set controlObject = Me.Controls(controlName)
+    ControlExists = True
+
+Exit_Handler:
+    Set controlObject = Nothing
+    Exit Function
+
+Err_Handler:
+    ControlExists = False
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function SqlText( _
+    ByVal textValue As String _
+) As String
+
+    SqlText = _
+        "'" & Replace(textValue, "'", "''") & "'"
+
+End Function

@@ -1,0 +1,1322 @@
+﻿Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+'=============================================================
+' FORM: F_ItemSetup
+' PURPOSE:
+'   Maintains items and supports safe Quick Add calls from
+'   combo-box NotInList events.
+'
+' SKU FORMAT:
+'   First four letters from ItemName plus a five-digit sequence
+'   for that prefix, for example LAWI-00001.
+'=============================================================
+
+Private mQuickAddMode As Boolean
+Private Const STOCK_IN_FORM As String = "F_StockIn"
+
+'=============================================================
+' FORM EVENTS
+'=============================================================
+
+Private Sub Form_Load()
+    UX_MarkRequired Me, "txtItemName", "cboCategoryID", "cboBaseUnitID", "cboItemClass", "cboDefaultLocationID"
+
+    On Error GoTo Err_Handler
+
+    mQuickAddMode = IsQuickAddRequest()
+
+    ConfigureFormControls
+    ConfigureItemCombos
+
+    If Me.NewRecord Then
+        SeedQuickAddField Me, "txtItemName"
+        EnsureItemSKU
+    End If
+
+    ConfigureSerialControl
+    UpdateStockInButtonState
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "Item Setup could not be initialized." & vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Item Setup"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_Current()
+
+    ConfigureSerialControl
+    UpdateStockInButtonState
+
+End Sub
+
+
+Private Sub Form_BeforeInsert(Cancel As Integer)
+
+    If IsNull(Me!CreatedOn) Then
+        Me!CreatedOn = Now()
+    End If
+
+    If IsNull(Me.chkRequiresSerial) Then
+        Me.chkRequiresSerial = False
+    End If
+
+End Sub
+
+
+Private Sub Form_BeforeUpdate(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    Dim serialValue As String
+    Dim criteria As String
+    Dim currentItemID As Long
+
+    NormalizeItemValues
+    EnsureItemSKU
+
+    If Not UX_ReviewDuplicateItemName(Nz(Me.txtItemName, ""), Nz(Me.txtItemID, 0), Nz(Me.txtDescription, "")) Then
+        Cancel = True
+        Exit Sub
+    End If
+    currentItemID = Nz(Me.txtItemID, 0)
+
+    If Len(Trim$(Nz(Me.txtItemName, vbNullString))) = 0 Then
+        MsgBox "Enter the item name.", vbExclamation, "Item Name Required"
+        Me.txtItemName.SetFocus
+        Cancel = True
+        Exit Sub
+    End If
+
+    If Len(Trim$(Nz(Me.txtInternalSKU, vbNullString))) = 0 Then
+        MsgBox "The item SKU could not be generated.", vbExclamation, "Item SKU"
+        Cancel = True
+        Exit Sub
+    End If
+
+    criteria = _
+        "InternalSKU=" & SqlText(Me.txtInternalSKU) & _
+        " AND ItemID<>" & currentItemID
+
+    If DCount("*", "T_Items", criteria) > 0 Then
+        MsgBox "The item SKU already exists.", vbExclamation, "Duplicate SKU"
+        Cancel = True
+        Exit Sub
+    End If
+
+    If Nz(Me.chkRequiresSerial, False) Then
+
+        serialValue = UCase$(Trim$(Nz(Me.txtSerialNumber, vbNullString)))
+
+        If Len(serialValue) = 0 Then
+            MsgBox _
+                "Enter the serial number for this serialized item.", _
+                vbExclamation, _
+                "Serial Number Required"
+            Me.txtSerialNumber.SetFocus
+            Cancel = True
+            Exit Sub
+        End If
+
+        Me.txtSerialNumber = serialValue
+
+        criteria = _
+            "SerialNumber=" & SqlText(serialValue) & _
+            " AND ItemID<>" & currentItemID
+
+        If DCount("*", "T_Items", criteria) > 0 Then
+            MsgBox _
+                "The serial number is already assigned to another item.", _
+                vbExclamation, _
+                "Duplicate Serial Number"
+            Me.txtSerialNumber.SetFocus
+            Cancel = True
+            Exit Sub
+        End If
+    Else
+        Me.txtSerialNumber = Null
+    End If
+
+    If IsNull(Me!CreatedOn) Then
+        Me!CreatedOn = Now()
+    End If
+
+    Me!UpdatedOn = Now()
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Cancel = True
+    MsgBox _
+        "The item could not be validated." & vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Item Setup"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_AfterUpdate()
+
+    ConfigureSerialControl
+    UpdateStockInButtonState
+
+End Sub
+
+
+Private Sub Form_Error(DataErr As Integer, Response As Integer)
+
+    If DataErr = 3022 Then
+        MsgBox _
+            "The SKU or serial number already exists.", _
+            vbExclamation, _
+            "Duplicate Value"
+        Response = acDataErrContinue
+    Else
+        Response = acDataErrDisplay
+    End If
+
+End Sub
+
+'=============================================================
+' ITEM NAME AND SKU
+'=============================================================
+
+Private Sub txtItemName_AfterUpdate()
+
+    On Error GoTo Err_Handler
+
+    If Me.NewRecord Then
+        EnsureItemSKU
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The item SKU could not be generated." & vbCrLf & vbCrLf & _
+        Err.Description, _
+        vbExclamation, _
+        "Item SKU"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub EnsureItemSKU()
+
+    If Not Me.NewRecord Then
+        Exit Sub
+    End If
+
+    If Len(Trim$(Nz(Me.txtItemName, vbNullString))) = 0 Then
+        Me.txtInternalSKU = Null
+    Else
+        Me.txtInternalSKU = GenerateNameBasedSKU(Me.txtItemName)
+    End If
+
+End Sub
+
+
+Private Function GenerateNameBasedSKU( _
+    ByVal sourceName As String _
+) As String
+
+    Dim prefix As String
+    Dim nextNumber As Long
+    Dim existingMaximum As Variant
+    Dim candidate As String
+
+    prefix = FourCharacterPrefix(sourceName, "ITEM")
+
+    existingMaximum = DMax( _
+        "Val(Mid([InternalSKU],6))", _
+        "T_Items", _
+        "InternalSKU Like " & SqlText(prefix & "-*") & _
+        " AND IsNumeric(Mid([InternalSKU],6))")
+
+    If IsNull(existingMaximum) Then
+        nextNumber = 1
+    Else
+        nextNumber = CLng(existingMaximum) + 1
+    End If
+
+    Do
+        candidate = prefix & "-" & Format$(nextNumber, "00000")
+
+        If DCount( _
+            "*", _
+            "T_Items", _
+            "InternalSKU=" & SqlText(candidate)) = 0 Then
+            Exit Do
+        End If
+
+        nextNumber = nextNumber + 1
+    Loop
+
+    GenerateNameBasedSKU = candidate
+
+End Function
+
+
+Private Function FourCharacterPrefix( _
+    ByVal sourceText As String, _
+    ByVal fallbackPrefix As String _
+) As String
+
+    Dim resultText As String
+    Dim oneCharacter As String
+    Dim position As Long
+
+    sourceText = UCase$(Trim$(sourceText))
+
+    For position = 1 To Len(sourceText)
+        oneCharacter = Mid$(sourceText, position, 1)
+
+        If oneCharacter Like "[A-Z]" Then
+            resultText = resultText & oneCharacter
+
+            If Len(resultText) = 4 Then
+                Exit For
+            End If
+        End If
+    Next position
+
+    If Len(resultText) = 0 Then
+        resultText = Left$(fallbackPrefix & "XXXX", 4)
+    ElseIf Len(resultText) < 4 Then
+        resultText = resultText & String$(4 - Len(resultText), "X")
+    End If
+
+    FourCharacterPrefix = resultText
+
+End Function
+
+'=============================================================
+' SERIAL TRACKING
+'=============================================================
+
+Private Sub chkRequiresSerial_BeforeUpdate(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    If Not Me.NewRecord Then
+        If Nz(Me.chkRequiresSerial.value, False) <> _
+           Nz(Me.chkRequiresSerial.OldValue, False) Then
+
+            If ItemHasTrackingHistory(Nz(Me.txtItemID, 0)) Then
+                MsgBox _
+                    "Serial tracking cannot be changed because the item " & _
+                    "already has stock or movement history.", _
+                    vbExclamation, _
+                    "Tracking Method Locked"
+                Cancel = True
+                Me.chkRequiresSerial.Undo
+            End If
+        End If
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Cancel = True
+    MsgBox _
+        "Serial tracking could not be changed." & vbCrLf & vbCrLf & _
+        Err.Description, _
+        vbExclamation, _
+        "Serial Tracking"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub chkRequiresSerial_AfterUpdate()
+
+    If Not Nz(Me.chkRequiresSerial, False) Then
+        Me.txtSerialNumber = Null
+    End If
+
+    ConfigureSerialControl
+
+    If Nz(Me.chkRequiresSerial, False) Then
+        Me.txtSerialNumber.SetFocus
+    End If
+
+End Sub
+
+
+Private Sub txtSerialNumber_AfterUpdate()
+
+    If Len(Trim$(Nz(Me.txtSerialNumber, vbNullString))) > 0 Then
+        Me.txtSerialNumber = UCase$(Trim$(Me.txtSerialNumber))
+    End If
+
+End Sub
+
+
+Private Sub ConfigureSerialControl()
+
+    On Error Resume Next
+
+    Dim RequiresSerial As Boolean
+
+    RequiresSerial = Nz(Me.chkRequiresSerial, False)
+
+    Me.txtSerialNumber.Visible = RequiresSerial
+    Me.txtSerialNumber.Enabled = RequiresSerial
+    Me.txtSerialNumber.Locked = Not RequiresSerial
+    Me.txtSerialNumber.TabStop = RequiresSerial
+
+    If ControlExists("lblSerialNumber") Then
+        Me.Controls("lblSerialNumber").Visible = RequiresSerial
+    ElseIf ControlExists("Label49") Then
+        Me.Controls("Label49").Visible = RequiresSerial
+    End If
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Function ItemHasTrackingHistory(ByVal ItemID As Long) As Boolean
+
+    If ItemID <= 0 Then
+        Exit Function
+    End If
+
+    ItemHasTrackingHistory = _
+        (DCount("*", "T_StockMovements", "ItemID=" & ItemID) > 0) Or _
+        (DCount("*", "T_ItemInstances", "ItemID=" & ItemID) > 0) Or _
+        (DCount( _
+            "*", _
+            "T_StockBalances", _
+            "ItemID=" & ItemID & " AND Nz(QuantityOnHand,0)<>0") > 0)
+
+End Function
+
+'=============================================================
+' CONFIGURATION
+'=============================================================
+
+Private Sub ConfigureFormControls()
+
+    Me.txtItemID.Visible = False
+    Me.txtItemID.Enabled = False
+    Me.txtItemID.Locked = True
+
+    Me.txtInternalSKU.Locked = True
+    Me.txtInternalSKU.TabStop = False
+
+End Sub
+
+
+Private Sub ConfigureItemCombos()
+
+    With Me.cboCategoryID
+        .RowSourceType = "Table/Query"
+        .RowSource = _
+            "SELECT CategoryID, CategoryName " & _
+            "FROM T_Categories " & _
+            "ORDER BY CategoryName;"
+        .BoundColumn = 1
+        .ColumnCount = 2
+        .ColumnWidths = "0cm;5cm"
+        .LimitToList = True
+        .AutoExpand = True
+    End With
+
+    With Me.cboBaseUnitID
+        .RowSourceType = "Table/Query"
+        .RowSource = _
+            "SELECT UnitID, IIf(Len(Trim(Nz([UnitCode],'')))=0,[UnitName],[UnitCode]), UnitName " & _
+            "FROM T_Units " & _
+            "ORDER BY UnitCode, UnitName;"
+        .BoundColumn = 1
+        .ColumnCount = 3
+        .ColumnWidths = "0cm;2cm;4cm"
+        .LimitToList = True
+        .AutoExpand = True
+    End With
+
+    With Me.cboDefaultLocationID
+        .RowSourceType = "Table/Query"
+        .RowSource = _
+            "SELECT L.LocationID, L.LocationName, L.LocationCode, W.WarehouseName " & _
+            "FROM T_Locations AS L LEFT JOIN T_Warehouses AS W " & _
+            "ON L.WarehouseID=W.WarehouseID " & _
+            "ORDER BY L.LocationName, L.LocationCode;"
+        .BoundColumn = 1
+        .ColumnCount = 4
+        .ColumnWidths = "0cm;4cm;2.5cm;4cm"
+        .LimitToList = True
+        .AutoExpand = True
+    End With
+
+End Sub
+
+'=============================================================
+' SAVE / NEW / CLOSE BUTTONS
+'=============================================================
+
+Private Function SaveItemRecord() As Boolean
+
+    On Error GoTo Err_Handler
+
+    SaveItemRecord = False
+
+    NormalizeItemValues
+    EnsureItemSKU
+
+    If Len(Trim$(Nz(Me.txtItemName, vbNullString))) = 0 Then
+        MsgBox "Enter the item name.", vbExclamation, "Item Name Required"
+        Me.txtItemName.SetFocus
+        Exit Function
+    End If
+
+    If Me.Dirty Then
+        Me.Dirty = False
+    End If
+
+    SaveItemRecord = (Nz(Me.txtItemID, 0) > 0)
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    MsgBox _
+        "The item could not be saved." & vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Item Setup"
+    Resume Exit_Handler
+
+End Function
+
+
+Private Sub SaveItemButton()
+
+    On Error GoTo Err_Handler
+
+    Dim wasNewItem As Boolean
+    Dim savedItemID As Long
+    Dim stockPromptDisplayed As Boolean
+
+    wasNewItem = Me.NewRecord
+
+    If Not SaveItemRecord Then
+        Exit Sub
+    End If
+
+    savedItemID = Nz(Me.txtItemID, 0)
+    UpdateStockInButtonState
+
+    'Quick Add belongs to a calling combo-box workflow. Preserve
+    'that behaviour and return the new ItemID without diverting
+    'the user into inventory receiving.
+    If mQuickAddMode Then
+        DoCmd.close acForm, Me.Name
+        Exit Sub
+    End If
+
+    'Offer opening stock only after the first normal save. Later
+    'restocking is available through cmdStockInItem.
+    If wasNewItem Then
+        stockPromptDisplayed = OfferOpeningStock(savedItemID)
+    End If
+
+    If Not stockPromptDisplayed Then
+        MsgBox "Item saved successfully.", vbInformation, "Item Setup"
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The item was saved, but the stock-in option could not be prepared." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Item Setup"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cmdStockInItem_Click()
+
+    On Error GoTo Err_Handler
+
+    Dim ItemID As Long
+
+    If Me.Dirty Then
+        If Not SaveItemRecord Then
+            Exit Sub
+        End If
+    End If
+
+    ItemID = Nz(Me.txtItemID, 0)
+
+    If ItemID <= 0 Then
+        MsgBox _
+            "Save the item before opening Stock In.", _
+            vbExclamation, _
+            "Save Item First"
+        Exit Sub
+    End If
+
+    OpenStockInForItem ItemID, SuggestedStockInReason(ItemID)
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "Stock In could not be opened for this item." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Stock In Item"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Function OfferOpeningStock(ByVal ItemID As Long) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim RequiresSerial As Boolean
+    Dim AvailableQuantity As Double
+    Dim Response As VbMsgBoxResult
+    Dim ItemDescription As String
+
+    OfferOpeningStock = False
+
+    If ItemID <= 0 Then
+        Exit Function
+    End If
+
+    RequiresSerial = Nz(Me.chkRequiresSerial, False)
+
+    'The shared helper supports both inventory models:
+    '  non-serialized/bulk -> T_StockBalances
+    '  serialized          -> T_ItemInstances
+    AvailableQuantity = GetAvailableQty(ItemID, RequiresSerial)
+
+    If AvailableQuantity > 0 Then
+        Exit Function
+    End If
+
+    ItemDescription = Trim$( _
+        Nz(Me.txtInternalSKU, vbNullString) & " - " & _
+        Nz(Me.txtItemName, vbNullString))
+
+    OfferOpeningStock = True
+
+    Response = MsgBox( _
+        "The item was saved successfully." & vbCrLf & vbCrLf & _
+        "No available stock exists for " & ItemDescription & "." & _
+        vbCrLf & vbCrLf & _
+        "Would you like to enter opening stock now?", _
+        vbQuestion + vbYesNo, _
+        "Enter Opening Stock")
+
+    If Response = vbYes Then
+        OpenStockInForItem ItemID, "Opening Balance"
+    End If
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    'The warning confirms the item was saved, so return True to
+    'avoid displaying a second success message in the caller.
+    OfferOpeningStock = True
+
+    MsgBox _
+        "The item was saved, but its available stock could not be checked." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Stock Availability"
+    Resume Exit_Handler
+
+End Function
+
+
+Private Sub OpenStockInForItem( _
+    ByVal ItemID As Long, _
+    ByVal stockReason As String _
+)
+
+    On Error GoTo Err_Handler
+
+    Dim openArguments As String
+
+    If ItemID <= 0 Then
+        Err.Raise _
+            vbObjectError + 7102, _
+            "OpenStockInForItem", _
+            "A valid ItemID was not supplied."
+    End If
+
+    If CurrentProject.AllForms(STOCK_IN_FORM).IsLoaded Then
+        CallByName _
+            Forms(STOCK_IN_FORM), _
+            "LoadItemFromItemSetup", _
+            VbMethod, _
+            ItemID, _
+            stockReason
+
+        Forms(STOCK_IN_FORM).SetFocus
+        Exit Sub
+    End If
+
+    openArguments = _
+        "Context=ItemSetup" & _
+        ";ItemID=" & CStr(ItemID) & _
+        ";Reason=" & stockReason
+
+    DoCmd.OpenForm _
+        STOCK_IN_FORM, _
+        acNormal, _
+        , _
+        , _
+        , _
+        , _
+        openArguments
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Err.Raise Err.Number, Err.Source, Err.Description
+
+End Sub
+
+
+Private Function SuggestedStockInReason( _
+    ByVal ItemID As Long _
+) As String
+
+    If DCount( _
+        "*", _
+        "T_StockMovements", _
+        "ItemID=" & ItemID) = 0 Then
+
+        SuggestedStockInReason = "Opening Balance"
+    Else
+        SuggestedStockInReason = "Purchase Receipt"
+    End If
+
+End Function
+
+
+Private Sub UpdateStockInButtonState()
+
+    On Error Resume Next
+
+    If ControlExists("cmdStockInItem") Then
+        Me.Controls("cmdStockInItem").Enabled = _
+            (Not Me.NewRecord) And (Nz(Me.txtItemID, 0) > 0)
+    End If
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub NewItemButton()
+
+    On Error GoTo Err_Handler
+
+    Dim reuseCurrentNewRecord As Boolean
+
+    If Me.NewRecord And IsBlankNewItemRecord Then
+        reuseCurrentNewRecord = True
+
+        If Me.Dirty Then
+            Me.Undo
+        End If
+    ElseIf Me.Dirty Then
+        If Not SaveItemRecord Then
+            Exit Sub
+        End If
+    End If
+
+    If Not reuseCurrentNewRecord Then
+        DoCmd.GoToRecord acDataForm, Me.Name, acNewRec
+    End If
+
+    mQuickAddMode = False
+    Me.txtItemName.SetFocus
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox "A new item could not be opened." & vbCrLf & Err.Description, vbExclamation
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub CloseItemButton()
+
+    On Error GoTo Err_Handler
+
+    Dim Response As VbMsgBoxResult
+
+    If Me.NewRecord And IsBlankNewItemRecord Then
+        If Me.Dirty Then
+            Me.Undo
+        End If
+    ElseIf Me.Dirty Then
+
+        Response = MsgBox( _
+            "Save the item changes before closing?", _
+            vbQuestion + vbYesNoCancel, _
+            "Close Item Setup")
+
+        Select Case Response
+            Case vbYes
+                If Not SaveItemRecord Then
+                    Exit Sub
+                End If
+            Case vbNo
+                Me.Undo
+            Case vbCancel
+                Exit Sub
+        End Select
+    End If
+
+    DoCmd.close acForm, Me.Name
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox "Item Setup could not be closed." & vbCrLf & Err.Description, vbExclamation
+    Resume Exit_Handler
+
+End Sub
+
+
+'Use the event procedure matching the actual button name on the form.
+Private Sub cmdSave_Click()
+    SaveItemButton
+End Sub
+
+Private Sub Save_Click()
+    SaveItemButton
+End Sub
+
+Private Sub cmdNew_Click()
+    NewItemButton
+End Sub
+
+Private Sub addnew_Click()
+    NewItemButton
+End Sub
+
+Private Sub cmdClose_Click()
+    CloseItemButton
+End Sub
+
+Private Sub close_Click()
+    CloseItemButton
+End Sub
+
+'=============================================================
+' CATEGORY QUICK ADD
+'=============================================================
+
+Private Sub cboCategoryID_NotInList(NewData As String, Response As Integer)
+
+    Response = acDataErrContinue
+
+    If HandleComboNotInList( _
+        Me.cboCategoryID, _
+        NewData, _
+        "F_CategorySetup", _
+        "T_Categories", _
+        "CategoryID", _
+        "CategoryName") Then
+
+        Response = acDataErrAdded
+    Else
+        Me.cboCategoryID.Undo
+    End If
+
+End Sub
+
+
+Private Sub cboCategoryID_DblClick(Cancel As Integer)
+    Cancel = True
+    EditComboEntry Me.cboCategoryID, "F_CategorySetup", "CategoryID"
+End Sub
+
+
+Private Sub cmdAddCategory_Click()
+    AddComboEntry Me.cboCategoryID, "F_CategorySetup", "T_Categories", "CategoryID"
+End Sub
+
+
+Private Sub cmdEditCategory_Click()
+    EditComboEntry Me.cboCategoryID, "F_CategorySetup", "CategoryID"
+End Sub
+
+'=============================================================
+' UNIT QUICK ADD
+'=============================================================
+
+Private Sub cboBaseUnitID_NotInList(NewData As String, Response As Integer)
+
+    Response = acDataErrContinue
+
+    If HandleComboNotInList( _
+        Me.cboBaseUnitID, _
+        NewData, _
+        "F_UnitSetup", _
+        "T_Units", _
+        "UnitID", _
+        "UnitName", _
+        "UnitCode") Then
+
+        Response = acDataErrAdded
+    Else
+        Me.cboBaseUnitID.Undo
+    End If
+
+End Sub
+
+
+Private Sub cboBaseUnitID_DblClick(Cancel As Integer)
+    Cancel = True
+    EditComboEntry Me.cboBaseUnitID, "F_UnitSetup", "UnitID"
+End Sub
+
+
+Private Sub cmdAddUnit_Click()
+    AddComboEntry Me.cboBaseUnitID, "F_UnitSetup", "T_Units", "UnitID"
+End Sub
+
+
+Private Sub cmdEditUnit_Click()
+    EditComboEntry Me.cboBaseUnitID, "F_UnitSetup", "UnitID"
+End Sub
+
+'=============================================================
+' LOCATION QUICK ADD
+'=============================================================
+
+Private Sub cboDefaultLocationID_NotInList( _
+    NewData As String, _
+    Response As Integer _
+)
+
+    On Error GoTo Err_Handler
+
+    Response = acDataErrContinue
+
+    If CreateTypedLocation(NewData) Then
+        Response = acDataErrAdded
+    Else
+        Me.cboDefaultLocationID.Undo
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Response = acDataErrContinue
+
+    MsgBox _
+        "The new location could not be opened." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Location Quick Add"
+
+    On Error Resume Next
+    Me.cboDefaultLocationID.Undo
+    On Error GoTo 0
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cboDefaultLocationID_DblClick(Cancel As Integer)
+
+    Cancel = True
+
+    If Nz(Me.cboDefaultLocationID, 0) > 0 Then
+        EditComboEntry _
+            Me.cboDefaultLocationID, _
+            "F_LocationSetup", _
+            "LocationID"
+    Else
+        OpenNewLocationForCombo vbNullString
+    End If
+
+End Sub
+
+
+Private Sub cmdAddLocation_Click()
+
+    OpenNewLocationForCombo vbNullString
+
+End Sub
+
+
+Private Sub cmdEditLocation_Click()
+
+    If Nz(Me.cboDefaultLocationID, 0) <= 0 Then
+        MsgBox _
+            "Select a location first.", _
+            vbInformation, _
+            "Location Required"
+
+        Me.cboDefaultLocationID.SetFocus
+        Exit Sub
+    End If
+
+    EditComboEntry _
+        Me.cboDefaultLocationID, _
+        "F_LocationSetup", _
+        "LocationID"
+
+End Sub
+
+
+Private Function CreateTypedLocation( _
+    ByVal typedLocationName As String _
+) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim enteredText As String
+    Dim savedLocationID As Variant
+
+    CreateTypedLocation = False
+
+    enteredText = Trim$(Nz(typedLocationName, vbNullString))
+
+    If Len(enteredText) = 0 Then
+        Exit Function
+    End If
+
+    If MsgBox( _
+        "'" & enteredText & "' is not currently in the " & _
+        "location list." & vbCrLf & vbCrLf & _
+        "Would you like to create it now?", _
+        vbQuestion + vbYesNo, _
+        "Add New Location") <> vbYes Then
+
+        Exit Function
+    End If
+
+    If Not FormExistsLocal("F_LocationSetup") Then
+        Err.Raise _
+            vbObjectError + 7150, _
+            "CreateTypedLocation", _
+            "The form 'F_LocationSetup' could not be found."
+    End If
+
+    If Not CloseLocationSetupIfLoaded Then
+        Exit Function
+    End If
+
+    DoCmd.OpenForm _
+        formName:="F_LocationSetup", _
+        View:=acNormal, _
+        DataMode:=acFormAdd, _
+        WindowMode:=acDialog, _
+        OpenArgs:="QUICKADD|" & enteredText
+
+    savedLocationID = DLookup( _
+        "LocationID", _
+        "T_Locations", _
+        "Nz([LocationName],'')=" & SqlText(enteredText))
+
+    If IsNull(savedLocationID) Then
+        MsgBox _
+            "The location was not found after Location Setup " & _
+            "closed." & vbCrLf & vbCrLf & _
+            "Save the location using the same name that you typed.", _
+            vbInformation, _
+            "Location Not Saved"
+
+        Exit Function
+    End If
+
+    CreateTypedLocation = True
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    If Err.Number <> 2501 Then
+        MsgBox _
+            "The typed location could not be created." & _
+            vbCrLf & vbCrLf & _
+            "Error Number: " & Err.Number & vbCrLf & _
+            "Details: " & Err.Description, _
+            vbExclamation, _
+            "Location Quick Add"
+    End If
+
+    Resume Exit_Handler
+
+End Function
+
+
+Private Sub OpenNewLocationForCombo( _
+    ByVal suggestedLocationName As String _
+)
+
+    On Error GoTo Err_Handler
+
+    Dim oldMaximumID As Long
+    Dim newMaximumID As Long
+    Dim savedLocationID As Variant
+    Dim openArguments As String
+
+    If Not FormExistsLocal("F_LocationSetup") Then
+        Err.Raise _
+            vbObjectError + 7151, _
+            "OpenNewLocationForCombo", _
+            "The form 'F_LocationSetup' could not be found."
+    End If
+
+    If Not CloseLocationSetupIfLoaded Then
+        Exit Sub
+    End If
+
+    oldMaximumID = Nz(DMax("LocationID", "T_Locations"), 0)
+    suggestedLocationName = Trim$(Nz(suggestedLocationName, vbNullString))
+
+    If Len(suggestedLocationName) > 0 Then
+
+        openArguments = "QUICKADD|" & suggestedLocationName
+
+        DoCmd.OpenForm _
+            formName:="F_LocationSetup", _
+            View:=acNormal, _
+            DataMode:=acFormAdd, _
+            WindowMode:=acDialog, _
+            OpenArgs:=openArguments
+
+    Else
+
+        DoCmd.OpenForm _
+            formName:="F_LocationSetup", _
+            View:=acNormal, _
+            DataMode:=acFormAdd, _
+            WindowMode:=acDialog
+
+    End If
+
+    newMaximumID = Nz(DMax("LocationID", "T_Locations"), 0)
+
+    If newMaximumID > oldMaximumID Then
+        savedLocationID = newMaximumID
+    ElseIf Len(suggestedLocationName) > 0 Then
+        savedLocationID = DLookup( _
+            "LocationID", _
+            "T_Locations", _
+            "Nz([LocationName],'')=" & SqlText(suggestedLocationName))
+    End If
+
+    Me.cboDefaultLocationID.Requery
+
+    If Not IsNull(savedLocationID) Then
+        If Nz(savedLocationID, 0) > 0 Then
+            Me.cboDefaultLocationID = CLng(savedLocationID)
+        End If
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    If Err.Number <> 2501 Then
+        MsgBox _
+            "Location Setup could not be opened." & _
+            vbCrLf & vbCrLf & _
+            "Error Number: " & Err.Number & vbCrLf & _
+            "Details: " & Err.Description, _
+            vbExclamation, _
+            "Location Setup"
+    End If
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Function CloseLocationSetupIfLoaded() As Boolean
+
+    On Error GoTo Err_Handler
+
+    CloseLocationSetupIfLoaded = False
+
+    If Not IsFormLoadedLocal("F_LocationSetup") Then
+        CloseLocationSetupIfLoaded = True
+        Exit Function
+    End If
+
+    If Forms("F_LocationSetup").Dirty Then
+        Forms("F_LocationSetup").Dirty = False
+    End If
+
+    DoCmd.close acForm, "F_LocationSetup", acSaveNo
+
+    CloseLocationSetupIfLoaded = _
+        Not IsFormLoadedLocal("F_LocationSetup")
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    MsgBox _
+        "Finish or cancel the current location record, then " & _
+        "try again." & vbCrLf & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Location Setup Already Open"
+
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function FormExistsLocal( _
+    ByVal formName As String _
+) As Boolean
+
+    On Error GoTo Not_Found
+
+    Dim formObject As AccessObject
+
+    Set formObject = CurrentProject.AllForms(formName)
+    FormExistsLocal = True
+
+Exit_Handler:
+    Set formObject = Nothing
+    Exit Function
+
+Not_Found:
+    FormExistsLocal = False
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function IsFormLoadedLocal( _
+    ByVal formName As String _
+) As Boolean
+
+    On Error GoTo Not_Loaded
+
+    IsFormLoadedLocal = CurrentProject.AllForms(formName).IsLoaded
+    Exit Function
+
+Not_Loaded:
+    IsFormLoadedLocal = False
+
+End Function
+
+
+'=============================================================
+' NORMALIZATION / BLANK / SAFE HELPERS
+'=============================================================
+
+Private Sub NormalizeItemValues()
+
+    Me.txtItemName = Trim$(Nz(Me.txtItemName, vbNullString))
+    Me.txtInternalSKU = UCase$(Trim$(Nz(Me.txtInternalSKU, vbNullString)))
+    Me.txtDescription = Trim$(Nz(Me.txtDescription, vbNullString))
+
+    If ControlExists("cboItemClass") Then
+        Me.Controls("cboItemClass").value = _
+            Trim$(Nz(Me.Controls("cboItemClass").value, vbNullString))
+    End If
+
+End Sub
+
+
+Private Function IsBlankNewItemRecord() As Boolean
+
+    If Not Me.NewRecord Then
+        Exit Function
+    End If
+
+    IsBlankNewItemRecord = _
+        (Len(Trim$(Nz(Me.txtItemName, vbNullString))) = 0) And _
+        (Len(Trim$(Nz(Me.txtDescription, vbNullString))) = 0) And _
+        (Nz(Me.cboCategoryID, 0) = 0) And _
+        (Nz(Me.cboBaseUnitID, 0) = 0) And _
+        (Nz(Me.cboDefaultLocationID, 0) = 0)
+
+End Function
+
+
+Private Function IsQuickAddRequest() As Boolean
+
+    IsQuickAddRequest = _
+        (Left$(Nz(Me.OpenArgs, vbNullString), 9) = "QUICKADD|")
+
+End Function
+
+
+Private Function ControlExists(ByVal controlName As String) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim controlObject As Control
+
+    Set controlObject = Me.Controls(controlName)
+    ControlExists = True
+
+Exit_Handler:
+    Set controlObject = Nothing
+    Exit Function
+
+Err_Handler:
+    ControlExists = False
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function SqlText(ByVal value As String) As String
+
+    SqlText = "'" & Replace(value, "'", "''") & "'"
+
+End Function

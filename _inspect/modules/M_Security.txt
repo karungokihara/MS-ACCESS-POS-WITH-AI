@@ -1,0 +1,42 @@
+Option Compare Database
+Option Explicit
+
+Public Function HasPermission(ByVal PermissionName As String) As Boolean
+
+    Dim RoleID As Long
+    Dim permissionID As Long
+    Dim result As Variant
+
+    RoleID = Nz(TempVars("CurrentRoleID"), 0)
+
+    If RoleID = 1 Then
+        HasPermission = True
+        Exit Function
+    End If
+
+    permissionID = Nz(DLookup("PermissionID", "T_Permissions", _
+        "PermissionName='" & Replace(PermissionName, "'", "''") & "'"), 0)
+
+    If permissionID = 0 Then Exit Function
+
+    result = DLookup("CanView", "T_RolePermissions", _
+        "RoleID=" & RoleID & " AND PermissionID=" & permissionID)
+
+    HasPermission = Nz(result, False)
+
+End Function
+
+
+Public Function OpenSecureForm( _
+    ByVal FormName As String, _
+    ByVal PermissionName As String)
+
+    If Not HasPermission(PermissionName) Then
+        MsgBox "You do not have permission to access this section.", _
+               vbExclamation, "Access Denied"
+        Exit Function
+    End If
+
+    DoCmd.OpenForm FormName
+
+End Function

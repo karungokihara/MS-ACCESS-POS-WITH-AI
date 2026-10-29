@@ -1,0 +1,112 @@
+﻿dbMemo "SQL" ="SELECT INV.InvoiceID, INV.InvoiceNo, INV.InvoiceDate, INV.InvoiceType, INV.Invoi"
+    "ceStatus, INV.CustomerID, C.CustomerName, INV.CustomerPOID, P.PONumber, INV.Sale"
+    "sOrderID, SO.SalesOrderNo, INV.PaymentTerms, INV.BillToName, INV.SubtotalAmount,"
+    " INV.TaxAmount, INV.GrandTotalAmount, Nz(L.LineCount,0) AS LineCount, Nz(L.Total"
+    "InvoiceQty,0) AS TotalInvoiceQty, Nz(L.LinesSubtotal,0) AS LinesSubtotal, INV.Cr"
+    "eatedOn, INV.UpdatedOn\015\012FROM (((T_Invoices AS INV LEFT JOIN T_Customers AS"
+    " C ON INV.CustomerID = C.CustomerID) LEFT JOIN T_CustomerPOs AS P ON INV.Custome"
+    "rPOID = P.CustomerPOID) LEFT JOIN T_SalesOrders AS SO ON INV.SalesOrderID = SO.S"
+    "alesOrderID) LEFT JOIN (SELECT\015\012                InvoiceID,\015\012        "
+    "        Count(*) AS LineCount,\015\012                Sum(Nz([Quantity],0)) AS T"
+    "otalInvoiceQty,\015\012                Sum(Nz([LineSubtotal],0)) AS LinesSubtota"
+    "l\015\012            FROM T_InvoiceLines\015\012            GROUP BY InvoiceID\015"
+    "\012        )  AS L ON INV.InvoiceID = L.InvoiceID\015\012ORDER BY INV.InvoiceDa"
+    "te DESC , INV.InvoiceNo;\015\012"
+dbMemo "Connect" =""
+dbBoolean "ReturnsRecords" ="-1"
+dbInteger "ODBCTimeout" ="60"
+dbBoolean "OrderByOn" ="0"
+dbByte "Orientation" ="0"
+dbByte "DefaultView" ="2"
+dbBinary "GUID" = Begin
+    0xe76c2c9800e535479b987f88dbe15e1a
+End
+dbBoolean "FilterOnLoad" ="0"
+dbBoolean "OrderByOnLoad" ="-1"
+dbByte "PublishToWeb" ="1"
+Begin
+    Begin
+        dbText "Name" ="INV.InvoiceNo"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="INV.InvoiceID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="INV.InvoiceStatus"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="INV.InvoiceType"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="INV.InvoiceDate"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="C.CustomerName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="INV.CustomerID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="INV.CustomerPOID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.PONumber"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="INV.SalesOrderID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="SO.SalesOrderNo"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="INV.PaymentTerms"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="INV.BillToName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="INV.SubtotalAmount"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="INV.TaxAmount"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="INV.GrandTotalAmount"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="LineCount"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="TotalInvoiceQty"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="LinesSubtotal"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="INV.CreatedOn"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="INV.UpdatedOn"
+        dbLong "AggregateType" ="-1"
+    End
+End

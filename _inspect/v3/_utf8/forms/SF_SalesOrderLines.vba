@@ -1,0 +1,498 @@
+﻿Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+'=============================================================
+' FORM: SF_SalesOrderLines
+'
+' PURPOSE:
+'   Sales order line entry for both:
+'       - Customer-PO-created sales orders
+'       - Direct sales with no Customer PO
+'
+' IMPORTANT:
+'   Sales order lines do NOT move stock.
+'   Stock movement happens later during shipment/issue.
+'
+' DIRECT SALE:
+'   A manually entered line leaves CustomerPOLineID as Null.
+'   If the header is new, it is saved automatically before the
+'   first line is created.
+'=============================================================
+
+
+Private Sub Form_Load()
+
+    On Error GoTo Err_Handler
+
+    ConfigureSalesOrderLineForm
+    ConfigureSalesOrderLineCombos
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+
+    MsgBox _
+        "The sales order line form could not be loaded." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Sales Order Lines"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_Current()
+
+    On Error Resume Next
+    CalculateLineSubtotal
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub Form_BeforeInsert(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    Dim salesOrderIDValue As Long
+
+    salesOrderIDValue = EnsureParentSalesOrderID()
+
+    If salesOrderIDValue <= 0 Then
+        Cancel = True
+        Exit Sub
+    End If
+
+    Me!SalesOrderID = salesOrderIDValue
+
+    'A line typed directly by the user has no originating
+    'Customer PO line. Programmatically copied PO lines already
+    'exist before this form displays them.
+    Me!CustomerPOLineID = Null
+
+    If IsNull(Me!QuantityShipped) Then
+        Me!QuantityShipped = 0
+    End If
+
+    If Len(Trim$(Nz(Me!LineStatus, vbNullString))) = 0 Then
+        Me!LineStatus = "Open"
+    End If
+
+    If IsNull(Me!Taxable) Then
+        Me!Taxable = False
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+
+    Cancel = True
+
+    MsgBox _
+        "The new sales order line could not be initialized." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "New Sales Order Line"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_BeforeUpdate(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    Dim salesOrderIDValue As Long
+
+    salesOrderIDValue = CurrentParentSalesOrderID()
+
+    If salesOrderIDValue <= 0 Then
+        salesOrderIDValue = EnsureParentSalesOrderID()
+    End If
+
+    If salesOrderIDValue <= 0 Then
+
+        MsgBox _
+            "The sales order header could not be saved automatically.", _
+            vbExclamation, _
+            "Sales Order Header Not Saved"
+
+        Cancel = True
+        Exit Sub
+
+    End If
+
+    Me!SalesOrderID = salesOrderIDValue
+
+    If Not ValidateLineRecord Then
+        Cancel = True
+        Exit Sub
+    End If
+
+    CalculateLineSubtotal
+
+    If IsNull(Me!QuantityShipped) Then
+        Me!QuantityShipped = 0
+    End If
+
+    If Len(Trim$(Nz(Me!LineStatus, vbNullString))) = 0 Then
+        Me!LineStatus = "Open"
+    End If
+
+    If Nz(Me!SalesOrderLineID, 0) = 0 Then
+        SafeSetField "CreatedOn", Now()
+    End If
+
+    SafeSetField "UpdatedOn", Now()
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+
+    Cancel = True
+
+    MsgBox _
+        "The sales order line could not be validated." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Sales Order Line Validation"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub ItemID_AfterUpdate()
+
+    On Error Resume Next
+
+    Dim salesPrice As Variant
+    Dim BaseUnitID As Variant
+
+    If IsNull(Me!ItemID) Then Exit Sub
+
+    If Len(Trim$(Nz(Me!LineDescription, vbNullString))) = 0 Then
+        Me!LineDescription = Nz(Me!ItemID.Column(1), vbNullString)
+    End If
+
+    salesPrice = DLookup( _
+        "DefaultSalesPrice", _
+        "T_Items", _
+        "ItemID = " & CLng(Me!ItemID) _
+    )
+
+    If Not IsNull(salesPrice) Then
+
+        If Nz(Me!UnitPrice, 0) = 0 Then
+            Me!UnitPrice = salesPrice
+        End If
+
+    End If
+
+    BaseUnitID = DLookup( _
+        "BaseUnitID", _
+        "T_Items", _
+        "ItemID = " & CLng(Me!ItemID) _
+    )
+
+    If Not IsNull(BaseUnitID) Then
+
+        If IsNull(Me!UnitID) Then
+            Me!UnitID = CLng(BaseUnitID)
+        End If
+
+    End If
+
+    CalculateLineSubtotal
+
+    On Error GoTo 0
+
+    UX_FillLineFromItem Me
+End Sub
+
+
+Private Sub QuantityOrdered_AfterUpdate()
+
+    CalculateLineSubtotal
+
+End Sub
+
+
+Private Sub UnitPrice_AfterUpdate()
+
+    CalculateLineSubtotal
+
+End Sub
+
+
+Private Sub ItemID_NotInList(NewData As String, Response As Integer)
+    On Error GoTo Err_Handler
+    Response = acDataErrContinue
+    If HandleComboNotInList(Me!ItemID, NewData, "F_ItemSetup", "T_Items", "ItemID", "ItemName", "InternalSKU") Then
+        Response = acDataErrAdded
+    Else
+        Me!ItemID.Undo
+    End If
+    Exit Sub
+Err_Handler:
+    Response = acDataErrContinue
+    MsgBox Err.Description, vbExclamation, "Add Item"
+End Sub
+
+
+'=============================================================
+' CONFIGURATION
+'=============================================================
+Private Sub ConfigureSalesOrderLineForm()
+
+    On Error Resume Next
+
+    Me.AllowAdditions = True
+    Me.AllowEdits = True
+    Me.AllowDeletions = True
+
+    Me!SalesOrderLineID.Visible = False
+    Me!SalesOrderID.Visible = False
+    Me!CustomerPOLineID.Visible = False
+    Me!CreatedOn.Visible = False
+    Me!UpdatedOn.Visible = False
+
+    Me!LineSubtotal.Locked = True
+    Me!LineSubtotal.Enabled = True
+
+    Me!LineDescription.EnterKeyBehavior = True
+    Me!LineDescription.ScrollBars = 2
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub ConfigureSalesOrderLineCombos()
+
+    On Error Resume Next
+
+    Me!ItemID.RowSourceType = "Table/Query"
+    Me!ItemID.RowSource = _
+        "SELECT ItemID, [InternalSKU] & ' - ' & [ItemName] " & _
+        "FROM T_Items " & _
+        "ORDER BY ItemName;"
+
+    Me!ItemID.BoundColumn = 1
+    Me!ItemID.ColumnCount = 2
+    Me!ItemID.ColumnWidths = "0cm;7cm"
+    Me!ItemID.LimitToList = True
+    Me!ItemID.AutoExpand = True
+    Me!ItemID.Requery
+
+
+    Me!UnitID.RowSourceType = "Table/Query"
+    Me!UnitID.RowSource = _
+        "SELECT UnitID, IIf(Len(Trim(Nz([UnitCode],'')))=0,[UnitName],[UnitCode]) " & _
+        "FROM T_Units " & _
+        "ORDER BY UnitCode;"
+
+    Me!UnitID.BoundColumn = 1
+    Me!UnitID.ColumnCount = 2
+    Me!UnitID.ColumnWidths = "0cm;3cm"
+    Me!UnitID.LimitToList = True
+    Me!UnitID.AutoExpand = True
+    Me!UnitID.Requery
+
+
+    Me!LineStatus.RowSourceType = "Value List"
+    Me!LineStatus.RowSource = _
+        "Open;" & _
+        "Ready to Ship;" & _
+        "Partially Shipped;" & _
+        "Shipped;" & _
+        "Invoiced;" & _
+        "Closed;" & _
+        "Cancelled"
+
+    Me!LineStatus.LimitToList = True
+    Me!LineStatus.Requery
+
+    On Error GoTo 0
+
+End Sub
+
+
+'=============================================================
+' VALIDATION / CALCULATION
+'=============================================================
+Private Function ValidateLineRecord() As Boolean
+
+    ValidateLineRecord = False
+
+    If IsNull(Me!ItemID) And _
+       Len(Trim$(Nz(Me!LineDescription, vbNullString))) = 0 Then
+
+        MsgBox _
+            "Select an item or enter a line description.", _
+            vbExclamation, _
+            "Line Description Required"
+
+        Me!LineDescription.SetFocus
+        Exit Function
+
+    End If
+
+    If IsNull(Me!QuantityOrdered) Or _
+       Not IsNumeric(Me!QuantityOrdered) Or _
+       CDbl(Me!QuantityOrdered) <= 0 Then
+
+        MsgBox _
+            "Quantity ordered must be greater than zero.", _
+            vbExclamation, _
+            "Invalid Quantity"
+
+        Me!QuantityOrdered.SetFocus
+        Exit Function
+
+    End If
+
+    If IsNull(Me!QuantityShipped) Then
+        Me!QuantityShipped = 0
+    End If
+
+    If CDbl(Nz(Me!QuantityShipped, 0)) < 0 Then
+
+        MsgBox _
+            "Quantity shipped cannot be negative.", _
+            vbExclamation, _
+            "Invalid Quantity Shipped"
+
+        Me!QuantityShipped.SetFocus
+        Exit Function
+
+    End If
+
+    If IsNull(Me!UnitID) Then
+
+        MsgBox _
+            "Select the unit.", _
+            vbExclamation, _
+            "Unit Required"
+
+        Me!UnitID.SetFocus
+        Exit Function
+
+    End If
+
+    If IsNull(Me!UnitPrice) Or _
+       Not IsNumeric(Me!UnitPrice) Or _
+       CCur(Me!UnitPrice) < 0 Then
+
+        MsgBox _
+            "Unit price cannot be negative.", _
+            vbExclamation, _
+            "Invalid Unit Price"
+
+        Me!UnitPrice.SetFocus
+        Exit Function
+
+    End If
+
+    ValidateLineRecord = True
+
+End Function
+
+
+Private Sub CalculateLineSubtotal()
+
+    On Error Resume Next
+
+    Me!LineSubtotal = _
+        Nz(Me!QuantityOrdered, 0) * Nz(Me!UnitPrice, 0)
+
+    On Error GoTo 0
+
+End Sub
+
+
+'=============================================================
+' PARENT HEADER HELPERS
+'=============================================================
+Private Function EnsureParentSalesOrderID() As Long
+
+    On Error GoTo Err_Handler
+
+    Dim parentSaved As Boolean
+
+    EnsureParentSalesOrderID = CurrentParentSalesOrderID()
+
+    If EnsureParentSalesOrderID > 0 Then
+        Exit Function
+    End If
+
+    parentSaved = _
+        CBool(Me.Parent.EnsureSalesOrderSavedForLines())
+
+    If Not parentSaved Then
+        Exit Function
+    End If
+
+    EnsureParentSalesOrderID = CurrentParentSalesOrderID()
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    EnsureParentSalesOrderID = 0
+
+    MsgBox _
+        "The sales order header could not be saved automatically." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Sales Order Header"
+
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function CurrentParentSalesOrderID() As Long
+
+    On Error GoTo Err_Handler
+
+    CurrentParentSalesOrderID = _
+        Nz(Me.Parent!SalesOrderID, 0)
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    CurrentParentSalesOrderID = 0
+    Resume Exit_Handler
+
+End Function
+
+
+Private Sub SafeSetField( _
+    ByVal fieldName As String, _
+    ByVal fieldValue As Variant _
+)
+
+    On Error Resume Next
+    Me(fieldName) = fieldValue
+    On Error GoTo 0
+
+End Sub

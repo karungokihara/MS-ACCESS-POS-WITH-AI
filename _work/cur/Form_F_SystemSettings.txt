@@ -1,0 +1,1186 @@
+﻿Option Compare Database
+Option Explicit
+
+'=============================================================
+' FORM: F_SystemSettings
+'
+' PURPOSE:
+'   Shows setup readiness for eight master-data areas.
+'
+' A SAVED RECORD IS INCOMPLETE WHEN:
+'   Any applicable business field is Null, blank or spaces only.
+'
+' EXCLUDED FROM COMPLETENESS:
+'   - AutoNumber primary keys
+'   - CreatedOn and UpdatedOn system timestamps
+'   - Notes and Description fields
+'   - Calculated child/subform records
+'   - Customer part numbers
+'   - Item part numbers and item suppliers
+'   - Template material and tool lines
+'   - Warehouse-location subform rows
+'
+' IMPORTANT:
+'   False is a valid Yes/No value.
+'   Zero is a valid numeric value unless a rule explicitly says
+'   that the number must be greater than zero.
+'
+' REQUIRED FORM CONTROL ADDED FOR THIS VERSION:
+'   Label named lblIncompleteSummary (unbound).
+'=============================================================
+
+
+'=============================================================
+' CACHED METRICS - LOADED ONCE PER REFRESH
+'=============================================================
+
+Private mCustomerTotal As Long
+Private mCustomerIncomplete As Long
+
+Private mSupplierTotal As Long
+Private mSupplierIncomplete As Long
+
+Private mCategoryTotal As Long
+Private mCategoryIncomplete As Long
+
+Private mUnitTotal As Long
+Private mUnitIncomplete As Long
+
+Private mItemTotal As Long
+Private mItemIncomplete As Long
+
+Private mTemplateTotal As Long
+Private mTemplateIncomplete As Long
+
+Private mWarehouseTotal As Long
+Private mWarehouseIncomplete As Long
+
+Private mLocationTotal As Long
+Private mLocationIncomplete As Long
+
+
+'=============================================================
+' BACKUP AND RESTORE
+'=============================================================
+
+Private Sub cmdBackupData_Click()
+
+    UX_BackupAllData
+
+End Sub
+
+
+Private Sub cmdRestoreData_Click()
+
+    UX_RestoreAllData
+
+End Sub
+
+
+Private Sub cmdUserManagement_Click()
+
+    DoCmd.OpenForm "F_UserManagement", _
+        View:=acNormal, _
+        WindowMode:=acDialog
+
+End Sub
+'=============================================================
+' AREA DRILL-DOWN
+'=============================================================
+
+Private Sub WireAreaDrilldowns()
+
+    SetAreaDrilldown Me.lblCustomerStatus, "customer", mCustomerIncomplete
+    SetAreaDrilldown Me.lblSupplierStatus, "supplier", mSupplierIncomplete
+    SetAreaDrilldown Me.lblCategoryStatus, "category", mCategoryIncomplete
+    SetAreaDrilldown Me.lblUnitStatus, "unit", mUnitIncomplete
+    SetAreaDrilldown Me.lblItemStatus, "item", mItemIncomplete
+    SetAreaDrilldown Me.lblTemplateStatus, "template", mTemplateIncomplete
+    SetAreaDrilldown Me.lblWarehouseStatus, "warehouse", mWarehouseIncomplete
+    SetAreaDrilldown Me.lblLocationStatus, "location", mLocationIncomplete
+
+End Sub
+
+
+Private Sub SetAreaDrilldown( _
+    ByVal statusLabel As Control, _
+    ByVal areaName As String, _
+    ByVal incompleteCount As Long _
+)
+
+    Dim openArguments As String
+
+    On Error Resume Next
+
+    If incompleteCount > 0 Then
+        openArguments = "=UX_OpenAreaList(""" & areaName & """,True)"
+    Else
+        openArguments = "=UX_OpenAreaList(""" & areaName & """,False)"
+    End If
+
+    statusLabel.OnClick = openArguments
+    statusLabel.HyperlinkAddress = vbNullString
+
+    On Error GoTo 0
+
+End Sub
+
+
+'=============================================================
+' FORM EVENTS
+'=============================================================
+
+Private Sub Form_Load()
+
+    WireAreaDrilldowns
+    RefreshSetup
+
+End Sub
+
+
+Private Sub Form_Activate()
+
+    RefreshSetup
+
+End Sub
+
+
+'=============================================================
+' MAIN REFRESH
+'=============================================================
+
+Private Sub RefreshSetup()
+
+    On Error GoTo Err_Handler
+
+    LoadSetupMetrics
+
+    UpdatePartners
+    UpdateInventory
+    UpdateStorage
+
+    UpdateCardColors
+    UpdateCompletion
+    UpdateIncompleteSummary
+    UpdateNextAction
+    WireAreaDrilldowns
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The System Setup status could not be refreshed." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Source: " & Err.Source & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "System Setup"
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' LOAD TOTAL AND INCOMPLETE COUNTS
+'=============================================================
+
+Private Sub LoadSetupMetrics()
+
+    Dim externalCustomerCriteria As String
+
+    externalCustomerCriteria = _
+        "UCase(Trim(Nz([CustomerType],'')))<>'INTERNAL'"
+
+    mCustomerTotal = CountDomainRecords("T_Customers", externalCustomerCriteria)
+    mCustomerIncomplete = CountDomainRecords( _
+        "T_Customers", _
+        "(" & externalCustomerCriteria & ") AND (" & _
+            CustomerIncompleteCriteria() & ")")
+
+    mSupplierTotal = CountDomainRecords("T_Suppliers")
+    mSupplierIncomplete = CountDomainRecords( _
+        "T_Suppliers", _
+        SupplierIncompleteCriteria())
+
+    mCategoryTotal = CountDomainRecords("T_Categories")
+    mCategoryIncomplete = CountDomainRecords( _
+        "T_Categories", _
+        CategoryIncompleteCriteria())
+
+    mUnitTotal = CountDomainRecords("T_Units")
+    mUnitIncomplete = CountDomainRecords( _
+        "T_Units", _
+        UnitIncompleteCriteria())
+
+    mItemTotal = CountDomainRecords("T_Items")
+    mItemIncomplete = CountDomainRecords( _
+        "T_Items", _
+        ItemIncompleteCriteria())
+
+    mTemplateTotal = CountDomainRecords("T_AssemblyTemplates")
+    mTemplateIncomplete = CountDomainRecords( _
+        "T_AssemblyTemplates", _
+        TemplateIncompleteCriteria())
+
+    mWarehouseTotal = CountDomainRecords("T_Warehouses")
+    mWarehouseIncomplete = CountDomainRecords( _
+        "T_Warehouses", _
+        WarehouseIncompleteCriteria())
+
+    mLocationTotal = CountDomainRecords("T_Locations")
+    mLocationIncomplete = CountDomainRecords( _
+        "T_Locations", _
+        LocationIncompleteCriteria())
+
+End Sub
+'=============================================================
+' PARTNERS CARD
+'=============================================================
+
+Private Sub UpdatePartners()
+
+    ApplyAreaStatus _
+        Me.lblCustomerStatus, _
+        Me.cmdCustomerSetup, _
+        mCustomerTotal, _
+        mCustomerIncomplete, _
+        "customer", _
+        "customers", _
+        "Add Customers", _
+        "Manage Customers", _
+        "Review Customers"
+
+    ApplyAreaStatus _
+        Me.lblSupplierStatus, _
+        Me.cmdSupplierSetup, _
+        mSupplierTotal, _
+        mSupplierIncomplete, _
+        "supplier", _
+        "suppliers", _
+        "Add Suppliers", _
+        "Manage Suppliers", _
+        "Review Suppliers"
+
+End Sub
+
+
+'=============================================================
+' INVENTORY CARD
+'=============================================================
+
+Private Sub UpdateInventory()
+
+    ApplyAreaStatus _
+        Me.lblCategoryStatus, _
+        Me.cmdCategorySetup, _
+        mCategoryTotal, _
+        mCategoryIncomplete, _
+        "category", _
+        "categories", _
+        "Add Categories", _
+        "Add Category", _
+        "Review Categories"
+
+    ApplyAreaStatus _
+        Me.lblUnitStatus, _
+        Me.cmdUnitSetup, _
+        mUnitTotal, _
+        mUnitIncomplete, _
+        "unit", _
+        "units", _
+        "Add Units", _
+        "Add Units", _
+        "Review Units"
+
+    ApplyAreaStatus _
+        Me.lblItemStatus, _
+        Me.cmdItemSetup, _
+        mItemTotal, _
+        mItemIncomplete, _
+        "item", _
+        "items", _
+        "Add Items", _
+        "Manage Items", _
+        "Review Items"
+
+    ApplyAreaStatus _
+        Me.lblTemplateStatus, _
+        Me.cmdTemplateSetup, _
+        mTemplateTotal, _
+        mTemplateIncomplete, _
+        "template", _
+        "templates", _
+        "Add Templates", _
+        "Manage Templates", _
+        "Review Templates"
+
+End Sub
+
+
+'=============================================================
+' STORAGE CARD
+'=============================================================
+
+Private Sub UpdateStorage()
+
+    ApplyAreaStatus _
+        Me.lblWarehouseStatus, _
+        Me.cmdWarehouseSetup, _
+        mWarehouseTotal, _
+        mWarehouseIncomplete, _
+        "warehouse", _
+        "warehouses", _
+        "Add Warehouse", _
+        "Manage Warehouses", _
+        "Review Warehouses"
+
+    ApplyAreaStatus _
+        Me.lblLocationStatus, _
+        Me.cmdLocationSetup, _
+        mLocationTotal, _
+        mLocationIncomplete, _
+        "location", _
+        "locations", _
+        "Add Location", _
+        "Manage Locations", _
+        "Review Locations"
+
+End Sub
+
+
+'=============================================================
+' APPLY ONE AREA'S STATUS TEXT, BUTTON AND COLOUR
+'=============================================================
+
+Private Sub ApplyAreaStatus( _
+    ByVal statusLabel As Control, _
+    ByVal actionButton As Control, _
+    ByVal totalCount As Long, _
+    ByVal incompleteCount As Long, _
+    ByVal singularName As String, _
+    ByVal pluralName As String, _
+    ByVal addCaption As String, _
+    ByVal manageCaption As String, _
+    ByVal reviewCaption As String _
+)
+
+    Dim readyCount As Long
+
+    readyCount = ReadyRecordCount( _
+        totalCount, _
+        incompleteCount)
+
+    If totalCount = 0 Then
+
+        statusLabel.Caption = _
+            "No " & pluralName & " set up"
+
+        statusLabel.ForeColor = RGB(192, 0, 0)
+        actionButton.Caption = addCaption
+
+    ElseIf incompleteCount > 0 Then
+
+        statusLabel.Caption = _
+            CountPhrase( _
+                readyCount, _
+                singularName, _
+                pluralName) & _
+            " ready; " & _
+            CountPhrase( _
+                incompleteCount, _
+                singularName, _
+                pluralName) & _
+            " incomplete"
+
+        statusLabel.ForeColor = RGB(192, 96, 0)
+        actionButton.Caption = reviewCaption
+
+    Else
+
+        statusLabel.Caption = _
+            CountPhrase( _
+                totalCount, _
+                singularName, _
+                pluralName) & _
+            " ready"
+
+        statusLabel.ForeColor = RGB(0, 128, 0)
+        actionButton.Caption = manageCaption
+
+    End If
+
+End Sub
+
+
+'=============================================================
+' SETUP COMPLETION
+'=============================================================
+
+Private Sub UpdateCompletion()
+
+    Dim totalAreas As Long
+    Dim completeAreas As Long
+    Dim completionPercent As Long
+
+    totalAreas = 8
+    completeAreas = CompletedAreaCount()
+
+    completionPercent = Int( _
+        (CDbl(completeAreas) / CDbl(totalAreas)) * 100)
+
+    Me.lblSetupProgress.Caption = _
+        "Setup Completion: " & completionPercent & "%"
+
+    Me.lblSetupSummary.Caption = _
+        completeAreas & " of " & totalAreas & _
+        " setup areas completed"
+
+End Sub
+
+
+Private Function CompletedAreaCount() As Long
+
+    Dim result As Long
+
+    If AreaIsComplete( _
+        mCustomerTotal, _
+        mCustomerIncomplete) Then result = result + 1
+
+    If AreaIsComplete( _
+        mSupplierTotal, _
+        mSupplierIncomplete) Then result = result + 1
+
+    If AreaIsComplete( _
+        mCategoryTotal, _
+        mCategoryIncomplete) Then result = result + 1
+
+    If AreaIsComplete( _
+        mUnitTotal, _
+        mUnitIncomplete) Then result = result + 1
+
+    If AreaIsComplete( _
+        mItemTotal, _
+        mItemIncomplete) Then result = result + 1
+
+    If AreaIsComplete( _
+        mTemplateTotal, _
+        mTemplateIncomplete) Then result = result + 1
+
+    If AreaIsComplete( _
+        mWarehouseTotal, _
+        mWarehouseIncomplete) Then result = result + 1
+
+    If AreaIsComplete( _
+        mLocationTotal, _
+        mLocationIncomplete) Then result = result + 1
+
+    CompletedAreaCount = result
+
+End Function
+
+
+'=============================================================
+' OVERALL INCOMPLETE-RECORD STATUS
+'=============================================================
+
+Private Sub UpdateIncompleteSummary()
+
+    Dim incompleteRecords As Long
+    Dim incompleteAreas As Long
+
+    incompleteRecords = _
+        mCustomerIncomplete + _
+        mSupplierIncomplete + _
+        mCategoryIncomplete + _
+        mUnitIncomplete + _
+        mItemIncomplete + _
+        mTemplateIncomplete + _
+        mWarehouseIncomplete + _
+        mLocationIncomplete
+
+    If mCustomerIncomplete > 0 Then
+        incompleteAreas = incompleteAreas + 1
+    End If
+
+    If mSupplierIncomplete > 0 Then
+        incompleteAreas = incompleteAreas + 1
+    End If
+
+    If mCategoryIncomplete > 0 Then
+        incompleteAreas = incompleteAreas + 1
+    End If
+
+    If mUnitIncomplete > 0 Then
+        incompleteAreas = incompleteAreas + 1
+    End If
+
+    If mItemIncomplete > 0 Then
+        incompleteAreas = incompleteAreas + 1
+    End If
+
+    If mTemplateIncomplete > 0 Then
+        incompleteAreas = incompleteAreas + 1
+    End If
+
+    If mWarehouseIncomplete > 0 Then
+        incompleteAreas = incompleteAreas + 1
+    End If
+
+    If mLocationIncomplete > 0 Then
+        incompleteAreas = incompleteAreas + 1
+    End If
+
+    If incompleteRecords = 0 Then
+
+        Me.lblIncompleteSummary.Caption = _
+            "No incomplete saved records"
+
+        Me.lblIncompleteSummary.ForeColor = RGB(0, 128, 0)
+
+    Else
+
+        Me.lblIncompleteSummary.Caption = _
+            CountPhrase( _
+                incompleteRecords, _
+                "incomplete record", _
+                "incomplete records") & _
+            " across " & _
+            CountPhrase( _
+                incompleteAreas, _
+                "setup area", _
+                "setup areas")
+
+        Me.lblIncompleteSummary.ForeColor = RGB(192, 96, 0)
+
+    End If
+
+End Sub
+
+
+'=============================================================
+' NEXT ACTION
+'=============================================================
+
+Private Sub UpdateNextAction()
+
+    'Locations come first. A location can be created before any
+    'warehouse exists.
+    If mLocationTotal = 0 Then
+        SetNextAction _
+            "Create your first stock location. A warehouse is optional.", _
+            "Create Location"
+        Exit Sub
+    End If
+
+    If mLocationIncomplete > 0 Then
+        SetNextAction _
+            MissingDetailsMessage( _
+                mLocationIncomplete, _
+                "location record", _
+                "location records"), _
+            "Review Locations"
+        Exit Sub
+    End If
+
+    If mWarehouseTotal = 0 Then
+        SetNextAction _
+            "Create at least one warehouse.", _
+            "Create Warehouse"
+        Exit Sub
+    End If
+
+    If mWarehouseIncomplete > 0 Then
+        SetNextAction _
+            MissingDetailsMessage( _
+                mWarehouseIncomplete, _
+                "warehouse record", _
+                "warehouse records"), _
+            "Review Warehouses"
+        Exit Sub
+    End If
+
+    If mCategoryTotal = 0 Then
+        SetNextAction _
+            "Create categories before adding items.", _
+            "Create Categories"
+        Exit Sub
+    End If
+
+    If mCategoryIncomplete > 0 Then
+        SetNextAction _
+            MissingDetailsMessage( _
+                mCategoryIncomplete, _
+                "category record", _
+                "category records"), _
+            "Review Categories"
+        Exit Sub
+    End If
+
+    If mUnitTotal = 0 Then
+        SetNextAction _
+            "Create measurement units.", _
+            "Create Units"
+        Exit Sub
+    End If
+
+    If mUnitIncomplete > 0 Then
+        SetNextAction _
+            MissingDetailsMessage( _
+                mUnitIncomplete, _
+                "unit record", _
+                "unit records"), _
+            "Review Units"
+        Exit Sub
+    End If
+
+    If mCustomerTotal = 0 Then
+        SetNextAction _
+            "Create at least one customer.", _
+            "Create Customer"
+        Exit Sub
+    End If
+
+    If mCustomerIncomplete > 0 Then
+        SetNextAction _
+            MissingDetailsMessage( _
+                mCustomerIncomplete, _
+                "customer record", _
+                "customer records"), _
+            "Review Customers"
+        Exit Sub
+    End If
+
+    If mSupplierTotal = 0 Then
+        SetNextAction _
+            "Create at least one supplier.", _
+            "Create Supplier"
+        Exit Sub
+    End If
+
+    If mSupplierIncomplete > 0 Then
+        SetNextAction _
+            MissingDetailsMessage( _
+                mSupplierIncomplete, _
+                "supplier record", _
+                "supplier records"), _
+            "Review Suppliers"
+        Exit Sub
+    End If
+
+    If mItemTotal = 0 Then
+        SetNextAction _
+            "Add your inventory items.", _
+            "Add Items"
+        Exit Sub
+    End If
+
+    If mItemIncomplete > 0 Then
+        SetNextAction _
+            MissingDetailsMessage( _
+                mItemIncomplete, _
+                "item record", _
+                "item records"), _
+            "Review Items"
+        Exit Sub
+    End If
+
+    If mTemplateTotal = 0 Then
+        SetNextAction _
+            "Create at least one assembly template.", _
+            "Create Template"
+        Exit Sub
+    End If
+
+    If mTemplateIncomplete > 0 Then
+        SetNextAction _
+            MissingDetailsMessage( _
+                mTemplateIncomplete, _
+                "template record", _
+                "template records"), _
+            "Review Templates"
+        Exit Sub
+    End If
+
+    SetNextAction _
+        "System setup is complete.", _
+        "Completed"
+
+End Sub
+
+
+Private Sub SetNextAction( _
+    ByVal actionText As String, _
+    ByVal buttonCaption As String _
+)
+
+    Me.lblNextAction.Caption = actionText
+    Me.cmdNextAction.Caption = buttonCaption
+
+End Sub
+
+
+Private Function MissingDetailsMessage( _
+    ByVal recordCount As Long, _
+    ByVal singularName As String, _
+    ByVal pluralName As String _
+) As String
+
+    MissingDetailsMessage = _
+        CountPhrase( _
+            recordCount, _
+            singularName, _
+            pluralName) & _
+        " need required details."
+
+End Function
+
+
+'=============================================================
+' CARD COLOURS
+'=============================================================
+
+Private Sub UpdateCardColors()
+
+    UpdatePartnersCard
+    UpdateInventoryCard
+    UpdateStorageCard
+
+End Sub
+
+
+Private Sub SetCardColor( _
+    ByVal ctrl As Control, _
+    ByVal clr As Long _
+)
+
+    On Error Resume Next
+
+    ctrl.BackStyle = 1
+    ctrl.BackColor = clr
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub UpdatePartnersCard()
+
+    If AreaIsComplete( _
+        mCustomerTotal, _
+        mCustomerIncomplete) And _
+       AreaIsComplete( _
+        mSupplierTotal, _
+        mSupplierIncomplete) Then
+
+        SetCardColor _
+            Me.shpPartnersCard, _
+            RGB(220, 240, 220)
+
+    ElseIf mCustomerTotal > 0 Or _
+           mSupplierTotal > 0 Then
+
+        SetCardColor _
+            Me.shpPartnersCard, _
+            RGB(255, 245, 200)
+
+    Else
+
+        SetCardColor _
+            Me.shpPartnersCard, _
+            RGB(255, 220, 220)
+
+    End If
+
+End Sub
+
+
+Private Sub UpdateInventoryCard()
+
+    If AreaIsComplete( _
+        mCategoryTotal, _
+        mCategoryIncomplete) And _
+       AreaIsComplete( _
+        mUnitTotal, _
+        mUnitIncomplete) And _
+       AreaIsComplete( _
+        mItemTotal, _
+        mItemIncomplete) And _
+       AreaIsComplete( _
+        mTemplateTotal, _
+        mTemplateIncomplete) Then
+
+        SetCardColor _
+            Me.shpInventoryCard, _
+            RGB(220, 240, 220)
+
+    ElseIf mCategoryTotal > 0 Or _
+           mUnitTotal > 0 Or _
+           mItemTotal > 0 Or _
+           mTemplateTotal > 0 Then
+
+        SetCardColor _
+            Me.shpInventoryCard, _
+            RGB(255, 245, 200)
+
+    Else
+
+        SetCardColor _
+            Me.shpInventoryCard, _
+            RGB(255, 220, 220)
+
+    End If
+
+End Sub
+
+
+Private Sub UpdateStorageCard()
+
+    If AreaIsComplete( _
+        mWarehouseTotal, _
+        mWarehouseIncomplete) And _
+       AreaIsComplete( _
+        mLocationTotal, _
+        mLocationIncomplete) Then
+
+        SetCardColor _
+            Me.shpStorageCard, _
+            RGB(220, 240, 220)
+
+    ElseIf mWarehouseTotal > 0 Or _
+           mLocationTotal > 0 Then
+
+        SetCardColor _
+            Me.shpStorageCard, _
+            RGB(255, 245, 200)
+
+    Else
+
+        SetCardColor _
+            Me.shpStorageCard, _
+            RGB(255, 220, 220)
+
+    End If
+
+End Sub
+
+
+'=============================================================
+' COMPLETENESS CRITERIA
+'=============================================================
+
+Private Function CustomerIncompleteCriteria() As String
+
+    CustomerIncompleteCriteria = UX_AreaCriteria("customer")
+
+End Function
+Private Function SupplierIncompleteCriteria() As String
+
+    SupplierIncompleteCriteria = UX_AreaCriteria("supplier")
+
+End Function
+Private Function CategoryIncompleteCriteria() As String
+
+    CategoryIncompleteCriteria = UX_AreaCriteria("category")
+
+End Function
+
+
+Private Function UnitIncompleteCriteria() As String
+
+    UnitIncompleteCriteria = UX_AreaCriteria("unit")
+
+End Function
+
+
+Private Function ItemIncompleteCriteria() As String
+
+    ItemIncompleteCriteria = UX_AreaCriteria("item")
+
+End Function
+
+
+Private Function TemplateIncompleteCriteria() As String
+
+    TemplateIncompleteCriteria = UX_AreaCriteria("template")
+
+End Function
+
+
+Private Function WarehouseIncompleteCriteria() As String
+
+    WarehouseIncompleteCriteria = UX_AreaCriteria("warehouse")
+
+End Function
+Private Function LocationIncompleteCriteria() As String
+
+    LocationIncompleteCriteria = UX_AreaCriteria("location")
+
+End Function
+'=============================================================
+' CRITERIA BUILDERS
+'=============================================================
+
+Private Function BlankTextCriteria( _
+    ByVal fieldName As String _
+) As String
+
+    BlankTextCriteria = _
+        "Len(Trim(Nz([" & fieldName & "],'')))=0"
+
+End Function
+
+
+Private Function MissingKeyCriteria( _
+    ByVal fieldName As String _
+) As String
+
+    MissingKeyCriteria = _
+        "Nz([" & fieldName & "],0)=0"
+
+End Function
+
+
+Private Function AnyMissing( _
+    ParamArray expressions() As Variant _
+) As String
+
+    Dim result As String
+    Dim oneExpression As Variant
+
+    For Each oneExpression In expressions
+
+        If Len(Trim$(CStr(oneExpression))) > 0 Then
+
+            If Len(result) > 0 Then
+                result = result & " OR "
+            End If
+
+            result = result & _
+                "(" & CStr(oneExpression) & ")"
+
+        End If
+
+    Next oneExpression
+
+    AnyMissing = result
+
+End Function
+
+
+'=============================================================
+' DOMAIN COUNT WITH VISIBLE ERRORS
+'=============================================================
+
+Private Function CountDomainRecords( _
+    ByVal tableName As String, _
+    Optional ByVal criteria As String = vbNullString _
+) As Long
+
+    Dim originalDescription As String
+    Dim originalNumber As Long
+
+    On Error GoTo Err_Handler
+
+    If Len(Trim$(criteria)) = 0 Then
+        CountDomainRecords = DCount("*", tableName)
+    Else
+        CountDomainRecords = DCount( _
+            "*", _
+            tableName, _
+            criteria)
+    End If
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    originalNumber = Err.Number
+    originalDescription = Err.Description
+
+    Err.Raise _
+        vbObjectError + 8101, _
+        "CountDomainRecords", _
+        "Completeness could not be evaluated for " & _
+        tableName & "." & _
+        vbCrLf & vbCrLf & _
+        "Check that every field in the completeness rule " & _
+        "exists in that table." & _
+        vbCrLf & vbCrLf & _
+        "Original error " & originalNumber & ": " & _
+        originalDescription
+
+End Function
+
+
+'=============================================================
+' GENERAL COUNT HELPERS
+'=============================================================
+
+Private Function AreaIsComplete( _
+    ByVal totalCount As Long, _
+    ByVal incompleteCount As Long _
+) As Boolean
+
+    AreaIsComplete = _
+        (totalCount > 0 And incompleteCount = 0)
+
+End Function
+
+
+Private Function ReadyRecordCount( _
+    ByVal totalCount As Long, _
+    ByVal incompleteCount As Long _
+) As Long
+
+    If incompleteCount >= totalCount Then
+        ReadyRecordCount = 0
+    Else
+        ReadyRecordCount = totalCount - incompleteCount
+    End If
+
+End Function
+
+
+Private Function CountPhrase( _
+    ByVal recordCount As Long, _
+    ByVal singularName As String, _
+    ByVal pluralName As String _
+) As String
+
+    If recordCount = 1 Then
+        CountPhrase = recordCount & " " & singularName
+    Else
+        CountPhrase = recordCount & " " & pluralName
+    End If
+
+End Function
+
+
+'=============================================================
+' BUTTONS - EXISTING DESTINATIONS PRESERVED
+'=============================================================
+
+Private Sub cmdCustomerSetup_Click()
+
+    UX_OpenAreaList "customer", (mCustomerIncomplete > 0)
+
+End Sub
+
+
+Private Sub cmdSupplierSetup_Click()
+
+    UX_OpenAreaList "supplier", (mSupplierIncomplete > 0)
+
+End Sub
+
+
+Private Sub cmdCategorySetup_Click()
+
+    UX_OpenAreaList "category", (mCategoryIncomplete > 0)
+
+End Sub
+Private Sub cmdUnitSetup_Click()
+
+    UX_OpenAreaList "unit", (mUnitIncomplete > 0)
+
+End Sub
+
+
+Private Sub cmdItemSetup_Click()
+
+    UX_OpenAreaList "item", (mItemIncomplete > 0)
+
+End Sub
+
+
+Private Sub cmdTemplateSetup_Click()
+
+    UX_OpenAreaList "template", (mTemplateIncomplete > 0)
+
+End Sub
+
+
+Private Sub cmdWarehouseSetup_Click()
+
+    UX_OpenAreaList "warehouse", (mWarehouseIncomplete > 0)
+
+End Sub
+
+
+Private Sub cmdLocationSetup_Click()
+
+    UX_OpenAreaList "location", (mLocationIncomplete > 0)
+
+End Sub
+
+
+Private Sub cmdRefresh_Click()
+
+    RefreshSetup
+
+End Sub
+
+
+Private Sub cmdNextAction_Click()
+
+    On Error GoTo Err_Handler
+
+    Dim actionCaption As String
+
+    actionCaption = Nz(Me.cmdNextAction.Caption, vbNullString)
+
+    Select Case actionCaption
+        Case "Create Warehouse", "Manage Warehouses"
+            UX_OpenAreaList "warehouse", False
+        Case "Review Warehouses"
+            UX_OpenAreaList "warehouse", True
+        Case "Create Location", "Manage Locations"
+            UX_OpenAreaList "location", False
+        Case "Review Locations"
+            UX_OpenAreaList "location", True
+        Case "Create Categories", "Add Category"
+            UX_OpenAreaList "category", False
+        Case "Review Categories"
+            UX_OpenAreaList "category", True
+        Case "Create Units", "Add Units"
+            UX_OpenAreaList "unit", False
+        Case "Review Units"
+            UX_OpenAreaList "unit", True
+        Case "Create Customer", "Manage Customers"
+            UX_OpenAreaList "customer", False
+        Case "Review Customers"
+            UX_OpenAreaList "customer", True
+        Case "Create Supplier", "Manage Suppliers"
+            UX_OpenAreaList "supplier", False
+        Case "Review Suppliers"
+            UX_OpenAreaList "supplier", True
+        Case "Add Items", "Manage Items"
+            UX_OpenAreaList "item", False
+        Case "Review Items"
+            UX_OpenAreaList "item", True
+        Case "Create Template", "Manage Templates"
+            UX_OpenAreaList "template", False
+        Case "Review Templates"
+            UX_OpenAreaList "template", True
+        Case Else
+            RefreshSetup
+    End Select
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The selected setup action could not be opened." & _
+        vbCrLf & vbCrLf & _
+        "Action: " & Nz(Me.cmdNextAction.Caption, vbNullString) & _
+        vbCrLf & "Error Number: " & Err.Number & _
+        vbCrLf & "Details: " & Err.Description, _
+        vbExclamation, _
+        "System Setup"
+    Resume Exit_Handler
+
+End Sub
+

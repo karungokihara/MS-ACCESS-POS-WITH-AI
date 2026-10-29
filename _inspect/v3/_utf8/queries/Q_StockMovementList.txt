@@ -1,0 +1,169 @@
+﻿dbMemo "SQL" ="SELECT M.StockMovementID, M.MovementDate, M.MovementTypeID, MT.MovementTypeCode,"
+    " MT.MovementTypeName, MT.StockEffect, M.ItemID, I.InternalSKU, I.ItemName, M.Qua"
+    "ntity, M.FromLocationID, LFrom.LocationCode AS FromLocationCode, LFrom.LocationN"
+    "ame AS FromLocationName, WFrom.WarehouseName AS FromWarehouseName, M.ToLocationI"
+    "D, LTo.LocationCode AS ToLocationCode, LTo.LocationName AS ToLocationName, WTo.W"
+    "arehouseName AS ToWarehouseName, M.CustomerID, C.CustomerName, M.SalesOrderID, S"
+    "O.SalesOrderNo, M.SalesOrderLineID, M.CustomerPOID, P.PONumber, M.CustomerPOLine"
+    "ID, M.InvoiceID, INV.InvoiceNo, M.InvoiceLineID, M.ReferenceDocument, M.SourceDo"
+    "cumentType, M.Reason, M.Notes, M.MovementNotes\015\012FROM (((((((((T_StockMovem"
+    "ents AS M LEFT JOIN T_StockMovementTypes AS MT ON M.MovementTypeID = MT.Movement"
+    "TypeID) LEFT JOIN T_Items AS I ON M.ItemID = I.ItemID) LEFT JOIN T_Locations AS "
+    "LFrom ON M.FromLocationID = LFrom.LocationID) LEFT JOIN T_Warehouses AS WFrom ON"
+    " LFrom.WarehouseID = WFrom.WarehouseID) LEFT JOIN T_Locations AS LTo ON M.ToLoca"
+    "tionID = LTo.LocationID) LEFT JOIN T_Warehouses AS WTo ON LTo.WarehouseID = WTo."
+    "WarehouseID) LEFT JOIN T_Customers AS C ON M.CustomerID = C.CustomerID) LEFT JOI"
+    "N T_SalesOrders AS SO ON M.SalesOrderID = SO.SalesOrderID) LEFT JOIN T_CustomerP"
+    "Os AS P ON M.CustomerPOID = P.CustomerPOID) LEFT JOIN T_Invoices AS INV ON M.Inv"
+    "oiceID = INV.InvoiceID\015\012ORDER BY M.MovementDate DESC , M.StockMovementID D"
+    "ESC;\015\012"
+dbMemo "Connect" =""
+dbBoolean "ReturnsRecords" ="-1"
+dbInteger "ODBCTimeout" ="60"
+dbBoolean "OrderByOn" ="0"
+dbByte "Orientation" ="0"
+dbByte "DefaultView" ="2"
+dbBinary "GUID" = Begin
+    0xcb554d9625e13d43afdfe3b7ec13f382
+End
+dbBoolean "FilterOnLoad" ="0"
+dbBoolean "OrderByOnLoad" ="-1"
+dbByte "PublishToWeb" ="1"
+Begin
+    Begin
+        dbText "Name" ="M.SalesOrderID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="M.MovementDate"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="C.CustomerName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="M.StockMovementID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="M.SalesOrderLineID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="MT.MovementTypeCode"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="M.MovementTypeID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="M.Notes"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="M.ItemID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="MT.StockEffect"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="MT.MovementTypeName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.InternalSKU"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.ItemName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="M.SourceDocumentType"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="M.Quantity"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="M.FromLocationID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="FromLocationCode"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="FromLocationName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="FromWarehouseName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="M.ToLocationID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="ToLocationCode"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="ToLocationName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="ToWarehouseName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="M.CustomerID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="SO.SalesOrderNo"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="M.CustomerPOID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="M.Reason"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.PONumber"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="M.CustomerPOLineID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="M.InvoiceID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="INV.InvoiceNo"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="M.InvoiceLineID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="M.ReferenceDocument"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="M.MovementNotes"
+        dbLong "AggregateType" ="-1"
+    End
+End

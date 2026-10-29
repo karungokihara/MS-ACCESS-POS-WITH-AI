@@ -1,0 +1,98 @@
+You cannot call a method on a null-valued expression.
+At C:\Users\user\Downloads\LLC\_work\test1_location.ps1:21 char:1
++ Write-Host ("opened new: newrecord=" + $f.NewRecord + " wh=" + [strin ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+You cannot call a method on a null-valued expression.
+At C:\Users\user\Downloads\LLC\_work\test1_location.ps1:22 char:1
++ $f.Controls.Item("LocationName").Value = "TEST-AISLE-1"
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+You cannot call a method on a null-valued expression.
+At C:\Users\user\Downloads\LLC\_work\test1_location.ps1:23 char:1
++ $f.Controls.Item("LocationCode").Value = Null
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+You cannot call a method on a null-valued expression.
+At C:\Users\user\Downloads\LLC\_work\test1_location.ps1:24 char:1
++ $f.Controls.Item("cboWarehouseID").Value = Null
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+You cannot call a method on a null-valued expression.
+At C:\Users\user\Downloads\LLC\_work\test1_location.ps1:25 char:1
++ $f.Controls.Item("BinCode").Value = Null
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+You cannot call a method on a null-valued expression.
+At C:\Users\user\Downloads\LLC\_work\test1_location.ps1:26 char:1
++ $f.Controls.Item("ShelfCode").Value = Null
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+You cannot call a method on a null-valued expression.
+At C:\Users\user\Downloads\LLC\_work\test1_location.ps1:27 char:1
++ Write-Host ("code after name set = '" + [string]$f.Controls.Item("Loc ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+save err: Exception from HRESULT: 0x800A88D2
+TEST-AISLE-1 rows = 0
+Too few parameters. Expected 2.
+At C:\Users\user\Downloads\LLC\_work\test1_location.ps1:32 char:1
++ $row = $acc.CurrentDb().OpenRecordset("SELECT LocationCode, Warehouse ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (:) [], COMException
+    + FullyQualifiedErrorId : System.Runtime.InteropServices.COMException
+ 
+You cannot call a method on a null-valued expression.
+At C:\Users\user\Downloads\LLC\_work\test1_location.ps1:34 char:5
++     Write-Host ("code=" + [string]$row.Fields("LocationCode").Value + ...
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+You cannot call a method on a null-valued expression.
+At C:\Users\user\Downloads\LLC\_work\test1_location.ps1:36 char:1
++ $row.Close()
++ ~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+You cannot call a method on a null-valued expression.
+At C:\Users\user\Downloads\LLC\_work\test1_location.ps1:43 char:1
++ Write-Host ("reopen name=" + [string]$f.Controls.Item("LocationName") ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+quickadd existing still open = True
+TEST-AISLE-1 rows after quickadd = 0
+You cannot call a method on a null-valued expression.
+At C:\Users\user\Downloads\LLC\_work\test1_location.ps1:56 char:1
++ Write-Host ("quickadd new name='" + [string]$f.Controls.Item("Locatio ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+Exception from HRESULT: 0x800A88D2
+At C:\Users\user\Downloads\LLC\_work\test1_location.ps1:57 char:1
++ $f.Dirty = $false
++ ~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (:) [], COMException
+    + FullyQualifiedErrorId : System.Runtime.InteropServices.COMException
+ 
+TEST-AISLE-2 rows = 0
+final dup count = 1
+DONE

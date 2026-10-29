@@ -1,0 +1,171 @@
+﻿Operation =1
+Option =16
+RowCount ="100"
+Where ="(((MT.MovementTypeCode)=\"STOCK_IN\"))"
+Begin InputTables
+    Name ="T_StockMovements"
+    Alias ="SM"
+    Name ="T_Items"
+    Alias ="I"
+    Name ="T_StockMovementTypes"
+    Alias ="MT"
+    Name ="T_Locations"
+    Alias ="L"
+    Name ="T_Warehouses"
+    Alias ="W"
+End
+Begin OutputColumns
+    Expression ="I.ItemID"
+    Expression ="SM.StockMovementID"
+    Expression ="SM.MovementDate"
+    Expression ="I.InternalSKU"
+    Expression ="I.ItemName"
+    Expression ="SM.Quantity"
+    Expression ="W.WarehouseName"
+    Expression ="L.LocationName"
+    Expression ="SM.ReferenceDocument"
+    Expression ="SM.Reason"
+    Expression ="SM.UnitCost"
+End
+Begin Joins
+    LeftTable ="SM"
+    RightTable ="L"
+    Expression ="SM.ToLocationID = L.LocationID"
+    Flag =2
+    LeftTable ="L"
+    RightTable ="W"
+    Expression ="L.WarehouseID = W.WarehouseID"
+    Flag =2
+    LeftTable ="I"
+    RightTable ="SM"
+    Expression ="I.ItemID = SM.ItemID"
+    Flag =1
+    LeftTable ="MT"
+    RightTable ="SM"
+    Expression ="MT.MovementTypeID = SM.MovementTypeID"
+    Flag =1
+End
+Begin OrderBy
+    Expression ="SM.MovementDate"
+    Flag =1
+    Expression ="SM.StockMovementID"
+    Flag =1
+End
+dbBoolean "ReturnsRecords" ="-1"
+dbInteger "ODBCTimeout" ="60"
+dbBoolean "OrderByOn" ="0"
+dbByte "Orientation" ="0"
+dbByte "DefaultView" ="2"
+dbBinary "GUID" = Begin
+    0xd806517f99a5c64b8a39e8f05ef40340
+End
+dbBoolean "FilterOnLoad" ="0"
+dbBoolean "OrderByOnLoad" ="-1"
+dbByte "PublishToWeb" ="1"
+dbByte "RecordsetType" ="0"
+dbBoolean "TotalsRow" ="0"
+Begin
+    Begin
+        dbText "Name" ="SM.MovementDate"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="SM.StockMovementID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="SM.Quantity"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.ItemName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.InternalSKU"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="L.LocationName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="W.WarehouseName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="SM.ReferenceDocument"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="SM.Reason"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="SM.UnitCost"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.ItemID"
+        dbLong "AggregateType" ="-1"
+    End
+End
+Begin
+    State =0
+    Left =0
+    Top =0
+    Right =1638
+    Bottom =741
+    Left =-1
+    Top =-1
+    Right =936
+    Bottom =388
+    Left =0
+    Top =0
+    ColumnsShown =539
+    Begin
+        Left =60
+        Top =15
+        Right =240
+        Bottom =195
+        Top =0
+        Name ="SM"
+        Name =""
+    End
+    Begin
+        Left =300
+        Top =15
+        Right =480
+        Bottom =195
+        Top =0
+        Name ="I"
+        Name =""
+    End
+    Begin
+        Left =540
+        Top =15
+        Right =720
+        Bottom =195
+        Top =0
+        Name ="MT"
+        Name =""
+    End
+    Begin
+        Left =780
+        Top =15
+        Right =960
+        Bottom =195
+        Top =0
+        Name ="L"
+        Name =""
+    End
+    Begin
+        Left =1020
+        Top =15
+        Right =1200
+        Bottom =195
+        Top =0
+        Name ="W"
+        Name =""
+    End
+End

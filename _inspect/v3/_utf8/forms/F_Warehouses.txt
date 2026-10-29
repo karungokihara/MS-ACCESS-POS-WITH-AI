@@ -1,0 +1,825 @@
+﻿Version =21
+VersionRequired =20
+PublishOption =1
+Checksum =1794534523
+Begin Form
+    PopUp = NotDefault
+    RecordSelectors = NotDefault
+    AutoCenter = NotDefault
+    NavigationButtons = NotDefault
+    DividingLines = NotDefault
+    AllowDesignChanges = NotDefault
+    DefaultView =0
+    ScrollBars =0
+    ViewsAllowed =1
+    TabularFamily =0
+    PictureSizeMode =1
+    DatasheetGridlinesBehavior =3
+    PictureType =1
+    GridX =24
+    GridY =24
+    Width =16800
+    DatasheetFontHeight =11
+    ItemSuffix =17
+    Left =2655
+    Top =4065
+    Right =17745
+    Bottom =8760
+    DatasheetGridlinesColor =15263976
+    OnUnload ="[Event Procedure]"
+    RecSrcDt = Begin
+        0x4690e7c14d8de640
+    End
+    GUID = Begin
+        0x5e348616eee9a4448ab8a5d64f0dc817
+    End
+    RecordSource ="T_Warehouses"
+    Caption ="Warehouses"
+    BeforeUpdate ="[Event Procedure]"
+    DatasheetFontName ="Aptos"
+    PrtMip = Begin
+        0x6801000068010000680100006801000000000000201c0000e010000001000000 ,
+        0x010000006801000000000000a10700000100000001000000
+    End
+    PrtDevMode = Begin
+        0x0000000000000000308490d58b0200000000000000000000e70a7e35f77f0000 ,
+        0x010403069c004003032d000001000100ea0a6f08640001000f00580202000100 ,
+        0x5802030001004c657474657200000000030000000000c8420000c842e8e8e800 ,
+        0xb04a40d08b020000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000ffffffff4749533400000000000000000000000044494e55 ,
+        0x2200c80024031c00ac13d8c00000000000000000000000000000000000000000 ,
+        0x0000000000000000050000000000070000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000100000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000c8000000534d544a ,
+        0x000000001000b8007b00330045004500330039003100310034002d0033003000 ,
+        0x420034002d0034003500610034002d0041003100300039002d00310039004400 ,
+        0x3400410034003000460043004300320032007d000000524553444c4c00556e69 ,
+        0x726573444c4c00506170657253697a65004c4554544552004f7269656e746174 ,
+        0x696f6e00504f525452414954005265736f6c7574696f6e004450493630300043 ,
+        0x6f6c6f724d6f6465003234627070000000000000000000000000000000000000 ,
+        0x1c0000005634444d0100000000000000000000000000000000000000
+    End
+    PrtDevNames = Begin
+        0x08002c003f000100000000000000000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000000000000000006e ,
+        0x756c3a0000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x00000000
+    End
+    OnClick ="=UX_ButtonOut()"
+    OnLoad ="[Event Procedure]"
+    AllowDatasheetView =0
+    FilterOnLoad =0
+    ShowPageMargins =0
+    DisplayOnSharePointSite =1
+    DatasheetAlternateBackColor =15921906
+    PictureSizeMode =1
+    DatasheetGridlinesColor12 =0
+    FitToScreen =1
+    DatasheetBackThemeColorIndex =1
+    BorderThemeColorIndex =3
+    ThemeFontIndex =1
+    ForeThemeColorIndex =0
+    AlternateBackThemeColorIndex =1
+    AlternateBackShade =95.0
+    PrtDevModeW = Begin
+        0x00003dc78b02000019000000f77f0000004041d08b0200001900000000000000 ,
+        0x504441d08b0200005fed3db5f97f0000000008c48b020000796d2ff7f1000000 ,
+        0x01040306dc004003032d000001000100ea0a6f08640001000f00580202000100 ,
+        0x5802030001004c0065007400740065007200000000000000104041d08b020000 ,
+        0x00000000000000000000000000000000004041d08b0200005d000000f1000000 ,
+        0x1900000000000000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000ffffffff4749533400000000000000000000000044494e55 ,
+        0x2200c80024031c00ac13d8c00000000000000000000000000000000000000000 ,
+        0x0000000000000000050000000000070000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000100000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000c8000000534d544a ,
+        0x000000001000b8007b00330045004500330039003100310034002d0033003000 ,
+        0x420034002d0034003500610034002d0041003100300039002d00310039004400 ,
+        0x3400410034003000460043004300320032007d000000524553444c4c00556e69 ,
+        0x726573444c4c00506170657253697a65004c4554544552004f7269656e746174 ,
+        0x696f6e00504f525452414954005265736f6c7574696f6e004450493630300043 ,
+        0x6f6c6f724d6f6465003234627070000000000000000000000000000000000000 ,
+        0x1c0000005634444d0100000000000000000000000000000000000000
+    End
+    PrtDevNamesW = Begin
+        0x040028003b000100000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000006e0075006c003a000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000
+    End
+    NoSaveCTIWhenDisabled =1
+    Begin
+        Begin Label
+            BackStyle =0
+            TextFontFamily =0
+            FontSize =11
+            BorderColor =8355711
+            ForeColor =6710886
+            FontName ="Aptos"
+            GridlineColor =10921638
+            ThemeFontIndex =1
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =0
+            BorderTint =50.0
+            ForeThemeColorIndex =0
+            ForeTint =60.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin CommandButton
+            TextFontFamily =0
+            FontSize =11
+            FontWeight =400
+            ForeColor =4210752
+            FontName ="Aptos"
+            GridlineColor =10921638
+            ForeThemeColorIndex =0
+            ForeTint =75.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+            UseTheme =1
+            Shape =1
+            Gradient =12
+            BackColor =14790982
+            BackThemeColorIndex =4
+            BackTint =60.0
+            BorderLineStyle =0
+            BorderColor =14790982
+            BorderThemeColorIndex =4
+            BorderTint =60.0
+            ThemeFontIndex =1
+            HoverColor =15453059
+            HoverThemeColorIndex =4
+            HoverTint =40.0
+            PressedColor =6440976
+            PressedThemeColorIndex =4
+            PressedShade =75.0
+            HoverForeColor =4210752
+            HoverForeThemeColorIndex =0
+            HoverForeTint =75.0
+            PressedForeColor =4210752
+            PressedForeThemeColorIndex =0
+            PressedForeTint =75.0
+        End
+        Begin TextBox
+            AddColon = NotDefault
+            FELineBreak = NotDefault
+            TextFontFamily =0
+            BorderLineStyle =0
+            LabelX =-1800
+            FontSize =11
+            BorderColor =10921638
+            ForeColor =4210752
+            FontName ="Aptos"
+            AsianLineBreak =1
+            GridlineColor =10921638
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            ThemeFontIndex =1
+            ForeThemeColorIndex =0
+            ForeTint =75.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin Subform
+            BorderLineStyle =0
+            BorderColor =10921638
+            GridlineColor =10921638
+            BorderThemeColorIndex =1
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+            BorderShade =65.0
+            ShowPageHeaderAndPageFooter =1
+        End
+        Begin FormHeader
+            Height =720
+            BackColor =14482166
+            Name ="FormHeader"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x3f3d8637208cd5429119ca9380315582
+            End
+            AlternateBackShade =95.0
+            BackTint =20.0
+            Begin
+                Begin Label
+                    OverlapFlags =85
+                    TextAlign =2
+                    Left =6300
+                    Top =120
+                    Width =4075
+                    Height =480
+                    FontSize =20
+                    FontWeight =700
+                    ForeColor =4272139
+                    Name ="Label10"
+                    Caption ="Warehouses"
+                    GUID = Begin
+                        0x810abb33f914bd4a8ce8f25c0fe3373c
+                    End
+                    LayoutCachedLeft =6300
+                    LayoutCachedTop =120
+                    LayoutCachedWidth =10375
+                    LayoutCachedHeight =600
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                End
+            End
+        End
+        Begin Section
+            CanGrow = NotDefault
+            Height =7020
+            BackColor =14482166
+            Name ="Detail"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x99833050a072d24b99d573c9d3b522ff
+            End
+            AlternateBackColor =14482166
+            AlternateBackShade =95.0
+            Begin
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =2538
+                    Top =420
+                    Width =2448
+                    Height =312
+                    ColumnWidth =2448
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="WarehouseCode"
+                    ControlSource ="WarehouseCode"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xc85a0ee795962947af83e1737d12fefc
+                    End
+
+                    LayoutCachedLeft =2538
+                    LayoutCachedTop =420
+                    LayoutCachedWidth =4986
+                    LayoutCachedHeight =732
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =540
+                            Top =420
+                            Width =1908
+                            Height =312
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="WarehouseCode_Label"
+                            Caption ="WarehouseCode"
+                            GUID = Begin
+                                0xe88da541c1338e43b5d9028c814873db
+                            End
+                            LayoutCachedLeft =540
+                            LayoutCachedTop =420
+                            LayoutCachedWidth =2448
+                            LayoutCachedHeight =732
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =2538
+                    Top =840
+                    Width =3696
+                    Height =360
+                    ColumnWidth =3000
+                    TabIndex =1
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="WarehouseName"
+                    ControlSource ="WarehouseName"
+                    AfterUpdate ="[Event Procedure]"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x374adbe42aa9df429d14c31903566bb0
+                    End
+
+                    LayoutCachedLeft =2538
+                    LayoutCachedTop =840
+                    LayoutCachedWidth =6234
+                    LayoutCachedHeight =1200
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =540
+                            Top =840
+                            Width =1908
+                            Height =312
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="WarehouseName_Label"
+                            Caption ="WarehouseName"
+                            GUID = Begin
+                                0xfc644329e6aa1040b5c833c8235d40aa
+                            End
+                            LayoutCachedLeft =540
+                            LayoutCachedTop =840
+                            LayoutCachedWidth =2448
+                            LayoutCachedHeight =1152
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =2538
+                    Top =1320
+                    Width =3696
+                    Height =360
+                    ColumnWidth =3000
+                    TabIndex =2
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="Address"
+                    ControlSource ="Address"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x173aaf9dcab35d408cd1f222c5c63fcc
+                    End
+
+                    LayoutCachedLeft =2538
+                    LayoutCachedTop =1320
+                    LayoutCachedWidth =6234
+                    LayoutCachedHeight =1680
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =540
+                            Top =1320
+                            Width =1908
+                            Height =312
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Address_Label"
+                            Caption ="Address"
+                            GUID = Begin
+                                0x0249fd2a8ccdd74486a8a30dd9429243
+                            End
+                            LayoutCachedLeft =540
+                            LayoutCachedTop =1320
+                            LayoutCachedWidth =2448
+                            LayoutCachedHeight =1632
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =2538
+                    Top =1800
+                    Width =3696
+                    Height =360
+                    ColumnWidth =3000
+                    TabIndex =3
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="ContactPerson"
+                    ControlSource ="ContactPerson"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x07414e7c7de2f84b9a4dbb34ebb961f1
+                    End
+
+                    LayoutCachedLeft =2538
+                    LayoutCachedTop =1800
+                    LayoutCachedWidth =6234
+                    LayoutCachedHeight =2160
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =540
+                            Top =1800
+                            Width =1908
+                            Height =312
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="ContactPerson_Label"
+                            Caption ="ContactPerson"
+                            GUID = Begin
+                                0x27a7fc11481f0644b8c62cd31a1f5eb1
+                            End
+                            LayoutCachedLeft =540
+                            LayoutCachedTop =1800
+                            LayoutCachedWidth =2448
+                            LayoutCachedHeight =2112
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin Subform
+                    OverlapFlags =87
+                    Left =60
+                    Top =2820
+                    Width =15900
+                    Height =3840
+                    TabIndex =4
+                    Name ="SF_WarehouseLocations"
+                    SourceObject ="Form.SF_WarehouseLocations"
+                    LinkChildFields ="WarehouseID"
+                    LinkMasterFields ="WarehouseID"
+                    GUID = Begin
+                        0xb72e013127672246b62eca6141334e15
+                    End
+
+                    LayoutCachedLeft =60
+                    LayoutCachedTop =2820
+                    LayoutCachedWidth =15960
+                    LayoutCachedHeight =6660
+                    Begin
+                        Begin Label
+                            OverlapFlags =93
+                            TextAlign =2
+                            Left =4500
+                            Top =2520
+                            Width =2436
+                            Height =300
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="SF_WarehouseLocations Label"
+                            Caption ="Warehouse Locations"
+                            EventProcPrefix ="SF_WarehouseLocations_Label"
+                            GUID = Begin
+                                0xef2c7027e832a747878c0b210c1f3ca7
+                            End
+                            LayoutCachedLeft =4500
+                            LayoutCachedTop =2520
+                            LayoutCachedWidth =6936
+                            LayoutCachedHeight =2820
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    Left =8580
+                    Top =1140
+                    Width =1680
+                    FontWeight =700
+                    TabIndex =5
+                    ForeColor =16777215
+                    Name ="Command14"
+                    Caption ="Save"
+                    OnClick ="[Event Procedure]"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"Command14\")"
+                    GUID = Begin
+                        0xc1061ecd1a49fb42aa1ee37d4b0c091b
+                    End
+                    LeftPadding =45
+                    TopPadding =45
+                    RightPadding =150
+                    BottomPadding =150
+
+                    LayoutCachedLeft =8580
+                    LayoutCachedTop =1140
+                    LayoutCachedWidth =10260
+                    LayoutCachedHeight =1500
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    HoverForeTint =100.0
+                    HoverForeShade =50.0
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    PressedForeTint =100.0
+                    PressedForeShade =50.0
+                    Shadow =1
+                    Overlaps =1
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    Left =8580
+                    Top =1740
+                    Width =1680
+                    FontWeight =700
+                    TabIndex =6
+                    ForeColor =16777215
+                    Name ="Command15"
+                    Caption ="Close"
+                    OnClick ="[Event Procedure]"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"Command15\")"
+                    GUID = Begin
+                        0xc44a6c49ec3666469c86f36df8b6e53b
+                    End
+                    LeftPadding =45
+                    TopPadding =45
+                    RightPadding =150
+                    BottomPadding =150
+
+                    LayoutCachedLeft =8580
+                    LayoutCachedTop =1740
+                    LayoutCachedWidth =10260
+                    LayoutCachedHeight =2100
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    HoverForeTint =100.0
+                    HoverForeShade =50.0
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    PressedForeTint =100.0
+                    PressedForeShade =50.0
+                    Shadow =1
+                End
+                Begin CommandButton
+                    OverlapFlags =87
+                    TextFontFamily =34
+                    Left =8580
+                    Top =600
+                    Width =1680
+                    Height =372
+                    FontWeight =700
+                    TabIndex =7
+                    ForeColor =16777215
+                    Name ="Command16"
+                    Caption ="Add New"
+                    OnClick ="[Event Procedure]"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"Command16\")"
+                    GUID = Begin
+                        0x2ba7b437ddc59344aa27245f8808d81f
+                    End
+                    LeftPadding =45
+                    TopPadding =45
+                    RightPadding =150
+                    BottomPadding =150
+
+                    LayoutCachedLeft =8580
+                    LayoutCachedTop =600
+                    LayoutCachedWidth =10260
+                    LayoutCachedHeight =972
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    HoverForeTint =100.0
+                    HoverForeShade =50.0
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    PressedForeTint =100.0
+                    PressedForeShade =50.0
+                    Shadow =1
+                    Overlaps =1
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =14482166
+            Name ="FormFooter"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x321680216eeb774c93cebeb16acb9e73
+            End
+            AutoHeight =1
+            AlternateBackShade =95.0
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+
+' UX-WAREHOUSE
+Private Sub Form_Load()
+    On Error Resume Next
+    Me.Filter = ""
+    Me.FilterOn = False
+    Me.Caption = "Warehouses"
+    If Me.NewRecord Then ApplyWarehouseCode
+    If Left$(Nz(Me.OpenArgs, ""), 9) = "QUICKADD|" Then
+        Me!WarehouseName = Mid$(Me.OpenArgs, 10)
+        ApplyWarehouseCode
+    End If
+    UX_MarkRequired Me, "WarehouseName", "WarehouseCode"
+End Sub
+
+Private Sub Form_BeforeUpdate(Cancel As Integer)
+    On Error GoTo Err_Handler
+    If Len(Trim$(Nz(Me!WarehouseName, ""))) = 0 Then
+        MsgBox "Enter the warehouse name.", vbExclamation, "Warehouse"
+        Cancel = True
+        Exit Sub
+    End If
+    ApplyWarehouseCode
+    Exit Sub
+Err_Handler:
+    Cancel = True
+    MsgBox Err.Description, vbExclamation, "Warehouse"
+End Sub
+
+Private Sub WarehouseName_AfterUpdate()
+    ApplyWarehouseCode
+End Sub
+
+Private Sub ApplyWarehouseCode()
+    On Error Resume Next
+    Dim prefix As String
+    Dim n As Long
+    Dim candidate As String
+    If Len(Trim$(Nz(Me!WarehouseCode, ""))) > 0 Then Exit Sub
+    If Len(Trim$(Nz(Me!WarehouseName, ""))) = 0 Then Exit Sub
+    prefix = UCase$(Left$(Trim$(Me!WarehouseName), 4))
+    If Len(prefix) < 4 Then prefix = prefix & String$(4 - Len(prefix), "X")
+    n = 1
+    Do
+        candidate = prefix & "-" & Format$(n, "000")
+        If IsNull(DLookup("WarehouseID", "T_Warehouses", "WarehouseCode=" & UX_SqlText(candidate))) Then Exit Do
+        n = n + 1
+    Loop
+    Me!WarehouseCode = candidate
+End Sub
+
+Private Sub Command14_Click()
+    On Error GoTo Err_Handler
+    If Me.Dirty Then Me.Dirty = False
+    MsgBox "Warehouse saved. You can type locations in the list below.", vbInformation, "Warehouse"
+    Exit Sub
+Err_Handler:
+    MsgBox Err.Description, vbExclamation, "Warehouse"
+End Sub
+
+Private Sub Command15_Click()
+    UX_GoBack
+End Sub
+
+Private Sub Command16_Click()
+    On Error Resume Next
+    If Me.Dirty Then Me.Dirty = False
+    DoCmd.GoToRecord , , acNewRec
+    Me!WarehouseCode = Null
+    Me!WarehouseName = Null
+End Sub
+
+Private Sub Form_Unload(Cancel As Integer)
+    On Error Resume Next
+    If Me.NewRecord And Me.Dirty Then Me.Undo
+End Sub

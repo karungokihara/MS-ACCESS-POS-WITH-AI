@@ -1,0 +1,141 @@
+﻿dbMemo "SQL" ="SELECT SO.SalesOrderID, SO.SalesOrderNo, SO.CustomerID, C.CustomerName, SO.Custo"
+    "merPOID, P.PONumber, SO.OrderDate, SO.RequiredDate, SO.ShipDate, SO.SalesOrderSt"
+    "atus, SO.PaymentTerms, SO.ShipVia, SO.ShipToName, Nz(DCount(\"*\",\"T_SalesOrder"
+    "Lines\",\"SalesOrderID=\" & [SO].[SalesOrderID]),0) AS LineCount, Nz(DSum(\"Nz(["
+    "QuantityOrdered],0)\",\"T_SalesOrderLines\",\"SalesOrderID=\" & [SO].[SalesOrder"
+    "ID]),0) AS TotalOrderedQty, Nz(DSum(\"Nz([QuantityShipped],0)\",\"T_SalesOrderLi"
+    "nes\",\"SalesOrderID=\" & [SO].[SalesOrderID]),0) AS TotalShippedQty, Nz(DSum(\""
+    "Nz([QuantityOrdered],0)-Nz([QuantityShipped],0)\",\"T_SalesOrderLines\",\"SalesO"
+    "rderID=\" & [SO].[SalesOrderID]),0) AS RemainingQty, Nz(DSum(\"Nz([LineSubtotal]"
+    ",0)\",\"T_SalesOrderLines\",\"SalesOrderID=\" & [SO].[SalesOrderID]),0) AS Order"
+    "Subtotal, IIf(\015\012        Nz(DSum(\"Nz([QuantityOrdered],0)-Nz([QuantityShip"
+    "ped],0)\",\"T_SalesOrderLines\",\"SalesOrderID=\" & [SO].[SalesOrderID]),0) <= 0"
+    ",\015\012        \"Fully Shipped\",\015\012        IIf(\015\012            Nz(DS"
+    "um(\"Nz([QuantityShipped],0)\",\"T_SalesOrderLines\",\"SalesOrderID=\" & [SO].[S"
+    "alesOrderID]),0) > 0,\015\012            \"Partially Shipped\",\015\012         "
+    "   \"Not Shipped\"\015\012        )\015\012    ) AS FulfillmentStatus, DMax(\"In"
+    "voiceID\",\"T_Invoices\",\"SalesOrderID=\" & [SO].[SalesOrderID]) AS InvoiceID, "
+    "DLookup(\015\012        \"InvoiceNo\",\015\012        \"T_Invoices\",\015\012   "
+    "     \"InvoiceID=\" & Nz(DMax(\"InvoiceID\",\"T_Invoices\",\"SalesOrderID=\" & ["
+    "SO].[SalesOrderID]),0)\015\012    ) AS InvoiceNo, DLookup(\015\012        \"Invo"
+    "iceStatus\",\015\012        \"T_Invoices\",\015\012        \"InvoiceID=\" & Nz(D"
+    "Max(\"InvoiceID\",\"T_Invoices\",\"SalesOrderID=\" & [SO].[SalesOrderID]),0)\015"
+    "\012    ) AS InvoiceStatus, Nz(DSum(\"Nz([GrandTotalAmount],0)\",\"T_Invoices\","
+    "\"SalesOrderID=\" & [SO].[SalesOrderID]),0) AS InvoiceValue, SO.CreatedOn, SO.Up"
+    "datedOn\015\012FROM (T_SalesOrders AS SO LEFT JOIN T_Customers AS C ON SO.Custom"
+    "erID = C.CustomerID) LEFT JOIN T_CustomerPOs AS P ON SO.CustomerPOID = P.Custome"
+    "rPOID\015\012ORDER BY SO.OrderDate DESC , SO.SalesOrderNo;\015\012"
+dbMemo "Connect" =""
+dbBoolean "ReturnsRecords" ="-1"
+dbInteger "ODBCTimeout" ="60"
+dbBoolean "OrderByOn" ="0"
+dbByte "Orientation" ="0"
+dbByte "DefaultView" ="2"
+dbBinary "GUID" = Begin
+    0x0d07bcf0562adc41b4ee139f10eb36d1
+End
+dbBoolean "FilterOnLoad" ="0"
+dbBoolean "OrderByOnLoad" ="-1"
+dbByte "PublishToWeb" ="1"
+Begin
+    Begin
+        dbText "Name" ="SO.SalesOrderNo"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="SO.SalesOrderID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="SO.CustomerPOID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="C.CustomerName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="SO.CustomerID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="SO.OrderDate"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.PONumber"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="SO.RequiredDate"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="SO.ShipDate"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="SO.SalesOrderStatus"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="SO.PaymentTerms"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="SO.ShipVia"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="SO.ShipToName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="LineCount"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="TotalOrderedQty"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="TotalShippedQty"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="RemainingQty"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="OrderSubtotal"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="FulfillmentStatus"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="InvoiceID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="InvoiceNo"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="InvoiceStatus"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="InvoiceValue"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="SO.CreatedOn"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="SO.UpdatedOn"
+        dbLong "AggregateType" ="-1"
+    End
+End

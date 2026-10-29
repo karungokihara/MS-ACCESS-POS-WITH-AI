@@ -1,0 +1,1374 @@
+Option Compare Database
+Option Explicit
+
+Public gSkipInventory As Boolean
+
+Public Sub UX_Startup()
+
+    On Error Resume Next
+
+    gSkipInventory = False
+    UX_EnsureStandardUnits
+    UX_EnsureInternalCustomer
+    UX_BackfillUnitCodes
+
+End Sub
+
+Public Function UX_GoBack() As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim frm As Form
+    Dim dashboardForm As Form
+
+    Set frm = Screen.ActiveForm
+    If frm Is Nothing Then Exit Function
+
+    If frm.Dirty Then frm.Dirty = False
+    If Not UX_RefreshOpenScreens(frm.Name) Then Exit Function
+
+    If CurrentProject.AllForms("Dashboard").IsLoaded Then
+        Set dashboardForm = Forms("Dashboard")
+        If dashboardForm.Controls("subNavModule").SourceObject = frm.Name Then
+            If Not UX_ShowHome() Then Exit Function
+            dashboardForm.Recalc
+            UX_GoBack = True
+            Exit Function
+        End If
+    End If
+
+    DoCmd.Close acForm, frm.Name, acSaveNo
+    UX_GoBack = True
+    Exit Function
+
+Err_Handler:
+    MsgBox _
+        "The record could not be saved or the previous screen could not be refreshed." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Back"
+
+End Function
+
+Public Function UX_RefreshOpenScreens(Optional ByVal excludeFormName As String = vbNullString) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim frm As Form
+
+    UX_RefreshOpenScreens = True
+
+    If CurrentProject.AllForms("Dashboard").IsLoaded Then
+        If Not Forms("Dashboard").Dirty Then Forms("Dashboard").Recalc
+    End If
+
+    For Each frm In Forms
+        If StrComp(frm.Name, excludeFormName, vbTextCompare) <> 0 Then
+            If Not frm.Dirty Then
+                If frm.Name = "F_BusinessReadiness" Or _
+                    Right$(frm.Name, 4) = "List" Then
+                    frm.Requery
+                    frm.Recalc
+                End If
+            End If
+        End If
+    Next frm
+
+    Exit Function
+
+Err_Handler:
+    UX_RefreshOpenScreens = False
+    MsgBox _
+        "The open lists and dashboard could not be refreshed." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Refresh"
+
+End Function
+
+Public Function UX_ShowModule(ByVal formName As String) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim frm As Form
+
+    If Not CurrentProject.AllForms("Dashboard").IsLoaded Then
+        DoCmd.OpenForm "Dashboard"
+    End If
+
+    Set frm = Forms("Dashboard")
+    UX_SetHomeCards frm, False
+    frm.Controls("subNavModule").SourceObject = formName
+    frm.Controls("subNavModule").Visible = True
+    UX_FitDashboard
+    UX_ShowModule = True
+    Exit Function
+
+Err_Handler:
+    MsgBox Err.Description, vbExclamation, "Open"
+    UX_ShowModule = False
+
+End Function
+
+Public Function UX_ShowHome() As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim frm As Form
+
+    Set frm = Forms("Dashboard")
+    frm.Controls("subNavModule").SourceObject = ""
+    frm.Controls("subNavModule").Visible = False
+    UX_SetHomeCards frm, True
+    UX_ShowHome = True
+    Exit Function
+
+Err_Handler:
+    UX_ShowHome = False
+
+End Function
+
+Public Sub UX_SetHomeCards(ByVal frm As Form, ByVal showCards As Boolean)
+
+    On Error Resume Next
+
+    Dim ctl As Control
+
+    For Each ctl In frm.Controls
+        If ctl.Left > 3300 Then
+            If ctl.Name <> "subNavModule" And ctl.Name <> "Label50" Then
+                ctl.Visible = showCards
+            End If
+        End If
+    Next ctl
+
+End Sub
+
+Public Function UX_ButtonIn(Optional ByVal frm As Object, Optional ByVal buttonName As String = "")
+
+    On Error Resume Next
+
+    Dim ctl As Control
+    Dim other As Control
+    Dim parts() As String
+    Dim baseL As Long
+    Dim baseT As Long
+    Dim baseW As Long
+    Dim baseH As Long
+    Dim newW As Long
+    Dim newH As Long
+
+    If frm Is Nothing Or Len(buttonName) = 0 Then Exit Function
+    Set ctl = frm.Controls(buttonName)
+    If ctl Is Nothing Then Exit Function
+
+    For Each other In frm.Controls
+        If other.ControlType = 104 Then
+            If other.Name <> ctl.Name Then UX_RestoreButton other
+        End If
+    Next other
+
+    If Left$(Nz(ctl.Tag, ""), 3) <> "HZ~" Then
+        ctl.Tag = "HZ~" & ctl.Left & "~" & ctl.Top & "~" & ctl.Width & "~" & ctl.Height & "~" & ctl.Tag
+    End If
+
+    parts = Split(ctl.Tag, "~")
+    baseL = CLng(parts(1))
+    baseT = CLng(parts(2))
+    baseW = CLng(parts(3))
+    baseH = CLng(parts(4))
+
+    If ctl.Width <> baseW Then Exit Function
+
+    newW = CLng(baseW * 1.12)
+    newH = CLng(baseH * 1.3)
+    ctl.FontSize = Nz(ctl.FontSize, 11) + 1
+    If ctl.Name = "cmdLogout" Then
+        ctl.BackColor = RGB(141, 25, 25)
+    Else
+        ctl.BackColor = RGB(30, 64, 175)
+    End If
+    ctl.Width = newW
+    ctl.Height = newH
+    ctl.Left = baseL - ((newW - baseW) \ 2) + 60
+    ctl.Top = baseT - ((newH - baseH) \ 2)
+    If ctl.Left < 0 Then ctl.Left = 0
+    If ctl.Top < 0 Then ctl.Top = 0
+
+End Function
+
+Public Function UX_ButtonOut(Optional ByVal frm As Object)
+
+    On Error Resume Next
+
+    Dim ctl As Control
+
+    If frm Is Nothing Then Set frm = Screen.ActiveForm
+    If frm Is Nothing Then Exit Function
+
+    For Each ctl In frm.Controls
+        If ctl.ControlType = 104 Then UX_RestoreButton ctl
+        If ctl.ControlType = 112 Then
+            If Len(Nz(ctl.SourceObject, "")) > 0 Then UX_ButtonOut ctl.Form
+        End If
+    Next ctl
+
+End Function
+
+Public Function UX_FitDashboard()
+
+    On Error Resume Next
+
+    Dim frm As Form
+    Dim h As Long
+    Dim w As Long
+
+    Set frm = Forms("Dashboard")
+    h = frm.InsideHeight - frm.Section(1).Height - 60
+    w = frm.InsideWidth - 3300
+    If h < 4000 Then h = 4000
+    If w < 6000 Then w = 6000
+
+    If frm.Section(0).Height < h + 80 Then frm.Section(0).Height = h + 80
+    frm.Controls("Box24").Height = h
+    frm.Controls("imgBg").Width = frm.InsideWidth
+    frm.Controls("imgBg").Height = h + 80
+    frm.Controls("subNavModule").Width = w
+    frm.Controls("subNavModule").Height = h
+    frm.Section(0).Height = h + 80
+    If frm.Width < 3300 + w Then frm.Width = 3300 + w
+
+    If frm.Controls("subNavModule").Visible Then
+        If Len(Nz(frm.Controls("subNavModule").SourceObject, "")) > 0 Then
+            UX_FitForm frm.Controls("subNavModule").Form, w - 360, h - 120
+        End If
+    End If
+
+End Function
+
+Public Function UX_Logout()
+
+    On Error Resume Next
+
+    Dim i As Integer
+
+    If MsgBox("Do you want to log out?", vbQuestion + vbYesNo, "Log Out") <> vbYes Then Exit Function
+
+    For i = Forms.Count - 1 To 0 Step -1
+        If Forms(i).Dirty Then Forms(i).Dirty = False
+        DoCmd.Close acForm, Forms(i).Name, acSaveNo
+    Next i
+
+    TempVars.Remove "CurrentUserID"
+    TempVars.Remove "CurrentRoleID"
+
+    DoCmd.OpenForm "F_Login"
+
+End Function
+
+Public Function UX_FitLogin()
+
+    On Error Resume Next
+
+    Dim frm As Form
+    Dim w As Long
+    Dim x As Long
+    Dim n As Variant
+
+    Set frm = Forms("F_Login")
+    w = frm.InsideWidth
+    If w < 9000 Then w = 9000
+    If frm.Width < w Then frm.Width = w
+    frm.Controls("lblTopBar").Width = w
+    frm.Controls("txtLoginDate").Left = w - frm.Controls("txtLoginDate").Width - 240
+    x = (w - 4800) \ 2
+    For Each n In Array("lblSignTitle", "lblUserCaption", "lblPassCaption", "txtUsername", "txtPassword", "cmdLogin")
+        frm.Controls(n).Left = x
+    Next n
+    frm.Controls("lblUserIcon").Left = x + 1800
+    frm.Width = w
+
+End Function
+
+Public Sub UX_FitForm(ByVal frm As Form, ByVal availW As Long, ByVal availH As Long)
+
+    On Error Resume Next
+
+    Dim ctl As Control
+    Dim sec As Long
+    Dim contentW As Long
+    Dim contentH As Long
+    Dim secBottom(0 To 2) As Long
+    Dim s As Double
+    Dim b As Long
+    Dim cap As String
+
+    For Each ctl In frm.Controls
+        If ctl.ControlType = 104 Then
+            cap = LCase$(Trim$(Nz(ctl.Caption, "")))
+            If cap = "close" Or cap = "exit" Then ctl.Visible = False
+            If frm.Name = "F_SystemSettings" Then
+                If ctl.Name = "cmdRefresh" Or ctl.Name = "cmdNextStep" Then ctl.Visible = False
+            End If
+        End If
+    Next ctl
+
+    frm.ScrollBars = 3
+
+    For Each ctl In frm.Controls
+        If ctl.Visible Then
+            If ctl.Left + ctl.Width > contentW Then contentW = ctl.Left + ctl.Width
+            sec = ctl.Section
+            If sec >= 0 And sec <= 2 Then
+                b = ctl.Top + ctl.Height
+                If b > secBottom(sec) Then secBottom(sec) = b
+            End If
+        End If
+    Next ctl
+
+    For sec = 0 To 2
+        If secBottom(sec) > 0 Then contentH = contentH + secBottom(sec) + 60
+    Next sec
+
+    If contentW = 0 Or contentH = 0 Then Exit Sub
+
+    s = 1
+    If availW / contentW < s Then s = availW / contentW
+    If availH / contentH < s Then s = availH / contentH
+    If s < 0.62 Then s = 0.62
+    If s > 0.98 Then Exit Sub
+
+    For Each ctl In frm.Controls
+        ctl.Left = CLng(ctl.Left * s)
+        ctl.Top = CLng(ctl.Top * s)
+        ctl.Width = CLng(ctl.Width * s)
+        ctl.Height = CLng(ctl.Height * s)
+        ctl.FontSize = CInt(ctl.FontSize * s + 0.4)
+        If ctl.FontSize < 8 Then ctl.FontSize = 8
+    Next ctl
+
+    For sec = 0 To 2
+        If secBottom(sec) > 0 Then frm.Section(sec).Height = CLng(secBottom(sec) * s) + 60
+    Next sec
+
+End Sub
+
+Public Sub UX_RestoreButton(ByVal ctl As Control)
+
+    On Error Resume Next
+
+    Dim parts() As String
+
+    If Left$(Nz(ctl.Tag, ""), 3) <> "HZ~" Then Exit Sub
+    parts = Split(ctl.Tag, "~")
+    If ctl.Width = CLng(parts(3)) Then Exit Sub
+    If ctl.Name = "cmdLogout" Then
+        ctl.BackColor = RGB(190, 30, 34)
+    Else
+        ctl.BackColor = RGB(0, 0, 0)
+    End If
+    ctl.FontSize = ctl.FontSize - 1
+    ctl.Left = CLng(parts(1))
+    ctl.Top = CLng(parts(2))
+    ctl.Width = CLng(parts(3))
+    ctl.Height = CLng(parts(4))
+
+End Sub
+
+Public Sub UX_SuppressFormError( _
+    ByVal DataErr As Integer, _
+    ByRef Response As Integer, _
+    ByRef handled As Boolean)
+
+    handled = False
+
+    Select Case DataErr
+
+        Case 7787, 7878, 3197, 2169, 2115, 2501, 3021, 3314
+
+            Response = 0
+            handled = True
+
+    End Select
+
+End Sub
+
+Public Sub UX_CoerceBooleans(ByVal frm As Form)
+
+    On Error Resume Next
+
+    Dim ctl As Control
+
+    For Each ctl In frm.Controls
+
+        If ctl.ControlType = 106 Then
+
+            If IsNull(ctl.value) Then
+                ctl.value = False
+            End If
+
+        End If
+
+    Next ctl
+
+End Sub
+
+Public Sub UX_MarkRequired(ByVal frm As Form, ParamArray controlNames() As Variant)
+
+    On Error Resume Next
+
+    Dim controlName As Variant
+    Dim ctl As Control
+    Dim lbl As Control
+    Dim captionText As String
+
+    For Each controlName In controlNames
+
+        Set ctl = Nothing
+        Set lbl = Nothing
+        Set ctl = frm.Controls(CStr(controlName))
+
+        If Not ctl Is Nothing Then
+            Set lbl = ctl.Controls(0)
+        End If
+
+        If Not lbl Is Nothing Then
+
+            captionText = Trim$(lbl.Caption)
+
+            If Len(captionText) > 0 Then
+
+                If Right$(captionText, 1) <> "*" Then
+                    lbl.Caption = captionText & " *"
+                End If
+
+            End If
+
+        End If
+
+    Next controlName
+
+End Sub
+
+Public Function UX_SqlText(ByVal value As String) As String
+
+    UX_SqlText = "'" & Replace(Nz(value, vbNullString), "'", "''") & "'"
+
+End Function
+
+Public Function UX_IsInternalCustomer(ByVal CustomerID As Long) As Boolean
+
+    Dim customerTypeText As String
+    Dim customerCodeText As String
+
+    UX_IsInternalCustomer = False
+
+    If CustomerID <= 0 Then Exit Function
+
+    customerTypeText = Trim$(Nz(DLookup( _
+        "CustomerType", "T_Customers", "CustomerID=" & CustomerID), vbNullString))
+
+    customerCodeText = Trim$(Nz(DLookup( _
+        "CustomerCode", "T_Customers", "CustomerID=" & CustomerID), vbNullString))
+
+    If StrComp(customerTypeText, "Internal", vbTextCompare) = 0 Then
+        UX_IsInternalCustomer = True
+    ElseIf StrComp(customerCodeText, "INTERNAL", vbTextCompare) = 0 Then
+        UX_IsInternalCustomer = True
+    End If
+
+End Function
+
+Public Function UX_ProjectSkipsInventory(ByVal ProjectID As Long) As Boolean
+
+    Dim customerIDValue As Variant
+
+    UX_ProjectSkipsInventory = False
+
+    If ProjectID <= 0 Then Exit Function
+
+    customerIDValue = DLookup("CustomerID", "T_Projects", "ProjectID=" & ProjectID)
+
+    UX_ProjectSkipsInventory = UX_IsInternalCustomer(CLng(Nz(customerIDValue, 0)))
+
+End Function
+
+Public Sub UX_EnsureUnit(ByVal UnitCode As String, ByVal UnitName As String)
+
+    On Error Resume Next
+
+    Dim existingID As Variant
+    Dim db As DAO.Database
+    Dim rs As DAO.Recordset
+
+    existingID = DLookup("UnitID", "T_Units", "UnitCode=" & UX_SqlText(UnitCode))
+
+    If Not IsNull(existingID) Then
+
+        Set db = CurrentDb
+        db.Execute _
+            "UPDATE T_Units SET UnitName=" & UX_SqlText(UnitName) & _
+            " WHERE UnitID=" & CLng(existingID) & _
+            " AND Len(Trim(Nz(UnitName,'')))=0", _
+            dbFailOnError
+
+        Exit Sub
+
+    End If
+
+    Set db = CurrentDb
+    Set rs = db.OpenRecordset("T_Units", dbOpenDynaset)
+
+    rs.addnew
+    rs!UnitCode = UnitCode
+    rs!UnitName = UnitName
+    rs!Description = UnitName
+    rs.Update
+    rs.Close
+
+    Set rs = Nothing
+    Set db = Nothing
+
+End Sub
+
+Public Sub UX_EnsureStandardUnits()
+
+    UX_EnsureUnit "PCS", "Pieces"
+    UX_EnsureUnit "ROLL", "Rolls"
+    UX_EnsureUnit "BOX", "Box"
+    UX_EnsureUnit "KG", "Kilogram"
+    UX_EnsureUnit "M", "Metre"
+    UX_EnsureUnit "SET", "Set"
+
+End Sub
+
+Public Sub UX_BackfillUnitCodes()
+
+    On Error Resume Next
+
+    CurrentDb.Execute _
+        "UPDATE T_Units SET UnitCode = UCase(Left(Nz(UnitName,'UNIT'), 4)) " & _
+        "WHERE Len(Trim(Nz(UnitCode,'')))=0", _
+        dbFailOnError
+
+End Sub
+
+Private Sub UX_SetRsField( _
+    ByVal rs As DAO.Recordset, _
+    ByVal fieldName As String, _
+    ByVal fieldValue As Variant)
+
+    On Error Resume Next
+    rs.Fields(fieldName).value = fieldValue
+
+End Sub
+
+Public Sub UX_EnsureInternalCustomer()
+
+    On Error GoTo Err_Handler
+
+    Dim existingID As Variant
+    Dim db As DAO.Database
+    Dim rs As DAO.Recordset
+
+    existingID = DLookup("CustomerID", "T_Customers", "CustomerCode='INTERNAL'")
+
+    If Not IsNull(existingID) Then Exit Sub
+
+    Set db = CurrentDb
+    Set rs = db.OpenRecordset("T_Customers", dbOpenDynaset)
+
+    rs.addnew
+    UX_SetRsField rs, "CustomerCode", "INTERNAL"
+    UX_SetRsField rs, "CustomerName", "Internal Customer"
+    UX_SetRsField rs, "CustomerType", "Internal"
+    UX_SetRsField rs, "BillingName", "Internal Customer"
+    UX_SetRsField rs, "ContactPerson", "Internal Test"
+    UX_SetRsField rs, "Status", "Active"
+    UX_SetRsField rs, "Notes", _
+        "Test customer for sales prices. Choosing this customer does not change inventory quantities."
+    UX_SetRsField rs, "CreatedOn", Now()
+    UX_SetRsField rs, "UpdatedOn", Now()
+    UX_SetRsField rs, "TaxExempt", False
+    rs.Update
+    rs.Close
+
+    Set rs = Nothing
+    Set db = Nothing
+
+    Exit Sub
+
+Err_Handler:
+
+    MsgBox _
+        "The Internal Customer could not be created." & vbCrLf & vbCrLf & _
+        Err.Description, _
+        vbExclamation, _
+        "Internal Customer"
+
+End Sub
+
+Public Function UX_ReviewDuplicateItemName( _
+    ByVal ItemName As String, _
+    ByVal ItemID As Long, _
+    ByVal descriptionText As String) As Boolean
+
+    Dim existingID As Variant
+    Dim existingCode As String
+    Dim responseValue As VbMsgBoxResult
+
+    UX_ReviewDuplicateItemName = True
+
+    ItemName = Trim$(Nz(ItemName, vbNullString))
+
+    If Len(ItemName) = 0 Then Exit Function
+
+    existingID = DLookup( _
+        "ItemID", _
+        "T_Items", _
+        "UCase$(Trim$(Nz(ItemName,'')))=" & UX_SqlText(UCase$(ItemName)) & _
+        " AND ItemID<>" & ItemID)
+
+    If IsNull(existingID) Then Exit Function
+
+    existingCode = Nz(DLookup( _
+        "InternalSKU", "T_Items", "ItemID=" & CLng(existingID)), vbNullString)
+
+    If Len(Trim$(Nz(descriptionText, vbNullString))) = 0 Then
+
+        responseValue = MsgBox( _
+            "An item named '" & ItemName & "' already exists." & vbCrLf & _
+            "Item Code: " & existingCode & vbCrLf & vbCrLf & _
+            "Yes: open the existing item so you can edit it." & vbCrLf & _
+            "No: stay here and enter a description that distinguishes this item.", _
+            vbYesNo + vbExclamation, _
+            "Duplicate Item Name")
+
+        If responseValue = vbYes Then
+
+            On Error Resume Next
+            DoCmd.OpenForm "F_ItemSetup", acNormal, , "ItemID=" & CLng(existingID)
+            On Error GoTo 0
+
+        End If
+
+        UX_ReviewDuplicateItemName = False
+
+    Else
+
+        MsgBox _
+            "An item named '" & ItemName & "' already exists." & vbCrLf & _
+            "Item Code: " & existingCode & vbCrLf & vbCrLf & _
+            "This item will be saved because a description was entered to tell it apart.", _
+            vbInformation, _
+            "Similar Item Name"
+
+        UX_ReviewDuplicateItemName = True
+
+    End If
+
+End Function
+
+Public Function UX_FirstControl( _
+    ByVal frm As Form, _
+    ParamArray controlNames() As Variant) As String
+
+    Dim controlName As Variant
+
+    For Each controlName In controlNames
+
+        On Error Resume Next
+
+        If Not frm.Controls(CStr(controlName)) Is Nothing Then
+            UX_FirstControl = CStr(controlName)
+            Exit Function
+        End If
+
+        On Error GoTo 0
+
+    Next controlName
+
+End Function
+
+Public Sub UX_FillLineFromItem(ByVal frm As Form)
+
+    On Error Resume Next
+
+    Dim itemControlName As String
+    Dim unitControlName As String
+    Dim priceControlName As String
+    Dim descriptionControlName As String
+    Dim quantityControlName As String
+    Dim codeControlName As String
+    Dim itemIDValue As Long
+    Dim BaseUnitID As Variant
+    Dim salesPrice As Variant
+    Dim ItemName As Variant
+    Dim ItemCode As Variant
+
+    itemControlName = UX_FirstControl(frm, "ItemID", "cboItemID")
+
+    If Len(itemControlName) = 0 Then Exit Sub
+    If IsNull(frm.Controls(itemControlName).value) Then Exit Sub
+
+    itemIDValue = CLng(frm.Controls(itemControlName).value)
+
+    BaseUnitID = DLookup("BaseUnitID", "T_Items", "ItemID=" & itemIDValue)
+    salesPrice = DLookup("DefaultSalesPrice", "T_Items", "ItemID=" & itemIDValue)
+    ItemName = DLookup("ItemName", "T_Items", "ItemID=" & itemIDValue)
+    ItemCode = DLookup("InternalSKU", "T_Items", "ItemID=" & itemIDValue)
+
+    unitControlName = UX_FirstControl(frm, "UnitID", "cboUnitID", "txtUnitID")
+
+    If Len(unitControlName) > 0 Then
+
+        If Not IsNull(BaseUnitID) Then
+
+            If IsNull(frm.Controls(unitControlName).value) Then
+                frm.Controls(unitControlName).value = CLng(BaseUnitID)
+            ElseIf Nz(frm.Controls(unitControlName).value, 0) = 0 Then
+                frm.Controls(unitControlName).value = CLng(BaseUnitID)
+            End If
+
+        End If
+
+    End If
+
+    priceControlName = UX_FirstControl(frm, "UnitPrice", "txtUnitPrice")
+
+    If Len(priceControlName) > 0 Then
+
+        If Not IsNull(salesPrice) Then
+
+            If Nz(frm.Controls(priceControlName).value, 0) = 0 Then
+                frm.Controls(priceControlName).value = salesPrice
+            End If
+
+        End If
+
+    End If
+
+    descriptionControlName = UX_FirstControl( _
+        frm, "LineDescription", "txtLineDescription", "ItemDescription", "DescriptionSnapshot")
+
+    If Len(descriptionControlName) > 0 Then
+
+        If Len(Trim$(Nz(frm.Controls(descriptionControlName).value, vbNullString))) = 0 Then
+            frm.Controls(descriptionControlName).value = Nz(ItemName, vbNullString)
+        End If
+
+    End If
+
+    codeControlName = UX_FirstControl(frm, "ItemCode", "txtItemCode", "SupplierPartNumber")
+
+    If Len(codeControlName) > 0 Then
+
+        If Len(Trim$(Nz(frm.Controls(codeControlName).value, vbNullString))) = 0 Then
+            frm.Controls(codeControlName).value = Nz(ItemCode, vbNullString)
+        End If
+
+    End If
+
+    If frm.NewRecord Then
+
+        quantityControlName = UX_FirstControl( _
+            frm, "QuantityOrdered", "txtQuantityOrdered", "Quantity", "txtQuantity", "OrderedQuantity")
+
+        If Len(quantityControlName) > 0 Then
+
+            If Nz(frm.Controls(quantityControlName).value, 0) = 0 Then
+                frm.Controls(quantityControlName).value = 1
+            End If
+
+        End If
+
+    End If
+
+End Sub
+
+Public Function UX_AdjustStockQuantity( _
+    ByRef Quantity As Double, _
+    ByVal reasonText As String) As Boolean
+
+    reasonText = Trim$(Nz(reasonText, vbNullString))
+
+    If Abs(Quantity) < 0.0000001 Then
+
+        MsgBox "Enter the quantity.", vbExclamation, "Quantity Required"
+        UX_AdjustStockQuantity = False
+        Exit Function
+
+    End If
+
+    If StrComp(reasonText, "Negative Adjustment", vbTextCompare) = 0 _
+        Or InStr(1, reasonText, "Negative", vbTextCompare) > 0 Then
+
+        Quantity = -Abs(Quantity)
+
+    ElseIf Quantity < 0 Then
+
+        MsgBox _
+            "Quantity must be greater than zero, unless the reason is Negative Adjustment.", _
+            vbExclamation, _
+            "Invalid Quantity"
+
+        UX_AdjustStockQuantity = False
+        Exit Function
+
+    End If
+
+    UX_AdjustStockQuantity = True
+
+End Function
+
+Public Function UX_BillToName(ByVal CustomerID As Long) As String
+
+    Dim billingName As String
+    Dim CustomerName As String
+
+    If CustomerID <= 0 Then Exit Function
+
+    billingName = Trim$(Nz(DLookup( _
+        "BillingName", "T_Customers", "CustomerID=" & CustomerID), vbNullString))
+
+    CustomerName = Trim$(Nz(DLookup( _
+        "CustomerName", "T_Customers", "CustomerID=" & CustomerID), vbNullString))
+
+    If Len(billingName) > 0 Then
+        UX_BillToName = billingName
+    Else
+        UX_BillToName = CustomerName
+    End If
+
+End Function
+
+Public Function UX_BillToAddress(ByVal CustomerID As Long) As String
+
+    Dim addressText As String
+
+    If CustomerID <= 0 Then Exit Function
+
+    addressText = Trim$(Nz(DLookup( _
+        "BillingAddress", "T_Customers", "CustomerID=" & CustomerID), vbNullString))
+
+    If Len(addressText) = 0 Then
+
+        addressText = Trim$(Nz(DLookup( _
+            "BillingAddress1", "T_Customers", "CustomerID=" & CustomerID), vbNullString))
+
+        If Len(Trim$(Nz(DLookup("BillingCity", "T_Customers", "CustomerID=" & CustomerID), vbNullString))) > 0 Then
+            addressText = addressText & vbCrLf & _
+                Trim$(Nz(DLookup("BillingCity", "T_Customers", "CustomerID=" & CustomerID), vbNullString))
+        End If
+
+    End If
+
+    If Len(addressText) = 0 Then
+
+        addressText = Trim$(Nz(DLookup( _
+            "ShippingAddress", "T_Customers", "CustomerID=" & CustomerID), vbNullString))
+
+    End If
+
+    UX_BillToAddress = addressText
+
+End Function
+
+Public Function UX_SalesOrderCustomerID(ByVal SalesOrderID As Long) As Long
+
+    UX_SalesOrderCustomerID = CLng(Nz(DLookup( _
+        "CustomerID", "T_SalesOrders", "SalesOrderID=" & SalesOrderID), 0))
+
+End Function
+
+Public Function UX_PrintActive( _
+    ByVal reportName As String, _
+    ByVal idControl As String, _
+    ByVal documentTitle As String) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim frm As Form
+    Dim recordID As Long
+
+    Set frm = Screen.ActiveForm
+
+    If frm.Dirty Then
+        frm.Dirty = False
+    End If
+
+    recordID = CLng(Nz(frm.Controls(idControl).value, 0))
+
+    If recordID <= 0 Then
+
+        MsgBox _
+            "Save this " & documentTitle & " before printing.", _
+            vbExclamation, _
+            documentTitle
+
+        Exit Function
+
+    End If
+
+    UX_PrintDocument reportName, recordID, documentTitle
+    UX_PrintActive = True
+
+    Exit Function
+
+Err_Handler:
+
+    MsgBox _
+        "The " & documentTitle & " could not be printed." & vbCrLf & vbCrLf & _
+        Err.Description, _
+        vbExclamation, _
+        documentTitle
+
+End Function
+
+Public Sub UX_PrintDocument( _
+    ByVal reportName As String, _
+    ByVal recordID As Long, _
+    ByVal documentTitle As String)
+
+    On Error GoTo Err_Handler
+
+    Dim folderPath As String
+    Dim FilePath As String
+    Dim whereText As String
+
+    folderPath = Environ$("USERPROFILE") & "\Documents\Inventory System PDFs\" & documentTitle
+    UX_EnsureFolder Environ$("USERPROFILE") & "\Documents\Inventory System PDFs"
+    UX_EnsureFolder folderPath
+
+    FilePath = folderPath & "\" & UX_CleanFileName(documentTitle) & "_" & CStr(recordID) & ".pdf"
+    whereText = "[InvoiceID]=" & recordID
+
+    If CurrentProject.AllReports(reportName).IsLoaded Then
+        DoCmd.Close acReport, reportName, acSaveNo
+    End If
+
+    DoCmd.OpenReport reportName, acViewPreview, , whereText, acHidden
+
+    DoCmd.OutputTo acOutputReport, reportName, acFormatPDF, FilePath, True
+
+    DoCmd.Close acReport, reportName, acSaveNo
+
+    MsgBox documentTitle & " PDF created." & vbCrLf & vbCrLf & FilePath, vbInformation, documentTitle
+
+    Exit Sub
+
+Err_Handler:
+
+    On Error Resume Next
+    DoCmd.Close acReport, reportName, acSaveNo
+    On Error GoTo 0
+
+    MsgBox _
+        "The " & documentTitle & " PDF could not be created." & vbCrLf & vbCrLf & _
+        Err.Description, _
+        vbExclamation, _
+        documentTitle
+
+End Sub
+
+Public Function UX_AttachToCurrentForm( _
+    ByVal idControl As String, _
+    ByVal documentType As String) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim frm As Form
+    Dim documentID As Long
+    Dim pickedPath As String
+    Dim savedPath As String
+    Dim fileNameText As String
+    Dim db As DAO.Database
+    Dim rs As DAO.Recordset
+
+    Set frm = Screen.ActiveForm
+
+    If frm.Dirty Then
+        frm.Dirty = False
+    End If
+
+    documentID = CLng(Nz(frm.Controls(idControl).value, 0))
+
+    If documentID <= 0 Then
+
+        MsgBox "Save the record before attaching a file.", vbExclamation, "Attach File"
+        Exit Function
+
+    End If
+
+    pickedPath = UX_PickFile()
+
+    If Len(pickedPath) = 0 Then Exit Function
+
+    savedPath = UX_CopyIntoFolder(pickedPath, documentType)
+    fileNameText = Mid$(pickedPath, InStrRev(pickedPath, "\") + 1)
+
+    Set db = CurrentDb
+    Set rs = db.OpenRecordset("T_DocumentAttachments", dbOpenDynaset)
+
+    rs.addnew
+    UX_SetRsField rs, "DocumentType", documentType
+    UX_SetRsField rs, "DocumentID", documentID
+    UX_SetRsField rs, "FileName", fileNameText
+    UX_SetRsField rs, "FilePath", savedPath
+    UX_SetRsField rs, "AttachmentNotes", "Uploaded client document"
+    UX_SetRsField rs, "CreatedOn", Now()
+    rs.Update
+    rs.Close
+
+    On Error Resume Next
+    frm.Controls("txtSourceFilePath").value = savedPath
+
+    If StrComp(documentType, "CustomerPO", vbTextCompare) = 0 Then
+
+        db.Execute _
+            "UPDATE T_CustomerPOs SET SourceFilePath=" & UX_SqlText(savedPath) & _
+            " WHERE CustomerPOID=" & documentID, _
+            dbFailOnError
+
+    End If
+
+    On Error GoTo Err_Handler
+
+    MsgBox "File attached." & vbCrLf & vbCrLf & savedPath, vbInformation, "Attach File"
+    UX_AttachToCurrentForm = True
+
+    Exit Function
+
+Err_Handler:
+
+    MsgBox _
+        "The file could not be attached." & vbCrLf & vbCrLf & Err.Description, _
+        vbExclamation, _
+        "Attach File"
+
+End Function
+
+Public Function UX_PickFile() As String
+
+    On Error GoTo Err_Handler
+
+    Dim dialogObject As Object
+
+    Set dialogObject = Application.FileDialog(3)
+    dialogObject.AllowMultiSelect = False
+    dialogObject.Title = "Select the PO or scanned document"
+    dialogObject.Filters.Clear
+    dialogObject.Filters.Add "Documents", "*.pdf;*.png;*.jpg;*.jpeg;*.tif;*.tiff;*.bmp;*.doc;*.docx"
+
+    If dialogObject.Show = -1 Then
+        UX_PickFile = dialogObject.SelectedItems(1)
+    End If
+
+    Exit Function
+
+Err_Handler:
+    UX_PickFile = vbNullString
+
+End Function
+
+Public Function UX_CopyIntoFolder( _
+    ByVal sourcePath As String, _
+    ByVal documentType As String) As String
+
+    Dim folderPath As String
+    Dim fileNameText As String
+    Dim destinationPath As String
+
+    folderPath = Environ$("USERPROFILE") & "\Documents\Inventory System PDFs\Attachments\" & documentType
+    UX_EnsureFolder Environ$("USERPROFILE") & "\Documents\Inventory System PDFs"
+    UX_EnsureFolder Environ$("USERPROFILE") & "\Documents\Inventory System PDFs\Attachments"
+    UX_EnsureFolder folderPath
+
+    fileNameText = Mid$(sourcePath, InStrRev(sourcePath, "\") + 1)
+    destinationPath = folderPath & "\" & Format$(Now(), "yyyymmdd_hhnnss") & "_" & fileNameText
+
+    FileCopy sourcePath, destinationPath
+    UX_CopyIntoFolder = destinationPath
+
+End Function
+
+Public Sub UX_EnsureFolder(ByVal folderPath As String)
+
+    On Error Resume Next
+
+    If Len(Dir$(folderPath, vbDirectory)) = 0 Then
+        MkDir folderPath
+    End If
+
+End Sub
+
+Public Function UX_CleanFileName(ByVal fileNameText As String) As String
+
+    Dim badCharacters As Variant
+    Dim oneCharacter As Variant
+
+    badCharacters = Array("\", "/", ":", "*", "?", """", "<", ">", "|")
+
+    For Each oneCharacter In badCharacters
+        fileNameText = Replace(fileNameText, CStr(oneCharacter), "_")
+    Next oneCharacter
+
+    UX_CleanFileName = Trim$(fileNameText)
+
+End Function
+
+Public Function UX_OpenSubformRecord(ByVal subformControlName As String) As Boolean
+
+    On Error GoTo Err_Handler
+
+    UX_OpenSubformRecord = Forms(Screen.ActiveForm.Name).Controls(subformControlName).Form.OpenSelectedRecord()
+
+    Exit Function
+
+Err_Handler:
+
+    MsgBox "The selected record could not be opened." & vbCrLf & vbCrLf & Err.Description, _
+        vbExclamation, "Open Record"
+
+End Function
+
+Public Function UX_OpenForm(ByVal formName As String) As Boolean
+
+    On Error GoTo Err_Handler
+
+    DoCmd.OpenForm formName
+    UX_OpenForm = True
+    Exit Function
+
+Err_Handler:
+    MsgBox Err.Description, vbExclamation, "Open"
+    UX_OpenForm = False
+
+End Function
+
+Public Function UX_SaveExpense() As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim frm As Form
+    Dim db As DAO.Database
+    Dim rs As DAO.Recordset
+
+    Set frm = Screen.ActiveForm
+    If Len(Trim$(Nz(frm!txtDescription, ""))) = 0 Then
+        MsgBox "Enter what the expense was for.", vbExclamation, "Expense"
+        Exit Function
+    End If
+    If Nz(frm!txtAmount, 0) = 0 Then
+        MsgBox "Enter the amount.", vbExclamation, "Expense"
+        Exit Function
+    End If
+
+    Set db = CurrentDb
+    Set rs = db.OpenRecordset("T_Expenses", dbOpenDynaset)
+    rs.addnew
+    rs!ExpenseDate = IIf(IsDate(frm!txtExpenseDate), frm!txtExpenseDate, Date)
+    rs!Category = Nz(frm!cboCategory, "Other")
+    rs!Description = Trim$(frm!txtDescription)
+    rs!Amount = CCur(frm!txtAmount)
+    rs!PaidTo = Nz(frm!txtPaidTo, "")
+    rs!Notes = Nz(frm!txtNOtes, "")
+    rs.Update
+    rs.Close
+
+    frm!txtDescription = Null
+    frm!txtAmount = Null
+    frm!txtPaidTo = Null
+    frm!txtNOtes = Null
+    frm!SF_ExpenseList.Requery
+    UX_SaveExpense = True
+    Exit Function
+
+Err_Handler:
+    MsgBox Err.Description, vbExclamation, "Expense"
+
+End Function
+
+Public Function UX_AddStaff() As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim frm As Form
+    Dim db As DAO.Database
+    Dim rs As DAO.Recordset
+    Dim newID As Long
+
+    Set frm = Screen.ActiveForm
+    If Len(Trim$(Nz(frm!txtStaffName, ""))) = 0 Then
+        MsgBox "Enter the person's name.", vbExclamation, "Staff"
+        Exit Function
+    End If
+
+    Set db = CurrentDb
+    Set rs = db.OpenRecordset("T_Staff", dbOpenDynaset)
+    rs.addnew
+    rs!StaffName = Trim$(frm!txtStaffName)
+    rs!JobTitle = Nz(frm!txtJobTitle, "")
+    rs!Phone = Nz(frm!txtPhone, "")
+    rs!Status = "Active"
+    rs.Update
+    rs.Bookmark = rs.LastModified
+    newID = rs!StaffID
+    rs.Close
+
+    frm!cboStaff.Requery
+    frm!cboStaff = newID
+    frm!txtStaffName = Null
+    frm!txtJobTitle = Null
+    frm!txtPhone = Null
+    frm!SF_StaffList.Requery
+    UX_AddStaff = True
+    Exit Function
+
+Err_Handler:
+    MsgBox Err.Description, vbExclamation, "Staff"
+
+End Function
+
+Public Function UX_SaveAttendance() As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim frm As Form
+    Dim db As DAO.Database
+    Dim rs As DAO.Recordset
+
+    Set frm = Screen.ActiveForm
+    If Nz(frm!cboStaff, 0) = 0 Then
+        MsgBox "Choose the person first.", vbExclamation, "Arrival"
+        Exit Function
+    End If
+
+    Set db = CurrentDb
+    Set rs = db.OpenRecordset("T_Attendance", dbOpenDynaset)
+    rs.addnew
+    rs!StaffID = CLng(frm!cboStaff)
+    rs!WorkDate = IIf(IsDate(frm!txtWorkDate), frm!txtWorkDate, Date)
+    If IsDate(frm!txtTimeIn) Then rs!TimeIn = frm!txtTimeIn
+    If IsDate(frm!txtTimeOut) Then rs!TimeOut = frm!txtTimeOut
+    rs!Notes = Nz(frm!txtAttendanceNotes, "")
+    rs.Update
+    rs.Close
+    frm!SF_Attendance.Requery
+    UX_SaveAttendance = True
+    Exit Function
+
+Err_Handler:
+    MsgBox Err.Description, vbExclamation, "Arrival"
+
+End Function
+
+Public Function UX_SaveLeave() As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim frm As Form
+    Dim db As DAO.Database
+    Dim rs As DAO.Recordset
+
+    Set frm = Screen.ActiveForm
+    If Nz(frm!cboStaff, 0) = 0 Then
+        MsgBox "Choose the person first.", vbExclamation, "Leave"
+        Exit Function
+    End If
+    If Not IsDate(frm!txtLeaveStart) Or Not IsDate(frm!txtLeaveEnd) Then
+        MsgBox "Enter the start and end dates.", vbExclamation, "Leave"
+        Exit Function
+    End If
+
+    Set db = CurrentDb
+    Set rs = db.OpenRecordset("T_Leave", dbOpenDynaset)
+    rs.addnew
+    rs!StaffID = CLng(frm!cboStaff)
+    rs!LeaveType = Nz(frm!cboLeaveType, "Off day")
+    rs!StartDate = frm!txtLeaveStart
+    rs!EndDate = frm!txtLeaveEnd
+    If IsNumeric(frm!txtLeaveDays) Then
+        rs!Days = CDbl(frm!txtLeaveDays)
+    Else
+        rs!Days = frm!txtLeaveEnd - frm!txtLeaveStart + 1
+    End If
+    rs!Status = Nz(frm!cboLeaveStatus, "Approved")
+    rs!Notes = Nz(frm!txtLeaveNotes, "")
+    rs.Update
+    rs.Close
+    frm!SF_Leave.Requery
+    UX_SaveLeave = True
+    Exit Function
+
+Err_Handler:
+    MsgBox Err.Description, vbExclamation, "Leave"
+
+End Function
+
+Public Function UX_AddCustomer(ByVal comboName As String) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim frm As Form
+    Dim oldMax As Long
+    Dim newMax As Long
+
+    UX_AddCustomer = False
+    Set frm = Screen.ActiveForm
+    oldMax = Nz(DMax("CustomerID", "T_Customers"), 0)
+
+    DoCmd.OpenForm "F_CustomerSetup", acNormal, , , acFormAdd, acDialog
+
+    newMax = Nz(DMax("CustomerID", "T_Customers"), 0)
+    frm.Controls(comboName).Requery
+    If newMax > oldMax Then frm.Controls(comboName).value = newMax
+
+    UX_AddCustomer = True
+    Exit Function
+
+Err_Handler:
+    If Err.Number <> 2501 Then
+        MsgBox Err.Description, vbExclamation, "Add Customer"
+    End If
+
+End Function
+
+Public Function UX_WarehouseLocationNames(ByVal WarehouseID As Long) As String
+
+    On Error GoTo Err_Handler
+
+    Dim db As DAO.Database
+    Dim rs As DAO.Recordset
+    Dim names As String
+
+    UX_WarehouseLocationNames = ""
+    If WarehouseID <= 0 Then Exit Function
+
+    Set db = CurrentDb
+    Set rs = db.OpenRecordset( _
+        "SELECT LocationName FROM T_Locations " & _
+        "WHERE WarehouseID=" & WarehouseID & " AND Len(Trim(Nz(LocationName,'')))>0 " & _
+        "ORDER BY LocationName")
+
+    Do While Not rs.EOF
+        If Len(names) > 0 Then names = names & ", "
+        names = names & Nz(rs!LocationName, "")
+        rs.MoveNext
+    Loop
+
+    rs.Close
+    UX_WarehouseLocationNames = names
+
+    Set rs = Nothing
+    Set db = Nothing
+    Exit Function
+
+Err_Handler:
+    UX_WarehouseLocationNames = ""
+
+End Function

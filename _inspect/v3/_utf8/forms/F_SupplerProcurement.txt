@@ -1,0 +1,469 @@
+﻿Version =21
+VersionRequired =20
+PublishOption =1
+Checksum =-377360864
+Begin Form
+    DividingLines = NotDefault
+    AllowDesignChanges = NotDefault
+    DefaultView =0
+    PictureAlignment =2
+    DatasheetGridlinesBehavior =3
+    GridX =24
+    GridY =24
+    Width =12360
+    DatasheetFontHeight =11
+    ItemSuffix =11
+    Right =15090
+    Bottom =4695
+    DatasheetGridlinesColor =15263976
+    RecSrcDt = Begin
+        0x3d3909e01392e640
+    End
+    GUID = Begin
+        0x6ee0f81bc7e8b6449de2a00ef450f401
+    End
+    DatasheetFontName ="Aptos"
+    AllowDatasheetView =0
+    FilterOnLoad =0
+    ShowPageMargins =0
+    DisplayOnSharePointSite =1
+    DatasheetAlternateBackColor =15921906
+    DatasheetGridlinesColor12 =0
+    FitToScreen =1
+    DatasheetBackThemeColorIndex =1
+    BorderThemeColorIndex =3
+    ThemeFontIndex =1
+    ForeThemeColorIndex =0
+    AlternateBackThemeColorIndex =1
+    AlternateBackShade =95.0
+    NoSaveCTIWhenDisabled =1
+    Begin
+        Begin Label
+            BackStyle =0
+            FontSize =11
+            BorderColor =8355711
+            ForeColor =6710886
+            FontName ="Aptos"
+            GridlineColor =10921638
+            ThemeFontIndex =1
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =0
+            BorderTint =50.0
+            ForeThemeColorIndex =0
+            ForeTint =60.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin Rectangle
+            SpecialEffect =3
+            BackStyle =0
+            BorderLineStyle =0
+            BorderColor =10921638
+            GridlineColor =10921638
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin CommandButton
+            FontSize =11
+            FontWeight =400
+            ForeColor =4210752
+            FontName ="Aptos"
+            GridlineColor =10921638
+            ForeThemeColorIndex =0
+            ForeTint =75.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+            UseTheme =1
+            Shape =1
+            Gradient =12
+            BackColor =14790982
+            BackThemeColorIndex =4
+            BackTint =60.0
+            BorderLineStyle =0
+            BorderColor =14790982
+            BorderThemeColorIndex =4
+            BorderTint =60.0
+            ThemeFontIndex =1
+            HoverColor =15453059
+            HoverThemeColorIndex =4
+            HoverTint =40.0
+            PressedColor =6440976
+            PressedThemeColorIndex =4
+            PressedShade =75.0
+            HoverForeColor =4210752
+            HoverForeThemeColorIndex =0
+            HoverForeTint =75.0
+            PressedForeColor =4210752
+            PressedForeThemeColorIndex =0
+            PressedForeTint =75.0
+        End
+        Begin TextBox
+            AddColon = NotDefault
+            FELineBreak = NotDefault
+            BorderLineStyle =0
+            LabelX =-1800
+            FontSize =11
+            BorderColor =10921638
+            ForeColor =4210752
+            FontName ="Aptos"
+            AsianLineBreak =1
+            GridlineColor =10921638
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            ThemeFontIndex =1
+            ForeThemeColorIndex =0
+            ForeTint =75.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin FormHeader
+            Height =1080
+            BackColor =14482166
+            Name ="FormHeader"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x3fbd706f70fa0a4daafb27616cf7f140
+            End
+            AlternateBackShade =95.0
+            BackTint =20.0
+            Begin
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =200
+                    Top =60
+                    Width =1400
+                    Height =340
+                    FontWeight =700
+                    ForeColor =16777215
+                    Name ="cmdUXBack"
+                    Caption ="Back"
+                    OnClick ="=UX_GoBack()"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdUXBack\")"
+                    GUID = Begin
+                        0x4ef381a3e05ab54a93f0848e1b28d4b8
+                    End
+
+                    LayoutCachedLeft =200
+                    LayoutCachedTop =60
+                    LayoutCachedWidth =1600
+                    LayoutCachedHeight =400
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                End
+            End
+        End
+        Begin Section
+            Height =7872
+            BackColor =14482166
+            Name ="Detail"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0xe87a607dc1ceba4bb5caa7d32080ba18
+            End
+            AutoHeight =1
+            AlternateBackColor =14482166
+            AlternateBackShade =95.0
+            Begin
+                Begin Rectangle
+                    SpecialEffect =0
+                    OldBorderStyle =4
+                    BorderWidth =1
+                    OverlapFlags =93
+                    BorderLineStyle =3
+                    Left =1020
+                    Top =900
+                    Width =3900
+                    Height =2640
+                    BackColor =14479580
+                    BorderColor =4272139
+                    Name ="rectProcurementCard"
+                    GUID = Begin
+                        0x87bb83e631cdf340aba7b3c1008a35f6
+                    End
+                    LayoutCachedLeft =1020
+                    LayoutCachedTop =900
+                    LayoutCachedWidth =4920
+                    LayoutCachedHeight =3540
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =4
+                    BorderShade =50.0
+                End
+                Begin CommandButton
+                    OverlapFlags =215
+                    Left =1140
+                    Top =960
+                    Width =3660
+                    Height =420
+                    FontWeight =700
+                    ForeColor =16777215
+                    Name ="cmdProcurement"
+                    Caption ="SEND PO TO SUPPLIER"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdProcurement\")"
+                    GUID = Begin
+                        0x5a7ec9b92f2ce043a682a1dd3df0a01c
+                    End
+                    OnClickEmMacro = Begin
+                        Version =196611
+                        ColumnsShown =0
+                        Begin
+                            Action ="OpenForm"
+                            Argument ="F_SendPO"
+                            Argument ="0"
+                            Argument =""
+                            Argument =""
+                            Argument ="-1"
+                            Argument ="0"
+                        End
+                        Begin
+                            Comment ="_AXL:<?xml version=\"1.0\" encoding=\"UTF-16\" standalone=\"no\"?>\015\012<UserI"
+                                "nterfaceMacro For=\"cmdProcurement\" Event=\"OnClick\" xmlns=\"http://schemas.mi"
+                                "crosoft.com/office/accessservices/2009/11/application\"><Statements><Action Name"
+                                "=\"OpenForm\"><Argument Name=\"For"
+                        End
+                        Begin
+                            Comment ="_AXL:mName\">F_SendPO</Argument></Action></Statements></UserInterfaceMacro>"
+                        End
+                    End
+
+                    LayoutCachedLeft =1140
+                    LayoutCachedTop =960
+                    LayoutCachedWidth =4800
+                    LayoutCachedHeight =1380
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    HoverForeTint =100.0
+                    HoverForeShade =50.0
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    PressedForeTint =100.0
+                    PressedForeShade =50.0
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                    Overlaps =1
+                End
+                Begin Label
+                    OverlapFlags =85
+                    TextAlign =2
+                    Left =1800
+                    Top =420
+                    Width =2280
+                    Height =348
+                    FontSize =12
+                    FontWeight =700
+                    ForeColor =4855376
+                    Name ="Label12"
+                    Caption ="🛒 PROCUREMENT"
+                    GUID = Begin
+                        0x9136f05f5d198c4e9986b34069f84e86
+                    End
+                    LayoutCachedLeft =1800
+                    LayoutCachedTop =420
+                    LayoutCachedWidth =4080
+                    LayoutCachedHeight =768
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    ForeShade =50.0
+                End
+                Begin Label
+                    OverlapFlags =215
+                    Left =1140
+                    Top =2520
+                    Width =3660
+                    Height =360
+                    ForeColor =32768
+                    Name ="lblReceiptCount"
+                    Caption ="receipts"
+                    GUID = Begin
+                        0x6fa3b3eba5dfc5428659d816256f7246
+                    End
+                    LayoutCachedLeft =1140
+                    LayoutCachedTop =2520
+                    LayoutCachedWidth =4800
+                    LayoutCachedHeight =2880
+                    ForeThemeColorIndex =-1
+                End
+                Begin Label
+                    OverlapFlags =215
+                    Left =1140
+                    Top =1500
+                    Width =3660
+                    Height =360
+                    Name ="lblSupplierCount"
+                    Caption ="Count"
+                    GUID = Begin
+                        0xf4bed3f7fa138f47a8f2e38516352053
+                    End
+                    LayoutCachedLeft =1140
+                    LayoutCachedTop =1500
+                    LayoutCachedWidth =4800
+                    LayoutCachedHeight =1860
+                    ForeThemeColorIndex =-1
+                End
+                Begin Label
+                    OverlapFlags =215
+                    Left =1140
+                    Top =2040
+                    Width =3660
+                    Height =360
+                    Name ="lblPurchaseOrderCount"
+                    Caption ="Order count"
+                    GUID = Begin
+                        0x731d4dc412c9ee428a7d216553271dcc
+                    End
+                    LayoutCachedLeft =1140
+                    LayoutCachedTop =2040
+                    LayoutCachedWidth =4800
+                    LayoutCachedHeight =2400
+                    ForeThemeColorIndex =-1
+                End
+                Begin Label
+                    OverlapFlags =215
+                    Left =1140
+                    Top =3000
+                    Width =3660
+                    Height =360
+                    ForeColor =32768
+                    Name ="lblSupplierReturnCount"
+                    Caption ="returncount"
+                    GUID = Begin
+                        0xec47d573a47b9a4e8cef6881f53ca4d4
+                    End
+                    LayoutCachedLeft =1140
+                    LayoutCachedTop =3000
+                    LayoutCachedWidth =4800
+                    LayoutCachedHeight =3360
+                    ForeThemeColorIndex =-1
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =5460
+                    Top =960
+                    Width =3660
+                    Height =420
+                    FontWeight =700
+                    TabIndex =1
+                    ForeColor =16777215
+                    Name ="Command9"
+                    Caption ="VIEW DRAFT ORDERS"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"Command9\")"
+                    GUID = Begin
+                        0xcdadeced5c0d144f9d35071b397db8c3
+                    End
+                    OnClickEmMacro = Begin
+                        Version =196611
+                        ColumnsShown =0
+                        Begin
+                            Action ="OpenForm"
+                            Argument ="F_SendPO"
+                            Argument ="0"
+                            Argument =""
+                            Argument =""
+                            Argument ="-1"
+                            Argument ="0"
+                        End
+                        Begin
+                            Comment ="_AXL:<?xml version=\"1.0\" encoding=\"UTF-16\" standalone=\"no\"?>\015\012<UserI"
+                                "nterfaceMacro For=\"cmdProcurement\" Event=\"OnClick\" xmlns=\"http://schemas.mi"
+                                "crosoft.com/office/accessservices/2009/11/application\"><Statements><Action Name"
+                                "=\"OpenForm\"><Argument Name=\"For"
+                        End
+                        Begin
+                            Comment ="_AXL:mName\">F_SendPO</Argument></Action></Statements></UserInterfaceMacro>"
+                        End
+                    End
+
+                    LayoutCachedLeft =5460
+                    LayoutCachedTop =960
+                    LayoutCachedWidth =9120
+                    LayoutCachedHeight =1380
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    HoverForeTint =100.0
+                    HoverForeShade =50.0
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    PressedForeTint =100.0
+                    PressedForeShade =50.0
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                End
+            End
+        End
+        Begin FormFooter
+            Height =360
+            BackColor =14482166
+            Name ="FormFooter"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x10ae2bf0f73833499997dbf0fc1a926e
+            End
+            AutoHeight =1
+            AlternateBackShade =95.0
+        End
+    End
+End

@@ -1,0 +1,36 @@
+﻿dbMemo "SQL" ="SELECT TOP 100 SM.StockMovementID, SM.MovementDate, I.InternalSKU, I.ItemName, I"
+    "I.SerialNumber, SM.Quantity, W.WarehouseName, L.LocationName, SM.ReferenceDocume"
+    "nt, SM.Reason, SM.Notes, U.FullName AS PostedBy\015\012FROM (((((T_StockMovement"
+    "s AS SM INNER JOIN T_Items AS I ON SM.ItemID = I.ItemID) INNER JOIN T_StockMovem"
+    "entTypes AS MT ON SM.MovementTypeID = MT.MovementTypeID) LEFT JOIN T_ItemInstanc"
+    "es AS II ON SM.ItemInstanceID = II.ItemInstanceID) LEFT JOIN T_Locations AS L ON"
+    " SM.FromLocationID = L.LocationID) LEFT JOIN T_Warehouses AS W ON L.WarehouseID "
+    "= W.WarehouseID) LEFT JOIN T_Users AS U ON SM.PerformedByUserID = U.UserID\015\012"
+    "WHERE MT.MovementTypeCode = \"STOCK_OUT\"\015\012ORDER BY SM.MovementDate DESC ,"
+    " SM.StockMovementID DESC;\015\012"
+dbMemo "Connect" =""
+dbBoolean "ReturnsRecords" ="-1"
+dbInteger "ODBCTimeout" ="60"
+dbBoolean "OrderByOn" ="0"
+dbByte "Orientation" ="0"
+dbByte "DefaultView" ="2"
+dbBinary "GUID" = Begin
+    0x71fd644485527e4a9ff081ce063d5a31
+End
+dbBoolean "FilterOnLoad" ="0"
+dbBoolean "OrderByOnLoad" ="-1"
+dbByte "PublishToWeb" ="1"
+Begin
+    Begin
+        dbText "Name" ="MovementTypeCode"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="MovementTypeID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="MovementTypeName"
+        dbLong "AggregateType" ="-1"
+    End
+End

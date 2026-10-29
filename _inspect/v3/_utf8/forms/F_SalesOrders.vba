@@ -1,0 +1,2524 @@
+﻿Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+Private Const DIRECT_SALE_ENTRY_MODE As String = "DirectSale"
+Private Const NORMAL_FORM_CAPTION As String = "Sales Orders"
+Private Const DIRECT_SALE_FORM_CAPTION As String = _
+    "Direct Sale - No Customer PO"
+
+Private mDirectSaleMode As Boolean
+
+'=============================================================
+' FORM: F_SalesOrders
+'
+' PURPOSE:
+'   Internal sales order form.
+'
+' IMPORTANT:
+'   Sales Order itself does NOT move stock automatically.
+'   Stock movement happens only when Ship / Issue Stock is clicked.
+'
+' BUTTONS EXPECTED:
+'   cmdSaveSalesOrder
+'   cmdOpenCustomerPO
+'   cmdCreateInvoice
+'   cmdOpenInvoice
+'   cmdShipIssueStock
+'   cmdClose
+'
+' SUBFORM CONTROL EXPECTED:
+'   subSalesOrderLines
+'
+' DIRECT SALE:
+'   Open this form with:
+'       EntryMode=DirectSale
+'   CustomerPOID and CustomerPOLineID remain Null.
+'=============================================================
+
+
+'=============================================================
+' FORM EVENTS
+'=============================================================
+Private Sub Form_Load()
+    UX_MarkRequired Me, "CustomerID", "OrderDate"
+
+    On Error GoTo Err_Handler
+
+    ConfigureSalesOrderForm
+    ConfigureSalesOrderCombos
+    ApplySalesOrderOpenArgs
+    SetSalesOrderDefaults
+    ApplySalesOrderEntryMode
+    SetLineSubformAvailability
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The sales order form could not be loaded." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Sales Order"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_Current()
+
+    On Error Resume Next
+
+    SetSalesOrderDefaults
+    ApplySalesOrderEntryMode
+    SetLineSubformAvailability
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub Form_BeforeInsert(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    SetSalesOrderDefaults
+
+    If mDirectSaleMode Then
+        Me!CustomerPOID = Null
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Cancel = True
+
+    MsgBox _
+        "The new sales order could not be initialized." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "New Sales Order"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_BeforeUpdate(Cancel As Integer)
+    UX_CoerceBooleans Me
+
+    On Error GoTo Err_Handler
+
+    If IsBlankNewSalesOrderRecord Then
+        Me.Undo
+        Exit Sub
+    End If
+
+    If mDirectSaleMode And Me.NewRecord Then
+        Me!CustomerPOID = Null
+    End If
+
+    NormalizeSalesOrderValues
+
+    If Not ValidateSalesOrderRecord Then
+        Cancel = True
+        Exit Sub
+    End If
+
+    If Me.NewRecord Then
+        SafeSetField "CreatedOn", Now()
+    End If
+
+    SafeSetField "UpdatedOn", Now()
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Cancel = True
+
+    MsgBox _
+        "The sales order could not be validated." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Sales Order Validation"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_AfterUpdate()
+
+    On Error Resume Next
+
+    ApplySalesOrderEntryMode
+    SetLineSubformAvailability
+
+    On Error GoTo 0
+
+End Sub
+
+
+'=============================================================
+' CONTROL EVENTS
+'=============================================================
+Private Sub CustomerID_AfterUpdate()
+
+    On Error Resume Next
+
+    If IsNull(Me!CustomerID) Then Exit Sub
+
+    If Len(Trim$(Nz(Me!PaymentTerms, vbNullString))) = 0 Then
+        Me!PaymentTerms = Nz(DLookup( _
+            "DefaultPaymentTerms", _
+            "T_Customers", _
+            "CustomerID = " & CLng(Me!CustomerID) _
+        ), vbNullString)
+    End If
+
+    If Len(Trim$(Nz(Me!ShipVia, vbNullString))) = 0 Then
+        Me!ShipVia = Nz(DLookup( _
+            "DefaultShipVia", _
+            "T_Customers", _
+            "CustomerID = " & CLng(Me!CustomerID) _
+        ), vbNullString)
+    End If
+
+    If Len(Trim$(Nz(Me!ShipToName, vbNullString))) = 0 Then
+        Me!ShipToName = Nz(Me!CustomerID.Column(1), vbNullString)
+    End If
+
+    On Error GoTo 0
+
+End Sub
+
+Private Sub subSalesOrderLines_Enter()
+
+    On Error GoTo Err_Handler
+
+    'During form startup Access may enter the subform before the
+    'new sales-order header is fully initialized.
+    '
+    'SalesOrderID is more reliable than Me.NewRecord here.
+    If Nz(Me!SalesOrderID, 0) <= 0 And IsNull(Me!CustomerID) Then
+
+        On Error Resume Next
+        Me!CustomerID.SetFocus
+        On Error GoTo Err_Handler
+
+        Exit Sub
+
+    End If
+
+    'After a customer has been selected, automatically save the
+    'header before allowing entry of sales-order lines.
+    If Not EnsureSalesOrderSavedForLines() Then
+
+        On Error Resume Next
+        Me!CustomerID.SetFocus
+        On Error GoTo Err_Handler
+
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+
+    MsgBox _
+        "The sales order items could not be opened." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Sales Order Items"
+
+    Resume Exit_Handler
+
+End Sub
+'=============================================================
+' PUBLIC ENTRY POINTS
+'=============================================================
+Public Sub StartDirectSale()
+
+    On Error GoTo Err_Handler
+
+    If Not SaveLineSubformIfDirty Then
+        Exit Sub
+    End If
+
+    If Me.Dirty Then
+
+        If IsBlankNewSalesOrderRecord Then
+            Me.Undo
+        Else
+            Me.Dirty = False
+        End If
+
+    End If
+
+    mDirectSaleMode = True
+
+    DoCmd.GoToRecord _
+        ObjectType:=acDataForm, _
+        ObjectName:=Me.Name, _
+        Record:=acNewRec
+
+    SetSalesOrderDefaults
+    Me!CustomerPOID = Null
+    ApplySalesOrderEntryMode
+    SetLineSubformAvailability
+
+    On Error Resume Next
+    Me!CustomerID.SetFocus
+    On Error GoTo 0
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "A new direct sale could not be started." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Direct Sale"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+
+Public Function EnsureSalesOrderSavedForLines() As Boolean
+
+    On Error GoTo Err_Handler
+
+    EnsureSalesOrderSavedForLines = False
+
+    'The header has already been saved.
+    If Nz(Me!SalesOrderID, 0) > 0 Then
+        EnsureSalesOrderSavedForLines = True
+        Exit Function
+    End If
+
+    'Do not show a message during automatic form/subform startup.
+    'The calling event will return focus to the customer combo.
+    If IsNull(Me!CustomerID) Then
+        Exit Function
+    End If
+
+    If mDirectSaleMode Then
+        Me!CustomerPOID = Null
+    End If
+
+    'Save the header automatically after the customer is selected.
+    If Me.Dirty Then
+        Me.Dirty = False
+    End If
+
+    If Nz(Me!SalesOrderID, 0) <= 0 Then
+
+        MsgBox _
+            "The sales order header could not be saved automatically.", _
+            vbExclamation, _
+            "Sales Order Header Required"
+
+        Exit Function
+
+    End If
+
+    EnsureSalesOrderSavedForLines = True
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+
+    MsgBox _
+        "The sales order header could not be saved before " & _
+        "entering its items." & vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Sales Order Header"
+
+    Resume Exit_Handler
+
+End Function
+'=============================================================
+' BUTTON EVENTS
+'=============================================================
+Private Sub cmdSaveSalesOrder_Click()
+
+    On Error GoTo Err_Handler
+
+    If IsBlankNewSalesOrderRecord Then
+
+        MsgBox _
+            "Enter the sales order details before saving.", _
+            vbExclamation, _
+            "Sales Order Required"
+
+        Me!CustomerID.SetFocus
+        Exit Sub
+
+    End If
+
+    If Me.Dirty Then
+        DoCmd.RunCommand acCmdSaveRecord
+    End If
+
+    If SaveLineSubformIfDirty = False Then
+        Exit Sub
+    End If
+
+    MsgBox _
+        "Sales order saved successfully.", _
+        vbInformation, _
+        "Sales Order Saved"
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    If Err.Number = 3022 Then
+
+        MsgBox _
+            "This sales order number already exists." & _
+            vbCrLf & vbCrLf & _
+            "Use a different sales order number.", _
+            vbExclamation, _
+            "Duplicate Sales Order"
+
+    Else
+
+        MsgBox _
+            "The sales order could not be saved." & _
+            vbCrLf & vbCrLf & _
+            "Error Number: " & Err.Number & vbCrLf & _
+            "Details: " & Err.Description, _
+            vbExclamation, _
+            "Sales Order Save Failed"
+
+    End If
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cmdOpenCustomerPO_Click()
+
+    On Error GoTo Err_Handler
+
+    If Nz(Me!CustomerPOID, 0) <= 0 Then
+
+        MsgBox _
+            "This sales order is not linked to a customer PO.", _
+            vbExclamation, _
+            "Customer PO Not Found"
+
+        Exit Sub
+
+    End If
+
+    DoCmd.OpenForm _
+        "F_CustomerPO", _
+        acNormal, _
+        , _
+        "CustomerPOID = " & CLng(Me!CustomerPOID)
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The linked customer PO could not be opened." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Open Customer PO"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cmdCreateInvoice_Click()
+
+    On Error GoTo Err_Handler
+
+    Dim salesOrderIDValue As Long
+    Dim existingInvoiceID As Long
+    Dim newInvoiceID As Long
+
+    salesOrderIDValue = Nz(Me!SalesOrderID, 0)
+
+    If salesOrderIDValue <= 0 Then
+        MsgBox _
+            "Save the sales order before creating an invoice.", _
+            vbExclamation, _
+            "Sales Order Required"
+        Exit Sub
+    End If
+
+    If Me.Dirty Then
+        DoCmd.RunCommand acCmdSaveRecord
+    End If
+
+    If SaveLineSubformIfDirty = False Then
+        Exit Sub
+    End If
+
+    If CountSalesOrderLines = 0 Then
+        MsgBox _
+            "Add at least one sales order line before creating an invoice.", _
+            vbExclamation, _
+            "No Sales Order Lines"
+        Exit Sub
+    End If
+
+    existingInvoiceID = Nz(DLookup( _
+        "InvoiceID", _
+        "T_Invoices", _
+        "SalesOrderID = " & salesOrderIDValue _
+    ), 0)
+
+    If existingInvoiceID > 0 Then
+
+        MsgBox _
+            "An invoice already exists for this sales order." & _
+            vbCrLf & vbCrLf & _
+            "The existing invoice will be opened.", _
+            vbInformation, _
+            "Invoice Already Exists"
+
+        OpenInvoiceByID existingInvoiceID
+        Exit Sub
+
+    End If
+
+    newInvoiceID = CreateInvoiceFromCurrentSalesOrder()
+
+    If newInvoiceID <= 0 Then
+        Exit Sub
+    End If
+
+    Me.Refresh
+
+    MsgBox _
+        "Invoice created successfully.", _
+        vbInformation, _
+        "Invoice Created"
+
+    OpenInvoiceByID newInvoiceID
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The invoice could not be created." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Create Invoice"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cmdOpenInvoice_Click()
+
+    On Error GoTo Err_Handler
+
+    Dim invoiceIDValue As Long
+    Dim salesOrderIDValue As Long
+
+    salesOrderIDValue = Nz(Me!SalesOrderID, 0)
+
+    If salesOrderIDValue <= 0 Then
+        MsgBox _
+            "Save the sales order first.", _
+            vbExclamation, _
+            "Sales Order Required"
+        Exit Sub
+    End If
+
+    invoiceIDValue = Nz(DLookup( _
+        "InvoiceID", _
+        "T_Invoices", _
+        "SalesOrderID = " & salesOrderIDValue _
+    ), 0)
+
+    If invoiceIDValue <= 0 Then
+        MsgBox _
+            "No invoice has been created for this sales order yet.", _
+            vbExclamation, _
+            "Invoice Not Found"
+        Exit Sub
+    End If
+
+    OpenInvoiceByID invoiceIDValue
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The invoice could not be opened." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Open Invoice"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cmdShipIssueStock_Click()
+
+    On Error GoTo Err_Handler
+
+    Dim salesOrderIDValue As Long
+    Dim responseValue As VbMsgBoxResult
+
+    salesOrderIDValue = Nz(Me!SalesOrderID, 0)
+
+    If salesOrderIDValue <= 0 Then
+        MsgBox _
+            "Save the sales order before shipping / issuing stock.", _
+            vbExclamation, _
+            "Sales Order Required"
+        Exit Sub
+    End If
+
+    If Me.Dirty Then
+        DoCmd.RunCommand acCmdSaveRecord
+    End If
+
+    If SaveLineSubformIfDirty = False Then
+        Exit Sub
+    End If
+
+    If SalesOrderIsAlreadyFullyShipped(salesOrderIDValue) Then
+        MsgBox _
+            "This sales order is already fully shipped.", _
+            vbInformation, _
+            "Already Shipped"
+        Exit Sub
+    End If
+
+    If CanShipSalesOrder(salesOrderIDValue, True) = False Then
+        Exit Sub
+    End If
+
+    responseValue = MsgBox( _
+        "This will issue stock from inventory and reduce Quantity On Hand." & _
+        vbCrLf & vbCrLf & _
+        "Do you want to continue?", _
+        vbQuestion + vbYesNo + vbDefaultButton2, _
+        "Confirm Stock Issue" _
+    )
+
+    If responseValue <> vbYes Then
+        Exit Sub
+    End If
+
+    If ShipSalesOrderStock(salesOrderIDValue) = False Then
+        Exit Sub
+    End If
+
+    Me.Refresh
+
+    MsgBox _
+        "Stock has been issued successfully." & _
+        vbCrLf & vbCrLf & _
+        "The sales order has been marked as shipped.", _
+        vbInformation, _
+        "Stock Issued"
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "Stock issue could not be completed." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Ship / Issue Stock"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cmdClose_Click()
+
+    On Error GoTo Err_Handler
+
+    If Me.Dirty Then
+        DoCmd.RunCommand acCmdSaveRecord
+    End If
+
+    If SaveLineSubformIfDirty = False Then
+        Exit Sub
+    End If
+
+    DoCmd.close acForm, Me.Name
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The sales order form could not be closed." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Close Sales Order"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' CONFIGURATION
+'=============================================================
+Private Sub ConfigureSalesOrderForm()
+
+    On Error Resume Next
+
+    Me!SalesOrderID.Visible = False
+    Me!CustomerPOID.Visible = False
+    Me!CreatedOn.Visible = False
+    Me!UpdatedOn.Visible = False
+
+    Me!ShipToAddress.EnterKeyBehavior = True
+    Me!ShipToAddress.ScrollBars = 2
+
+    Me!Notes.EnterKeyBehavior = True
+    Me!Notes.ScrollBars = 2
+
+    On Error GoTo 0
+
+End Sub
+
+
+
+Private Sub ConfigureSalesOrderCombos()
+
+    On Error GoTo Err_Handler
+
+    With Me!CustomerID
+
+        .RowSourceType = "Table/Query"
+
+        .RowSource = _
+            "SELECT CustomerID, CustomerName, CustomerCode " & _
+            "FROM T_Customers " & _
+            "ORDER BY CustomerName, CustomerCode;"
+
+        .BoundColumn = 1
+        .ColumnCount = 3
+        .ColumnWidths = "0cm;7cm;3cm"
+        .LimitToList = True
+        .AutoExpand = True
+        .ListRows = 15
+        .Requery
+
+    End With
+
+    With Me!SalesOrderStatus
+
+        .RowSourceType = "Value List"
+
+        .RowSource = _
+            "Open;" & _
+            "Ready to Ship;" & _
+            "Partially Shipped;" & _
+            "Shipped;" & _
+            "Invoiced;" & _
+            "Closed;" & _
+            "Cancelled"
+
+        .LimitToList = True
+        .AutoExpand = True
+        .Requery
+
+    End With
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+
+    MsgBox _
+        "The Sales Order lists could not be configured." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Sales Order Setup"
+
+    Resume Exit_Handler
+
+End Sub
+Private Sub ApplySalesOrderOpenArgs()
+
+    Dim entryMode As String
+
+    entryMode = GetOpenArgValue("EntryMode")
+
+    mDirectSaleMode = _
+        (StrComp( _
+            Trim$(entryMode), _
+            DIRECT_SALE_ENTRY_MODE, _
+            vbTextCompare) = 0)
+
+End Sub
+
+
+Private Sub ApplySalesOrderEntryMode()
+
+    On Error Resume Next
+
+    Dim isDirectSaleRecord As Boolean
+
+    isDirectSaleRecord = _
+        (Nz(Me!CustomerPOID, 0) <= 0) And _
+        (mDirectSaleMode Or Not Me.NewRecord)
+
+    If mDirectSaleMode And Me.NewRecord Then
+        Me!CustomerPOID = Null
+    End If
+
+    If isDirectSaleRecord Then
+
+        Me.Caption = DIRECT_SALE_FORM_CAPTION
+
+        If ControlExists("cmdOpenCustomerPO") Then
+            Me!cmdOpenCustomerPO.Enabled = False
+            Me!cmdOpenCustomerPO.Caption = "No Customer PO"
+        End If
+
+    Else
+
+        Me.Caption = NORMAL_FORM_CAPTION
+
+        If ControlExists("cmdOpenCustomerPO") Then
+            Me!cmdOpenCustomerPO.Enabled = True
+            Me!cmdOpenCustomerPO.Caption = "Open PO"
+        End If
+
+    End If
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Function GetOpenArgValue(ByVal keyName As String) As String
+
+    Dim rawArguments As String
+    Dim argumentParts() As String
+    Dim onePart As Variant
+    Dim equalsPosition As Long
+    Dim thisKey As String
+
+    rawArguments = Nz(Me.OpenArgs, vbNullString)
+
+    If Len(Trim$(rawArguments)) = 0 Then
+        Exit Function
+    End If
+
+    argumentParts = Split(rawArguments, ";")
+
+    For Each onePart In argumentParts
+
+        equalsPosition = _
+            InStr(1, CStr(onePart), "=", vbBinaryCompare)
+
+        If equalsPosition > 0 Then
+
+            thisKey = _
+                Trim$(Left$(CStr(onePart), equalsPosition - 1))
+
+            If StrComp( _
+                thisKey, _
+                keyName, _
+                vbTextCompare) = 0 Then
+
+                GetOpenArgValue = _
+                    Trim$(Mid$(CStr(onePart), equalsPosition + 1))
+                Exit Function
+
+            End If
+
+        End If
+
+    Next onePart
+
+End Function
+
+
+Private Sub SetSalesOrderDefaults()
+
+    On Error Resume Next
+
+    Me!OrderDate.defaultValue = "Date()"
+    Me!SalesOrderStatus.defaultValue = """Open"""
+
+    If Me.NewRecord Then
+
+        If IsNull(Me!OrderDate) Then
+            Me!OrderDate = Date
+        End If
+
+        If Len(Trim$(Nz(Me!SalesOrderStatus, vbNullString))) = 0 Then
+            Me!SalesOrderStatus = "Open"
+        End If
+
+    End If
+
+    On Error GoTo 0
+
+End Sub
+
+
+'=============================================================
+' VALIDATION
+'=============================================================
+Private Sub NormalizeSalesOrderValues()
+
+    If Len(Trim$(Nz(Me!SalesOrderNo, vbNullString))) = 0 Then
+        Me!SalesOrderNo = GetNextDocumentNumber("SalesOrder", "SO", 1001, 5)
+    Else
+        Me!SalesOrderNo = UCase$(Trim$(Nz(Me!SalesOrderNo, vbNullString)))
+    End If
+
+    If IsNull(Me!OrderDate) Then
+        Me!OrderDate = Date
+    End If
+
+    If Len(Trim$(Nz(Me!SalesOrderStatus, vbNullString))) = 0 Then
+        Me!SalesOrderStatus = "Open"
+    End If
+
+    Me!PaymentTerms = Trim$(Nz(Me!PaymentTerms, vbNullString))
+    Me!ShipVia = Trim$(Nz(Me!ShipVia, vbNullString))
+    Me!ShipToName = Trim$(Nz(Me!ShipToName, vbNullString))
+    Me!ShipToAddress = Trim$(Nz(Me!ShipToAddress, vbNullString))
+    Me!Notes = Trim$(Nz(Me!Notes, vbNullString))
+
+End Sub
+
+
+Private Function ValidateSalesOrderRecord() As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim currentSalesOrderID As Long
+    Dim criteriaText As String
+
+    ValidateSalesOrderRecord = False
+
+    currentSalesOrderID = Nz(Me!SalesOrderID, 0)
+
+    If Len(Trim$(Nz(Me!SalesOrderNo, vbNullString))) = 0 Then
+
+        MsgBox _
+            "Enter the sales order number.", _
+            vbExclamation, _
+            "Sales Order Number Required"
+
+        Me!SalesOrderNo.SetFocus
+        Exit Function
+
+    End If
+
+    If IsNull(Me!CustomerID) Then
+
+        MsgBox _
+            "Select the customer.", _
+            vbExclamation, _
+            "Customer Required"
+
+        Me!CustomerID.SetFocus
+        Exit Function
+
+    End If
+
+    If IsNull(Me!OrderDate) Then
+
+        MsgBox _
+            "Enter the order date.", _
+            vbExclamation, _
+            "Order Date Required"
+
+        Me!OrderDate.SetFocus
+        Exit Function
+
+    End If
+
+    criteriaText = _
+        "SalesOrderNo = " & SqlText(CStr(Me!SalesOrderNo))
+
+    If currentSalesOrderID > 0 Then
+        criteriaText = criteriaText & _
+            " AND SalesOrderID <> " & currentSalesOrderID
+    End If
+
+    If DCount("*", "T_SalesOrders", criteriaText) > 0 Then
+
+        MsgBox _
+            "This sales order number already exists.", _
+            vbExclamation, _
+            "Duplicate Sales Order"
+
+        Me!SalesOrderNo.SetFocus
+        Exit Function
+
+    End If
+
+    ValidateSalesOrderRecord = True
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    ValidateSalesOrderRecord = False
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function IsBlankNewSalesOrderRecord() As Boolean
+
+    If Not Me.NewRecord Then
+        IsBlankNewSalesOrderRecord = False
+        Exit Function
+    End If
+
+    IsBlankNewSalesOrderRecord = _
+        Len(Trim$(Nz(Me!SalesOrderNo, vbNullString))) = 0 And _
+        IsNull(Me!CustomerID) And _
+        Len(Trim$(Nz(Me!ShipToName, vbNullString))) = 0
+
+End Function
+
+
+'=============================================================
+' SUBFORM HANDLING
+'=============================================================
+Private Sub SetLineSubformAvailability()
+
+    On Error Resume Next
+
+    If ControlExists("subSalesOrderLines") Then
+
+        With Me.Controls("subSalesOrderLines")
+
+            .Enabled = True
+            .Locked = False
+
+            With .Form
+                .AllowAdditions = True
+                .AllowEdits = True
+                .AllowDeletions = True
+            End With
+
+        End With
+
+    End If
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Function SaveLineSubformIfDirty() As Boolean
+
+    On Error GoTo Err_Handler
+
+    SaveLineSubformIfDirty = True
+
+    If Not ControlExists("subSalesOrderLines") Then
+        Exit Function
+    End If
+
+    With Me.Controls("subSalesOrderLines").Form
+
+        If .Dirty Then
+            .Dirty = False
+        End If
+
+    End With
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    SaveLineSubformIfDirty = False
+
+    MsgBox _
+        "The sales order line currently being edited could not be saved." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Sales Order Line Save Failed"
+
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' COUNTS
+'=============================================================
+Private Function CountSalesOrderLines() As Long
+
+    On Error GoTo Err_Handler
+
+    If Nz(Me!SalesOrderID, 0) <= 0 Then
+        CountSalesOrderLines = 0
+    Else
+        CountSalesOrderLines = Nz(DCount( _
+            "*", _
+            "T_SalesOrderLines", _
+            "SalesOrderID = " & CLng(Me!SalesOrderID) _
+        ), 0)
+    End If
+
+    Exit Function
+
+Err_Handler:
+    CountSalesOrderLines = 0
+
+End Function
+
+
+'=============================================================
+' SALES ORDER -> INVOICE
+'=============================================================
+Private Function CreateInvoiceFromCurrentSalesOrder() As Long
+
+    On Error GoTo Err_Handler
+
+    Dim db As Object
+    Dim wrk As Object
+
+    Dim rsInvoice As Object
+    Dim rsSOLines As Object
+    Dim rsInvoiceLines As Object
+    Dim rsInvoiceUpdate As Object
+    Dim rsSOUpdate As Object
+    Dim rsCPOUpdate As Object
+    Dim rsSOLineUpdate As Object
+
+    Dim salesOrderIDValue As Long
+    Dim customerPOIDValue As Variant
+    Dim newInvoiceID As Long
+    Dim invoiceNoValue As String
+
+    Dim qtyValue As Double
+    Dim unitPriceValue As Currency
+    Dim lineSubtotalValue As Currency
+    Dim subtotalValue As Currency
+    Dim taxValue As Currency
+    Dim grandTotalValue As Currency
+    Dim itemCodeValue As String
+    Dim lineDescriptionValue As String
+    Dim itemIDValue As Variant
+
+    Dim transactionStarted As Boolean
+    Dim stepName As String
+
+    transactionStarted = False
+    stepName = "Starting"
+
+    salesOrderIDValue = Nz(Me!SalesOrderID, 0)
+
+    If salesOrderIDValue <= 0 Then
+        CreateInvoiceFromCurrentSalesOrder = 0
+        Exit Function
+    End If
+
+    If Nz(Me!CustomerPOID, 0) > 0 Then
+        customerPOIDValue = CLng(Me!CustomerPOID)
+    Else
+        customerPOIDValue = Null
+    End If
+
+    Set db = CurrentDb
+    Set wrk = DBEngine.Workspaces(0)
+
+    stepName = "Generating invoice number"
+    newInvoiceID = Nz(DLookup("InvoiceID", "T_Invoices", "SalesOrderID=" & salesOrderIDValue), 0)
+    If newInvoiceID > 0 Then
+        CreateInvoiceFromCurrentSalesOrder = newInvoiceID
+        Exit Function
+    End If
+    invoiceNoValue = GetNextDocumentNumber("Invoice", "INV", 157, 4)
+
+    stepName = "Starting transaction"
+    wrk.BeginTrans
+    transactionStarted = True
+
+    '---------------------------------------------------------
+    ' 1. Create invoice header
+    '---------------------------------------------------------
+    stepName = "Opening T_Invoices"
+    Set rsInvoice = db.OpenRecordset("T_Invoices", 2)
+
+    stepName = "Adding invoice header"
+    rsInvoice.addnew
+
+    SafeSetRSField rsInvoice, "InvoiceNo", invoiceNoValue
+    SafeSetRSField rsInvoice, "CustomerID", IIf(UX_SalesOrderCustomerID(salesOrderIDValue) > 0, UX_SalesOrderCustomerID(salesOrderIDValue), Nz(Me!CustomerID, Null))
+    SafeSetRSField rsInvoice, "CustomerPOID", customerPOIDValue
+    SafeSetRSField rsInvoice, "SalesOrderID", salesOrderIDValue
+    SafeSetRSField rsInvoice, "InvoiceDate", Date
+    SafeSetRSField rsInvoice, "InvoiceType", "Pro Forma"
+    SafeSetRSField rsInvoice, "PaymentTerms", Nz(Me!PaymentTerms, vbNullString)
+    SafeSetRSField rsInvoice, "BillToName", UX_BillToName(UX_SalesOrderCustomerID(salesOrderIDValue))
+    SafeSetRSField rsInvoice, "BillToAddress", UX_BillToAddress(UX_SalesOrderCustomerID(salesOrderIDValue))
+    SafeSetRSField rsInvoice, "SubtotalAmount", 0
+    SafeSetRSField rsInvoice, "TaxAmount", 0
+    SafeSetRSField rsInvoice, "GrandTotalAmount", 0
+    SafeSetRSField rsInvoice, "InvoiceStatus", "Draft"
+    SafeSetRSField rsInvoice, "Notes", "Created from Sales Order " & Nz(Me!SalesOrderNo, vbNullString)
+    SafeSetRSField rsInvoice, "CreatedOn", Now()
+    SafeSetRSField rsInvoice, "UpdatedOn", Now()
+
+    stepName = "Saving invoice header"
+    rsInvoice.Update
+    rsInvoice.Bookmark = rsInvoice.LastModified
+
+    If Not RSHasField(rsInvoice, "InvoiceID") Then
+        Err.Raise 3265, , "T_Invoices does not contain InvoiceID."
+    End If
+
+    newInvoiceID = CLng(Nz(rsInvoice.Fields("InvoiceID").value, 0))
+
+    If newInvoiceID <= 0 Then
+        Err.Raise 5, , "InvoiceID was not generated."
+    End If
+
+    rsInvoice.close
+    Set rsInvoice = Nothing
+
+    '---------------------------------------------------------
+    ' 2. Copy sales order lines into invoice lines
+    '---------------------------------------------------------
+    stepName = "Opening sales order lines"
+
+    Set rsSOLines = db.OpenRecordset( _
+        "SELECT * FROM T_SalesOrderLines WHERE SalesOrderID = " & salesOrderIDValue, _
+        2 _
+    )
+
+    If rsSOLines.EOF Then
+        Err.Raise 3021, , "No sales order lines were found for this sales order."
+    End If
+
+    stepName = "Opening T_InvoiceLines"
+    Set rsInvoiceLines = db.OpenRecordset("T_InvoiceLines", 2)
+
+    stepName = "Creating invoice lines"
+    subtotalValue = 0
+
+    Do While Not rsSOLines.EOF
+
+        qtyValue = CDbl(Nz(RSValue(rsSOLines, "QuantityOrdered", 0), 0))
+        unitPriceValue = CCur(Nz(RSValue(rsSOLines, "UnitPrice", 0), 0))
+        lineSubtotalValue = CCur(Nz(RSValue(rsSOLines, "LineSubtotal", qtyValue * unitPriceValue), qtyValue * unitPriceValue))
+        lineDescriptionValue = CStr(Nz(RSValue(rsSOLines, "LineDescription", vbNullString), vbNullString))
+        itemIDValue = RSValue(rsSOLines, "ItemID", Null)
+
+        itemCodeValue = vbNullString
+
+        If Not IsNull(itemIDValue) Then
+            If CLng(Nz(itemIDValue, 0)) > 0 Then
+                itemCodeValue = Nz(DLookup( _
+                    "InternalSKU", _
+                    "T_Items", _
+                    "ItemID = " & CLng(itemIDValue) _
+                ), vbNullString)
+            End If
+        End If
+
+        rsInvoiceLines.addnew
+
+        SafeSetRSField rsInvoiceLines, "InvoiceID", newInvoiceID
+        SafeSetRSField rsInvoiceLines, "SalesOrderLineID", RSValue(rsSOLines, "SalesOrderLineID", Null)
+        SafeSetRSField rsInvoiceLines, "CustomerPOLineID", RSValue(rsSOLines, "CustomerPOLineID", Null)
+        SafeSetRSField rsInvoiceLines, "ItemID", itemIDValue
+        SafeSetRSField rsInvoiceLines, "ItemCode", itemCodeValue
+        SafeSetRSField rsInvoiceLines, "LineDescription", lineDescriptionValue
+        SafeSetRSField rsInvoiceLines, "Quantity", qtyValue
+        SafeSetRSField rsInvoiceLines, "UnitID", RSValue(rsSOLines, "UnitID", Null)
+        SafeSetRSField rsInvoiceLines, "UnitPrice", unitPriceValue
+        SafeSetRSField rsInvoiceLines, "Taxable", Nz(RSValue(rsSOLines, "Taxable", False), False)
+        SafeSetRSField rsInvoiceLines, "LineSubtotal", lineSubtotalValue
+        SafeSetRSField rsInvoiceLines, "CreatedOn", Now()
+        SafeSetRSField rsInvoiceLines, "UpdatedOn", Now()
+
+        rsInvoiceLines.Update
+
+        subtotalValue = subtotalValue + lineSubtotalValue
+
+        rsSOLines.MoveNext
+
+    Loop
+
+    rsSOLines.close
+    Set rsSOLines = Nothing
+
+    rsInvoiceLines.close
+    Set rsInvoiceLines = Nothing
+
+    '---------------------------------------------------------
+    ' 3. Update invoice totals
+    '---------------------------------------------------------
+    stepName = "Updating invoice totals"
+
+    taxValue = 0
+    grandTotalValue = subtotalValue + taxValue
+
+    Set rsInvoiceUpdate = db.OpenRecordset( _
+        "SELECT * FROM T_Invoices WHERE InvoiceID = " & newInvoiceID, _
+        2 _
+    )
+
+    If Not rsInvoiceUpdate.EOF Then
+
+        rsInvoiceUpdate.Edit
+
+        SafeSetRSField rsInvoiceUpdate, "SubtotalAmount", subtotalValue
+        SafeSetRSField rsInvoiceUpdate, "TaxAmount", taxValue
+        SafeSetRSField rsInvoiceUpdate, "GrandTotalAmount", grandTotalValue
+        SafeSetRSField rsInvoiceUpdate, "UpdatedOn", Now()
+
+        rsInvoiceUpdate.Update
+
+    End If
+
+    rsInvoiceUpdate.close
+    Set rsInvoiceUpdate = Nothing
+
+    '---------------------------------------------------------
+    ' 4. Update sales order header
+    '---------------------------------------------------------
+    stepName = "Updating sales order header"
+
+    Set rsSOUpdate = db.OpenRecordset( _
+        "SELECT * FROM T_SalesOrders WHERE SalesOrderID = " & salesOrderIDValue, _
+        2 _
+    )
+
+    If Not rsSOUpdate.EOF Then
+
+        rsSOUpdate.Edit
+
+        SafeSetRSField rsSOUpdate, "SalesOrderStatus", "Invoiced"
+        SafeSetRSField rsSOUpdate, "InvoiceID", newInvoiceID
+        SafeSetRSField rsSOUpdate, "UpdatedOn", Now()
+
+        rsSOUpdate.Update
+
+    End If
+
+    rsSOUpdate.close
+    Set rsSOUpdate = Nothing
+
+    '---------------------------------------------------------
+    ' 5. Update sales order lines
+    '---------------------------------------------------------
+    stepName = "Updating sales order lines"
+
+    Set rsSOLineUpdate = db.OpenRecordset( _
+        "SELECT * FROM T_SalesOrderLines WHERE SalesOrderID = " & salesOrderIDValue, _
+        2 _
+    )
+
+    Do While Not rsSOLineUpdate.EOF
+
+        rsSOLineUpdate.Edit
+
+        SafeSetRSField rsSOLineUpdate, "LineStatus", "Invoiced"
+        SafeSetRSField rsSOLineUpdate, "UpdatedOn", Now()
+
+        rsSOLineUpdate.Update
+        rsSOLineUpdate.MoveNext
+
+    Loop
+
+    rsSOLineUpdate.close
+    Set rsSOLineUpdate = Nothing
+
+    '---------------------------------------------------------
+    ' 6. Update linked customer PO header if available
+    '---------------------------------------------------------
+    If Nz(customerPOIDValue, 0) > 0 Then
+
+        stepName = "Updating linked customer PO"
+
+        Set rsCPOUpdate = db.OpenRecordset( _
+            "SELECT * FROM T_CustomerPOs WHERE CustomerPOID = " & customerPOIDValue, _
+            2 _
+        )
+
+        If Not rsCPOUpdate.EOF Then
+
+            rsCPOUpdate.Edit
+
+            SafeSetRSField rsCPOUpdate, "InvoiceID", newInvoiceID
+            SafeSetRSField rsCPOUpdate, "POStatus", "Invoiced"
+            SafeSetRSField rsCPOUpdate, "UpdatedOn", Now()
+
+            rsCPOUpdate.Update
+
+        End If
+
+        rsCPOUpdate.close
+        Set rsCPOUpdate = Nothing
+
+    End If
+
+    '---------------------------------------------------------
+    ' 7. Commit
+    '---------------------------------------------------------
+    stepName = "Committing invoice transaction"
+
+    wrk.CommitTrans
+    transactionStarted = False
+
+    CreateInvoiceFromCurrentSalesOrder = newInvoiceID
+
+Exit_Handler:
+
+    On Error Resume Next
+
+    If Not rsInvoice Is Nothing Then rsInvoice.close
+    If Not rsSOLines Is Nothing Then rsSOLines.close
+    If Not rsInvoiceLines Is Nothing Then rsInvoiceLines.close
+    If Not rsInvoiceUpdate Is Nothing Then rsInvoiceUpdate.close
+    If Not rsSOUpdate Is Nothing Then rsSOUpdate.close
+    If Not rsCPOUpdate Is Nothing Then rsCPOUpdate.close
+    If Not rsSOLineUpdate Is Nothing Then rsSOLineUpdate.close
+
+    Set rsInvoice = Nothing
+    Set rsSOLines = Nothing
+    Set rsInvoiceLines = Nothing
+    Set rsInvoiceUpdate = Nothing
+    Set rsSOUpdate = Nothing
+    Set rsCPOUpdate = Nothing
+    Set rsSOLineUpdate = Nothing
+    Set db = Nothing
+    Set wrk = Nothing
+
+    On Error GoTo 0
+
+    Exit Function
+
+Err_Handler:
+
+    Dim realErrNumber As Long
+    Dim realErrDescription As String
+    Dim realStepName As String
+
+    realErrNumber = Err.Number
+    realErrDescription = Err.Description
+    realStepName = stepName
+
+    On Error Resume Next
+
+    If transactionStarted Then
+        wrk.Rollback
+        transactionStarted = False
+    End If
+
+    If Not rsInvoice Is Nothing Then rsInvoice.close
+    If Not rsSOLines Is Nothing Then rsSOLines.close
+    If Not rsInvoiceLines Is Nothing Then rsInvoiceLines.close
+    If Not rsInvoiceUpdate Is Nothing Then rsInvoiceUpdate.close
+    If Not rsSOUpdate Is Nothing Then rsSOUpdate.close
+    If Not rsCPOUpdate Is Nothing Then rsCPOUpdate.close
+    If Not rsSOLineUpdate Is Nothing Then rsSOLineUpdate.close
+
+    On Error GoTo 0
+
+    MsgBox _
+        "The invoice transaction could not be completed." & _
+        vbCrLf & vbCrLf & _
+        "Failed Step: " & realStepName & vbCrLf & _
+        "Error Number: " & realErrNumber & vbCrLf & _
+        "Details: " & realErrDescription, _
+        vbExclamation, _
+        "Invoice Creation Failed"
+
+    CreateInvoiceFromCurrentSalesOrder = 0
+    Resume Exit_Handler
+
+End Function
+
+
+Private Sub OpenInvoiceByID(ByVal invoiceIDValue As Long)
+    On Error Resume Next
+    DoCmd.close acForm, "F_Invoices", acSaveNo
+    On Error GoTo Err_Handler
+
+    On Error GoTo Err_Handler
+
+    If invoiceIDValue <= 0 Then
+        MsgBox _
+            "No valid Invoice ID was provided.", _
+            vbExclamation, _
+            "Open Invoice"
+        Exit Sub
+    End If
+
+    If Not FormExists("F_Invoices") Then
+        MsgBox _
+            "The form F_Invoices was not found. Check the invoice form name.", _
+            vbExclamation, _
+            "Form Not Found"
+        Exit Sub
+    End If
+
+    DoCmd.OpenForm _
+        "F_Invoices", _
+        acNormal, _
+        , _
+        "InvoiceID = " & invoiceIDValue
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The invoice could not be opened." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Open Invoice"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' SALES ORDER -> SHIP / ISSUE STOCK
+'=============================================================
+Private Function ShipSalesOrderStock(ByVal salesOrderIDValue As Long) As Boolean
+    gSkipInventory = False
+
+    On Error GoTo Err_Handler
+
+    Dim db As Object
+    Dim wrk As Object
+    Dim rsLines As Object
+    Dim rsSO As Object
+
+    Dim movementTypeIDValue As Long
+    Dim customerIDValue As Variant
+    Dim customerPOIDValue As Variant
+    Dim salesOrderNoValue As String
+    Dim invoiceIDValue As Variant
+
+    Dim salesOrderLineIDValue As Long
+    Dim customerPOLineIDValue As Variant
+    Dim itemIDValue As Variant
+    Dim assemblyTemplateIDValue As Variant
+
+    Dim qtyOrderedValue As Double
+    Dim qtyShippedValue As Double
+    Dim qtyRemainingValue As Double
+
+    Dim transactionStarted As Boolean
+    Dim stepName As String
+
+    ShipSalesOrderStock = False
+
+    transactionStarted = False
+    stepName = "Starting"
+
+    Set db = CurrentDb
+    Set wrk = DBEngine.Workspaces(0)
+
+    stepName = "Finding stock OUT movement type"
+    movementTypeIDValue = GetStockOutMovementTypeID()
+
+    If movementTypeIDValue <= 0 Then
+
+        MsgBox _
+            "No stock OUT movement type was found in T_StockMovementTypes." & _
+            vbCrLf & vbCrLf & _
+            "Add a movement type such as:" & vbCrLf & _
+            "MovementTypeCode: STOCK_OUT" & vbCrLf & _
+            "MovementTypeName: Stock Out / Shipment" & vbCrLf & _
+            "StockEffect: -1", _
+            vbExclamation, _
+            "Stock Movement Type Missing"
+
+        GoTo Exit_Handler
+
+    End If
+
+    customerIDValue = Nz(Me!CustomerID, Null)
+    gSkipInventory = UX_IsInternalCustomer(Nz(customerIDValue, 0))
+
+    If Nz(Me!CustomerPOID, 0) > 0 Then
+        customerPOIDValue = CLng(Me!CustomerPOID)
+    Else
+        customerPOIDValue = Null
+    End If
+
+    salesOrderNoValue = Nz(Me!SalesOrderNo, vbNullString)
+    invoiceIDValue = GetInvoiceIDForSalesOrder(salesOrderIDValue)
+
+    stepName = "Starting stock issue transaction"
+    wrk.BeginTrans
+    transactionStarted = True
+
+    stepName = "Opening sales order lines"
+
+    Set rsLines = db.OpenRecordset( _
+        "SELECT * FROM T_SalesOrderLines WHERE SalesOrderID = " & salesOrderIDValue, _
+        2 _
+    )
+
+    If rsLines.EOF Then
+        Err.Raise 3021, , "No sales order lines were found."
+    End If
+
+    stepName = "Issuing stock line by line"
+
+    Do While Not rsLines.EOF
+
+        salesOrderLineIDValue = CLng(Nz(RSValue(rsLines, "SalesOrderLineID", 0), 0))
+        customerPOLineIDValue = RSValue(rsLines, "CustomerPOLineID", Null)
+        itemIDValue = RSValue(rsLines, "ItemID", Null)
+        assemblyTemplateIDValue = RSValue(rsLines, "AssemblyTemplateID", Null)
+
+        qtyOrderedValue = CDbl(Nz(RSValue(rsLines, "QuantityOrdered", 0), 0))
+        qtyShippedValue = CDbl(Nz(RSValue(rsLines, "QuantityShipped", 0), 0))
+        qtyRemainingValue = qtyOrderedValue - qtyShippedValue
+
+        If qtyRemainingValue < 0 Then
+            qtyRemainingValue = 0
+        End If
+
+        If qtyRemainingValue > 0.000001 Then
+
+            If IsNull(itemIDValue) Or Nz(itemIDValue, 0) <= 0 Then
+
+                rsLines.Edit
+                SafeSetRSField rsLines, "QuantityShipped", qtyOrderedValue
+                SafeSetRSField rsLines, "LineStatus", "Shipped / Non-Stock"
+                rsLines.Update
+
+            Else
+
+                IssueStockForSalesOrderLine _
+                    CLng(itemIDValue), _
+                    qtyRemainingValue, _
+                    movementTypeIDValue, _
+                    salesOrderIDValue, _
+                    salesOrderLineIDValue, _
+                    customerIDValue, _
+                    customerPOIDValue, _
+                    customerPOLineIDValue, _
+                    invoiceIDValue, _
+                    salesOrderNoValue, _
+                    assemblyTemplateIDValue
+
+                rsLines.Edit
+                SafeSetRSField rsLines, "QuantityShipped", qtyOrderedValue
+                SafeSetRSField rsLines, "LineStatus", "Shipped"
+                rsLines.Update
+
+            End If
+
+        End If
+
+        rsLines.MoveNext
+
+    Loop
+
+    rsLines.close
+    Set rsLines = Nothing
+
+    stepName = "Updating sales order header"
+
+    Set rsSO = db.OpenRecordset( _
+        "SELECT * FROM T_SalesOrders WHERE SalesOrderID = " & salesOrderIDValue, _
+        2 _
+    )
+
+    If Not rsSO.EOF Then
+
+        rsSO.Edit
+
+        SafeSetRSField rsSO, "SalesOrderStatus", "Shipped"
+        SafeSetRSField rsSO, "ShipDate", Date
+        SafeSetRSField rsSO, "UpdatedOn", Now()
+
+        rsSO.Update
+
+    End If
+
+    rsSO.close
+    Set rsSO = Nothing
+
+    stepName = "Committing stock issue transaction"
+
+    wrk.CommitTrans
+    transactionStarted = False
+
+    ShipSalesOrderStock = True
+
+Exit_Handler:
+
+    On Error Resume Next
+
+    If Not rsLines Is Nothing Then rsLines.close
+    If Not rsSO Is Nothing Then rsSO.close
+
+    Set rsLines = Nothing
+    Set rsSO = Nothing
+    Set db = Nothing
+    Set wrk = Nothing
+
+    On Error GoTo 0
+
+    Exit Function
+
+Err_Handler:
+
+    Dim realErrNumber As Long
+    Dim realErrDescription As String
+    Dim realStepName As String
+
+    realErrNumber = Err.Number
+    realErrDescription = Err.Description
+    realStepName = stepName
+
+    On Error Resume Next
+
+    If transactionStarted Then
+        wrk.Rollback
+        transactionStarted = False
+    End If
+
+    If Not rsLines Is Nothing Then rsLines.close
+    If Not rsSO Is Nothing Then rsSO.close
+
+    On Error GoTo 0
+
+    MsgBox _
+        "The stock issue transaction could not be completed." & _
+        vbCrLf & vbCrLf & _
+        "Failed Step: " & realStepName & vbCrLf & _
+        "Error Number: " & realErrNumber & vbCrLf & _
+        "Details: " & realErrDescription, _
+        vbExclamation, _
+        "Stock Issue Failed"
+
+    ShipSalesOrderStock = False
+    Resume Exit_Handler
+
+End Function
+
+
+Private Sub IssueStockForSalesOrderLine( _
+    ByVal itemIDValue As Long, _
+    ByVal quantityToIssueValue As Double, _
+    ByVal movementTypeIDValue As Long, _
+    ByVal salesOrderIDValue As Long, _
+    ByVal salesOrderLineIDValue As Long, _
+    ByVal customerIDValue As Variant, _
+    ByVal customerPOIDValue As Variant, _
+    ByVal customerPOLineIDValue As Variant, _
+    ByVal invoiceIDValue As Variant, _
+    ByVal salesOrderNoValue As String, _
+    ByVal assemblyTemplateIDValue As Variant _
+)
+    If gSkipInventory Then Exit Sub
+
+    On Error GoTo Err_Handler
+
+    Dim db As Object
+    Dim rsBalances As Object
+    Dim rsMovements As Object
+
+    Dim qtyStillToIssue As Double
+    Dim qtyOnHandValue As Double
+    Dim qtyReservedValue As Double
+    Dim qtyAvailableValue As Double
+    Dim qtyThisMovement As Double
+
+    Dim locationIDValue As Variant
+
+    Set db = CurrentDb
+
+    qtyStillToIssue = quantityToIssueValue
+
+    Set rsBalances = db.OpenRecordset( _
+        "SELECT * FROM T_StockBalances " & _
+        "WHERE ItemID = " & itemIDValue & " " & _
+        "ORDER BY CurrentLocationID;", _
+        2 _
+    )
+
+    Set rsMovements = db.OpenRecordset("T_StockMovements", 2)
+
+    Do While Not rsBalances.EOF And qtyStillToIssue > 0.000001
+
+        qtyOnHandValue = CDbl(Nz(RSValue(rsBalances, "QuantityOnHand", 0), 0))
+        qtyReservedValue = CDbl(Nz(RSValue(rsBalances, "QuantityReserved", 0), 0))
+        qtyAvailableValue = qtyOnHandValue - qtyReservedValue
+
+        If qtyAvailableValue < 0 Then
+            qtyAvailableValue = 0
+        End If
+
+        If qtyAvailableValue > 0.000001 Then
+
+            If qtyAvailableValue >= qtyStillToIssue Then
+                qtyThisMovement = qtyStillToIssue
+            Else
+                qtyThisMovement = qtyAvailableValue
+            End If
+
+            locationIDValue = RSValue(rsBalances, "CurrentLocationID", Null)
+
+            rsMovements.addnew
+
+            SafeSetRSField rsMovements, "MovementDate", Now()
+            SafeSetRSField rsMovements, "ItemID", itemIDValue
+            SafeSetRSField rsMovements, "ItemInstanceID", Null
+            SafeSetRSField rsMovements, "MovementTypeID", movementTypeIDValue
+            SafeSetRSField rsMovements, "Quantity", qtyThisMovement
+            SafeSetRSField rsMovements, "FromLocationID", locationIDValue
+            SafeSetRSField rsMovements, "ToLocationID", Null
+            SafeSetRSField rsMovements, "ProjectID", Null
+            SafeSetRSField rsMovements, "ReferenceDocument", salesOrderNoValue
+            SafeSetRSField rsMovements, "PerformedByUserID", Null
+            SafeSetRSField rsMovements, "Reason", "Sales Order Shipment"
+            SafeSetRSField rsMovements, "Notes", "Stock issued from sales order " & salesOrderNoValue
+            SafeSetRSField rsMovements, "UnitCost", Null
+            SafeSetRSField rsMovements, "CustomerID", customerIDValue
+            SafeSetRSField rsMovements, "AssemblyTemplateID", assemblyTemplateIDValue
+            SafeSetRSField rsMovements, "AssemblyJobID", Null
+            SafeSetRSField rsMovements, "SalesOrderID", salesOrderIDValue
+            SafeSetRSField rsMovements, "SalesOrderLineID", salesOrderLineIDValue
+            SafeSetRSField rsMovements, "CustomerPOID", customerPOIDValue
+            SafeSetRSField rsMovements, "CustomerPOLineID", customerPOLineIDValue
+            SafeSetRSField rsMovements, "InvoiceID", invoiceIDValue
+            SafeSetRSField rsMovements, "InvoiceLineID", Null
+            SafeSetRSField rsMovements, "SourceDocumentType", "Sales Order"
+            SafeSetRSField rsMovements, "MovementNotes", "Stock out created by Ship / Issue Stock button."
+
+            rsMovements.Update
+
+            rsBalances.Edit
+            SafeSetRSField rsBalances, "QuantityOnHand", qtyOnHandValue - qtyThisMovement
+            SafeSetRSField rsBalances, "LastUpdated", Now()
+            rsBalances.Update
+
+            qtyStillToIssue = qtyStillToIssue - qtyThisMovement
+
+        End If
+
+        rsBalances.MoveNext
+
+    Loop
+
+    If qtyStillToIssue > 0.000001 Then
+        Err.Raise _
+            5, _
+            , _
+            "Insufficient stock while issuing ItemID " & itemIDValue & _
+            ". Remaining not issued: " & qtyStillToIssue
+    End If
+
+Exit_Handler:
+
+    On Error Resume Next
+
+    If Not rsBalances Is Nothing Then rsBalances.close
+    If Not rsMovements Is Nothing Then rsMovements.close
+
+    Set rsBalances = Nothing
+    Set rsMovements = Nothing
+    Set db = Nothing
+
+    On Error GoTo 0
+
+    Exit Sub
+
+Err_Handler:
+    Err.Raise Err.Number, , Err.Description
+
+End Sub
+
+
+Private Function CanShipSalesOrder( _
+    ByVal salesOrderIDValue As Long, _
+    ByVal showReport As Boolean _
+) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim db As Object
+    Dim rsLines As Object
+    Dim requiredByItem As Object
+
+    Dim itemIDValue As Variant
+    Dim itemKey As String
+    Dim lineDescriptionValue As String
+
+    Dim qtyOrderedValue As Double
+    Dim qtyShippedValue As Double
+    Dim qtyRemainingValue As Double
+    Dim qtyAvailableValue As Double
+    Dim qtyRequiredValue As Double
+
+    Dim shippableLineCount As Long
+    Dim serviceLineCount As Long
+    Dim stockLineCount As Long
+    Dim shortageCount As Long
+
+    Dim reportText As String
+    Dim lineText As String
+    Dim keyValue As Variant
+
+    CanShipSalesOrder = False
+
+    Set db = CurrentDb
+    Set requiredByItem = CreateObject("Scripting.Dictionary")
+
+    Set rsLines = db.OpenRecordset( _
+        "SELECT * FROM T_SalesOrderLines WHERE SalesOrderID = " & salesOrderIDValue, _
+        2 _
+    )
+
+    If rsLines.EOF Then
+
+        If showReport Then
+            MsgBox _
+                "This sales order has no lines.", _
+                vbExclamation, _
+                "No Sales Order Lines"
+        End If
+
+        GoTo Exit_Handler
+
+    End If
+
+    reportText = "Shipment Stock Check" & vbCrLf & String(45, "-") & vbCrLf
+
+    Do While Not rsLines.EOF
+
+        itemIDValue = RSValue(rsLines, "ItemID", Null)
+        lineDescriptionValue = CStr(Nz(RSValue(rsLines, "LineDescription", vbNullString), vbNullString))
+
+        qtyOrderedValue = CDbl(Nz(RSValue(rsLines, "QuantityOrdered", 0), 0))
+        qtyShippedValue = CDbl(Nz(RSValue(rsLines, "QuantityShipped", 0), 0))
+        qtyRemainingValue = qtyOrderedValue - qtyShippedValue
+
+        If qtyRemainingValue < 0 Then
+            qtyRemainingValue = 0
+        End If
+
+        If qtyRemainingValue > 0.000001 Then
+
+            shippableLineCount = shippableLineCount + 1
+
+            If IsNull(itemIDValue) Or Nz(itemIDValue, 0) <= 0 Then
+
+                serviceLineCount = serviceLineCount + 1
+
+                reportText = reportText & _
+                    "NON-STOCK / SERVICE LINE: " & lineDescriptionValue & vbCrLf & _
+                    "No ItemID linked, so no stock movement is needed." & _
+                    vbCrLf & vbCrLf
+
+            Else
+
+                stockLineCount = stockLineCount + 1
+                itemKey = CStr(CLng(itemIDValue))
+
+                If requiredByItem.Exists(itemKey) Then
+                    requiredByItem(itemKey) = CDbl(requiredByItem(itemKey)) + qtyRemainingValue
+                Else
+                    requiredByItem.Add itemKey, qtyRemainingValue
+                End If
+
+            End If
+
+        End If
+
+        rsLines.MoveNext
+
+    Loop
+
+    If shippableLineCount = 0 Then
+
+        reportText = reportText & "Result: There is no remaining quantity to ship."
+        CanShipSalesOrder = False
+        GoTo ShowReportAndExit
+
+    End If
+
+    If stockLineCount = 0 And serviceLineCount > 0 Then
+
+        reportText = reportText & "Result: Only non-stock/service lines remain. They can be marked as shipped."
+        CanShipSalesOrder = True
+        GoTo ShowReportAndExit
+
+    End If
+
+    For Each keyValue In requiredByItem.Keys
+
+        qtyRequiredValue = CDbl(requiredByItem(keyValue))
+        qtyAvailableValue = GetTotalAvailableForItem(CLng(keyValue))
+
+        If qtyAvailableValue >= qtyRequiredValue Then
+
+            lineText = _
+                "OK: ItemID " & CStr(keyValue) & vbCrLf & _
+                "Remaining to Ship: " & qtyRequiredValue & _
+                ", Available: " & qtyAvailableValue & _
+                vbCrLf & vbCrLf
+
+        Else
+
+            shortageCount = shortageCount + 1
+
+            lineText = _
+                "SHORTAGE: ItemID " & CStr(keyValue) & vbCrLf & _
+                "Remaining to Ship: " & qtyRequiredValue & _
+                ", Available: " & qtyAvailableValue & _
+                ", Short By: " & (qtyRequiredValue - qtyAvailableValue) & _
+                vbCrLf & vbCrLf
+
+        End If
+
+        reportText = reportText & lineText
+
+    Next keyValue
+
+    If shortageCount = 0 Then
+        CanShipSalesOrder = True
+        reportText = reportText & "Result: Stock is available. Shipment can continue."
+    Else
+        CanShipSalesOrder = False
+        reportText = reportText & "Result: Shipment cannot continue because some items have shortages."
+    End If
+
+ShowReportAndExit:
+
+    If showReport Then
+        MsgBox reportText, vbInformation, "Shipment Stock Check"
+    End If
+
+Exit_Handler:
+
+    On Error Resume Next
+
+    If Not rsLines Is Nothing Then rsLines.close
+
+    Set rsLines = Nothing
+    Set db = Nothing
+    Set requiredByItem = Nothing
+
+    On Error GoTo 0
+
+    Exit Function
+
+Err_Handler:
+
+    If showReport Then
+        MsgBox _
+            "Shipment stock check failed." & _
+            vbCrLf & vbCrLf & _
+            "Error Number: " & Err.Number & vbCrLf & _
+            "Details: " & Err.Description, _
+            vbExclamation, _
+            "Shipment Stock Check"
+    End If
+
+    CanShipSalesOrder = False
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function SalesOrderIsAlreadyFullyShipped(ByVal salesOrderIDValue As Long) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim db As Object
+    Dim rsLines As Object
+
+    Dim qtyOrderedValue As Double
+    Dim qtyShippedValue As Double
+    Dim qtyRemainingValue As Double
+    Dim hasRemaining As Boolean
+
+    Set db = CurrentDb
+
+    Set rsLines = db.OpenRecordset( _
+        "SELECT * FROM T_SalesOrderLines WHERE SalesOrderID = " & salesOrderIDValue, _
+        2 _
+    )
+
+    hasRemaining = False
+
+    Do While Not rsLines.EOF
+
+        qtyOrderedValue = CDbl(Nz(RSValue(rsLines, "QuantityOrdered", 0), 0))
+        qtyShippedValue = CDbl(Nz(RSValue(rsLines, "QuantityShipped", 0), 0))
+
+        qtyRemainingValue = qtyOrderedValue - qtyShippedValue
+
+        If qtyRemainingValue > 0.000001 Then
+            hasRemaining = True
+            Exit Do
+        End If
+
+        rsLines.MoveNext
+
+    Loop
+
+    SalesOrderIsAlreadyFullyShipped = Not hasRemaining
+
+Exit_Handler:
+
+    On Error Resume Next
+
+    If Not rsLines Is Nothing Then rsLines.close
+
+    Set rsLines = Nothing
+    Set db = Nothing
+
+    On Error GoTo 0
+
+    Exit Function
+
+Err_Handler:
+    SalesOrderIsAlreadyFullyShipped = False
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function GetTotalAvailableForItem(ByVal itemIDValue As Long) As Double
+
+    On Error GoTo Err_Handler
+
+    Dim qtyOnHandValue As Double
+    Dim qtyReservedValue As Double
+
+    qtyOnHandValue = Nz(DSum( _
+        "Nz([QuantityOnHand],0)", _
+        "T_StockBalances", _
+        "ItemID = " & itemIDValue _
+    ), 0)
+
+    qtyReservedValue = Nz(DSum( _
+        "Nz([QuantityReserved],0)", _
+        "T_StockBalances", _
+        "ItemID = " & itemIDValue _
+    ), 0)
+
+    GetTotalAvailableForItem = qtyOnHandValue - qtyReservedValue
+
+    If GetTotalAvailableForItem < 0 Then
+        GetTotalAvailableForItem = 0
+    End If
+
+    Exit Function
+
+Err_Handler:
+    GetTotalAvailableForItem = 0
+
+End Function
+
+
+Private Function GetStockOutMovementTypeID() As Long
+
+    On Error GoTo Err_Handler
+
+    Dim db As Object
+    Dim rs As Object
+
+    Dim codeValue As String
+    Dim nameValue As String
+    Dim stockEffectValue As Long
+
+    Set db = CurrentDb
+
+    Set rs = db.OpenRecordset( _
+        "SELECT * FROM T_StockMovementTypes ORDER BY MovementTypeID;", _
+        2 _
+    )
+
+    If rs.EOF Then
+        GetStockOutMovementTypeID = 0
+        GoTo Exit_Handler
+    End If
+
+    Do While Not rs.EOF
+
+        codeValue = UCase$(Trim$(Nz(RSValue(rs, "MovementTypeCode", vbNullString), vbNullString)))
+        nameValue = UCase$(Trim$(Nz(RSValue(rs, "MovementTypeName", vbNullString), vbNullString)))
+        stockEffectValue = CLng(Nz(RSValue(rs, "StockEffect", 0), 0))
+
+        If stockEffectValue < 0 Then
+
+            If codeValue = "STOCK_OUT" _
+               Or codeValue = "OUT" _
+               Or codeValue = "ISSUE" _
+               Or codeValue = "SHIP" _
+               Or codeValue = "SHIPMENT" _
+               Or codeValue = "SALE" _
+               Or InStr(1, nameValue, "OUT", vbTextCompare) > 0 _
+               Or InStr(1, nameValue, "ISSUE", vbTextCompare) > 0 _
+               Or InStr(1, nameValue, "SHIP", vbTextCompare) > 0 _
+               Or InStr(1, nameValue, "SALE", vbTextCompare) > 0 Then
+
+                GetStockOutMovementTypeID = CLng(RSValue(rs, "MovementTypeID", 0))
+                GoTo Exit_Handler
+
+            End If
+
+        End If
+
+        rs.MoveNext
+
+    Loop
+
+    rs.MoveFirst
+
+    Do While Not rs.EOF
+
+        stockEffectValue = CLng(Nz(RSValue(rs, "StockEffect", 0), 0))
+
+        If stockEffectValue < 0 Then
+            GetStockOutMovementTypeID = CLng(RSValue(rs, "MovementTypeID", 0))
+            GoTo Exit_Handler
+        End If
+
+        rs.MoveNext
+
+    Loop
+
+    GetStockOutMovementTypeID = 0
+
+Exit_Handler:
+
+    On Error Resume Next
+
+    If Not rs Is Nothing Then rs.close
+
+    Set rs = Nothing
+    Set db = Nothing
+
+    On Error GoTo 0
+
+    Exit Function
+
+Err_Handler:
+    GetStockOutMovementTypeID = 0
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function GetInvoiceIDForSalesOrder(ByVal salesOrderIDValue As Long) As Variant
+
+    On Error GoTo Err_Handler
+
+    GetInvoiceIDForSalesOrder = Nz(DLookup( _
+        "InvoiceID", _
+        "T_Invoices", _
+        "SalesOrderID = " & salesOrderIDValue _
+    ), Null)
+
+    Exit Function
+
+Err_Handler:
+    GetInvoiceIDForSalesOrder = Null
+
+End Function
+
+
+'=============================================================
+' SHARED HELPERS
+'=============================================================
+Private Function GetNextDocumentNumber( _
+    ByVal documentTypeValue As String, _
+    ByVal defaultPrefix As String, _
+    ByVal defaultNextNumber As Long, _
+    ByVal defaultNumberLength As Long _
+) As String
+
+    On Error GoTo Err_Handler
+
+    Dim db As Object
+    Dim rs As Object
+    Dim sqlLookup As String
+
+    Dim prefixValue As String
+    Dim nextNumberValue As Long
+    Dim numberLengthValue As Long
+
+    Set db = CurrentDb
+
+    sqlLookup = _
+        "SELECT * FROM T_DocumentNumbers " & _
+        "WHERE DocumentType = " & SqlText(documentTypeValue) & ";"
+
+    Set rs = db.OpenRecordset(sqlLookup, 2)
+
+    If rs.EOF Then
+
+        prefixValue = defaultPrefix
+        nextNumberValue = defaultNextNumber
+        numberLengthValue = defaultNumberLength
+
+        rs.addnew
+
+        SafeSetRSField rs, "DocumentType", documentTypeValue
+        SafeSetRSField rs, "Prefix", prefixValue
+        SafeSetRSField rs, "NextNumber", nextNumberValue + 1
+        SafeSetRSField rs, "NumberLength", numberLengthValue
+        SafeSetRSField rs, "LastUpdatedOn", Now()
+
+        rs.Update
+
+    Else
+
+        prefixValue = Nz(RSValue(rs, "Prefix", defaultPrefix), defaultPrefix)
+        nextNumberValue = CLng(Nz(RSValue(rs, "NextNumber", defaultNextNumber), defaultNextNumber))
+        numberLengthValue = CLng(Nz(RSValue(rs, "NumberLength", defaultNumberLength), defaultNumberLength))
+
+        rs.Edit
+
+        SafeSetRSField rs, "NextNumber", nextNumberValue + 1
+        SafeSetRSField rs, "LastUpdatedOn", Now()
+
+        rs.Update
+
+    End If
+
+    GetNextDocumentNumber = _
+        prefixValue & Format(nextNumberValue, String(numberLengthValue, "0"))
+
+Exit_Handler:
+
+    On Error Resume Next
+
+    If Not rs Is Nothing Then rs.close
+
+    Set rs = Nothing
+    Set db = Nothing
+
+    On Error GoTo 0
+
+    Exit Function
+
+Err_Handler:
+    GetNextDocumentNumber = _
+        defaultPrefix & Format(Now(), "yyyymmddhhnnss")
+
+    Resume Exit_Handler
+
+End Function
+
+
+Private Sub SafeSetField(ByVal fieldName As String, ByVal fieldValue As Variant)
+
+    On Error Resume Next
+    Me(fieldName) = fieldValue
+    On Error GoTo 0
+
+End Sub
+
+
+Private Function ControlExists(ByVal controlName As String) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim ctl As Control
+
+    Set ctl = Me.Controls(controlName)
+    ControlExists = True
+
+Exit_Handler:
+    Set ctl = Nothing
+    Exit Function
+
+Err_Handler:
+    ControlExists = False
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function SqlText(ByVal value As String) As String
+
+    SqlText = "'" & Replace(value, "'", "''") & "'"
+
+End Function
+
+
+Private Function RSHasField(ByVal rs As Object, ByVal fieldName As String) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim i As Long
+
+    For i = 0 To rs.Fields.Count - 1
+
+        If StrComp(rs.Fields(i).Name, fieldName, vbTextCompare) = 0 Then
+            RSHasField = True
+            Exit Function
+        End If
+
+    Next i
+
+    RSHasField = False
+    Exit Function
+
+Err_Handler:
+    RSHasField = False
+
+End Function
+
+
+Private Function RSValue(ByVal rs As Object, ByVal fieldName As String, ByVal defaultValue As Variant) As Variant
+
+    On Error GoTo Err_Handler
+
+    If RSHasField(rs, fieldName) Then
+
+        If IsNull(rs.Fields(fieldName).value) Then
+            RSValue = defaultValue
+        Else
+            RSValue = rs.Fields(fieldName).value
+        End If
+
+    Else
+
+        RSValue = defaultValue
+
+    End If
+
+    Exit Function
+
+Err_Handler:
+    RSValue = defaultValue
+
+End Function
+
+
+Private Sub SafeSetRSField(ByVal rs As Object, ByVal fieldName As String, ByVal fieldValue As Variant)
+
+    On Error Resume Next
+
+    If RSHasField(rs, fieldName) Then
+        rs.Fields(fieldName).value = fieldValue
+    End If
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Function FormExists(ByVal formName As String) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim obj As AccessObject
+
+    For Each obj In CurrentProject.AllForms
+
+        If StrComp(obj.Name, formName, vbTextCompare) = 0 Then
+            FormExists = True
+            Exit Function
+        End If
+
+    Next obj
+
+    FormExists = False
+
+Exit_Handler:
+    Set obj = Nothing
+    Exit Function
+
+Err_Handler:
+    FormExists = False
+    Resume Exit_Handler
+
+End Function
+
+
+
+Private Sub CustomerID_NotInList(NewData As String, Response As Integer)
+    On Error GoTo Err_Handler
+    Response = acDataErrContinue
+    If HandleComboNotInList(Me!CustomerID, NewData, "F_CustomerSetup", "T_Customers", "CustomerID", "CustomerName", "CustomerCode") Then
+        Response = acDataErrAdded
+    Else
+        Me!CustomerID.Undo
+    End If
+    Exit Sub
+Err_Handler:
+    Response = acDataErrContinue
+    MsgBox Err.Description, vbExclamation, "Add Customer"
+End Sub
+
+Private Sub Form_Error(DataErr As Integer, Response As Integer)
+    Dim uxHandled As Boolean
+    UX_SuppressFormError DataErr, Response, uxHandled
+    If uxHandled Then Exit Sub
+    Response = acDataErrDisplay
+End Sub
+
+Private Sub Form_Unload(Cancel As Integer)
+    On Error Resume Next
+    gSkipInventory = False
+    If Me.NewRecord And Me.Dirty Then Me.Undo
+End Sub

@@ -1,0 +1,92 @@
+﻿dbMemo "SQL" ="SELECT IssueMovementID, IssueDate, ExpectedReturnDate, DaysUntilDue, AlertStatus"
+    ", ItemID, InternalSKU, ItemName, CategoryName, ItemInstanceID, SerialNumber, Pro"
+    "jectID, AssemblyJobID, CustomerID, ReferenceDocument, IssueReason, ReturnStatus,"
+    " AlertMessage\015\012FROM Q_Notify_ToolReturns_Base\015\012WHERE ReturnStatus = "
+    "'NOT RETURNED'\015\012    AND AlertStatus In ('DUE SOON','OVERDUE')\015\012ORDER"
+    " BY IIf(AlertStatus='OVERDUE',1,2), ExpectedReturnDate, ItemName;\015\012"
+dbMemo "Connect" =""
+dbBoolean "ReturnsRecords" ="-1"
+dbInteger "ODBCTimeout" ="60"
+dbBoolean "OrderByOn" ="0"
+dbByte "Orientation" ="0"
+dbByte "DefaultView" ="2"
+dbBinary "GUID" = Begin
+    0x19e231d692e82246a3eefbf5bd024a73
+End
+dbBoolean "FilterOnLoad" ="0"
+dbBoolean "OrderByOnLoad" ="-1"
+dbByte "PublishToWeb" ="1"
+Begin
+    Begin
+        dbText "Name" ="IssueDate"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="IssueMovementID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="DaysUntilDue"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="ExpectedReturnDate"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="InternalSKU"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="ItemID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="AlertStatus"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="ItemName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="CategoryName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="ItemInstanceID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="SerialNumber"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="ProjectID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="AssemblyJobID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="CustomerID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="ReferenceDocument"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="IssueReason"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="ReturnStatus"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="AlertMessage"
+        dbLong "AggregateType" ="-1"
+    End
+End

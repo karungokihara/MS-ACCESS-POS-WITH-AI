@@ -1,0 +1,464 @@
+﻿Option Compare Database
+Option Explicit
+
+'=============================================================
+' FORM: F_InventoryList
+'
+' PURPOSE:
+'   Read-only inventory search screen for:
+'       - Bulk stock
+'       - Serialized stock
+'       - Warehouse visibility
+'       - Shelf and bin visibility
+'       - Low-stock alerts
+'
+' QUERY:
+'   Q_InventoryListAll
+'
+' SUBFORM:
+'   SF_InventoryList
+'
+' IMPORTANT:
+'   The subform control name must be SF_InventoryList.
+'=============================================================
+
+Private Const INVENTORY_SUBFORM_CONTROL As String = "SF_InventoryList"
+
+
+
+
+'=============================================================
+' INITIALIZE FORM
+'=============================================================
+Private Sub Form_Load()
+
+    On Error GoTo Err_Handler
+
+    ResetFilters
+    RequeryInventoryList
+
+Exit_Handler:
+
+    Exit Sub
+
+Err_Handler:
+
+    MsgBox _
+        "The inventory list could not be initialized." & _
+        vbCrLf & vbCrLf & _
+        Err.Description, _
+        vbExclamation, _
+        "InventoryList"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' APPLY FILTER BUTTON
+'=============================================================
+Private Sub cmdApplyFilter_Click()
+
+    ApplyInventoryFilter
+
+End Sub
+
+
+'=============================================================
+' CLEAR FILTER BUTTON
+'=============================================================
+Private Sub cmdClearFilter_Click()
+
+    ResetFilters
+    ApplyInventoryFilter
+
+End Sub
+
+
+'=============================================================
+' REFRESH BUTTON
+'=============================================================
+Private Sub cmdRefresh_Click()
+
+    RequeryInventoryList
+
+End Sub
+
+
+'=============================================================
+' OPEN STOCK-IN FORM
+'=============================================================
+Private Sub cmdOpenStockIn_Click()
+
+    DoCmd.OpenForm _
+        "F_StockIn", _
+        acNormal
+
+End Sub
+
+
+'=============================================================
+' OPEN STOCK-OUT FORM
+'=============================================================
+Private Sub cmdOpenStockOut_Click()
+
+    DoCmd.OpenForm _
+        "F_StockOut", _
+        acNormal
+
+End Sub
+
+
+'=============================================================
+' CLOSE FORM
+'=============================================================
+Private Sub cmdClose_Click()
+
+    DoCmd.close _
+        acForm, _
+        Me.Name
+
+End Sub
+
+
+'=============================================================
+' APPLY FILTER IMMEDIATELY AFTER CATEGORY SELECTION
+'=============================================================
+Private Sub cboCategoryID_AfterUpdate()
+
+    ApplyInventoryFilter
+
+End Sub
+
+
+'=============================================================
+' APPLY FILTER IMMEDIATELY AFTER WAREHOUSE SELECTION
+'=============================================================
+Private Sub cboWarehouseID_AfterUpdate()
+
+    ApplyInventoryFilter
+
+End Sub
+
+
+'=============================================================
+' APPLY FILTER IMMEDIATELY AFTER STOCK-TYPE SELECTION
+'=============================================================
+Private Sub cboStockType_AfterUpdate()
+
+    ApplyInventoryFilter
+
+End Sub
+
+
+'=============================================================
+' APPLY FILTER IMMEDIATELY AFTER STATUS SELECTION
+'=============================================================
+Private Sub cboStockStatus_AfterUpdate()
+
+    ApplyInventoryFilter
+
+End Sub
+
+
+'=============================================================
+' APPLY SEARCH AFTER USER LEAVES SEARCH FIELD
+'=============================================================
+Private Sub txtSearch_AfterUpdate()
+
+    ApplyInventoryFilter
+
+End Sub
+
+
+'=============================================================
+' APPLY SEARCH WHEN ENTER IS PRESSED
+'=============================================================
+Private Sub txtSearch_KeyDown( _
+    KeyCode As Integer, _
+    Shift As Integer _
+)
+
+    If KeyCode = vbKeyReturn Then
+
+        ApplyInventoryFilter
+
+        'Prevent the Enter key from moving to another control.
+        KeyCode = 0
+
+    End If
+
+End Sub
+
+
+'=============================================================
+' BUILD AND APPLY SUBFORM FILTER
+'=============================================================
+Private Sub ApplyInventoryFilter()
+
+    On Error GoTo Err_Handler
+
+    Dim inventoryForm As Form
+    Dim filterText As String
+    Dim searchText As String
+    Dim safeSearchText As String
+
+    Set inventoryForm = _
+        Me.Controls(INVENTORY_SUBFORM_CONTROL).Form
+
+    filterText = vbNullString
+
+    '---------------------------------------------------------
+    ' Free-text search:
+    ' SKU, item, category, serial number, warehouse, shelf,
+    ' bin and storage area are searched together.
+    '---------------------------------------------------------
+    searchText = Trim$(Nz(Me.txtSearch, vbNullString))
+
+    If Len(searchText) > 0 Then
+
+        safeSearchText = EscapeLikeText(searchText)
+
+        AppendFilterCondition _
+            filterText, _
+            "(" & _
+                "Nz([InternalSKU], '') Like " & _
+                    SqlText("*" & safeSearchText & "*") & _
+                " OR Nz([ItemName], '') Like " & _
+                    SqlText("*" & safeSearchText & "*") & _
+                " OR Nz([CategoryName], '') Like " & _
+                    SqlText("*" & safeSearchText & "*") & _
+                " OR Nz([SerialNumber], '') Like " & _
+                    SqlText("*" & safeSearchText & "*") & _
+                " OR Nz([WarehouseName], '') Like " & _
+                    SqlText("*" & safeSearchText & "*") & _
+                " OR Nz([LocationName], '') Like " & _
+                    SqlText("*" & safeSearchText & "*") & _
+                " OR Nz([BinNumber], '') Like " & _
+                    SqlText("*" & safeSearchText & "*") & _
+                " OR Nz([ShelfNumber], '') Like " & _
+                    SqlText("*" & safeSearchText & "*") & _
+            ")"
+
+    End If
+
+    '---------------------------------------------------------
+    ' Category filter
+    '---------------------------------------------------------
+    If Not IsNull(Me.cboCategoryID) Then
+    
+        AppendFilterCondition _
+            filterText, _
+            "[CategoryName] = " & SqlText(CStr(Me.cboCategoryID.Column(1)))
+    
+    End If
+    '---------------------------------------------------------
+    ' Warehouse filter
+    '---------------------------------------------------------
+    If Not IsNull(Me.cboWarehouseID) Then
+    
+        AppendFilterCondition _
+            filterText, _
+            "[WarehouseName] = " & SqlText(CStr(Me.cboWarehouseID.Column(1)))
+    
+    End If
+
+    '---------------------------------------------------------
+    ' Stock-type filter
+    '---------------------------------------------------------
+    If Len(Trim$(Nz(Me.cboStockType, vbNullString))) > 0 Then
+
+        AppendFilterCondition _
+            filterText, _
+            "[StockType] = " & _
+                SqlText(CStr(Me.cboStockType))
+
+    End If
+
+    '---------------------------------------------------------
+    ' Stock-status filter
+    '---------------------------------------------------------
+    If Len(Trim$(Nz(Me.cboStockStatus, vbNullString))) > 0 Then
+
+        AppendFilterCondition _
+            filterText, _
+            "[StockStatus] = " & _
+                SqlText(CStr(Me.cboStockStatus))
+
+    End If
+
+    '---------------------------------------------------------
+    ' Apply the completed filter.
+    '---------------------------------------------------------
+    If Len(filterText) = 0 Then
+
+        inventoryForm.FilterOn = False
+        inventoryForm.Filter = vbNullString
+
+    Else
+
+        inventoryForm.Filter = filterText
+        inventoryForm.FilterOn = True
+
+    End If
+
+Exit_Handler:
+
+    Set inventoryForm = Nothing
+
+    Exit Sub
+
+Err_Handler:
+
+    MsgBox _
+        "The inventory filter could not be applied." & _
+        vbCrLf & vbCrLf & _
+        Err.Description, _
+        vbExclamation, _
+        "Inventory Filter"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' CLEAR ALL FILTER CONTROLS
+'=============================================================
+Private Sub ResetFilters()
+
+    Me.txtSearch = Null
+    Me.cboCategoryID = Null
+    Me.cboWarehouseID = Null
+    Me.cboStockType = Null
+    Me.cboStockStatus = Null
+
+End Sub
+
+
+'=============================================================
+' REFRESH QUERY RESULTS AND REAPPLY FILTER
+'=============================================================
+Private Sub RequeryInventoryList()
+
+    On Error GoTo Err_Handler
+
+    Dim inventoryForm As Form
+
+    Set inventoryForm = _
+        Me.Controls(INVENTORY_SUBFORM_CONTROL).Form
+
+    inventoryForm.Requery
+
+    ApplyInventoryFilter
+
+Exit_Handler:
+
+    Set inventoryForm = Nothing
+
+    Exit Sub
+
+Err_Handler:
+
+    MsgBox _
+        "The inventory list could not be refreshed." & _
+        vbCrLf & vbCrLf & _
+        Err.Description, _
+        vbExclamation, _
+        "Inventory Refresh"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' ADD A CONDITION TO AN EXISTING FILTER
+'=============================================================
+Private Sub AppendFilterCondition( _
+    ByRef existingFilter As String, _
+    ByVal newCondition As String _
+)
+
+    If Len(existingFilter) > 0 Then
+        existingFilter = _
+            existingFilter & _
+            " AND "
+    End If
+
+    existingFilter = _
+        existingFilter & _
+        newCondition
+
+End Sub
+
+
+'=============================================================
+' ESCAPE SPECIAL CHARACTERS USED BY ACCESS LIKE
+'
+' Search input is treated as literal text.
+'=============================================================
+Private Function EscapeLikeText( _
+    ByVal value As String _
+) As String
+
+    Dim result As String
+
+    result = value
+
+    result = Replace(result, "[", "[[]")
+    result = Replace(result, "*", "[*]")
+    result = Replace(result, "?", "[?]")
+    result = Replace(result, "#", "[#]")
+
+    EscapeLikeText = result
+
+End Function
+
+
+'=============================================================
+' ESCAPE TEXT FOR ACCESS SQL AND FILTER EXPRESSIONS
+'=============================================================
+Private Function SqlText( _
+    ByVal value As String _
+) As String
+
+    SqlText = _
+        "'" & _
+        Replace(value, "'", "''") & _
+        "'"
+
+End Function
+
+Private Sub btnClearFilter_Click()
+
+    On Error GoTo Err_Handler
+
+    Me.txtSearch = Null
+    Me.cboCategoryID = Null
+    Me.cboWarehouseID = Null
+    Me.cboStockType = Null
+    Me.cboStockStatus = Null
+
+    With Me.Controls(INVENTORY_SUBFORM_CONTROL).Form
+        .FilterOn = False
+        .Filter = vbNullString
+        .Requery
+    End With
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The inventory filters could not be cleared." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Clear Inventory Filter"
+
+    Resume Exit_Handler
+
+End Sub

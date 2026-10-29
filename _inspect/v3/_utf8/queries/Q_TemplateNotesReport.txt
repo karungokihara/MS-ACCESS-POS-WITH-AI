@@ -1,0 +1,57 @@
+﻿dbMemo "SQL" ="SELECT T.AssemblyTemplateID, T.TemplateCode, T.TemplateName, T.CustomerPartNumbe"
+    "r, T.RevisionNo, T.Status, T.Notes, T.Instructions, T.CreatedOn, T.UpdatedOn\015"
+    "\012FROM T_AssemblyTemplates AS T;\015\012"
+dbMemo "Connect" =""
+dbBoolean "ReturnsRecords" ="-1"
+dbInteger "ODBCTimeout" ="60"
+dbBoolean "OrderByOn" ="0"
+dbByte "Orientation" ="0"
+dbByte "DefaultView" ="2"
+dbBinary "GUID" = Begin
+    0xc60487309a6d6e4daa68ca9e065ad36e
+End
+dbBoolean "FilterOnLoad" ="0"
+dbBoolean "OrderByOnLoad" ="-1"
+dbByte "PublishToWeb" ="1"
+Begin
+    Begin
+        dbText "Name" ="T.TemplateCode"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="T.AssemblyTemplateID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="T.CustomerPartNumber"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="T.TemplateName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="T.Notes"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="T.Status"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="T.RevisionNo"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="T.Instructions"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="T.CreatedOn"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="T.UpdatedOn"
+        dbLong "AggregateType" ="-1"
+    End
+End

@@ -1,0 +1,63 @@
+﻿COUNT T_Users = 3
+COUNT T_Roles = 4
+COUNT T_Currencies = 3
+COUNT T_ItemTypes = 4
+COUNT T_Units = 6
+COUNT T_Customers = 1
+COUNT T_Categories = 0
+COUNT T_Warehouses = 0
+COUNT T_Locations = 0
+COUNT T_Items = 0
+COUNT T_StockBalances = 0
+COUNT T_Invoices = 0
+COUNT T_InvoiceLines = 0
+COUNT T_SalesOrders = 0
+COUNT T_SalesOrderLines = 0
+COUNT T_CustomerPOs = 0
+COUNT T_Projects = 0
+COUNT T_Suppliers = 0
+COUNT T_Manufacturers = 0
+COUNT T_DocumentNumbers = 4
+USERS Henfrey, storetest, admin
+CUSTOMER INTERNAL / Internal Customer / Internal
+UNIT PCS / Pieces
+UNIT ROLL / Rolls
+UNIT BOX / Box
+UNIT KG / Kilogram
+UNIT M / Metre
+UNIT SET / Set
+DOC Invoice / INV = 1
+DOC SalesOrder / SO = 1
+DOC CustomerPO / CPO = 1
+DOC Item / ITEM = 1
+EXPORTED F_SalesOrders
+EXPORTED F_Invoices
+EXPORTED F_CustomerPO
+EXPORTED F_SendPO
+EXPORTED F_StockIn
+EXPORTED F_StockOut
+EXPORTED F_ItemSetup
+EXPORTED F_Warehouses
+EXPORTED F_LocationSetup
+EXPORTED F_Projects
+EXPORTED F_ProjectIssue
+EXPORTED F_InvoiceList
+EXPORTED SF_InvoiceList
+EXPORTED SF_SalesOrderLines
+EXPORTED SF_InvoiceLines
+EXPORTED Dashboard
+EXPORTED F_SalesOrderList
+EXPORTED SF_ItemSetupList
+EXPORTED M_UX
+EXPORTED Q_InventoryListAll
+EXPORTED Q_ItemSetupList
+EXPORTED Q_SalesOrderReportHeader
+EXPORTED Q_DeliveryNoteReportHeader
+EXPORTED Q_CustomerPOReportHeader
+EXPORTED Q_SupplierPOReportHeader
+EXPORTED R_Invoice
+EXPORTED R_Quotation
+EXPORTED R_SalesOrder
+EXPORTED R_PurchaseOrder
+EXPORTED R_SupplierPO
+EXPORTED R_DeliveryNote

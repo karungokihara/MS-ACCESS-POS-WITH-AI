@@ -1,0 +1,123 @@
+﻿dbMemo "SQL" ="SELECT L.SupplierPOLineID, L.SupplierPOID, P.PONumber, P.SupplierID, L.LineNumbe"
+    "r, L.ItemID, I.InternalSKU, I.ItemName, I.ItemClass, I.RequiresSerial, L.Supplie"
+    "rPartNumber, L.ItemDescription, L.OrderedQuantity, Nz(R.QuantityReceivedToDate,0"
+    ") AS QuantityReceivedToDate, L.OrderedQuantity\015\012        - Nz(R.QuantityRec"
+    "eivedToDate,0) AS RemainingQuantity, L.UnitID, U.UnitCode, U.UnitName, L.UnitPri"
+    "ce, L.DiscountAmount, L.TaxPercent, L.RequiredDate, L.LineStatus, L.Notes\015\012"
+    "FROM (((T_SupplierPOLines AS L INNER JOIN T_SupplierPOs AS P ON L.SupplierPOID ="
+    " P.SupplierPOID) INNER JOIN T_Items AS I ON L.ItemID = I.ItemID) INNER JOIN T_Un"
+    "its AS U ON L.UnitID = U.UnitID) LEFT JOIN Q_SupplierPOLineReceived AS R ON L.Su"
+    "pplierPOLineID = R.SupplierPOLineID\015\012WHERE Nz(L.LineStatus,\"Open\") <> \""
+    "Cancelled\"\015\012    AND\015\012    (\015\012        L.OrderedQuantity\015\012"
+    "        - Nz(R.QuantityReceivedToDate,0)\015\012    ) > 0\015\012ORDER BY L.Supp"
+    "lierPOID, L.LineNumber;\015\012"
+dbMemo "Connect" =""
+dbBoolean "ReturnsRecords" ="-1"
+dbInteger "ODBCTimeout" ="60"
+dbBoolean "OrderByOn" ="0"
+dbByte "Orientation" ="0"
+dbByte "DefaultView" ="2"
+dbBinary "GUID" = Begin
+    0xa6da1821b993f149b57d14082704c45c
+End
+dbBoolean "FilterOnLoad" ="0"
+dbBoolean "OrderByOnLoad" ="-1"
+dbByte "PublishToWeb" ="1"
+Begin
+    Begin
+        dbText "Name" ="L.DiscountAmount"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="L.SupplierPOLineID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.SupplierID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.PONumber"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="L.SupplierPOID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.InternalSKU"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="L.ItemID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="L.LineNumber"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.ItemName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.ItemClass"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.RequiresSerial"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="L.SupplierPartNumber"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="L.ItemDescription"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="L.OrderedQuantity"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="QuantityReceivedToDate"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="RemainingQuantity"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="L.UnitID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="U.UnitCode"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="U.UnitName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="L.UnitPrice"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="L.TaxPercent"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="L.RequiredDate"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="L.LineStatus"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="L.Notes"
+        dbLong "AggregateType" ="-1"
+    End
+End

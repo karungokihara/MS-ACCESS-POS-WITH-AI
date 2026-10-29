@@ -1,0 +1,40 @@
+﻿dbMemo "SQL" ="SELECT T_Items.ItemID, T_Items.InternalSKU, T_Items.ItemName, T_Items.ItemClass,"
+    " Nz(T_StockBalances.QuantityOnHand,0) AS CurrentStock\015\012FROM T_Items LEFT J"
+    "OIN T_StockBalances ON T_Items.ItemID = T_StockBalances.ItemID\015\012WHERE Nz(T"
+    "_Items.ItemClass,'') Not In ('Tool','Equipment')\015\012ORDER BY T_Items.ItemNam"
+    "e;\015\012"
+dbMemo "Connect" =""
+dbBoolean "ReturnsRecords" ="-1"
+dbInteger "ODBCTimeout" ="60"
+dbBoolean "OrderByOn" ="0"
+dbByte "Orientation" ="0"
+dbByte "DefaultView" ="2"
+dbBinary "GUID" = Begin
+    0xc8c2e67b5bd8ac4cbe5b9f9fa4d9c66a
+End
+dbBoolean "FilterOnLoad" ="0"
+dbBoolean "OrderByOnLoad" ="-1"
+dbBoolean "NoFormat" ="0"
+dbByte "PublishToWeb" ="1"
+Begin
+    Begin
+        dbText "Name" ="T_Items.InternalSKU"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="T_Items.ItemID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="CurrentStock"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="T_Items.ItemClass"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="T_Items.ItemName"
+        dbLong "AggregateType" ="-1"
+    End
+End

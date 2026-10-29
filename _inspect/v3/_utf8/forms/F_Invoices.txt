@@ -1,0 +1,3619 @@
+﻿Version =21
+VersionRequired =20
+PublishOption =1
+Checksum =1065974559
+Begin Form
+    PopUp = NotDefault
+    RecordSelectors = NotDefault
+    AutoCenter = NotDefault
+    DividingLines = NotDefault
+    AllowDesignChanges = NotDefault
+    DefaultView =0
+    ViewsAllowed =1
+    TabularFamily =0
+    PictureAlignment =2
+    DatasheetGridlinesBehavior =3
+    GridX =24
+    GridY =24
+    Width =18372
+    DatasheetFontHeight =11
+    ItemSuffix =52
+    Left =2655
+    Top =4065
+    Right =17745
+    Bottom =8760
+    DatasheetGridlinesColor =15263976
+    OnUnload ="[Event Procedure]"
+    Filter ="InvoiceID = 1"
+    RecSrcDt = Begin
+        0xa146be11188ee640
+    End
+    GUID = Begin
+        0x39ef86ade8bbbd44b938c324ad112765
+    End
+    RecordSource ="T_Invoices"
+    Caption ="F_Invoices"
+    OnCurrent ="[Event Procedure]"
+    OnDelete ="[Event Procedure]"
+    BeforeUpdate ="[Event Procedure]"
+    AfterUpdate ="[Event Procedure]"
+    DatasheetFontName ="Aptos"
+    PrtMip = Begin
+        0x68010000a4010000480300009402000000000000c4470000e03d000001000000 ,
+        0x010000006801000000000000a10700000100000001000000
+    End
+    PrtDevMode = Begin
+        0x0000000000000000308490d58b0200000000000000000000e70a7e35f77f0000 ,
+        0x010403069c004003032d000002000100ea0a6f08640001000f00580202000100 ,
+        0x5802030001004c657474657200000000030000000000c8420000c842e8e8e800 ,
+        0xc075ade28b020000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000ffffffff4749533400000000000000000000000044494e55 ,
+        0x2200c80024031c00ac13d8c00000000000000000000000000000000000000000 ,
+        0x0000000000000000050000000000070000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000100000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000c8000000534d544a ,
+        0x000000001000b8007b00330045004500330039003100310034002d0033003000 ,
+        0x420034002d0034003500610034002d0041003100300039002d00310039004400 ,
+        0x3400410034003000460043004300320032007d000000524553444c4c00556e69 ,
+        0x726573444c4c00506170657253697a65004c4554544552004f7269656e746174 ,
+        0x696f6e00504f525452414954005265736f6c7574696f6e004450493630300043 ,
+        0x6f6c6f724d6f6465003234627070000000000000000000000000000000000000 ,
+        0x1c0000005634444d0100000000000000000000000000000000000000
+    End
+    PrtDevNames = Begin
+        0x08002c003f000100000000000000000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000000000000000006e ,
+        0x756c3a0000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x00000000
+    End
+    OnLoad ="[Event Procedure]"
+    OnError ="[Event Procedure]"
+    AllowDatasheetView =0
+    FilterOnLoad =0
+    ShowPageMargins =0
+    DisplayOnSharePointSite =1
+    DatasheetAlternateBackColor =15921906
+    DatasheetGridlinesColor12 =0
+    FitToScreen =1
+    DatasheetBackThemeColorIndex =1
+    BorderThemeColorIndex =3
+    ThemeFontIndex =1
+    ForeThemeColorIndex =0
+    AlternateBackThemeColorIndex =1
+    AlternateBackShade =95.0
+    PrtDevModeW = Begin
+        0x000074e28b02000019000000f77f0000100a20c78b0200001900000000000000 ,
+        0x600e20c78b0200005fed3db5f97f0000000008c48b020000796d2ff7f1000000 ,
+        0x01040306dc004003032d000002000100ea0a6f08640001000f00580202000100 ,
+        0x5802030001004c0065007400740065007200000000000000200a20c78b020000 ,
+        0x00000000000000000000000000000000100a20c78b0200005d000000f1000000 ,
+        0x1900000000000000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000ffffffff4749533400000000000000000000000044494e55 ,
+        0x2200c80024031c00ac13d8c00000000000000000000000000000000000000000 ,
+        0x0000000000000000050000000000070000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000100000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000c8000000534d544a ,
+        0x000000001000b8007b00330045004500330039003100310034002d0033003000 ,
+        0x420034002d0034003500610034002d0041003100300039002d00310039004400 ,
+        0x3400410034003000460043004300320032007d000000524553444c4c00556e69 ,
+        0x726573444c4c00506170657253697a65004c4554544552004f7269656e746174 ,
+        0x696f6e00504f525452414954005265736f6c7574696f6e004450493630300043 ,
+        0x6f6c6f724d6f6465003234627070000000000000000000000000000000000000 ,
+        0x1c0000005634444d0100000000000000000000000000000000000000
+    End
+    PrtDevNamesW = Begin
+        0x040028003b000100000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000006e0075006c003a000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000
+    End
+    NoSaveCTIWhenDisabled =1
+    Begin
+        Begin Label
+            BackStyle =0
+            TextFontFamily =0
+            FontSize =11
+            BorderColor =8355711
+            ForeColor =6710886
+            FontName ="Aptos"
+            GridlineColor =10921638
+            ThemeFontIndex =1
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =0
+            BorderTint =50.0
+            ForeThemeColorIndex =0
+            ForeTint =60.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin CommandButton
+            TextFontFamily =0
+            FontSize =11
+            FontWeight =400
+            ForeColor =4210752
+            FontName ="Aptos"
+            GridlineColor =10921638
+            ForeThemeColorIndex =0
+            ForeTint =75.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+            UseTheme =1
+            Shape =1
+            Gradient =12
+            BackColor =14790982
+            BackThemeColorIndex =4
+            BackTint =60.0
+            BorderLineStyle =0
+            BorderColor =14790982
+            BorderThemeColorIndex =4
+            BorderTint =60.0
+            ThemeFontIndex =1
+            HoverColor =15453059
+            HoverThemeColorIndex =4
+            HoverTint =40.0
+            PressedColor =6440976
+            PressedThemeColorIndex =4
+            PressedShade =75.0
+            HoverForeColor =4210752
+            HoverForeThemeColorIndex =0
+            HoverForeTint =75.0
+            PressedForeColor =4210752
+            PressedForeThemeColorIndex =0
+            PressedForeTint =75.0
+        End
+        Begin TextBox
+            AddColon = NotDefault
+            FELineBreak = NotDefault
+            TextFontFamily =0
+            BorderLineStyle =0
+            LabelX =-1800
+            FontSize =11
+            BorderColor =10921638
+            ForeColor =4210752
+            FontName ="Aptos"
+            AsianLineBreak =1
+            GridlineColor =10921638
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            ThemeFontIndex =1
+            ForeThemeColorIndex =0
+            ForeTint =75.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin ComboBox
+            AddColon = NotDefault
+            TextFontFamily =0
+            BorderLineStyle =0
+            LabelX =-1800
+            FontSize =11
+            BorderColor =10921638
+            ForeColor =2102279
+            FontName ="Aptos"
+            GridlineColor =10921638
+            AllowValueListEdits =1
+            InheritValueList =1
+            ThemeFontIndex =1
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            ForeThemeColorIndex =2
+            ForeShade =50.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin Subform
+            BorderLineStyle =0
+            BorderColor =10921638
+            GridlineColor =10921638
+            BorderThemeColorIndex =1
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+            BorderShade =65.0
+            ShowPageHeaderAndPageFooter =1
+        End
+        Begin FormHeader
+            Height =1080
+            BackColor =14482166
+            Name ="FormHeader"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0xd38be8c2a2021b43a8c2ce846ad908a6
+            End
+            AutoHeight =1
+            AlternateBackShade =95.0
+            BackTint =20.0
+            Begin
+                Begin Label
+                    OverlapFlags =85
+                    TextAlign =2
+                    Left =7200
+                    Top =360
+                    Width =2261
+                    Height =600
+                    FontSize =20
+                    FontWeight =700
+                    ForeColor =4272139
+                    Name ="Label34"
+                    Caption ="Invoices"
+                    GUID = Begin
+                        0xf4c49cb65293eb4c82496559420b0231
+                    End
+                    LayoutCachedLeft =7200
+                    LayoutCachedTop =360
+                    LayoutCachedWidth =9461
+                    LayoutCachedHeight =960
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    ForeShade =50.0
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    Left =200
+                    Top =80
+                    Width =1400
+                    Height =340
+                    FontWeight =700
+                    ForeColor =16777215
+                    Name ="cmdUXBack"
+                    Caption ="Back"
+                    OnClick ="=UX_GoBack()"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdUXBack\")"
+                    GUID = Begin
+                        0x8357d92f9182a94198ff176e038a2f68
+                    End
+
+                    LayoutCachedLeft =200
+                    LayoutCachedTop =80
+                    LayoutCachedWidth =1600
+                    LayoutCachedHeight =420
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                End
+            End
+        End
+        Begin Section
+            CanGrow = NotDefault
+            Height =15840
+            BackColor =14482166
+            Name ="Detail"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x80d201059efdcd409b0a4dad0ad92fb0
+            End
+            AlternateBackColor =14482166
+            AlternateBackShade =95.0
+            Begin
+                Begin TextBox
+                    Visible = NotDefault
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =12690
+                    Top =3120
+                    Height =300
+                    ColumnWidth =1440
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="InvoiceID"
+                    ControlSource ="InvoiceID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x9a27407965547b42916b42673cdc5f44
+                    End
+
+                    LayoutCachedLeft =12690
+                    LayoutCachedTop =3120
+                    LayoutCachedWidth =14130
+                    LayoutCachedHeight =3420
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =10560
+                            Top =3120
+                            Width =2040
+                            Height =312
+                            Name ="InvoiceID_Label"
+                            Caption ="InvoiceID"
+                            GUID = Begin
+                                0x1bdd10a20e7e064ba0c8b20808b95d4a
+                            End
+                            LayoutCachedLeft =10560
+                            LayoutCachedTop =3120
+                            LayoutCachedWidth =12600
+                            LayoutCachedHeight =3432
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =2490
+                    Top =780
+                    Width =3648
+                    Height =312
+                    ColumnWidth =3000
+                    TabIndex =1
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="InvoiceNo"
+                    ControlSource ="InvoiceNo"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xc688a0a519bb104593a77b4ee67468d0
+                    End
+
+                    LayoutCachedLeft =2490
+                    LayoutCachedTop =780
+                    LayoutCachedWidth =6138
+                    LayoutCachedHeight =1092
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =360
+                            Top =780
+                            Width =2040
+                            Height =312
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="InvoiceNo_Label"
+                            Caption ="InvoiceNo"
+                            GUID = Begin
+                                0x91cde0e807755f44b7b83660054fa34d
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =780
+                            LayoutCachedWidth =2400
+                            LayoutCachedHeight =1092
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    Visible = NotDefault
+                    OverlapFlags =93
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =12690
+                    Top =4380
+                    Width =1488
+                    Height =312
+                    ColumnWidth =1488
+                    TabIndex =3
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="CustomerPOID"
+                    ControlSource ="CustomerPOID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x6e2f75fe3f75d14d9557e1e3b305fb44
+                    End
+
+                    LayoutCachedLeft =12690
+                    LayoutCachedTop =4380
+                    LayoutCachedWidth =14178
+                    LayoutCachedHeight =4692
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =93
+                            Left =10560
+                            Top =4380
+                            Width =2040
+                            Height =312
+                            Name ="CustomerPOID_Label"
+                            Caption ="CustomerPOID"
+                            GUID = Begin
+                                0x5d79c7455cb3014288e06c12a4a7ae00
+                            End
+                            LayoutCachedLeft =10560
+                            LayoutCachedTop =4380
+                            LayoutCachedWidth =12600
+                            LayoutCachedHeight =4692
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    Visible = NotDefault
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =12690
+                    Top =4860
+                    Width =1488
+                    Height =312
+                    ColumnWidth =1488
+                    TabIndex =5
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="SalesOrderID"
+                    ControlSource ="SalesOrderID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x9ecf1d897a4e824896e031ffad6d25eb
+                    End
+
+                    LayoutCachedLeft =12690
+                    LayoutCachedTop =4860
+                    LayoutCachedWidth =14178
+                    LayoutCachedHeight =5172
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =10560
+                            Top =4860
+                            Width =2040
+                            Height =312
+                            Name ="SalesOrderID_Label"
+                            Caption ="SalesOrderID"
+                            GUID = Begin
+                                0x6e48d9436150bb4f8717ebd4b0864c84
+                            End
+                            LayoutCachedLeft =10560
+                            LayoutCachedTop =4860
+                            LayoutCachedWidth =12600
+                            LayoutCachedHeight =5172
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =2490
+                    Top =1620
+                    Width =1608
+                    Height =312
+                    ColumnWidth =1608
+                    TabIndex =6
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="InvoiceDate"
+                    ControlSource ="InvoiceDate"
+                    DefaultValue ="Date()"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x0655709aecc37944a04b420cd92f7867
+                    End
+
+                    LayoutCachedLeft =2490
+                    LayoutCachedTop =1620
+                    LayoutCachedWidth =4098
+                    LayoutCachedHeight =1932
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =360
+                            Top =1620
+                            Width =2040
+                            Height =312
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="InvoiceDate_Label"
+                            Caption ="InvoiceDate"
+                            GUID = Begin
+                                0x731f3f3a38b6474ab9ea6a146fc71bea
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =1620
+                            LayoutCachedWidth =2400
+                            LayoutCachedHeight =1932
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =2490
+                    Top =2460
+                    Width =2610
+                    Height =360
+                    ColumnWidth =3000
+                    TabIndex =7
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="PaymentTerms"
+                    ControlSource ="PaymentTerms"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x7f50deae5b37e64a8c571099c1d6fd4a
+                    End
+
+                    LayoutCachedLeft =2490
+                    LayoutCachedTop =2460
+                    LayoutCachedWidth =5100
+                    LayoutCachedHeight =2820
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =360
+                            Top =2460
+                            Width =2040
+                            Height =312
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="PaymentTerms_Label"
+                            Caption ="PaymentTerms"
+                            GUID = Begin
+                                0x2db7fc5a26c1794eb66398a4d35ca970
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =2460
+                            LayoutCachedWidth =2400
+                            LayoutCachedHeight =2772
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =2490
+                    Top =2940
+                    Width =3330
+                    Height =360
+                    ColumnWidth =3000
+                    TabIndex =8
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="BillToName"
+                    ControlSource ="BillToName"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x3063dfcdefac1a44aec0d54695b5f839
+                    End
+
+                    LayoutCachedLeft =2490
+                    LayoutCachedTop =2940
+                    LayoutCachedWidth =5820
+                    LayoutCachedHeight =3300
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =360
+                            Top =2940
+                            Width =2040
+                            Height =312
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="BillToName_Label"
+                            Caption ="BillToName"
+                            GUID = Begin
+                                0x379966a64a9e0844b68e8ad665f5f963
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =2940
+                            LayoutCachedWidth =2400
+                            LayoutCachedHeight =3252
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =2490
+                    Top =3420
+                    Width =3270
+                    Height =360
+                    ColumnWidth =3000
+                    TabIndex =9
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="BillToAddress"
+                    ControlSource ="BillToAddress"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xf17332d8f47b6144bd45acc75e109332
+                    End
+
+                    LayoutCachedLeft =2490
+                    LayoutCachedTop =3420
+                    LayoutCachedWidth =5760
+                    LayoutCachedHeight =3780
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =360
+                            Top =3420
+                            Width =2040
+                            Height =312
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="BillToAddress_Label"
+                            Caption ="BillToAddress"
+                            GUID = Begin
+                                0x916768ea30c6c643b410d94fd51c1788
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =3420
+                            LayoutCachedWidth =2400
+                            LayoutCachedHeight =3732
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =10350
+                    Top =720
+                    Width =2364
+                    Height =312
+                    ColumnWidth =3000
+                    TabIndex =10
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="SubtotalAmount"
+                    ControlSource ="SubtotalAmount"
+                    DefaultValue ="0"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xd7a6cc167dcca14d8cd5722bfcebfebe
+                    End
+
+                    LayoutCachedLeft =10350
+                    LayoutCachedTop =720
+                    LayoutCachedWidth =12714
+                    LayoutCachedHeight =1032
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =8220
+                            Top =720
+                            Width =2040
+                            Height =312
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="SubtotalAmount_Label"
+                            Caption ="SubtotalAmount"
+                            GUID = Begin
+                                0x4fee8fb1b74b18499d51a88371161bb2
+                            End
+                            LayoutCachedLeft =8220
+                            LayoutCachedTop =720
+                            LayoutCachedWidth =10260
+                            LayoutCachedHeight =1032
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =10350
+                    Top =1140
+                    Width =2364
+                    Height =312
+                    ColumnWidth =3000
+                    TabIndex =11
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="TaxAmount"
+                    ControlSource ="TaxAmount"
+                    AfterUpdate ="[Event Procedure]"
+                    DefaultValue ="0"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x5c2a659ada604f4d96a86e3b7d8fbbe0
+                    End
+
+                    LayoutCachedLeft =10350
+                    LayoutCachedTop =1140
+                    LayoutCachedWidth =12714
+                    LayoutCachedHeight =1452
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =8220
+                            Top =1140
+                            Width =2040
+                            Height =312
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="TaxAmount_Label"
+                            Caption ="TaxAmount"
+                            GUID = Begin
+                                0x0cee15d80081b94fbe920080bf30f2dc
+                            End
+                            LayoutCachedLeft =8220
+                            LayoutCachedTop =1140
+                            LayoutCachedWidth =10260
+                            LayoutCachedHeight =1452
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    OverlapFlags =85
+                    TextAlign =1
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =10350
+                    Top =1560
+                    Width =2364
+                    Height =312
+                    ColumnWidth =3000
+                    TabIndex =12
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="GrandTotalAmount"
+                    ControlSource ="GrandTotalAmount"
+                    DefaultValue ="0"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x1aefd2864598244b9b56cf0e8028e7cb
+                    End
+
+                    LayoutCachedLeft =10350
+                    LayoutCachedTop =1560
+                    LayoutCachedWidth =12714
+                    LayoutCachedHeight =1872
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =8220
+                            Top =1560
+                            Width =2040
+                            Height =312
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="GrandTotalAmount_Label"
+                            Caption ="GrandTotalAmount"
+                            GUID = Begin
+                                0xb58c03329e15c54a98d41a77d0332643
+                            End
+                            LayoutCachedLeft =8220
+                            LayoutCachedTop =1560
+                            LayoutCachedWidth =10260
+                            LayoutCachedHeight =1872
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =2490
+                    Top =3900
+                    Width =7770
+                    Height =1440
+                    ColumnWidth =3000
+                    TabIndex =13
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="Notes"
+                    ControlSource ="Notes"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x9f1030895002ea4588c2784ee6dfd307
+                    End
+
+                    LayoutCachedLeft =2490
+                    LayoutCachedTop =3900
+                    LayoutCachedWidth =10260
+                    LayoutCachedHeight =5340
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =360
+                            Top =3900
+                            Width =2040
+                            Height =312
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Notes_Label"
+                            Caption ="Notes"
+                            GUID = Begin
+                                0x9dafb3699d876f469791cf073e9194c2
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =3900
+                            LayoutCachedWidth =2400
+                            LayoutCachedHeight =4212
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin TextBox
+                    Visible = NotDefault
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =12810
+                    Top =3660
+                    Width =810
+                    Height =312
+                    ColumnWidth =1608
+                    TabIndex =14
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="CreatedOn"
+                    ControlSource ="CreatedOn"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x8ccf26de460b394a818bdf3f9772ded7
+                    End
+
+                    LayoutCachedLeft =12810
+                    LayoutCachedTop =3660
+                    LayoutCachedWidth =13620
+                    LayoutCachedHeight =3972
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =10680
+                            Top =3660
+                            Width =2040
+                            Height =312
+                            Name ="CreatedOn_Label"
+                            Caption ="CreatedOn"
+                            GUID = Begin
+                                0xf732854879e6cc41a5ea5b44e7bb6035
+                            End
+                            LayoutCachedLeft =10680
+                            LayoutCachedTop =3660
+                            LayoutCachedWidth =12720
+                            LayoutCachedHeight =3972
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    Visible = NotDefault
+                    OverlapFlags =247
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =12810
+                    Top =4080
+                    Width =810
+                    Height =312
+                    ColumnWidth =1608
+                    TabIndex =15
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="UpdatedOn"
+                    ControlSource ="UpdatedOn"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xc73719331d3dad41a4ea74c50f5dfbd4
+                    End
+
+                    LayoutCachedLeft =12810
+                    LayoutCachedTop =4080
+                    LayoutCachedWidth =13620
+                    LayoutCachedHeight =4392
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =247
+                            Left =10680
+                            Top =4080
+                            Width =2040
+                            Height =312
+                            Name ="UpdatedOn_Label"
+                            Caption ="UpdatedOn"
+                            GUID = Begin
+                                0x68ba1f78612fac408c8c36bfec5a51ea
+                            End
+                            LayoutCachedLeft =10680
+                            LayoutCachedTop =4080
+                            LayoutCachedWidth =12720
+                            LayoutCachedHeight =4392
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin ComboBox
+                    LimitToList = NotDefault
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    ColumnCount =2
+                    Left =2520
+                    Top =1200
+                    Width =2940
+                    Height =300
+                    TabIndex =2
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    ColumnInfo ="\"\";\"\";\"\";\"\";\"10\";\"510\""
+                    GUID = Begin
+                        0x3004af6ff460f542bee7f5e5e4fa2dcf
+                    End
+                    Name ="CustomerID"
+                    ControlSource ="CustomerID"
+                    RowSourceType ="Table/Query"
+                    RowSource ="SELECT CustomerID, CustomerName FROM T_Customers ORDER BY CustomerName;"
+                    ColumnWidths ="0;4536"
+                    AfterUpdate ="[Event Procedure]"
+                    FontName ="Segoe UI"
+                    OnNotInList ="[Event Procedure]"
+                    ControlTipText ="Type a new customer name to add it, or click Add Customer."
+                    BaseInfo ="\"SELECT CustomerID, CustomerName FROM T_Customers ORDER BY CustomerName;\";\"T_"
+                        "Customers\";\"\";\"CustomerID\";\"CustomerName\";\"PK_T_Customers\""
+
+                    LayoutCachedLeft =2520
+                    LayoutCachedTop =1200
+                    LayoutCachedWidth =5460
+                    LayoutCachedHeight =1500
+                    ThemeFontIndex =-1
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =720
+                            Top =1200
+                            Width =1680
+                            Height =300
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label36"
+                            Caption ="Customer"
+                            GUID = Begin
+                                0xea2471d04b765d45b9e625d9e2186be4
+                            End
+                            LayoutCachedLeft =720
+                            LayoutCachedTop =1200
+                            LayoutCachedWidth =2400
+                            LayoutCachedHeight =1500
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin ComboBox
+                    LimitToList = NotDefault
+                    RowSourceTypeInt =1
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =2520
+                    Top =2040
+                    Width =2940
+                    Height =300
+                    TabIndex =4
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    GUID = Begin
+                        0xf920e082c407da4eacdb6655af1f89c5
+                    End
+                    Name ="InvoiceType"
+                    ControlSource ="InvoiceType"
+                    RowSourceType ="Value List"
+                    RowSource ="Pro Forma;Final;Credit Memo"
+                    DefaultValue ="\"Pro Forma\""
+                    FontName ="Segoe UI"
+
+                    LayoutCachedLeft =2520
+                    LayoutCachedTop =2040
+                    LayoutCachedWidth =5460
+                    LayoutCachedHeight =2340
+                    ThemeFontIndex =-1
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =720
+                            Top =2040
+                            Width =1680
+                            Height =300
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label38"
+                            Caption ="Invoice Type"
+                            GUID = Begin
+                                0x60a96423ac9f064987fa3266558f4adb
+                            End
+                            LayoutCachedLeft =720
+                            LayoutCachedTop =2040
+                            LayoutCachedWidth =2400
+                            LayoutCachedHeight =2340
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin ComboBox
+                    LimitToList = NotDefault
+                    RowSourceTypeInt =1
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    ColumnCount =2
+                    Left =10380
+                    Top =1992
+                    Width =2580
+                    Height =300
+                    TabIndex =16
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    GUID = Begin
+                        0xddc2fcc484a33c478c508666a6b5f6d6
+                    End
+                    Name ="Combo39"
+                    ControlSource ="InvoiceStatus"
+                    RowSourceType ="Value List"
+                    RowSource ="Draft;Sent;Partially Paid;Paid;Cancelled"
+                    ColumnWidths ="0;4536"
+                    FontName ="Segoe UI"
+
+                    LayoutCachedLeft =10380
+                    LayoutCachedTop =1992
+                    LayoutCachedWidth =12960
+                    LayoutCachedHeight =2292
+                    ThemeFontIndex =-1
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =8220
+                            Top =1992
+                            Width =2040
+                            Height =300
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label40"
+                            Caption ="Invoice Status"
+                            GUID = Begin
+                                0x4e75039b1131f3428d9302b64688c707
+                            End
+                            LayoutCachedLeft =8220
+                            LayoutCachedTop =1992
+                            LayoutCachedWidth =10260
+                            LayoutCachedHeight =2292
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            ForeShade =50.0
+                        End
+                    End
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    Left =1920
+                    Top =5880
+                    Width =1860
+                    FontWeight =700
+                    TabIndex =17
+                    ForeColor =16777215
+                    Name ="cmdSaveInvoice"
+                    Caption ="Save Invoice"
+                    OnClick ="[Event Procedure]"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdSaveInvoice\")"
+                    GUID = Begin
+                        0x1832f177b6782a47827e22ba4d716efb
+                    End
+                    LeftPadding =120
+                    TopPadding =105
+                    RightPadding =135
+                    BottomPadding =120
+
+                    LayoutCachedLeft =1920
+                    LayoutCachedTop =5880
+                    LayoutCachedWidth =3780
+                    LayoutCachedHeight =6240
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    HoverForeTint =100.0
+                    HoverForeShade =50.0
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    PressedForeTint =100.0
+                    PressedForeShade =50.0
+                    Shadow =5
+                    Overlaps =1
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    Left =4440
+                    Top =5880
+                    Width =2280
+                    FontWeight =700
+                    TabIndex =18
+                    ForeColor =16777215
+                    Name ="cmdOpenSalesOrder"
+                    Caption ="Open Sales Order"
+                    OnClick ="[Event Procedure]"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdOpenSalesOrder\")"
+                    GUID = Begin
+                        0x4d85fd85cafbc54aa1c21a5156a0755a
+                    End
+                    LeftPadding =135
+                    TopPadding =105
+                    RightPadding =150
+                    BottomPadding =120
+
+                    LayoutCachedLeft =4440
+                    LayoutCachedTop =5880
+                    LayoutCachedWidth =6720
+                    LayoutCachedHeight =6240
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    HoverForeTint =100.0
+                    HoverForeShade =50.0
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    PressedForeTint =100.0
+                    PressedForeShade =50.0
+                    Shadow =5
+                    Overlaps =1
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    Left =7020
+                    Top =5880
+                    Width =2400
+                    FontWeight =700
+                    TabIndex =19
+                    ForeColor =16777215
+                    Name ="cmdOpenCustomerPO"
+                    Caption ="Open Customer PO"
+                    OnClick ="[Event Procedure]"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdOpenCustomerPO\")"
+                    GUID = Begin
+                        0x7a96a053d77e35458dc0832dcd80959f
+                    End
+                    LeftPadding =135
+                    TopPadding =105
+                    RightPadding =150
+                    BottomPadding =120
+
+                    LayoutCachedLeft =7020
+                    LayoutCachedTop =5880
+                    LayoutCachedWidth =9420
+                    LayoutCachedHeight =6240
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    HoverForeTint =100.0
+                    HoverForeShade =50.0
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    PressedForeTint =100.0
+                    PressedForeShade =50.0
+                    Shadow =5
+                    Overlaps =1
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    Left =10260
+                    Top =5880
+                    Width =1260
+                    FontWeight =700
+                    TabIndex =20
+                    ForeColor =16777215
+                    Name ="cmdClose"
+                    Caption ="Close"
+                    OnClick ="[Event Procedure]"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdClose\")"
+                    GUID = Begin
+                        0x309130e03efebb4facf8174976361175
+                    End
+                    LeftPadding =120
+                    TopPadding =105
+                    RightPadding =135
+                    BottomPadding =120
+
+                    LayoutCachedLeft =10260
+                    LayoutCachedTop =5880
+                    LayoutCachedWidth =11520
+                    LayoutCachedHeight =6240
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    HoverForeTint =100.0
+                    HoverForeShade =50.0
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    PressedForeTint =100.0
+                    PressedForeShade =50.0
+                    Shadow =5
+                    Overlaps =1
+                End
+                Begin Subform
+                    OverlapFlags =215
+                    Top =6480
+                    Width =17880
+                    Height =6900
+                    TabIndex =21
+                    Name ="subInvoiceLines"
+                    SourceObject ="Form.SF_InvoiceLines"
+                    LinkChildFields ="InvoiceID"
+                    LinkMasterFields ="InvoiceID"
+                    GUID = Begin
+                        0xc149d5dc0eee254e988bfe9380b0f053
+                    End
+
+                    LayoutCachedTop =6480
+                    LayoutCachedWidth =17880
+                    LayoutCachedHeight =13380
+                End
+                Begin CommandButton
+                    OverlapFlags =93
+                    TextFontFamily =34
+                    Left =12240
+                    Top =5880
+                    Width =1920
+                    FontWeight =700
+                    TabIndex =22
+                    ForeColor =16777215
+                    Name ="cmdMakePDF"
+                    Caption ="Open PDF"
+                    OnClick ="[Event Procedure]"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdMakePDF\")"
+                    GUID = Begin
+                        0xd30c96d53c644f4d9664c833351bd0c1
+                    End
+                    LeftPadding =120
+                    TopPadding =105
+                    RightPadding =135
+                    BottomPadding =120
+
+                    LayoutCachedLeft =12240
+                    LayoutCachedTop =5880
+                    LayoutCachedWidth =14160
+                    LayoutCachedHeight =6240
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    HoverForeTint =100.0
+                    HoverForeShade =50.0
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    PressedForeTint =100.0
+                    PressedForeShade =50.0
+                    Shadow =5
+                    Overlaps =1
+                End
+                Begin CommandButton
+                    OverlapFlags =223
+                    TextFontFamily =34
+                    Left =12240
+                    Top =6320
+                    Width =1920
+                    FontWeight =700
+                    TabIndex =23
+                    ForeColor =16777215
+                    Name ="cmdPrintDN"
+                    Caption ="Print Delivery Note"
+                    OnClick ="=UX_PrintActive(\"R_DeliveryNote\",\"InvoiceID\",\"Delivery Note\")"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdPrintDN\")"
+                    GUID = Begin
+                        0x2b5294a5889f8a4ea6c33e8c0384a8d6
+                    End
+
+                    LayoutCachedLeft =12240
+                    LayoutCachedTop =6320
+                    LayoutCachedWidth =14160
+                    LayoutCachedHeight =6680
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                    Overlaps =1
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    Left =5540
+                    Top =1200
+                    Width =1480
+                    Height =300
+                    FontWeight =700
+                    TabIndex =24
+                    ForeColor =16777215
+                    Name ="cmdAddCustomer"
+                    Caption ="Add Customer"
+                    OnClick ="=UX_AddCustomer(\"CustomerID\")"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdAddCustomer\")"
+                    GUID = Begin
+                        0x8a0010fe697feb4e9f7962b6bb9ac0b3
+                    End
+
+                    LayoutCachedLeft =5540
+                    LayoutCachedTop =1200
+                    LayoutCachedWidth =7020
+                    LayoutCachedHeight =1500
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =14482166
+            Name ="FormFooter"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0xec13385db227ca4493047d4465cc7d60
+            End
+            AutoHeight =1
+            AlternateBackShade =95.0
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+'=============================================================
+' FORM: F_Invoices
+'
+' PURPOSE:
+'   Invoice / Pro Forma invoice form.
+'
+' PDF:
+'   Exports R_Invoice report filtered to current InvoiceID.
+'
+' IMPORTANT:
+'   Open Sales Order and Open Customer PO are now resolved from:
+'       1. T_Invoices
+'       2. Open F_SalesOrders / F_CustomerPO forms
+'       3. T_InvoiceLines
+'       4. T_SalesOrderLines
+'       5. T_SalesOrders
+'       6. T_CustomerPOLines
+'
+' REQUIRED REPORT:
+'   R_Invoice
+'
+' REQUIRED SUBFORM CONTROL:
+'   subInvoiceLines
+'
+' BUTTONS:
+'   cmdSaveInvoice
+'   cmdMakePDF
+'   cmdOpenSalesOrder
+'   cmdOpenCustomerPO
+'   cmdClose
+'
+' OPTIONAL BUTTONS:
+'   cmdOpenPDF
+'   cmdPrintRecord
+'=============================================================
+
+Private Const PDF_MAIN_FOLDER As String = "\Documents\Inventory System PDFs"
+Private Const PDF_INVOICE_FOLDER As String = "\Documents\Inventory System PDFs\Invoices"
+Private Const INVOICE_REPORT_NAME As String = "R_Invoice"
+
+Private m_IsExplicitSave As Boolean
+Private m_IsClosingForm As Boolean
+Private m_IsDiscardingEdits As Boolean
+
+
+'=============================================================
+' FORM EVENTS
+'=============================================================
+
+Private Sub Form_Load()
+    UX_MarkRequired Me, "CustomerID", "InvoiceDate"
+
+    On Error Resume Next
+
+    ConfigureInvoiceForm
+    ConfigureInvoiceCombos
+    SetInvoiceDefaults
+    SetLineSubformAvailability
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub Form_Current()
+
+    On Error Resume Next
+
+    SetInvoiceDefaults
+    SetLineSubformAvailability
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub Form_BeforeUpdate(Cancel As Integer)
+    UX_CoerceBooleans Me
+
+    On Error GoTo Err_Handler
+
+    If m_IsDiscardingEdits Then
+        Exit Sub
+    End If
+
+
+    If IsBlankNewInvoiceRecord Then
+        Cancel = True
+        Exit Sub
+    End If
+
+    NormalizeInvoiceValues
+
+    If Not ValidateInvoiceRecord Then
+        Cancel = True
+        Exit Sub
+    End If
+
+    If Me.NewRecord Then
+        SafeSetControlValue "CreatedOn", Now()
+    End If
+
+    SafeSetControlValue "UpdatedOn", Now()
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+
+    Cancel = True
+
+    MsgBox _
+        "The invoice could not be validated." & _
+        vbCrLf & vbCrLf & _
+        "Error " & Err.Number & ": " & Err.Description, _
+        vbExclamation, _
+        "Invoice Validation"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_AfterUpdate()
+
+    On Error Resume Next
+
+    SetLineSubformAvailability
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub Form_Delete(Cancel As Integer)
+
+    Cancel = True
+
+    MsgBox _
+        "Invoices cannot be deleted from this form." & vbCrLf & vbCrLf & _
+        "This prevents relationship errors because invoice lines may already exist.", _
+        vbExclamation, _
+        "Delete Invoice Blocked"
+
+End Sub
+
+
+Private Sub Form_Error(DataErr As Integer, Response As Integer)
+    Dim uxHandled As Boolean
+    UX_SuppressFormError DataErr, Response, uxHandled
+    If uxHandled Then Exit Sub
+
+    On Error Resume Next
+
+    If DataErr = 3200 Then
+
+        Response = acDataErrContinue
+
+        MsgBox _
+            "Access blocked an unsafe invoice change because invoice lines already exist." & _
+            vbCrLf & vbCrLf & _
+            "Use the Save Invoice button after making valid changes.", _
+            vbExclamation, _
+            "Invoice Relationship Protection"
+
+        Exit Sub
+
+    End If
+
+    Response = acDataErrDisplay
+
+End Sub
+
+
+'=============================================================
+' CONTROL EVENTS
+'=============================================================
+
+Private Sub CustomerID_AfterUpdate()
+
+    On Error Resume Next
+
+    Dim ctlCustomer As Control
+
+    Set ctlCustomer = GetControlRef("CustomerID")
+
+    If ctlCustomer Is Nothing Then Exit Sub
+    If IsNull(ctlCustomer.value) Then Exit Sub
+
+    If Len(Trim$(Nz(GetControlValue("BillToName"), vbNullString))) = 0 Then
+        SafeSetControlValue "BillToName", Nz(ctlCustomer.Column(1), vbNullString)
+    End If
+
+    If Len(Trim$(Nz(GetControlValue("PaymentTerms"), vbNullString))) = 0 Then
+
+        SafeSetControlValue _
+            "PaymentTerms", _
+            Nz(DLookup( _
+                "DefaultPaymentTerms", _
+                "T_Customers", _
+                "CustomerID = " & CLng(ctlCustomer.value) _
+            ), vbNullString)
+
+    End If
+
+    Set ctlCustomer = Nothing
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub TaxAmount_AfterUpdate()
+
+    CalculateAndStoreInvoiceTotals False
+
+End Sub
+
+
+'=============================================================
+' BUTTON EVENTS
+'=============================================================
+
+Private Sub cmdSaveInvoice_Click()
+
+    Call SaveInvoiceRecord(True)
+
+End Sub
+
+
+Private Sub cmdMakePDF_Click()
+
+    CreateInvoicePDF
+
+End Sub
+
+
+Private Sub cmdOpenPDF_Click()
+
+    CreateInvoicePDF
+
+End Sub
+
+
+Private Sub cmdPrintRecord_Click()
+
+    CreateInvoicePDF
+
+End Sub
+
+
+Private Sub cmdOpenSalesOrder_Click()
+
+    On Error GoTo Err_Handler
+
+    Dim invoiceIDValue As Long
+    Dim salesOrderIDValue As Long
+
+    invoiceIDValue = GetCurrentInvoiceID()
+
+    If invoiceIDValue <= 0 Then
+
+        MsgBox _
+            "Please save the invoice first.", _
+            vbExclamation, _
+            "Open Sales Order"
+
+        Exit Sub
+
+    End If
+
+    salesOrderIDValue = ResolveSalesOrderID(invoiceIDValue)
+
+    If salesOrderIDValue <= 0 Then
+
+        MsgBox _
+            "No linked Sales Order could be found for this invoice." & vbCrLf & vbCrLf & _
+            "InvoiceID: " & invoiceIDValue & vbCrLf & _
+            "Checked: T_Invoices, open F_SalesOrders, T_InvoiceLines, and T_SalesOrderLines.", _
+            vbExclamation, _
+            "Sales Order Not Linked"
+
+        Exit Sub
+
+    End If
+
+    SyncInvoiceLinks invoiceIDValue, salesOrderIDValue, 0
+
+    If FormExists("F_SalesOrders") = False Then
+
+        MsgBox _
+            "The Sales Order form was not found." & vbCrLf & vbCrLf & _
+            "Expected form: F_SalesOrders", _
+            vbExclamation, _
+            "Sales Order Form Missing"
+
+        Exit Sub
+
+    End If
+
+    If CurrentProject.AllForms("F_SalesOrders").IsLoaded Then
+        DoCmd.close acForm, "F_SalesOrders", acSaveNo
+    End If
+
+    DoCmd.OpenForm _
+        "F_SalesOrders", _
+        acNormal, _
+        , _
+        "SalesOrderID = " & salesOrderIDValue
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+
+    MsgBox _
+        "The linked sales order could not be opened." & _
+        vbCrLf & vbCrLf & _
+        "InvoiceID: " & GetCurrentInvoiceID() & vbCrLf & _
+        "Error " & Err.Number & ": " & Err.Description, _
+        vbExclamation, _
+        "Open Sales Order"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cmdOpenCustomerPO_Click()
+
+    On Error GoTo Err_Handler
+
+    Dim invoiceIDValue As Long
+    Dim salesOrderIDValue As Long
+    Dim customerPOIDValue As Long
+
+    invoiceIDValue = GetCurrentInvoiceID()
+
+    If invoiceIDValue <= 0 Then
+
+        MsgBox _
+            "Please save the invoice first.", _
+            vbExclamation, _
+            "Open Customer PO"
+
+        Exit Sub
+
+    End If
+
+    salesOrderIDValue = ResolveSalesOrderID(invoiceIDValue)
+    customerPOIDValue = ResolveCustomerPOID(invoiceIDValue, salesOrderIDValue)
+
+    If customerPOIDValue <= 0 Then
+
+        MsgBox _
+            "No linked Customer PO could be found for this invoice." & vbCrLf & vbCrLf & _
+            "InvoiceID: " & invoiceIDValue & vbCrLf & _
+            "Checked: T_Invoices, open F_CustomerPO, T_SalesOrders, T_InvoiceLines, T_SalesOrderLines, and T_CustomerPOLines.", _
+            vbExclamation, _
+            "Customer PO Not Linked"
+
+        Exit Sub
+
+    End If
+
+    SyncInvoiceLinks invoiceIDValue, salesOrderIDValue, customerPOIDValue
+
+    If FormExists("F_CustomerPO") = False Then
+
+        MsgBox _
+            "The Customer PO form was not found." & vbCrLf & vbCrLf & _
+            "Expected form: F_CustomerPO", _
+            vbExclamation, _
+            "Customer PO Form Missing"
+
+        Exit Sub
+
+    End If
+
+    If CurrentProject.AllForms("F_CustomerPO").IsLoaded Then
+        DoCmd.close acForm, "F_CustomerPO", acSaveNo
+    End If
+
+    DoCmd.OpenForm _
+        "F_CustomerPO", _
+        acNormal, _
+        , _
+        "CustomerPOID = " & customerPOIDValue
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+
+    MsgBox _
+        "The linked customer PO could not be opened." & _
+        vbCrLf & vbCrLf & _
+        "InvoiceID: " & GetCurrentInvoiceID() & vbCrLf & _
+        "Error " & Err.Number & ": " & Err.Description, _
+        vbExclamation, _
+        "Open Customer PO"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cmdClose_Click()
+
+    On Error GoTo Err_Handler
+
+    Dim Response As VbMsgBoxResult
+
+    m_IsClosingForm = True
+
+    If HasPendingEdits Then
+
+        Response = MsgBox( _
+            "Save changes before closing this invoice?", _
+            vbQuestion + vbYesNoCancel, _
+            "Close Invoice" _
+        )
+
+        Select Case Response
+
+            Case vbYes
+
+                If SaveInvoiceRecord(False) = False Then
+                    m_IsClosingForm = False
+                    Exit Sub
+                End If
+
+            Case vbNo
+
+                DiscardPendingEditsSafely
+
+            Case vbCancel
+
+                m_IsClosingForm = False
+                Exit Sub
+
+        End Select
+
+    End If
+
+    DoCmd.close acForm, Me.Name, acSaveNo
+
+Exit_Handler:
+    m_IsClosingForm = False
+    Exit Sub
+
+Err_Handler:
+
+    MsgBox _
+        "The invoice form could not be closed." & _
+        vbCrLf & vbCrLf & _
+        "Error " & Err.Number & ": " & Err.Description, _
+        vbExclamation, _
+        "Close Invoice"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' SAVE INVOICE
+'=============================================================
+
+Private Function SaveInvoiceRecord( _
+    Optional ByVal showSuccessMessage As Boolean = True _
+) As Boolean
+
+    On Error GoTo Err_Handler
+
+    SaveInvoiceRecord = False
+
+    If IsBlankNewInvoiceRecord Then
+
+        MsgBox _
+            "Enter invoice details before saving.", _
+            vbExclamation, _
+            "Invoice Required"
+
+        SafeSetFocus "CustomerID"
+        Exit Function
+
+    End If
+
+    m_IsExplicitSave = True
+
+    NormalizeInvoiceValues
+
+    If Not ValidateInvoiceRecord Then
+        m_IsExplicitSave = False
+        Exit Function
+    End If
+
+    If Me.NewRecord Then
+        SafeSetControlValue "CreatedOn", Now()
+    End If
+
+    SafeSetControlValue "UpdatedOn", Now()
+
+    If Me.Dirty Then
+        DoCmd.RunCommand acCmdSaveRecord
+    End If
+
+    If SaveInvoiceLineEditsSafely(False) = False Then
+        m_IsExplicitSave = False
+        Exit Function
+    End If
+
+    CalculateAndStoreInvoiceTotals False
+
+    If Me.Dirty Then
+        DoCmd.RunCommand acCmdSaveRecord
+    End If
+
+    m_IsExplicitSave = False
+
+    If showSuccessMessage Then
+
+        MsgBox _
+            "Invoice saved successfully.", _
+            vbInformation, _
+            "Invoice Saved"
+
+    End If
+
+    SaveInvoiceRecord = True
+
+Exit_Handler:
+    m_IsExplicitSave = False
+    Exit Function
+
+Err_Handler:
+
+    m_IsExplicitSave = False
+
+    If Err.Number = 3200 Then
+
+        MsgBox _
+            "The invoice could not be saved because Access detected an unsafe parent invoice change while invoice lines exist." & _
+            vbCrLf & vbCrLf & _
+            "Cancel the pending header edit, then save again.", _
+            vbExclamation, _
+            "Invoice Relationship Protection"
+
+    ElseIf Err.Number = 3022 Then
+
+        MsgBox _
+            "This invoice number already exists. Use a different invoice number.", _
+            vbExclamation, _
+            "Duplicate Invoice"
+
+    Else
+
+        MsgBox _
+            "The invoice could not be saved." & _
+            vbCrLf & vbCrLf & _
+            "Error " & Err.Number & ": " & Err.Description, _
+            vbExclamation, _
+            "Invoice Save Failed"
+
+    End If
+
+    SaveInvoiceRecord = False
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' PDF EXPORT USING R_INVOICE REPORT
+'=============================================================
+
+Private Sub CreateInvoicePDF()
+
+    On Error GoTo Err_Handler
+
+    If PrepareInvoiceForPDF = False Then
+        Exit Sub
+    End If
+
+    ExportCurrentInvoiceReportToPDF
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+
+    MsgBox _
+        "The invoice PDF could not be created." & _
+        vbCrLf & vbCrLf & _
+        "Error " & Err.Number & ": " & Err.Description, _
+        vbExclamation, _
+        "Create Invoice PDF"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Function PrepareInvoiceForPDF() As Boolean
+
+    On Error GoTo Err_Handler
+
+    PrepareInvoiceForPDF = False
+
+    If SaveInvoiceRecord(False) = False Then
+        Exit Function
+    End If
+
+    If GetCurrentInvoiceID() <= 0 Then
+
+        MsgBox _
+            "Please save the invoice before creating the PDF.", _
+            vbExclamation, _
+            "Create Invoice PDF"
+
+        Exit Function
+
+    End If
+
+    CalculateAndStoreInvoiceTotals False
+
+    PrepareInvoiceForPDF = True
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+
+    MsgBox _
+        "The invoice could not be prepared for PDF." & _
+        vbCrLf & vbCrLf & _
+        "Error " & Err.Number & ": " & Err.Description, _
+        vbExclamation, _
+        "Prepare Invoice PDF"
+
+    PrepareInvoiceForPDF = False
+    Resume Exit_Handler
+
+End Function
+
+
+Private Sub ExportCurrentInvoiceReportToPDF()
+
+    On Error GoTo Err_Handler
+
+    Dim invoiceIDValue As Long
+    Dim invoiceNoValue As String
+    Dim folderPath As String
+    Dim FilePath As String
+    Dim whereText As String
+
+    Dim realErrNumber As Long
+    Dim realErrDescription As String
+
+    invoiceIDValue = GetCurrentInvoiceID()
+    invoiceNoValue = Trim$(Nz(GetControlValue("InvoiceNo"), vbNullString))
+
+    If Len(invoiceNoValue) = 0 Then
+        invoiceNoValue = "Invoice_" & CStr(invoiceIDValue)
+    End If
+
+    invoiceNoValue = CleanFileName(invoiceNoValue)
+
+    folderPath = Environ$("USERPROFILE") & PDF_INVOICE_FOLDER
+
+    EnsureFolderExists Environ$("USERPROFILE") & PDF_MAIN_FOLDER
+    EnsureFolderExists folderPath
+
+    FilePath = folderPath & "\Invoice_" & invoiceNoValue & ".pdf"
+
+    whereText = "[InvoiceID]=" & invoiceIDValue
+
+    If ReportExists(INVOICE_REPORT_NAME) = False Then
+
+        MsgBox _
+            "The invoice report was not found." & vbCrLf & vbCrLf & _
+            "Expected report: " & INVOICE_REPORT_NAME, _
+            vbExclamation, _
+            "Invoice Report Missing"
+
+        Exit Sub
+
+    End If
+
+    If CurrentProject.AllReports(INVOICE_REPORT_NAME).IsLoaded Then
+        DoCmd.close acReport, INVOICE_REPORT_NAME, acSaveNo
+    End If
+
+    DoCmd.OpenReport _
+        INVOICE_REPORT_NAME, _
+        acViewPreview, _
+        , _
+        whereText, _
+        acHidden
+
+    DoCmd.OutputTo _
+        acOutputReport, _
+        INVOICE_REPORT_NAME, _
+        acFormatPDF, _
+        FilePath, _
+        True
+
+    DoCmd.close acReport, INVOICE_REPORT_NAME, acSaveNo
+
+    MsgBox _
+        "Invoice PDF created successfully." & _
+        vbCrLf & vbCrLf & _
+        FilePath, _
+        vbInformation, _
+        "Create Invoice PDF"
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+
+    realErrNumber = Err.Number
+    realErrDescription = Err.Description
+
+    On Error Resume Next
+    DoCmd.close acReport, INVOICE_REPORT_NAME, acSaveNo
+    On Error GoTo 0
+
+    MsgBox _
+        "The invoice PDF could not be created." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & realErrNumber & vbCrLf & _
+        "Details: " & realErrDescription, _
+        vbExclamation, _
+        "Create Invoice PDF"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' LINK RESOLUTION
+'=============================================================
+
+Private Function ResolveSalesOrderID(ByVal invoiceIDValue As Long) As Long
+
+    On Error GoTo Err_Handler
+
+    Dim foundValue As Variant
+
+    ResolveSalesOrderID = 0
+
+    If invoiceIDValue <= 0 Then Exit Function
+
+    '1. Directly from T_Invoices
+    foundValue = SafeDLookup("SalesOrderID", "T_Invoices", "InvoiceID=" & invoiceIDValue)
+
+    If Nz(foundValue, 0) > 0 Then
+        ResolveSalesOrderID = CLng(foundValue)
+        Exit Function
+    End If
+
+    '2. From current form control
+    foundValue = GetControlValue("SalesOrderID")
+
+    If Nz(foundValue, 0) > 0 Then
+        ResolveSalesOrderID = CLng(foundValue)
+        Exit Function
+    End If
+
+    '3. From open Sales Order form
+    If FormIsLoaded("F_SalesOrders") Then
+
+        foundValue = Nz(Forms!F_SalesOrders!SalesOrderID, 0)
+
+        If Nz(foundValue, 0) > 0 Then
+            ResolveSalesOrderID = CLng(foundValue)
+            Exit Function
+        End If
+
+    End If
+
+    '4. From invoice lines through SalesOrderLineID
+    foundValue = SafeDLookup( _
+        "SalesOrderLineID", _
+        "T_InvoiceLines", _
+        "InvoiceID=" & invoiceIDValue & " AND SalesOrderLineID Is Not Null" _
+    )
+
+    If Nz(foundValue, 0) > 0 Then
+
+        foundValue = SafeDLookup( _
+            "SalesOrderID", _
+            "T_SalesOrderLines", _
+            "SalesOrderLineID=" & CLng(foundValue) _
+        )
+
+        If Nz(foundValue, 0) > 0 Then
+            ResolveSalesOrderID = CLng(foundValue)
+            Exit Function
+        End If
+
+    End If
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    ResolveSalesOrderID = 0
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function ResolveCustomerPOID( _
+    ByVal invoiceIDValue As Long, _
+    ByVal salesOrderIDValue As Long _
+) As Long
+
+    On Error GoTo Err_Handler
+
+    Dim foundValue As Variant
+    Dim salesOrderLineIDValue As Long
+    Dim customerPOLineIDValue As Long
+
+    ResolveCustomerPOID = 0
+
+    If invoiceIDValue <= 0 Then Exit Function
+
+    '1. Directly from T_Invoices
+    foundValue = SafeDLookup("CustomerPOID", "T_Invoices", "InvoiceID=" & invoiceIDValue)
+
+    If Nz(foundValue, 0) > 0 Then
+        ResolveCustomerPOID = CLng(foundValue)
+        Exit Function
+    End If
+
+    '2. From current form control
+    foundValue = GetControlValue("CustomerPOID")
+
+    If Nz(foundValue, 0) > 0 Then
+        ResolveCustomerPOID = CLng(foundValue)
+        Exit Function
+    End If
+
+    '3. From open Customer PO form
+    If FormIsLoaded("F_CustomerPO") Then
+
+        foundValue = Nz(Forms!F_CustomerPO!CustomerPOID, 0)
+
+        If Nz(foundValue, 0) > 0 Then
+            ResolveCustomerPOID = CLng(foundValue)
+            Exit Function
+        End If
+
+    End If
+
+    '4. From Sales Order header
+    If salesOrderIDValue > 0 Then
+
+        foundValue = SafeDLookup( _
+            "CustomerPOID", _
+            "T_SalesOrders", _
+            "SalesOrderID=" & salesOrderIDValue _
+        )
+
+        If Nz(foundValue, 0) > 0 Then
+            ResolveCustomerPOID = CLng(foundValue)
+            Exit Function
+        End If
+
+    End If
+
+    '5. From invoice line CustomerPOLineID
+    foundValue = SafeDLookup( _
+        "CustomerPOLineID", _
+        "T_InvoiceLines", _
+        "InvoiceID=" & invoiceIDValue & " AND CustomerPOLineID Is Not Null" _
+    )
+
+    If Nz(foundValue, 0) > 0 Then
+
+        customerPOLineIDValue = CLng(foundValue)
+
+        foundValue = SafeDLookup( _
+            "CustomerPOID", _
+            "T_CustomerPOLines", _
+            "CustomerPOLineID=" & customerPOLineIDValue _
+        )
+
+        If Nz(foundValue, 0) > 0 Then
+            ResolveCustomerPOID = CLng(foundValue)
+            Exit Function
+        End If
+
+    End If
+
+    '6. From invoice line SalesOrderLineID -> SalesOrderLine -> CustomerPOLineID -> CustomerPO
+    foundValue = SafeDLookup( _
+        "SalesOrderLineID", _
+        "T_InvoiceLines", _
+        "InvoiceID=" & invoiceIDValue & " AND SalesOrderLineID Is Not Null" _
+    )
+
+    If Nz(foundValue, 0) > 0 Then
+
+        salesOrderLineIDValue = CLng(foundValue)
+
+        foundValue = SafeDLookup( _
+            "CustomerPOLineID", _
+            "T_SalesOrderLines", _
+            "SalesOrderLineID=" & salesOrderLineIDValue _
+        )
+
+        If Nz(foundValue, 0) > 0 Then
+
+            customerPOLineIDValue = CLng(foundValue)
+
+            foundValue = SafeDLookup( _
+                "CustomerPOID", _
+                "T_CustomerPOLines", _
+                "CustomerPOLineID=" & customerPOLineIDValue _
+            )
+
+            If Nz(foundValue, 0) > 0 Then
+                ResolveCustomerPOID = CLng(foundValue)
+                Exit Function
+            End If
+
+        End If
+
+    End If
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    ResolveCustomerPOID = 0
+    Resume Exit_Handler
+
+End Function
+
+
+Private Sub SyncInvoiceLinks( _
+    ByVal invoiceIDValue As Long, _
+    ByVal salesOrderIDValue As Long, _
+    ByVal customerPOIDValue As Long _
+)
+
+    On Error Resume Next
+
+    Dim SqlText As String
+    Dim setText As String
+
+    If invoiceIDValue <= 0 Then Exit Sub
+
+    If salesOrderIDValue > 0 Then
+        setText = setText & "SalesOrderID=" & salesOrderIDValue
+    End If
+
+    If customerPOIDValue > 0 Then
+
+        If Len(setText) > 0 Then
+            setText = setText & ", "
+        End If
+
+        setText = setText & "CustomerPOID=" & customerPOIDValue
+
+    End If
+
+    If Len(setText) = 0 Then Exit Sub
+
+    setText = setText & ", UpdatedOn=#" & Format$(Now(), "yyyy\/mm\/dd hh\:nn\:ss") & "#"
+
+    SqlText = _
+        "UPDATE T_Invoices SET " & setText & _
+        " WHERE InvoiceID=" & invoiceIDValue & ";"
+
+    CurrentDb.Execute SqlText, 128
+
+    If salesOrderIDValue > 0 Then
+        SafeSetControlValue "SalesOrderID", salesOrderIDValue
+    End If
+
+    If customerPOIDValue > 0 Then
+        SafeSetControlValue "CustomerPOID", customerPOIDValue
+    End If
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Function SafeDLookup( _
+    ByVal fieldName As String, _
+    ByVal tableName As String, _
+    ByVal criteriaText As String _
+) As Variant
+
+    On Error GoTo Err_Handler
+
+    SafeDLookup = DLookup(fieldName, tableName, criteriaText)
+    Exit Function
+
+Err_Handler:
+    SafeDLookup = Null
+
+End Function
+
+
+'=============================================================
+' CURRENT RECORD HELPERS
+'=============================================================
+
+Private Function GetCurrentInvoiceID() As Long
+
+    On Error GoTo Err_Handler
+
+    GetCurrentInvoiceID = Nz(GetControlValue("InvoiceID"), 0)
+
+    If GetCurrentInvoiceID <= 0 Then
+        GetCurrentInvoiceID = Nz(Me!InvoiceID, 0)
+    End If
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    GetCurrentInvoiceID = 0
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' TOTALS
+'=============================================================
+
+Public Sub RecalculateInvoiceTotals()
+
+    CalculateAndStoreInvoiceTotals False
+
+End Sub
+
+
+Private Function CalculateAndStoreInvoiceTotals( _
+    Optional ByVal showErrors As Boolean = False _
+) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim invoiceIDValue As Long
+    Dim subtotalValue As Currency
+    Dim taxValue As Currency
+    Dim grandTotalValue As Currency
+    Dim sqlUpdate As String
+
+    CalculateAndStoreInvoiceTotals = False
+
+    invoiceIDValue = GetCurrentInvoiceID()
+
+    If invoiceIDValue <= 0 Then
+        CalculateAndStoreInvoiceTotals = True
+        Exit Function
+    End If
+
+    subtotalValue = Nz(DSum( _
+        "Nz([LineSubtotal],0)", _
+        "T_InvoiceLines", _
+        "InvoiceID = " & invoiceIDValue _
+    ), 0)
+
+    taxValue = Nz(GetControlValue("TaxAmount"), 0)
+    grandTotalValue = subtotalValue + taxValue
+
+    sqlUpdate = _
+        "UPDATE T_Invoices SET " & _
+        "SubtotalAmount = " & SqlCurrency(subtotalValue) & ", " & _
+        "GrandTotalAmount = " & SqlCurrency(grandTotalValue) & ", " & _
+        "UpdatedOn = #" & Format$(Now(), "yyyy\/mm\/dd hh\:nn\:ss") & "# " & _
+        "WHERE InvoiceID = " & invoiceIDValue & ";"
+
+    CurrentDb.Execute sqlUpdate, 128
+
+    SafeSetControlValue "SubtotalAmount", subtotalValue
+    SafeSetControlValue "GrandTotalAmount", grandTotalValue
+
+    CalculateAndStoreInvoiceTotals = True
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+
+    CalculateAndStoreInvoiceTotals = False
+
+    If showErrors Then
+        MsgBox _
+            "Invoice totals could not be recalculated." & _
+            vbCrLf & vbCrLf & _
+            "Error " & Err.Number & ": " & Err.Description, _
+            vbExclamation, _
+            "Invoice Totals"
+    End If
+
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function SqlCurrency(ByVal valueToFormat As Currency) As String
+
+    SqlCurrency = Trim$(Str$(CDbl(valueToFormat)))
+
+End Function
+
+
+'=============================================================
+' CONFIGURATION
+'=============================================================
+
+Private Sub ConfigureInvoiceForm()
+
+    On Error Resume Next
+
+    Me.AllowDeletions = False
+    Me.DataEntry = False
+
+    SafeSetControlVisible "InvoiceID", False
+    SafeSetControlLocked "InvoiceID", True
+    SafeSetControlEnabled "InvoiceID", False
+
+    SafeSetControlVisible "CustomerPOID", False
+    SafeSetControlVisible "SalesOrderID", False
+    SafeSetControlVisible "CreatedOn", False
+    SafeSetControlVisible "UpdatedOn", False
+
+    SafeSetControlLocked "SubtotalAmount", True
+    SafeSetControlLocked "GrandTotalAmount", True
+
+    If Not GetControlRef("BillToAddress") Is Nothing Then
+        GetControlRef("BillToAddress").EnterKeyBehavior = True
+        GetControlRef("BillToAddress").ScrollBars = 2
+    End If
+
+    If Not GetControlRef("Notes") Is Nothing Then
+        GetControlRef("Notes").EnterKeyBehavior = True
+        GetControlRef("Notes").ScrollBars = 2
+    End If
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub ConfigureInvoiceCombos()
+
+    On Error Resume Next
+
+    Dim ctl As Control
+
+    Set ctl = GetControlRef("CustomerID")
+
+    If Not ctl Is Nothing Then
+
+        With ctl
+            .RowSourceType = "Table/Query"
+            .RowSource = _
+                "SELECT CustomerID, CustomerName, CustomerCode " & _
+                "FROM T_Customers " & _
+                "ORDER BY CustomerName;"
+            .BoundColumn = 1
+            .ColumnCount = 3
+            .ColumnWidths = "0cm;6cm;3cm"
+            .LimitToList = True
+            .AutoExpand = True
+            .Requery
+        End With
+
+    End If
+
+    Set ctl = GetControlRef("InvoiceType")
+
+    If Not ctl Is Nothing Then
+
+        With ctl
+            .RowSourceType = "Value List"
+            .RowSource = "Pro Forma;Final;Credit Memo"
+            .LimitToList = True
+            .Requery
+        End With
+
+    End If
+
+    Set ctl = GetControlRef("InvoiceStatus")
+
+    If Not ctl Is Nothing Then
+
+        With ctl
+            .RowSourceType = "Value List"
+            .RowSource = "Draft;Sent;Partially Paid;Paid;Cancelled"
+            .LimitToList = True
+            .Requery
+        End With
+
+    End If
+
+    Set ctl = Nothing
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub SetInvoiceDefaults()
+
+    On Error Resume Next
+
+    SetControlDefaultValue "InvoiceDate", "Date()"
+    SetControlDefaultValue "InvoiceType", """Pro Forma"""
+    SetControlDefaultValue "InvoiceStatus", """Draft"""
+    SetControlDefaultValue "SubtotalAmount", "0"
+    SetControlDefaultValue "TaxAmount", "0"
+    SetControlDefaultValue "GrandTotalAmount", "0"
+
+    If Me.NewRecord Then
+
+        If IsNull(GetControlValue("InvoiceDate")) Then
+            SafeSetControlValue "InvoiceDate", Date
+        End If
+
+        If Len(Trim$(Nz(GetControlValue("InvoiceType"), vbNullString))) = 0 Then
+            SafeSetControlValue "InvoiceType", "Pro Forma"
+        End If
+
+        If Len(Trim$(Nz(GetControlValue("InvoiceStatus"), vbNullString))) = 0 Then
+            SafeSetControlValue "InvoiceStatus", "Draft"
+        End If
+
+        If IsNull(GetControlValue("SubtotalAmount")) Then
+            SafeSetControlValue "SubtotalAmount", 0
+        End If
+
+        If IsNull(GetControlValue("TaxAmount")) Then
+            SafeSetControlValue "TaxAmount", 0
+        End If
+
+        If IsNull(GetControlValue("GrandTotalAmount")) Then
+            SafeSetControlValue "GrandTotalAmount", 0
+        End If
+
+    End If
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub SetControlDefaultValue( _
+    ByVal controlName As String, _
+    ByVal defaultValueText As String _
+)
+
+    On Error Resume Next
+
+    Dim ctl As Control
+
+    Set ctl = GetControlRef(controlName)
+
+    If Not ctl Is Nothing Then
+        ctl.defaultValue = defaultValueText
+    End If
+
+    Set ctl = Nothing
+
+    On Error GoTo 0
+
+End Sub
+
+
+'=============================================================
+' VALIDATION / NORMALIZATION
+'=============================================================
+
+Private Sub NormalizeInvoiceValues()
+
+    If Len(Trim$(Nz(GetControlValue("InvoiceNo"), vbNullString))) = 0 Then
+        SafeSetControlValue "InvoiceNo", GetNextInvoiceNumber()
+    Else
+        SafeSetControlValue "InvoiceNo", UCase$(Trim$(Nz(GetControlValue("InvoiceNo"), vbNullString)))
+    End If
+
+    If IsNull(GetControlValue("InvoiceDate")) Then
+        SafeSetControlValue "InvoiceDate", Date
+    End If
+
+    If Len(Trim$(Nz(GetControlValue("InvoiceType"), vbNullString))) = 0 Then
+        SafeSetControlValue "InvoiceType", "Pro Forma"
+    End If
+
+    If Len(Trim$(Nz(GetControlValue("InvoiceStatus"), vbNullString))) = 0 Then
+        SafeSetControlValue "InvoiceStatus", "Draft"
+    End If
+
+    SafeSetControlValue "PaymentTerms", Trim$(Nz(GetControlValue("PaymentTerms"), vbNullString))
+    SafeSetControlValue "BillToName", Trim$(Nz(GetControlValue("BillToName"), vbNullString))
+    SafeSetControlValue "BillToAddress", Trim$(Nz(GetControlValue("BillToAddress"), vbNullString))
+    SafeSetControlValue "Notes", Trim$(Nz(GetControlValue("Notes"), vbNullString))
+
+    If IsNull(GetControlValue("TaxAmount")) Then
+        SafeSetControlValue "TaxAmount", 0
+    End If
+
+End Sub
+
+
+Private Function ValidateInvoiceRecord() As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim currentInvoiceID As Long
+    Dim invoiceNoValue As String
+    Dim criteriaText As String
+
+    ValidateInvoiceRecord = False
+
+    currentInvoiceID = GetCurrentInvoiceID()
+    invoiceNoValue = Trim$(Nz(GetControlValue("InvoiceNo"), vbNullString))
+
+    If Len(invoiceNoValue) = 0 Then
+
+        MsgBox _
+            "Enter the invoice number.", _
+            vbExclamation, _
+            "Invoice Number Required"
+
+        SafeSetFocus "InvoiceNo"
+        Exit Function
+
+    End If
+
+    If IsNull(GetControlValue("CustomerID")) Then
+
+        MsgBox _
+            "Select the customer.", _
+            vbExclamation, _
+            "Customer Required"
+
+        SafeSetFocus "CustomerID"
+        Exit Function
+
+    End If
+
+    If IsNull(GetControlValue("InvoiceDate")) Then
+
+        MsgBox _
+            "Enter the invoice date.", _
+            vbExclamation, _
+            "Invoice Date Required"
+
+        SafeSetFocus "InvoiceDate"
+        Exit Function
+
+    End If
+
+    criteriaText = "InvoiceNo = '" & Replace(invoiceNoValue, "'", "''") & "'"
+
+    If currentInvoiceID > 0 Then
+        criteriaText = criteriaText & " AND InvoiceID <> " & currentInvoiceID
+    End If
+
+    If DCount("*", "T_Invoices", criteriaText) > 0 Then
+
+        MsgBox _
+            "This invoice number already exists.", _
+            vbExclamation, _
+            "Duplicate Invoice"
+
+        SafeSetFocus "InvoiceNo"
+        Exit Function
+
+    End If
+
+    ValidateInvoiceRecord = True
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    ValidateInvoiceRecord = False
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function IsBlankNewInvoiceRecord() As Boolean
+
+    If Not Me.NewRecord Then
+        IsBlankNewInvoiceRecord = False
+        Exit Function
+    End If
+
+    IsBlankNewInvoiceRecord = _
+        Len(Trim$(Nz(GetControlValue("InvoiceNo"), vbNullString))) = 0 And _
+        IsNull(GetControlValue("CustomerID")) And _
+        Len(Trim$(Nz(GetControlValue("BillToName"), vbNullString))) = 0 And _
+        Nz(GetControlValue("SalesOrderID"), 0) = 0 And _
+        Nz(GetControlValue("CustomerPOID"), 0) = 0
+
+End Function
+
+
+'=============================================================
+' SUBFORM HANDLING
+'=============================================================
+
+Private Sub SetLineSubformAvailability()
+
+    On Error Resume Next
+
+    Dim allowLines As Boolean
+
+    allowLines = _
+        Not Me.NewRecord And _
+        GetCurrentInvoiceID() > 0
+
+    If ControlExists("subInvoiceLines") Then
+
+        With Me.Controls("subInvoiceLines")
+
+            .Enabled = allowLines
+            .Locked = Not allowLines
+
+            With .Form
+                .AllowAdditions = allowLines
+                .AllowEdits = allowLines
+                .AllowDeletions = allowLines
+            End With
+
+        End With
+
+    End If
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Function SaveInvoiceLineEditsSafely( _
+    Optional ByVal showErrors As Boolean = False _
+) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim frmLines As Form
+
+    SaveInvoiceLineEditsSafely = True
+
+    If Not ControlExists("subInvoiceLines") Then
+        Exit Function
+    End If
+
+    Set frmLines = Me.Controls("subInvoiceLines").Form
+
+    If frmLines.Dirty Then
+
+        If SubformInvoiceLineIsBlank(frmLines) Then
+            frmLines.Undo
+        Else
+            frmLines.Dirty = False
+        End If
+
+    End If
+
+Exit_Handler:
+    Set frmLines = Nothing
+    Exit Function
+
+Err_Handler:
+
+    If IsAutomationDisconnectError(Err.Number) Then
+        SaveInvoiceLineEditsSafely = True
+        Resume Exit_Handler
+    End If
+
+    SaveInvoiceLineEditsSafely = False
+
+    If showErrors Then
+        MsgBox _
+            "The invoice line currently being edited could not be saved." & _
+            vbCrLf & vbCrLf & _
+            "Error " & Err.Number & ": " & Err.Description, _
+            vbExclamation, _
+            "Invoice Line Save Failed"
+    End If
+
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function SubformInvoiceLineIsBlank(ByVal frm As Form) As Boolean
+
+    On Error GoTo Err_Handler
+
+    If Not frm.NewRecord Then
+        SubformInvoiceLineIsBlank = False
+        Exit Function
+    End If
+
+    SubformInvoiceLineIsBlank = _
+        IsNull(frm!ItemID) And _
+        Len(Trim$(Nz(frm!ItemCode, vbNullString))) = 0 And _
+        Len(Trim$(Nz(frm!LineDescription, vbNullString))) = 0 And _
+        Nz(frm!Quantity, 0) = 0 And _
+        IsNull(frm!UnitID) And _
+        Nz(frm!UnitPrice, 0) = 0
+
+    Exit Function
+
+Err_Handler:
+    SubformInvoiceLineIsBlank = False
+
+End Function
+
+
+Private Function HasPendingEdits() As Boolean
+
+    HasPendingEdits = False
+
+    On Error Resume Next
+
+    If Me.Dirty Then
+        HasPendingEdits = True
+    End If
+
+    If ControlExists("subInvoiceLines") Then
+        If Me.Controls("subInvoiceLines").Form.Dirty Then
+            HasPendingEdits = True
+        End If
+    End If
+
+    On Error GoTo 0
+
+End Function
+
+
+Private Sub DiscardPendingEditsSafely()
+
+    On Error Resume Next
+
+    m_IsDiscardingEdits = True
+
+    If ControlExists("subInvoiceLines") Then
+        If Me.Controls("subInvoiceLines").Form.Dirty Then
+            Me.Controls("subInvoiceLines").Form.Undo
+        End If
+    End If
+
+    If Me.Dirty Then
+        Me.Undo
+    End If
+
+    m_IsDiscardingEdits = False
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Function IsAutomationDisconnectError(ByVal errorNumber As Long) As Boolean
+
+    Select Case errorNumber
+
+        Case -2147418105, -2147417848, -2147417846, 440, 91
+            IsAutomationDisconnectError = True
+
+        Case Else
+            IsAutomationDisconnectError = False
+
+    End Select
+
+End Function
+
+
+'=============================================================
+' DOCUMENT NUMBERING
+'=============================================================
+
+Private Function GetNextInvoiceNumber() As String
+
+    On Error GoTo Err_Handler
+
+    Dim db As DAO.Database
+    Dim rs As DAO.Recordset
+    Dim sqlLookup As String
+
+    Dim prefixValue As String
+    Dim nextNumberValue As Long
+    Dim numberLengthValue As Long
+
+    Set db = CurrentDb
+
+    sqlLookup = _
+        "SELECT * FROM T_DocumentNumbers " & _
+        "WHERE DocumentType = 'Invoice';"
+
+    Set rs = db.OpenRecordset(sqlLookup, dbOpenDynaset)
+
+    If rs.EOF Then
+
+        prefixValue = "INV"
+        nextNumberValue = 157
+        numberLengthValue = 4
+
+        rs.addnew
+        rs!documentType = "Invoice"
+        rs!prefix = prefixValue
+        rs!nextNumber = nextNumberValue + 1
+        rs!NumberLength = numberLengthValue
+        rs!LastUpdatedOn = Now()
+        rs.Update
+
+    Else
+
+        prefixValue = Nz(rs!prefix, "INV")
+        nextNumberValue = Nz(rs!nextNumber, 157)
+        numberLengthValue = Nz(rs!NumberLength, 4)
+
+        rs.Edit
+        rs!nextNumber = nextNumberValue + 1
+        rs!LastUpdatedOn = Now()
+        rs.Update
+
+    End If
+
+    GetNextInvoiceNumber = _
+        prefixValue & Format(nextNumberValue, String(numberLengthValue, "0"))
+
+Exit_Handler:
+
+    On Error Resume Next
+
+    If Not rs Is Nothing Then
+        rs.close
+    End If
+
+    Set rs = Nothing
+    Set db = Nothing
+
+    On Error GoTo 0
+
+    Exit Function
+
+Err_Handler:
+    GetNextInvoiceNumber = "INV" & Format(Now(), "yyyymmddhhnnss")
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' FOLDER / FILE HELPERS
+'=============================================================
+
+Private Sub EnsureFolderExists(ByVal folderPath As String)
+
+    On Error GoTo Err_Handler
+
+    If Len(Dir(folderPath, vbDirectory)) = 0 Then
+        MkDir folderPath
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The PDF folder could not be created." & vbCrLf & vbCrLf & _
+        "Folder: " & folderPath & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Create PDF Folder"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Function CleanFileName(ByVal fileNameText As String) As String
+
+    Dim badChars As Variant
+    Dim i As Long
+
+    badChars = Array("\", "/", ":", "*", "?", """", "<", ">", "|")
+
+    CleanFileName = Trim$(Nz(fileNameText, vbNullString))
+
+    For i = LBound(badChars) To UBound(badChars)
+        CleanFileName = Replace(CleanFileName, badChars(i), "_")
+    Next i
+
+    If Len(CleanFileName) = 0 Then
+        CleanFileName = "Invoice"
+    End If
+
+End Function
+
+
+'=============================================================
+' OBJECT EXISTENCE HELPERS
+'=============================================================
+
+Private Function ReportExists(ByVal reportName As String) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim tmp As String
+
+    tmp = CurrentProject.AllReports(reportName).Name
+
+    ReportExists = True
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    ReportExists = False
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function FormExists(ByVal formName As String) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim tmp As String
+
+    tmp = CurrentProject.AllForms(formName).Name
+
+    FormExists = True
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    FormExists = False
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function FormIsLoaded(ByVal formName As String) As Boolean
+
+    On Error GoTo Err_Handler
+
+    FormIsLoaded = CurrentProject.AllForms(formName).IsLoaded
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    FormIsLoaded = False
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' SAFE CONTROL HELPERS
+'=============================================================
+
+Private Function GetControlValue(ByVal controlName As String) As Variant
+
+    On Error GoTo Err_Handler
+
+    Dim ctl As Control
+
+    Set ctl = GetControlRef(controlName)
+
+    If Not ctl Is Nothing Then
+        GetControlValue = ctl.value
+        Set ctl = Nothing
+        Exit Function
+    End If
+
+    GetControlValue = Me(controlName).value
+
+    Set ctl = Nothing
+    Exit Function
+
+Err_Handler:
+    GetControlValue = Null
+
+End Function
+
+
+Private Function GetControlRef(ByVal logicalName As String) As Control
+
+    On Error Resume Next
+
+    Set GetControlRef = Nothing
+
+    Set GetControlRef = Me.Controls(logicalName)
+
+    If GetControlRef Is Nothing Then
+        Set GetControlRef = Me.Controls("txt" & logicalName)
+    End If
+
+    If GetControlRef Is Nothing Then
+        Set GetControlRef = Me.Controls("cbo" & logicalName)
+    End If
+
+    On Error GoTo 0
+
+End Function
+
+
+Private Sub SafeSetControlValue( _
+    ByVal controlName As String, _
+    ByVal controlValue As Variant _
+)
+
+    On Error Resume Next
+
+    Dim ctl As Control
+
+    Set ctl = GetControlRef(controlName)
+
+    If Not ctl Is Nothing Then
+        ctl.value = controlValue
+    End If
+
+    Set ctl = Nothing
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub SafeSetControlVisible( _
+    ByVal controlName As String, _
+    ByVal visibleValue As Boolean _
+)
+
+    On Error Resume Next
+
+    Dim ctl As Control
+
+    Set ctl = GetControlRef(controlName)
+
+    If Not ctl Is Nothing Then
+        ctl.Visible = visibleValue
+    End If
+
+    Set ctl = Nothing
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub SafeSetControlLocked( _
+    ByVal controlName As String, _
+    ByVal lockedValue As Boolean _
+)
+
+    On Error Resume Next
+
+    Dim ctl As Control
+
+    Set ctl = GetControlRef(controlName)
+
+    If Not ctl Is Nothing Then
+        ctl.Locked = lockedValue
+    End If
+
+    Set ctl = Nothing
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub SafeSetControlEnabled( _
+    ByVal controlName As String, _
+    ByVal enabledValue As Boolean _
+)
+
+    On Error Resume Next
+
+    Dim ctl As Control
+
+    Set ctl = GetControlRef(controlName)
+
+    If Not ctl Is Nothing Then
+        ctl.Enabled = enabledValue
+    End If
+
+    Set ctl = Nothing
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub SafeSetFocus(ByVal controlName As String)
+
+    On Error Resume Next
+
+    Dim ctl As Control
+
+    Set ctl = GetControlRef(controlName)
+
+    If Not ctl Is Nothing Then
+        ctl.SetFocus
+    End If
+
+    Set ctl = Nothing
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Function ControlExists(ByVal controlName As String) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim ctl As Control
+
+    Set ctl = Me.Controls(controlName)
+
+    ControlExists = True
+
+Exit_Handler:
+    Set ctl = Nothing
+    Exit Function
+
+Err_Handler:
+    ControlExists = False
+    Resume Exit_Handler
+
+End Function
+
+Private Sub CustomerID_NotInList(NewData As String, Response As Integer)
+    On Error GoTo Err_Handler
+    Response = acDataErrContinue
+    If HandleComboNotInList(Me!CustomerID, NewData, "F_CustomerSetup", "T_Customers", "CustomerID", "CustomerName", "CustomerCode") Then
+        Response = acDataErrAdded
+    Else
+        Me!CustomerID.Undo
+    End If
+    Exit Sub
+Err_Handler:
+    Response = acDataErrContinue
+    MsgBox Err.Description, vbExclamation, "Add Customer"
+End Sub
+
+Private Sub Form_Unload(Cancel As Integer)
+    On Error Resume Next
+    If Me.NewRecord And Me.Dirty Then Me.Undo
+End Sub

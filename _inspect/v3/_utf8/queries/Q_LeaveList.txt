@@ -1,0 +1,8 @@
+﻿dbMemo "SQL" ="SELECT L.LeaveID, S.StaffName, L.LeaveType, L.StartDate, L.EndDate, L.Days, L.St"
+    "atus, L.Notes\015\012FROM T_Leave AS L LEFT JOIN T_Staff AS S ON L.StaffID = S.S"
+    "taffID\015\012ORDER BY L.StartDate DESC;\015\012"
+dbMemo "Connect" =""
+dbBoolean "ReturnsRecords" ="-1"
+dbInteger "ODBCTimeout" ="60"
+Begin
+End

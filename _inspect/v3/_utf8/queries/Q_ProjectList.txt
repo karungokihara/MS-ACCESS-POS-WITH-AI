@@ -1,0 +1,137 @@
+﻿dbMemo "SQL" ="SELECT P.ProjectID, P.ProjectCode, P.ProjectName, P.CustomerID, P.StartDate, P.E"
+    "ndDate, P.Status, P.Budget, P.IsActive, P.FinishedItemID, I.InternalSKU AS Finis"
+    "hedItemSKU, I.ItemName AS FinishedItemName, P.AssemblyTemplateID, T.TemplateCode"
+    ", T.TemplateName, P.BuildQuantity, P.OutputLocationID, L.LocationCode AS OutputL"
+    "ocationCode, L.LocationName AS OutputLocationName, W.WarehouseName, P.CustomerPO"
+    "Reference, P.CustomerPOID, P.CustomerPOLineID, P.SalesOrderID, P.QuantityShipped"
+    ", P.ShippedDate, P.WorkInstructions, P.Notes\015\012FROM (((T_Projects AS P LEFT"
+    " JOIN T_Items AS I ON P.FinishedItemID = I.ItemID) LEFT JOIN T_AssemblyTemplates"
+    " AS T ON P.AssemblyTemplateID = T.AssemblyTemplateID) LEFT JOIN T_Locations AS L"
+    " ON P.OutputLocationID = L.LocationID) LEFT JOIN T_Warehouses AS W ON L.Warehous"
+    "eID = W.WarehouseID\015\012ORDER BY P.ProjectName, P.ProjectCode;\015\012"
+dbMemo "Connect" =""
+dbBoolean "ReturnsRecords" ="-1"
+dbInteger "ODBCTimeout" ="60"
+dbBoolean "OrderByOn" ="0"
+dbByte "Orientation" ="0"
+dbByte "DefaultView" ="2"
+dbBinary "GUID" = Begin
+    0x5b358bb20c498a46828fe6a41c2ce642
+End
+dbBoolean "FilterOnLoad" ="0"
+dbBoolean "OrderByOnLoad" ="-1"
+dbByte "PublishToWeb" ="1"
+Begin
+    Begin
+        dbText "Name" ="P.CustomerPOReference"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.ProjectCode"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.ProjectID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.SalesOrderID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.StartDate"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.CustomerID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.ProjectName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.Budget"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.Status"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.EndDate"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.IsActive"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.FinishedItemID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="FinishedItemSKU"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="FinishedItemName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.AssemblyTemplateID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="T.TemplateCode"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="T.TemplateName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.BuildQuantity"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.OutputLocationID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.Notes"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="OutputLocationCode"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="OutputLocationName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="W.WarehouseName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.CustomerPOID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.CustomerPOLineID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.QuantityShipped"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.ShippedDate"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="P.WorkInstructions"
+        dbLong "AggregateType" ="-1"
+    End
+End

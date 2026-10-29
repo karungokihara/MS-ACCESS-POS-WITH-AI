@@ -1,0 +1,8 @@
+
+Public Function UXT_CreateLoc(ByVal nameText As String) As String
+    On Error GoTo Err_Handler
+    UXT_CreateLoc = "ok=" & CStr(CreateTypedLocation(nameText)) & ";combo=" & Nz(Me.cboDefaultLocationID, -1)
+    Exit Function
+Err_Handler:
+    UXT_CreateLoc = "ERR " & Err.Number & ":" & Err.Description
+End Function

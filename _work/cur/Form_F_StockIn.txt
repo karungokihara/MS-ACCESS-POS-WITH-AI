@@ -1,0 +1,3199 @@
+﻿Option Compare Database
+Option Explicit
+
+'=============================================================
+' FORM: F_StockIn
+'
+' PURPOSE:
+'   Posts positive inventory movements:
+'       - Opening balances
+'       - Purchase receipts
+'       - Returns to stock
+'       - Positive adjustments
+'       - Project production receipts
+'
+' TABLES UPDATED:
+'   T_StockBalances   - bulk items only
+'   T_ItemInstances   - serialized items only
+'   T_StockMovements  - audit trail for every posting
+'   T_ItemSuppliers   - item/supplier associations only
+'
+' SUPPLIER RULE:
+'   cboSupplierID and SF_ItemSuppliers remain editable whenever
+'   an item is selected, including Project Receipt mode.
+'   Typing a new supplier opens Supplier Setup through the existing
+'   NotInList workflow and links the saved supplier to the item.
+'   SupplierID is NOT written to T_StockMovements and is NOT
+'   required to post stock.
+'
+' SERIAL-NUMBER RULE:
+'   RequiresSerial is stored directly on T_Items (not on
+'   T_Categories - an item's category should not force serial
+'   tracking on it).
+'
+' RETURN-TO-STOCK RULE:
+'   For serialized items:
+'       - Normal stock-in creates a NEW serial record.
+'       - Return to Stock reactivates an EXISTING issued serial record.
+'
+' IMPORTANT:
+'   No IsActive fields are used.
+'   No legacy finished-item field is used. The first receipt fixes
+'   the one output ItemID used by that project.
+'
+' PROJECT OPENARGS ACCEPTED:
+'   Context=ProjectReceipt;ProjectID=<id>;ItemID=<id>
+'   Action=FinishedGoods;ProjectID=<id>;ItemID=<id>
+'=============================================================
+
+Private Const RECENT_SUBFORM_CONTROL As String = "SF_RecentStockIn"
+Private Const SUPPLIER_SETUP_FORM As String = "F_SupplierSetup"
+Private Const PROJECT_FORM As String = "F_Projects"
+
+Private Const CONTEXT_ITEM_SETUP As String = "ItemSetup"
+Private Const CONTEXT_PROJECT_RECEIPT As String = "ProjectReceipt"
+Private Const REASON_PRODUCTION_RECEIPT As String = "Production Receipt"
+Private Const SOURCE_PROJECT As String = "Project"
+Private Const QUANTITY_TOLERANCE As Double = 0.000001
+
+Private mProjectReceiptMode As Boolean
+Private mProjectID As Long
+Private mProjectOutputLocationID As Long
+Private mProjectOutputItemID As Long
+Private mProjectCustomerID As Long
+Private mProjectAssemblyTemplateID As Long
+Private mProjectBuildQuantity As Double
+Private mProjectReceivedQuantity As Double
+Private mProjectCode As String
+
+
+'=============================================================
+' INITIALIZE FORM
+'=============================================================
+Private Sub Form_Open(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    ConfigureSupplierSubformLink
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The item-supplier subform link could not be configured." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Stock In Suppliers"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_Load()
+    gSkipInventory = False
+    Me.cboReason.RowSource = "Opening Balance;Purchase Receipt;Return to Stock;Positive Adjustment;Negative Adjustment"
+    Me.cboToLocationID.LimitToList = True
+    Me.cboToLocationID.OnNotInList = "[Event Procedure]"
+    UX_MarkRequired Me, "cboItemID", "cboToLocationID", "txtQuantity", "cboReason"
+
+    On Error GoTo Err_Handler
+
+    ConfigureSupplierArea
+    ResetForm
+    ApplyStockInOpenArgs
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The Stock In form could not be initialized." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Stock In"
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' ITEM SETUP HANDOFF
+'=============================================================
+
+
+
+
+Private Function GetStockInOpenArgValue( _
+    ByVal argumentName As String _
+) As String
+
+    On Error GoTo Err_Handler
+
+    Dim openArguments As String
+    Dim argumentParts() As String
+    Dim argumentPart As Variant
+    Dim separatorPosition As Long
+    Dim currentName As String
+    Dim currentValue As String
+
+    GetStockInOpenArgValue = vbNullString
+
+    argumentName = Trim$(Nz( _
+        argumentName, _
+        vbNullString))
+
+    If Len(argumentName) = 0 Then
+        Exit Function
+    End If
+
+    openArguments = Trim$(Nz( _
+        Me.OpenArgs, _
+        vbNullString))
+
+    If Len(openArguments) = 0 Then
+        Exit Function
+    End If
+
+    argumentParts = Split(openArguments, ";")
+
+    For Each argumentPart In argumentParts
+
+        separatorPosition = InStr( _
+            1, _
+            CStr(argumentPart), _
+            "=", _
+            vbBinaryCompare)
+
+        If separatorPosition > 0 Then
+
+            currentName = Trim$(Left$( _
+                CStr(argumentPart), _
+                separatorPosition - 1))
+
+            If StrComp( _
+                currentName, _
+                argumentName, _
+                vbTextCompare) = 0 Then
+
+                currentValue = Trim$(Mid$( _
+                    CStr(argumentPart), _
+                    separatorPosition + 1))
+
+                GetStockInOpenArgValue = currentValue
+                Exit Function
+
+            End If
+
+        End If
+
+    Next argumentPart
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    GetStockInOpenArgValue = vbNullString
+    Resume Exit_Handler
+
+End Function
+
+
+Private Function IsProjectReceiptOpenArg( _
+    ByVal contextText As String, _
+    ByVal actionText As String _
+) As Boolean
+
+    If StrComp( _
+        Trim$(contextText), _
+        CONTEXT_PROJECT_RECEIPT, _
+        vbTextCompare) = 0 Then
+
+        IsProjectReceiptOpenArg = True
+        Exit Function
+    End If
+
+    Select Case UCase$(Replace( _
+        Trim$(actionText), _
+        " ", _
+        vbNullString))
+
+        Case "FINISHEDGOODS", "PROJECTRECEIPT"
+            IsProjectReceiptOpenArg = True
+    End Select
+
+End Function
+
+
+Public Sub LoadItemFromItemSetup( _
+    ByVal ItemID As Long, _
+    Optional ByVal stockReason As String = "Opening Balance" _
+)
+
+    On Error GoTo Err_Handler
+
+    Dim currentItemID As Long
+    Dim RequiresSerial As Boolean
+    Dim savedSerialNumber As String
+    Dim itemSKU As String
+    Dim Response As VbMsgBoxResult
+
+    If ItemID <= 0 Or _
+       DCount("*", "T_Items", "ItemID=" & ItemID) = 0 Then
+
+        Err.Raise _
+            vbObjectError + 7202, _
+            "LoadItemFromItemSetup", _
+            "The saved item could not be found in T_Items."
+    End If
+
+    If mProjectReceiptMode Then
+        ResetForm
+    End If
+
+    currentItemID = Nz(Me.cboItemID, 0)
+
+    'Do not erase an in-progress entry for the same item.
+    If currentItemID = ItemID Then
+        On Error Resume Next
+        Me.SetFocus
+        On Error GoTo 0
+        Exit Sub
+    End If
+
+    'An unbound Stock In form is not Dirty, so cboItemID is the
+    'reliable signal that another entry may already be underway.
+    If currentItemID > 0 Then
+        Response = MsgBox( _
+            "Stock In already contains another selected item." & _
+            vbCrLf & vbCrLf & _
+            "Clear that entry and load this item instead?", _
+            vbQuestion + vbYesNo, _
+            "Replace Stock In Entry")
+
+        If Response <> vbYes Then
+            Exit Sub
+        End If
+
+        ResetForm
+    End If
+
+    Me.cboItemID.Requery
+    Me.cboItemID = ItemID
+
+    If Len(Trim$(stockReason)) > 0 Then
+        Me.cboReason = stockReason
+    End If
+
+    'Use the existing Stock In logic to load tracking type,
+    'current availability and the best receiving location.
+    LoadSelectedItem
+
+    RequiresSerial = ItemRequiresSerial(ItemID)
+    itemSKU = Nz(DLookup( _
+        "InternalSKU", _
+        "T_Items", _
+        "ItemID=" & ItemID), vbNullString)
+
+    Me.txtReferenceDocument = itemSKU
+
+    If RequiresSerial Then
+        savedSerialNumber = Nz(DLookup( _
+            "SerialNumber", _
+            "T_Items", _
+            "ItemID=" & ItemID), vbNullString)
+
+        Me.txtQuantity = 1
+
+        If Len(Trim$(savedSerialNumber)) > 0 Then
+            Me.txtSerialNumber = savedSerialNumber
+        End If
+    Else
+        'Bulk/non-serialized items retain an editable quantity.
+        Me.txtQuantity = Null
+        Me.txtSerialNumber = Null
+    End If
+
+    On Error Resume Next
+
+    If IsNull(Me.cboToLocationID) Then
+        Me.cboToLocationID.SetFocus
+    ElseIf RequiresSerial Then
+        Me.txtSerialNumber.SetFocus
+    Else
+        Me.txtQuantity.SetFocus
+    End If
+
+    On Error GoTo 0
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The saved item could not be loaded into Stock In." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Stock In Item"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub ApplyStockInOpenArgs()
+
+    On Error GoTo Err_Handler
+
+    Dim contextText As String
+    Dim actionText As String
+    Dim ItemID As Long
+    Dim ProjectID As Long
+    Dim FinishedItemID As Long
+    Dim stockReason As String
+    Dim originalErrorNumber As Long
+    Dim originalErrorDescription As String
+    Dim originalErrorSource As String
+
+    contextText = GetStockInOpenArgValue("Context")
+    actionText = GetStockInOpenArgValue("Action")
+
+    If IsProjectReceiptOpenArg( _
+        contextText, _
+        actionText) Then
+
+        ProjectID = CLng(Val( _
+            GetStockInOpenArgValue("ProjectID")))
+
+        FinishedItemID = CLng(Val( _
+            GetStockInOpenArgValue("ItemID")))
+
+        If ProjectID <= 0 Then
+            Err.Raise _
+                vbObjectError + 7201, _
+                "ApplyStockInOpenArgs", _
+                "F_StockIn was opened for a project receipt " & _
+                "without a valid ProjectID."
+        End If
+
+        If FinishedItemID <= 0 Then
+            Err.Raise _
+                vbObjectError + 7202, _
+                "ApplyStockInOpenArgs", _
+                "F_StockIn was opened for a project receipt " & _
+                "without a valid finished ItemID."
+        End If
+
+        LoadProjectReceipt _
+            ProjectID, _
+            FinishedItemID
+
+        Exit Sub
+    End If
+
+    If StrComp( _
+        contextText, _
+        CONTEXT_ITEM_SETUP, _
+        vbTextCompare) <> 0 Then
+
+        Exit Sub
+    End If
+
+    ItemID = CLng(Val(GetStockInOpenArgValue("ItemID")))
+    stockReason = GetStockInOpenArgValue("Reason")
+
+    If ItemID <= 0 Then
+        Err.Raise _
+            vbObjectError + 7201, _
+            "ApplyStockInOpenArgs", _
+            "F_StockIn was opened from Item Setup " & _
+            "without a valid ItemID."
+    End If
+
+    If Len(Trim$(stockReason)) = 0 Then
+        stockReason = "Opening Balance"
+    End If
+
+    LoadItemFromItemSetup _
+        ItemID, _
+        stockReason
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    originalErrorNumber = Err.Number
+    originalErrorDescription = Err.Description
+    originalErrorSource = Err.Source
+
+    On Error GoTo 0
+
+    Err.Raise _
+        originalErrorNumber, _
+        originalErrorSource, _
+        originalErrorDescription
+
+End Sub
+
+
+'=====================================================================
+' PROCEDURE 2 OF 3
+' Replace the existing LoadProjectReceipt procedure.
+'=====================================================================
+Public Sub LoadProjectReceipt( _
+    ByVal ProjectID As Long, _
+    Optional ByVal FinishedItemID As Long = 0 _
+)
+
+    On Error GoTo Err_Handler
+
+    Dim db As DAO.Database
+    Dim rs As DAO.Recordset
+    Dim savedReceiptItemID As Long
+    Dim templateOutputQuantity As Double
+    Dim estimatedTemplateCost As Variant
+    Dim projectStatus As String
+    Dim remainingQuantity As Double
+
+    If ProjectID <= 0 Then
+        Err.Raise _
+            vbObjectError + 7210, _
+            "LoadProjectReceipt", _
+            "A valid ProjectID is required."
+    End If
+
+    'When Clear reloads an existing project receipt, it calls this
+    'procedure with only ProjectID. Preserve the item already loaded.
+    If FinishedItemID <= 0 Then
+        FinishedItemID = mProjectOutputItemID
+    End If
+
+    If FinishedItemID <= 0 Then
+        Err.Raise _
+            vbObjectError + 7211, _
+            "LoadProjectReceipt", _
+            "Select the Finished Item on the project first."
+    End If
+
+    If DCount( _
+        "*", _
+        "T_Items", _
+        "ItemID=" & CStr(FinishedItemID)) = 0 Then
+
+        Err.Raise _
+            vbObjectError + 7212, _
+            "LoadProjectReceipt", _
+            "Finished Item ID " & CStr(FinishedItemID) & _
+            " could not be found in T_Items."
+    End If
+
+    ResetForm
+
+    Set db = CurrentDb
+
+    Set rs = db.OpenRecordset( _
+        "SELECT P.ProjectID, P.ProjectCode, P.ProjectName, " & _
+            "P.CustomerID, P.AssemblyTemplateID, " & _
+            "P.OutputLocationID, P.BuildQuantity, " & _
+            "P.[Status] AS ProjectStatus, " & _
+            "AT.OutputQuantity AS TemplateOutputQuantity, " & _
+            "AT.EstimatedTotalCost " & _
+        "FROM T_Projects AS P " & _
+        "LEFT JOIN T_AssemblyTemplates AS AT " & _
+            "ON P.AssemblyTemplateID=" & _
+                "AT.AssemblyTemplateID " & _
+        "WHERE P.ProjectID=" & _
+            CStr(ProjectID) & ";", _
+        dbOpenSnapshot)
+
+    If rs.EOF Then
+        Err.Raise _
+            vbObjectError + 7213, _
+            "LoadProjectReceipt", _
+            "Project ID " & CStr(ProjectID) & _
+            " was not found."
+    End If
+
+    mProjectID = ProjectID
+    mProjectCode = Trim$(Nz( _
+        rs!ProjectCode, _
+        vbNullString))
+
+    mProjectCustomerID = Nz(rs!CustomerID, 0)
+    mProjectAssemblyTemplateID = _
+        Nz(rs!AssemblyTemplateID, 0)
+
+    mProjectOutputLocationID = _
+        Nz(rs!OutputLocationID, 0)
+
+    mProjectBuildQuantity = _
+        Nz(rs!BuildQuantity, 0)
+
+    projectStatus = UCase$(Trim$(Nz( _
+        rs!projectStatus, _
+        vbNullString)))
+
+    templateOutputQuantity = Nz( _
+        rs!templateOutputQuantity, _
+        0)
+
+    estimatedTemplateCost = _
+        rs!EstimatedTotalCost
+
+    rs.close
+    Set rs = Nothing
+
+    If projectStatus = "CANCELLED" Then
+        Err.Raise _
+            vbObjectError + 7214, _
+            "LoadProjectReceipt", _
+            "A cancelled project cannot receive output."
+    End If
+
+    If projectStatus = "SHIPPED" Then
+        Err.Raise _
+            vbObjectError + 7215, _
+            "LoadProjectReceipt", _
+            "This project is already marked Shipped."
+    End If
+
+    If mProjectOutputLocationID <= 0 Then
+        Err.Raise _
+            vbObjectError + 7216, _
+            "LoadProjectReceipt", _
+            "Select an output location on the project first."
+    End If
+
+    If mProjectBuildQuantity <= 0 Then
+        Err.Raise _
+            vbObjectError + 7217, _
+            "LoadProjectReceipt", _
+            "The project Build Quantity must be " & _
+            "greater than zero."
+    End If
+
+    'Read any production receipts already posted for the project.
+    GetProjectReceiptSummary _
+        db, _
+        mProjectID, _
+        savedReceiptItemID, _
+        mProjectReceivedQuantity
+
+    'Once a project has received one output item, later receipts
+    'must continue using the same ItemID.
+    If savedReceiptItemID > 0 And _
+       savedReceiptItemID <> FinishedItemID Then
+
+        Err.Raise _
+            vbObjectError + 7218, _
+            "LoadProjectReceipt", _
+            "Earlier production receipts for this project " & _
+            "used a different finished item."
+    End If
+
+    'Use the value selected in F_Projects.cboFinishedItemID.
+    'Do not use rs!cboFinishedItemID because that is a form
+    'control name, not a field in this DAO recordset.
+    mProjectOutputItemID = FinishedItemID
+
+    remainingQuantity = _
+        mProjectBuildQuantity - _
+        mProjectReceivedQuantity
+
+    If remainingQuantity <= QUANTITY_TOLERANCE Then
+        Err.Raise _
+            vbObjectError + 7219, _
+            "LoadProjectReceipt", _
+            "The full project Build Quantity has " & _
+            "already been received."
+    End If
+
+    mProjectReceiptMode = True
+
+    EnsureValueListItem _
+        Me.cboReason, _
+        REASON_PRODUCTION_RECEIPT
+
+    Me.cboReason = REASON_PRODUCTION_RECEIPT
+    Me.cboReason.Enabled = True
+    Me.cboReason.Locked = True
+
+    Me.txtReferenceDocument = mProjectCode
+
+    Me.cboToLocationID = _
+        mProjectOutputLocationID
+
+    Me.cboToLocationID.Enabled = True
+    Me.cboToLocationID.Locked = True
+
+    If Not IsNull(estimatedTemplateCost) And _
+       templateOutputQuantity > _
+            QUANTITY_TOLERANCE Then
+
+        Me.txtUnitCost = _
+            CCur(estimatedTemplateCost) / _
+            templateOutputQuantity
+    Else
+        Me.txtUnitCost = Null
+    End If
+
+    'The combo is bound to ItemID but displays the item name from
+    'its Row Source. Assigning the selected ID therefore shows the
+    'correct finished-item name automatically.
+    Me.cboItemID.Requery
+    Me.cboItemID = mProjectOutputItemID
+    Me.cboItemID.Locked = True
+
+    LoadSelectedItem
+
+    ApplyProjectReceiptControlValues
+    ConfigureProjectSupplierArea
+
+    On Error Resume Next
+
+    If ItemRequiresSerial(CLng(Me.cboItemID)) Then
+        Me.txtSerialNumber.SetFocus
+    Else
+        Me.txtQuantity.SetFocus
+    End If
+
+    On Error GoTo 0
+
+Exit_Handler:
+    On Error Resume Next
+
+    If Not (rs Is Nothing) Then
+        rs.close
+    End If
+
+    Set rs = Nothing
+    Set db = Nothing
+
+    On Error GoTo 0
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The project receipt could not be prepared." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Project Receipt"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=====================================================================
+' PROCEDURE 3 OF 3
+' Replace the existing cmdClear_Click procedure.
+'=====================================================================
+Private Sub cmdClear_Click()
+
+    Dim ProjectID As Long
+    Dim FinishedItemID As Long
+
+    If mProjectReceiptMode Then
+
+        ProjectID = mProjectID
+        FinishedItemID = mProjectOutputItemID
+
+        LoadProjectReceipt _
+            ProjectID, _
+            FinishedItemID
+
+    Else
+
+        ResetForm
+
+    End If
+
+End Sub
+
+'=============================================================
+' ITEM SELECTED
+'=============================================================
+Private Sub cboItemID_AfterUpdate()
+
+    LoadSelectedItem
+
+End Sub
+
+
+'=============================================================
+' SUPPLIER SELECTED / QUICK ADD
+'=============================================================
+
+Private Sub cboSupplierID_AfterUpdate()
+
+    On Error GoTo Err_Handler
+
+    If IsNull(Me.cboSupplierID) Then
+        RequeryItemSuppliersSubform
+        Exit Sub
+    End If
+
+    AssociateSelectedSupplierWithItem
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The selected supplier could not be processed." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Item Supplier"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cboSupplierID_NotInList( _
+    NewData As String, _
+    Response As Integer _
+)
+
+    On Error GoTo Err_Handler
+
+    Response = acDataErrContinue
+
+    If IsNull(Me.cboItemID) Then
+        MsgBox _
+            "Select the item before adding a supplier.", _
+            vbExclamation, _
+            "Item Required"
+
+        Me.cboItemID.SetFocus
+        Exit Sub
+    End If
+
+    If HandleComboNotInList( _
+        Me.cboSupplierID, _
+        NewData, _
+        SUPPLIER_SETUP_FORM, _
+        "T_Suppliers", _
+        "SupplierID", _
+        "SupplierCode", _
+        "CompanyName") Then
+
+        'Do not requery or assign cboSupplierID here. Access still
+        'owns the typed value while NotInList is running. Returning
+        'acDataErrAdded makes Access requery and select the saved
+        'supplier safely after this event has finished. The combo's
+        'AfterUpdate event then creates the T_ItemSuppliers link.
+        Response = acDataErrAdded
+
+    Else
+
+        Me.cboSupplierID.Undo
+
+    End If
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The supplier could not be added." & vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Supplier Quick Add"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cboSupplierID_DblClick(Cancel As Integer)
+
+    On Error GoTo Err_Handler
+
+    Cancel = True
+
+    EditComboEntry _
+        Me.cboSupplierID, _
+        SUPPLIER_SETUP_FORM, _
+        "SupplierID"
+
+    Me.cboSupplierID.Requery
+    RequeryItemSuppliersSubform
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The supplier could not be opened." & vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Supplier Setup"
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' REASON SELECTED
+'=============================================================
+Private Sub cboReason_AfterUpdate()
+
+    If Not IsNull(Me.cboItemID) Then
+        ConfigureSerialControls ItemRequiresSerial(CLng(Me.cboItemID))
+    End If
+
+End Sub
+
+
+'=============================================================
+' POST STOCK-IN TRANSACTION
+'=============================================================
+Private Sub cmdPostStockIn_Click()
+    gSkipInventory = False
+
+    On Error GoTo Err_Handler
+
+    Dim ws As DAO.Workspace
+    Dim db As DAO.Database
+
+    Dim ItemID As Long
+    Dim ToLocationID As Long
+    Dim performedByUserID As Long
+    Dim MovementTypeID As Long
+    Dim ItemInstanceID As Long
+
+    Dim Quantity As Double
+    Dim MovementDate As Date
+    Dim RequiresSerial As Boolean
+
+    Dim SerialNumber As String
+    Dim Reason As String
+    Dim ReferenceDocument As String
+    Dim Notes As String
+
+    Dim UnitCost As Variant
+    Dim transactionStarted As Boolean
+
+    Dim originalErrorNumber As Long
+    Dim originalErrorDescription As String
+    Dim originalErrorSource As String
+
+    '---------------------------------------------------------
+    ' Validate entries before changing any table.
+    '---------------------------------------------------------
+    If Not ValidateEntry( _
+        ItemID, _
+        ToLocationID, _
+        performedByUserID, _
+        Quantity, _
+        MovementDate, _
+        RequiresSerial, _
+        SerialNumber, _
+        Reason, _
+        ReferenceDocument, _
+        Notes, _
+        UnitCost _
+    ) Then
+        Exit Sub
+    End If
+
+    Set ws = DBEngine.Workspaces(0)
+    Set db = CurrentDb
+
+    MovementTypeID = GetMovementTypeID(db, "STOCK_IN")
+
+    '---------------------------------------------------------
+    ' Start database transaction.
+    ' Either every required update succeeds or all changes
+    ' are rolled back.
+    '---------------------------------------------------------
+    ws.BeginTrans
+    transactionStarted = True
+
+    If RequiresSerial Then
+
+        If IsReturnToStockReason(Reason) Then
+
+            '-------------------------------------------------
+            ' Serialized return:
+            ' Find existing issued serial and put it back
+            ' into stock.
+            '-------------------------------------------------
+            ItemInstanceID = ReturnSerializedInstanceToStock( _
+                db, _
+                ItemID, _
+                SerialNumber, _
+                ToLocationID, _
+                MovementDate, _
+                UnitCost, _
+                Notes _
+            )
+
+        Else
+
+            '-------------------------------------------------
+            ' New serialized receipt:
+            ' Create one new individual physical-item record.
+            '-------------------------------------------------
+            ItemInstanceID = InsertSerializedInstance( _
+                db, _
+                ItemID, _
+                SerialNumber, _
+                ToLocationID, _
+                MovementDate, _
+                UnitCost, _
+                Notes _
+            )
+
+        End If
+
+    Else
+
+        '-----------------------------------------------------
+        ' Bulk item:
+        ' Add quantity to the item's stock balance.
+        '-----------------------------------------------------
+        ItemInstanceID = 0
+
+        UpdateBulkStockBalance _
+            db, _
+            ItemID, _
+            ToLocationID, _
+            Quantity
+
+    End If
+
+    '---------------------------------------------------------
+    ' Always create a permanent audit-trail movement.
+    '---------------------------------------------------------
+    InsertStockMovement _
+        db, _
+        MovementDate, _
+        ItemID, _
+        ItemInstanceID, _
+        MovementTypeID, _
+        Quantity, _
+        ToLocationID, _
+        performedByUserID, _
+        Reason, _
+        ReferenceDocument, _
+        Notes, _
+        UnitCost
+
+    If mProjectReceiptMode Then
+        UpdateProjectReceiptStatus db, Quantity
+    End If
+
+    ws.CommitTrans
+    transactionStarted = False
+
+    '---------------------------------------------------------
+    ' Refresh display controls.
+    '---------------------------------------------------------
+    On Error Resume Next
+
+    RefreshSelectedItemStatus
+    RequeryRecentSubform
+
+    If mProjectReceiptMode Then
+        mProjectReceivedQuantity = _
+            mProjectReceivedQuantity + Quantity
+        mProjectOutputItemID = ItemID
+        PrepareNextProjectReceipt RequiresSerial
+        RefreshProjectFormIfOpen
+    Else
+        PrepareNextEntry RequiresSerial
+    End If
+
+    On Error GoTo 0
+
+    If mProjectReceiptMode Then
+        MsgBox _
+            "Project output receipt posted successfully." & _
+            vbCrLf & vbCrLf & _
+            "Received for project: " & _
+                Format$(mProjectReceivedQuantity, "0.######") & _
+            vbCrLf & _
+            "Build quantity: " & _
+                Format$(mProjectBuildQuantity, "0.######"), _
+            vbInformation, _
+            "Project Receipt Completed"
+
+        If ProjectReceiptRemainingQuantity() <= _
+           QUANTITY_TOLERANCE Then
+
+            RefreshProjectFormIfOpen
+            On Error Resume Next
+            DoCmd.close acForm, Me.Name, acSaveNo
+            On Error GoTo 0
+        End If
+    Else
+        MsgBox _
+            "Stock-in transaction posted successfully.", _
+            vbInformation, _
+            "Stock In Completed"
+    End If
+
+Exit_Handler:
+
+    Set db = Nothing
+    Set ws = Nothing
+
+    Exit Sub
+
+Err_Handler:
+
+    originalErrorNumber = Err.Number
+    originalErrorDescription = Err.Description
+    originalErrorSource = Err.Source
+
+    On Error Resume Next
+
+    If transactionStarted Then
+
+        If Not (ws Is Nothing) Then
+            ws.Rollback
+        End If
+
+    End If
+
+    On Error GoTo 0
+
+    MsgBox _
+        "The stock-in transaction was not posted." & vbCrLf & vbCrLf & _
+        "Error Number: " & originalErrorNumber & vbCrLf & _
+        "Source: " & originalErrorSource & vbCrLf & _
+        "Details: " & originalErrorDescription, _
+        vbExclamation, _
+        "Stock In Failed"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' CLOSE FORM
+'=============================================================
+Private Sub cmdClose_Click()
+
+    If mProjectReceiptMode Then
+        RefreshProjectFormIfOpen
+    End If
+
+    DoCmd.close acForm, Me.Name
+
+End Sub
+
+
+'=============================================================
+' VALIDATE FORM ENTRY
+'=============================================================
+Private Function ValidateEntry( _
+    ByRef ItemID As Long, _
+    ByRef ToLocationID As Long, _
+    ByRef performedByUserID As Long, _
+    ByRef Quantity As Double, _
+    ByRef MovementDate As Date, _
+    ByRef RequiresSerial As Boolean, _
+    ByRef SerialNumber As String, _
+    ByRef Reason As String, _
+    ByRef ReferenceDocument As String, _
+    ByRef Notes As String, _
+    ByRef UnitCost As Variant _
+) As Boolean
+
+    ValidateEntry = False
+
+    '---------------------------------------------------------
+    ' Item
+    '---------------------------------------------------------
+    If IsNull(Me.cboItemID) Then
+
+        MsgBox _
+            "Select the item being received.", _
+            vbExclamation, _
+            "Item Required"
+
+        Me.cboItemID.SetFocus
+        Exit Function
+
+    End If
+
+    ItemID = CLng(Me.cboItemID)
+
+    RequiresSerial = ItemRequiresSerial(ItemID)
+
+    Me.chkRequiresSerial = RequiresSerial
+
+    '---------------------------------------------------------
+    ' Destination location
+    '---------------------------------------------------------
+    If IsNull(Me.cboToLocationID) Then
+
+        MsgBox _
+            "Select the warehouse location receiving the item.", _
+            vbExclamation, _
+            "Location Required"
+
+        Me.cboToLocationID.SetFocus
+        Exit Function
+
+    End If
+
+    ToLocationID = CLng(Me.cboToLocationID)
+
+    '---------------------------------------------------------
+    ' Quantity
+    '---------------------------------------------------------
+    If RequiresSerial Then
+
+        Quantity = 1
+        Me.txtQuantity = 1
+
+    Else
+
+        If IsNull(Me.txtQuantity) Or _
+           Len(Trim$(Nz(Me.txtQuantity, vbNullString))) = 0 Then
+
+            MsgBox _
+                "Enter the quantity being received.", _
+                vbExclamation, _
+                "Quantity Required"
+
+            Me.txtQuantity.SetFocus
+            Exit Function
+
+        End If
+
+        If Not IsNumeric(Me.txtQuantity) Then
+
+            MsgBox _
+                "Quantity must be a numeric value.", _
+                vbExclamation, _
+                "Invalid Quantity"
+
+            Me.txtQuantity.SetFocus
+            Exit Function
+
+        End If
+
+        Quantity = CDbl(Me.txtQuantity)
+
+        If Not UX_AdjustStockQuantity(Quantity, Nz(Me.cboReason, vbNullString)) Then
+            Me.txtQuantity.SetFocus
+            Exit Function
+        End If
+
+    End If
+
+    If mProjectReceiptMode Then
+        If Not ValidateProjectReceiptEntry( _
+            ItemID, _
+            ToLocationID, _
+            Quantity) Then
+
+            Exit Function
+        End If
+    End If
+
+    '---------------------------------------------------------
+    ' Serial number
+    '---------------------------------------------------------
+    SerialNumber = Trim$(Nz(Me.txtSerialNumber, vbNullString))
+
+    If RequiresSerial Then
+
+        If Len(SerialNumber) = 0 Then
+
+            If IsReturnToStockReason(Nz(Me.cboReason, vbNullString)) Then
+
+                MsgBox _
+                    "Enter the serial number being returned to stock.", _
+                    vbExclamation, _
+                    "Serial Number Required"
+
+            Else
+
+                MsgBox _
+                    "Enter the serial number for this item.", _
+                    vbExclamation, _
+                    "Serial Number Required"
+
+            End If
+
+            Me.txtSerialNumber.SetFocus
+            Exit Function
+
+        End If
+
+    Else
+
+        SerialNumber = vbNullString
+
+    End If
+
+    '---------------------------------------------------------
+    ' Unit cost
+    ' Optional.
+    ' For return-to-stock, the existing instance unit cost
+    ' will be reused if this is left blank.
+    '---------------------------------------------------------
+    If IsNull(Me.txtUnitCost) Or _
+       Len(Trim$(Nz(Me.txtUnitCost, vbNullString))) = 0 Then
+
+        UnitCost = Null
+
+    Else
+
+        If Not IsNumeric(Me.txtUnitCost) Then
+
+            MsgBox _
+                "Unit cost must be a numeric value.", _
+                vbExclamation, _
+                "Invalid Unit Cost"
+
+            Me.txtUnitCost.SetFocus
+            Exit Function
+
+        End If
+
+        If CDbl(Me.txtUnitCost) < 0 Then
+
+            MsgBox _
+                "Unit cost cannot be negative.", _
+                vbExclamation, _
+                "Invalid Unit Cost"
+
+            Me.txtUnitCost.SetFocus
+            Exit Function
+
+        End If
+
+        UnitCost = CCur(Me.txtUnitCost)
+
+    End If
+
+    '---------------------------------------------------------
+    ' Movement date
+    '---------------------------------------------------------
+    If IsNull(Me.txtMovementDate) Or _
+       Not IsDate(Me.txtMovementDate) Then
+
+        MsgBox _
+            "Enter a valid movement date.", _
+            vbExclamation, _
+            "Movement Date Required"
+
+        Me.txtMovementDate.SetFocus
+        Exit Function
+
+    End If
+
+    MovementDate = CDate(Me.txtMovementDate)
+
+    '---------------------------------------------------------
+    ' Reason
+    '---------------------------------------------------------
+    Reason = Trim$(Nz(Me.cboReason, vbNullString))
+
+    If Len(Reason) = 0 Then
+
+        MsgBox _
+            "Select the reason for the stock-in transaction.", _
+            vbExclamation, _
+            "Reason Required"
+
+        Me.cboReason.SetFocus
+        Exit Function
+
+    End If
+
+    If mProjectReceiptMode And _
+       StrComp( _
+            Reason, _
+            REASON_PRODUCTION_RECEIPT, _
+            vbTextCompare) <> 0 Then
+
+        MsgBox _
+            "Project output must be posted with Reason = " & _
+            REASON_PRODUCTION_RECEIPT & ".", _
+            vbExclamation, _
+            "Project Receipt Reason"
+
+        Me.cboReason = REASON_PRODUCTION_RECEIPT
+        Exit Function
+    End If
+
+    If Not mProjectReceiptMode And _
+       StrComp( _
+            Reason, _
+            REASON_PRODUCTION_RECEIPT, _
+            vbTextCompare) = 0 Then
+
+        MsgBox _
+            "Open Stock In from the project's Receive Output " & _
+            "button when posting a Production Receipt.", _
+            vbExclamation, _
+            "Project Context Required"
+        Exit Function
+    End If
+
+    '---------------------------------------------------------
+    ' Received by
+    '---------------------------------------------------------
+    If IsNull(Me.cboPerformedByUserID) Then
+
+        MsgBox _
+            "Select the user receiving or recording the stock.", _
+            vbExclamation, _
+            "Received By Required"
+
+        Me.cboPerformedByUserID.SetFocus
+        Exit Function
+
+    End If
+
+    performedByUserID = CLng(Me.cboPerformedByUserID)
+
+    '---------------------------------------------------------
+    ' Optional values
+    '---------------------------------------------------------
+    ReferenceDocument = Trim$(Nz( _
+        Me.txtReferenceDocument, _
+        vbNullString _
+    ))
+
+    Notes = Trim$(Nz(Me.txtNOtes, vbNullString))
+
+    ValidateEntry = True
+
+End Function
+
+
+'=============================================================
+' UPDATE BULK STOCK BALANCE
+'=============================================================
+Private Sub UpdateBulkStockBalance( _
+    ByVal db As DAO.Database, _
+    ByVal ItemID As Long, _
+    ByVal ToLocationID As Long, _
+    ByVal Quantity As Double _
+)
+
+    Dim rs As DAO.Recordset
+
+    Dim existingLocationID As Long
+    Dim currentQuantity As Double
+
+    Set rs = db.OpenRecordset( _
+        "SELECT * " & _
+        "FROM T_StockBalances " & _
+        "WHERE ItemID = " & ItemID & ";", _
+        dbOpenDynaset _
+    )
+
+    If Not rs.EOF Then
+
+        rs.MoveLast
+
+        If rs.recordCount > 1 Then
+
+            rs.close
+            Set rs = Nothing
+
+            Err.Raise _
+                vbObjectError + 1004, _
+                "UpdateBulkStockBalance", _
+                "More than one stock-balance record exists for this bulk item." & _
+                vbCrLf & vbCrLf & _
+                "Each bulk item must have only one row in T_StockBalances."
+
+        End If
+
+        rs.MoveFirst
+
+    End If
+
+    If rs.EOF Then
+
+        rs.addnew
+
+        rs!ItemID = ItemID
+        rs!CurrentLocationID = ToLocationID
+        rs!QuantityOnHand = Quantity
+        rs!QuantityReserved = 0
+        rs!LastUpdated = Now()
+
+        rs.Update
+
+    Else
+
+        existingLocationID = Nz(rs!CurrentLocationID, 0)
+        currentQuantity = Nz(rs!QuantityOnHand, 0)
+
+        If existingLocationID = 0 And currentQuantity <> 0 Then
+
+            rs.close
+            Set rs = Nothing
+
+            Err.Raise _
+                vbObjectError + 1005, _
+                "UpdateBulkStockBalance", _
+                "This item has stock on hand but no current location." & _
+                vbCrLf & vbCrLf & _
+                "Correct the existing T_StockBalances record before posting."
+
+        End If
+
+        If existingLocationID <> 0 And _
+           existingLocationID <> ToLocationID And _
+           currentQuantity <> 0 Then
+
+            rs.close
+            Set rs = Nothing
+
+            Err.Raise _
+                vbObjectError + 1001, _
+                "UpdateBulkStockBalance", _
+                "This bulk item already has stock in another location." & _
+                vbCrLf & vbCrLf & _
+                "Current location: " & _
+                GetLocationDescription(existingLocationID) & _
+                vbCrLf & _
+                "Current quantity: " & currentQuantity & _
+                vbCrLf & vbCrLf & _
+                "Use the transfer form before receiving stock into " & _
+                "a different location."
+
+        End If
+
+        rs.Edit
+
+        rs!CurrentLocationID = ToLocationID
+        rs!QuantityOnHand = currentQuantity + Quantity
+        If Nz(rs!QuantityOnHand, 0) < -0.0000001 Then
+            Err.Raise vbObjectError + 1006, "UpdateBulkStockBalance", "That negative adjustment is larger than the quantity on hand (" & currentQuantity & ")."
+        End If
+        rs!LastUpdated = Now()
+
+        rs.Update
+
+    End If
+
+    rs.close
+    Set rs = Nothing
+
+End Sub
+
+
+'=============================================================
+' CREATE NEW SERIALIZED ITEM INSTANCE
+'=============================================================
+Private Function InsertSerializedInstance( _
+    ByVal db As DAO.Database, _
+    ByVal ItemID As Long, _
+    ByVal SerialNumber As String, _
+    ByVal ToLocationID As Long, _
+    ByVal MovementDate As Date, _
+    ByVal UnitCost As Variant, _
+    ByVal Notes As String _
+) As Long
+
+    Dim rs As DAO.Recordset
+    Dim criteria As String
+
+    criteria = "SerialNumber = " & SqlText(SerialNumber)
+
+    If DCount("*", "T_ItemInstances", criteria) > 0 Then
+
+        Err.Raise _
+            vbObjectError + 1002, _
+            "InsertSerializedInstance", _
+            "The serial number '" & SerialNumber & _
+            "' already exists in T_ItemInstances." & _
+            vbCrLf & vbCrLf & _
+            "If this is an existing tool being returned, use Reason = Return to Stock."
+
+    End If
+
+    Set rs = db.OpenRecordset( _
+        "T_ItemInstances", _
+        dbOpenDynaset _
+    )
+
+    rs.addnew
+
+    rs!ItemID = ItemID
+    rs!SerialNumber = SerialNumber
+    rs!CurrentLocationID = ToLocationID
+    rs!currentStatus = "In Stock"
+    rs!acquisitionDate = MovementDate
+
+    If Not IsNull(UnitCost) Then
+        rs!UnitCost = UnitCost
+    End If
+
+    If Len(Notes) > 0 Then
+        rs!Notes = Notes
+    End If
+
+    rs.Update
+
+    rs.Bookmark = rs.LastModified
+
+    InsertSerializedInstance = CLng(rs!ItemInstanceID)
+
+    rs.close
+    Set rs = Nothing
+
+End Function
+
+
+'=============================================================
+' RETURN EXISTING SERIALIZED ITEM TO STOCK
+'=============================================================
+Private Function ReturnSerializedInstanceToStock( _
+    ByVal db As DAO.Database, _
+    ByVal ItemID As Long, _
+    ByVal SerialNumber As String, _
+    ByVal ToLocationID As Long, _
+    ByVal MovementDate As Date, _
+    ByRef UnitCost As Variant, _
+    ByVal Notes As String _
+) As Long
+
+    Dim rs As DAO.Recordset
+    Dim returnNote As String
+
+    Set rs = db.OpenRecordset( _
+        "SELECT * " & _
+        "FROM T_ItemInstances " & _
+        "WHERE SerialNumber = " & SqlText(SerialNumber) & ";", _
+        dbOpenDynaset _
+    )
+
+    If rs.EOF Then
+
+        rs.close
+        Set rs = Nothing
+
+        Err.Raise _
+            vbObjectError + 1201, _
+            "ReturnSerializedInstanceToStock", _
+            "The serial number '" & SerialNumber & _
+            "' was not found in T_ItemInstances." & _
+            vbCrLf & vbCrLf & _
+            "For returns, the serial number must already exist."
+
+    End If
+
+    If Nz(rs!ItemID, 0) <> ItemID Then
+
+        rs.close
+        Set rs = Nothing
+
+        Err.Raise _
+            vbObjectError + 1202, _
+            "ReturnSerializedInstanceToStock", _
+            "The serial number '" & SerialNumber & _
+            "' does not belong to the selected item."
+
+    End If
+
+    If Nz(rs!currentStatus, vbNullString) = "In Stock" _
+       And Not IsNull(rs!CurrentLocationID) Then
+
+        rs.close
+        Set rs = Nothing
+
+        Err.Raise _
+            vbObjectError + 1203, _
+            "ReturnSerializedInstanceToStock", _
+            "The serial number '" & SerialNumber & _
+            "' is already marked as In Stock."
+
+    End If
+
+    ReturnSerializedInstanceToStock = CLng(rs!ItemInstanceID)
+
+    If IsNull(UnitCost) Then
+
+        If IsNull(rs!UnitCost) Then
+            UnitCost = Null
+        Else
+            UnitCost = rs!UnitCost
+        End If
+
+    End If
+
+    returnNote = _
+        "Returned to stock on " & _
+        Format$(MovementDate, "yyyy-mm-dd hh:nn") & _
+        ". Location: " & GetLocationDescription(ToLocationID) & "."
+
+    If Len(Trim$(Notes)) > 0 Then
+        returnNote = returnNote & vbCrLf & Notes
+    End If
+
+    rs.Edit
+
+    rs!CurrentLocationID = ToLocationID
+    rs!currentStatus = "In Stock"
+    rs!Notes = AppendNote( _
+        Nz(rs!Notes, vbNullString), _
+        returnNote _
+    )
+
+    rs.Update
+
+    rs.close
+    Set rs = Nothing
+
+End Function
+
+
+'=============================================================
+' CREATE PERMANENT STOCK-MOVEMENT RECORD
+'=============================================================
+Private Sub InsertStockMovement( _
+    ByVal db As DAO.Database, _
+    ByVal MovementDate As Date, _
+    ByVal ItemID As Long, _
+    ByVal ItemInstanceID As Long, _
+    ByVal MovementTypeID As Long, _
+    ByVal Quantity As Double, _
+    ByVal ToLocationID As Long, _
+    ByVal performedByUserID As Long, _
+    ByVal Reason As String, _
+    ByVal ReferenceDocument As String, _
+    ByVal Notes As String, _
+    ByVal UnitCost As Variant _
+)
+
+    Dim rs As DAO.Recordset
+
+    Set rs = db.OpenRecordset( _
+        "T_StockMovements", _
+        dbOpenDynaset _
+    )
+
+    rs.addnew
+
+    rs!MovementDate = MovementDate
+    rs!ItemID = ItemID
+
+    If ItemInstanceID > 0 Then
+        rs!ItemInstanceID = ItemInstanceID
+    End If
+
+    rs!MovementTypeID = MovementTypeID
+    rs!Quantity = Quantity
+    rs!ToLocationID = ToLocationID
+    rs!performedByUserID = performedByUserID
+    rs!Reason = Reason
+
+    If mProjectReceiptMode Then
+        If Not RecordsetHasField(rs, "ProjectID") Then
+            Err.Raise _
+                vbObjectError + 7217, _
+                "InsertStockMovement", _
+                "T_StockMovements.ProjectID is required for " & _
+                "project output receipts."
+        End If
+
+        rs!ProjectID = mProjectID
+
+        SetRecordsetFieldIfExists _
+            rs, _
+            "CustomerID", _
+            NullIfZero(mProjectCustomerID)
+
+        SetRecordsetFieldIfExists _
+            rs, _
+            "AssemblyTemplateID", _
+            NullIfZero(mProjectAssemblyTemplateID)
+
+        SetRecordsetFieldIfExists _
+            rs, _
+            "SourceDocumentType", _
+            SOURCE_PROJECT
+
+        SetRecordsetFieldIfExists _
+            rs, _
+            "MovementNotes", _
+            "Finished output received for project " & mProjectCode & "."
+    End If
+
+    If Len(ReferenceDocument) > 0 Then
+        rs!ReferenceDocument = ReferenceDocument
+    End If
+
+    If Len(Notes) > 0 Then
+        rs!Notes = Notes
+    End If
+
+    If Not IsNull(UnitCost) Then
+        rs!UnitCost = UnitCost
+    End If
+
+    rs.Update
+
+    rs.close
+    Set rs = Nothing
+
+End Sub
+
+
+'=============================================================
+' RETRIEVE MOVEMENT-TYPE PRIMARY KEY
+'=============================================================
+Private Function GetMovementTypeID( _
+    ByVal db As DAO.Database, _
+    ByVal MovementTypeCode As String _
+) As Long
+
+    Dim rs As DAO.Recordset
+
+    Set rs = db.OpenRecordset( _
+        "SELECT MovementTypeID " & _
+        "FROM T_StockMovementTypes " & _
+        "WHERE MovementTypeCode = " & _
+            SqlText(MovementTypeCode) & ";", _
+        dbOpenSnapshot _
+    )
+
+    If rs.EOF Then
+
+        rs.close
+        Set rs = Nothing
+
+        Err.Raise _
+            vbObjectError + 1003, _
+            "GetMovementTypeID", _
+            "The movement type code '" & MovementTypeCode & _
+            "' was not found in T_StockMovementTypes."
+
+    End If
+
+    GetMovementTypeID = CLng(rs!MovementTypeID)
+
+    rs.close
+    Set rs = Nothing
+
+End Function
+
+
+'=============================================================
+' LOAD SELECTED ITEM DETAILS
+'=============================================================
+Private Sub LoadSelectedItem()
+
+    Dim ItemID As Long
+    Dim suggestedLocationID As Variant
+    Dim RequiresSerial As Boolean
+
+    If IsNull(Me.cboItemID) Then
+
+        Me.chkRequiresSerial = False
+        Me.txtCurrentQuantity = Null
+        Me.txtExistingLocation = Null
+        Me.cboToLocationID = Null
+
+        ConfigureSerialControls False
+        RefreshItemSupplierArea
+
+        If mProjectReceiptMode Then
+            ApplyProjectReceiptControlValues
+        End If
+
+        Exit Sub
+
+    End If
+
+    ItemID = CLng(Me.cboItemID)
+
+    RequiresSerial = ItemRequiresSerial(ItemID)
+
+    Me.chkRequiresSerial = RequiresSerial
+
+    suggestedLocationID = GetSuggestedReceivingLocationID( _
+        ItemID, _
+        RequiresSerial _
+    )
+
+    Me.cboToLocationID = Null
+
+    If Not IsNull(suggestedLocationID) Then
+        Me.cboToLocationID = suggestedLocationID
+    End If
+
+    ConfigureSerialControls RequiresSerial
+    RefreshSelectedItemStatus
+    RefreshItemSupplierArea
+
+    If mProjectReceiptMode Then
+        ApplyProjectReceiptControlValues
+    End If
+
+End Sub
+
+
+'=============================================================
+' SHOW CURRENT QUANTITY AND LOCATION
+'=============================================================
+Private Sub RefreshSelectedItemStatus()
+
+    On Error GoTo Err_Handler
+
+    Dim db As DAO.Database
+    Dim rs As DAO.Recordset
+
+    Dim ItemID As Long
+    Dim RequiresSerial As Boolean
+    Dim CurrentLocationID As Long
+
+    If IsNull(Me.cboItemID) Then
+
+        Me.txtCurrentQuantity = Null
+        Me.txtExistingLocation = Null
+        Exit Sub
+
+    End If
+
+    ItemID = CLng(Me.cboItemID)
+
+    RequiresSerial = ItemRequiresSerial(ItemID)
+
+    Me.chkRequiresSerial = RequiresSerial
+
+    If RequiresSerial Then
+
+        Me.txtCurrentQuantity = DCount( _
+            "*", _
+            "T_ItemInstances", _
+            "ItemID = " & ItemID & _
+            " AND CurrentLocationID Is Not Null" & _
+            " AND CurrentStatus = 'In Stock'" _
+        )
+
+        Me.txtExistingLocation = _
+            "Tracked individually by serial number"
+
+    Else
+
+        Set db = CurrentDb
+
+        Set rs = db.OpenRecordset( _
+            "SELECT CurrentLocationID, QuantityOnHand " & _
+            "FROM T_StockBalances " & _
+            "WHERE ItemID = " & ItemID & ";", _
+            dbOpenSnapshot _
+        )
+
+        If rs.EOF Then
+
+            Me.txtCurrentQuantity = 0
+            Me.txtExistingLocation = "No stock recorded"
+
+        Else
+
+            rs.MoveLast
+
+            If rs.recordCount > 1 Then
+
+                Me.txtCurrentQuantity = Null
+                Me.txtExistingLocation = _
+                    "Data issue: multiple stock-balance records found"
+
+            Else
+
+                rs.MoveFirst
+
+                Me.txtCurrentQuantity = Nz(rs!QuantityOnHand, 0)
+
+                CurrentLocationID = Nz(rs!CurrentLocationID, 0)
+
+                If CurrentLocationID > 0 Then
+
+                    Me.txtExistingLocation = _
+                        GetLocationDescription(CurrentLocationID)
+
+                Else
+
+                    Me.txtExistingLocation = "No location recorded"
+
+                End If
+
+            End If
+
+        End If
+
+        rs.close
+        Set rs = Nothing
+        Set db = Nothing
+
+    End If
+
+Exit_Handler:
+
+    Exit Sub
+
+Err_Handler:
+
+    Me.txtCurrentQuantity = Null
+    Me.txtExistingLocation = _
+        "Unable to retrieve current stock status"
+
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' ENABLE OR DISABLE SERIAL-NUMBER ENTRY
+'=============================================================
+Private Sub ConfigureSerialControls( _
+    ByVal RequiresSerial As Boolean _
+)
+
+    If RequiresSerial Then
+
+        Me.txtQuantity = 1
+        Me.txtQuantity.Locked = True
+
+        Me.txtSerialNumber.Enabled = True
+        Me.txtSerialNumber.Locked = False
+
+    Else
+
+        Me.txtQuantity.Locked = False
+
+        Me.txtSerialNumber = Null
+        Me.txtSerialNumber.Enabled = False
+        Me.txtSerialNumber.Locked = True
+
+    End If
+
+End Sub
+
+
+'=============================================================
+' PREPARE FORM FOR ANOTHER ENTRY AFTER SUCCESSFUL POSTING
+'=============================================================
+Private Sub PrepareNextEntry( _
+    ByVal RequiresSerial As Boolean _
+)
+
+    Me.txtNOtes = Null
+
+    If RequiresSerial Then
+
+        Me.txtSerialNumber = Null
+        Me.txtQuantity = 1
+        Me.txtSerialNumber.SetFocus
+
+    Else
+
+        Me.txtQuantity = Null
+        Me.txtQuantity.SetFocus
+
+    End If
+
+End Sub
+
+
+'=============================================================
+' RESET ALL ENTRY CONTROLS
+'=============================================================
+Private Sub ResetForm()
+
+    mProjectReceiptMode = False
+    mProjectID = 0
+    mProjectOutputLocationID = 0
+    mProjectOutputItemID = 0
+    mProjectCustomerID = 0
+    mProjectAssemblyTemplateID = 0
+    mProjectBuildQuantity = 0
+    mProjectReceivedQuantity = 0
+    mProjectCode = vbNullString
+
+    Me.cboItemID.Locked = False
+    Me.cboToLocationID.Enabled = True
+    Me.cboToLocationID.Locked = False
+    Me.cboReason.Enabled = True
+    Me.cboReason.Locked = False
+
+    On Error Resume Next
+    Me.cboSupplierID.Enabled = True
+    Me.SF_ItemSuppliers.Enabled = True
+    Me.cmdPostStockIn.Enabled = True
+    On Error GoTo 0
+
+    Me.cboItemID = Null
+    Me.chkRequiresSerial = False
+
+    Me.txtCurrentQuantity = Null
+    Me.txtExistingLocation = Null
+
+    Me.cboToLocationID = Null
+    Me.txtQuantity = Null
+    Me.txtSerialNumber = Null
+    Me.txtUnitCost = Null
+
+    Me.txtMovementDate = Now()
+    Me.cboReason = "Opening Balance"
+
+    Me.txtReferenceDocument = Null
+    Me.cboPerformedByUserID = Null
+    Me.txtNOtes = Null
+
+    ConfigureSerialControls False
+    RefreshItemSupplierArea
+
+    On Error Resume Next
+    Me.cboItemID.SetFocus
+    On Error GoTo 0
+
+End Sub
+
+
+'=============================================================
+' ITEM-SUPPLIER ASSOCIATION AREA
+'=============================================================
+
+Private Sub ConfigureSupplierArea()
+
+    On Error GoTo Err_Handler
+
+    With Me.cboSupplierID
+        .RowSourceType = "Table/Query"
+        .RowSource = _
+            "SELECT SupplierID, CompanyName, SupplierCode " & _
+            "FROM T_Suppliers " & _
+            "ORDER BY CompanyName, SupplierCode;"
+        .BoundColumn = 1
+        .ColumnCount = 3
+        .ColumnWidths = "0cm;6cm;3cm"
+        .LimitToList = True
+        .AutoExpand = True
+        .Enabled = True
+        .Locked = True
+        .Requery
+    End With
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The supplier controls could not be configured." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Stock In Suppliers"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub ConfigureSupplierSubformLink()
+
+    On Error GoTo Err_Handler
+
+    Dim originalErrorNumber As Long
+    Dim originalErrorDescription As String
+
+    With Me.SF_ItemSuppliers
+        .LinkMasterFields = "cboItemID"
+        .LinkChildFields = "ItemID"
+    End With
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    originalErrorNumber = Err.Number
+    originalErrorDescription = Err.Description
+
+    Err.Raise _
+        originalErrorNumber, _
+        "ConfigureSupplierSubformLink", _
+        originalErrorDescription
+
+End Sub
+
+
+Private Sub RefreshItemSupplierArea()
+
+    On Error GoTo Err_Handler
+
+    Dim itemSelected As Boolean
+    Dim ItemID As Long
+
+    itemSelected = Not IsNull(Me.cboItemID)
+
+    If itemSelected Then
+        ItemID = CLng(Me.cboItemID)
+    End If
+
+    With Me.cboSupplierID
+        .Enabled = itemSelected
+        .Locked = Not itemSelected
+        .LimitToList = True
+        .AutoExpand = True
+        .Requery
+    End With
+
+    If itemSelected Then
+        SelectDefaultSupplierForItem ItemID
+    Else
+        Me.cboSupplierID = Null
+    End If
+
+    With Me.SF_ItemSuppliers
+        .Enabled = itemSelected
+        .Form.AllowAdditions = itemSelected
+        .Form.AllowEdits = itemSelected
+        .Form.AllowDeletions = itemSelected
+        .Form.Requery
+    End With
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The suppliers for the selected item could not be refreshed." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Item Suppliers"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub SelectDefaultSupplierForItem(ByVal ItemID As Long)
+
+    Dim associationCount As Long
+    Dim selectedSupplierID As Variant
+
+    If ItemID <= 0 Then
+        Exit Sub
+    End If
+
+    Me.cboSupplierID = Null
+
+    selectedSupplierID = DLookup( _
+        "SupplierID", _
+        "T_ItemSuppliers", _
+        "ItemID=" & ItemID & _
+        " AND PreferredSupplier=True")
+
+    If Not IsNull(selectedSupplierID) Then
+        Me.cboSupplierID = CLng(selectedSupplierID)
+        Exit Sub
+    End If
+
+    associationCount = DCount( _
+        "*", _
+        "T_ItemSuppliers", _
+        "ItemID=" & ItemID)
+
+    If associationCount = 1 Then
+        selectedSupplierID = DLookup( _
+            "SupplierID", _
+            "T_ItemSuppliers", _
+            "ItemID=" & ItemID)
+
+        If Not IsNull(selectedSupplierID) Then
+            Me.cboSupplierID = CLng(selectedSupplierID)
+        End If
+    End If
+
+End Sub
+
+
+Private Sub AssociateSelectedSupplierWithItem()
+
+    On Error GoTo Err_Handler
+
+    Dim ItemID As Long
+    Dim SupplierID As Long
+
+    If IsNull(Me.cboSupplierID) Then
+        Exit Sub
+    End If
+
+    If IsNull(Me.cboItemID) Then
+        MsgBox _
+            "Select the item before selecting its supplier.", _
+            vbExclamation, _
+            "Item Required"
+
+        Me.cboSupplierID = Null
+        Me.cboItemID.SetFocus
+        Exit Sub
+    End If
+
+    ItemID = CLng(Me.cboItemID)
+    SupplierID = CLng(Me.cboSupplierID)
+
+    EnsureItemSupplierAssociation ItemID, SupplierID
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The supplier could not be associated with the selected item." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Item Supplier"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub EnsureItemSupplierAssociation( _
+    ByVal ItemID As Long, _
+    ByVal SupplierID As Long _
+)
+
+    On Error GoTo Err_Handler
+
+    Dim db As DAO.Database
+    Dim rs As DAO.Recordset
+    Dim existingAssociationCount As Long
+    Dim makePreferred As Boolean
+    Dim originalErrorNumber As Long
+    Dim originalErrorDescription As String
+    Dim originalErrorSource As String
+
+    If DCount( _
+        "*", _
+        "T_Suppliers", _
+        "SupplierID=" & SupplierID) = 0 Then
+
+        Err.Raise _
+            vbObjectError + 7301, _
+            "AssociateSelectedSupplierWithItem", _
+            "The selected supplier could not be found in T_Suppliers."
+    End If
+
+    If DCount( _
+        "*", _
+        "T_ItemSuppliers", _
+        "ItemID=" & ItemID & _
+        " AND SupplierID=" & SupplierID) > 0 Then
+
+        RequeryItemSuppliersSubform
+        Exit Sub
+    End If
+
+    existingAssociationCount = DCount( _
+        "*", _
+        "T_ItemSuppliers", _
+        "ItemID=" & ItemID)
+
+    makePreferred = (existingAssociationCount = 0)
+
+    Set db = CurrentDb
+    Set rs = db.OpenRecordset( _
+        "T_ItemSuppliers", _
+        dbOpenDynaset)
+
+    rs.addnew
+    rs!ItemID = ItemID
+    rs!SupplierID = SupplierID
+    rs!PreferredSupplier = makePreferred
+    rs.Update
+
+    RequeryItemSuppliersSubform
+
+Exit_Handler:
+    On Error Resume Next
+
+    If Not (rs Is Nothing) Then
+        rs.close
+    End If
+
+    Set rs = Nothing
+    Set db = Nothing
+
+    On Error GoTo 0
+    Exit Sub
+
+Err_Handler:
+    originalErrorNumber = Err.Number
+    originalErrorDescription = Err.Description
+    originalErrorSource = Err.Source
+
+    On Error Resume Next
+
+    If Not (rs Is Nothing) Then
+        rs.close
+    End If
+
+    Set rs = Nothing
+    Set db = Nothing
+
+    On Error GoTo 0
+
+    Err.Raise _
+        originalErrorNumber, _
+        originalErrorSource, _
+        originalErrorDescription
+
+End Sub
+
+
+Private Sub RequeryItemSuppliersSubform()
+
+    On Error GoTo Err_Handler
+
+    Dim itemSelected As Boolean
+
+    itemSelected = Not IsNull(Me.cboItemID)
+
+    With Me.SF_ItemSuppliers
+        .Form.AllowAdditions = itemSelected
+        .Form.AllowEdits = itemSelected
+        .Form.AllowDeletions = itemSelected
+        .Form.Requery
+    End With
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "SF_ItemSuppliers could not be refreshed." & _
+        vbCrLf & vbCrLf & _
+        "Confirm that the SUBFORM CONTROL is named " & _
+        "SF_ItemSuppliers and its Source Object is " & _
+        "Form.SF_ItemSuppliers." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Item Suppliers Subform"
+    Resume Exit_Handler
+
+End Sub
+
+
+'=============================================================
+' REQUERY RECENT-TRANSACTIONS SUBFORM
+'=============================================================
+Private Sub RequeryRecentSubform()
+
+    On Error Resume Next
+
+    Me.Controls(RECENT_SUBFORM_CONTROL).Form.Requery
+
+    On Error GoTo 0
+
+End Sub
+
+
+'=============================================================
+' PROJECT OUTPUT RECEIPT HELPERS
+'=============================================================
+
+Private Sub GetProjectReceiptSummary( _
+    ByVal db As DAO.Database, _
+    ByVal ProjectID As Long, _
+    ByRef outputItemID As Long, _
+    ByRef receivedQuantity As Double _
+)
+
+    On Error GoTo Err_Handler
+
+    Dim rs As DAO.Recordset
+    Dim itemCount As Long
+    Dim errorNumber As Long
+    Dim errorDescription As String
+    Dim errorSource As String
+
+    outputItemID = 0
+    receivedQuantity = 0
+
+    Set rs = db.OpenRecordset( _
+        "SELECT M.ItemID, Sum(Nz(M.Quantity,0)) " & _
+            "AS ReceivedQuantity " & _
+        "FROM T_StockMovements AS M " & _
+        "INNER JOIN T_StockMovementTypes AS MT " & _
+            "ON M.MovementTypeID=MT.MovementTypeID " & _
+        "WHERE M.ProjectID=" & ProjectID & " " & _
+            "AND MT.MovementTypeCode='STOCK_IN' " & _
+            "AND M.Reason=" & _
+                SqlText(REASON_PRODUCTION_RECEIPT) & " " & _
+        "GROUP BY M.ItemID;", _
+        dbOpenSnapshot)
+
+    Do While Not rs.EOF
+        itemCount = itemCount + 1
+
+        If itemCount = 1 Then
+            outputItemID = Nz(rs!ItemID, 0)
+        End If
+
+        receivedQuantity = _
+            receivedQuantity + Nz(rs!receivedQuantity, 0)
+
+        rs.MoveNext
+    Loop
+
+    If itemCount > 1 Then
+        Err.Raise _
+            vbObjectError + 7220, _
+            "GetProjectReceiptSummary", _
+            "Project ID " & ProjectID & " has production receipts " & _
+            "for more than one output item. Correct those stock " & _
+            "movements before posting another receipt."
+    End If
+
+Exit_Handler:
+    On Error Resume Next
+
+    If Not (rs Is Nothing) Then
+        rs.close
+    End If
+
+    Set rs = Nothing
+    On Error GoTo 0
+    Exit Sub
+
+Err_Handler:
+    errorNumber = Err.Number
+    errorDescription = Err.Description
+    errorSource = Err.Source
+
+    On Error Resume Next
+    If Not (rs Is Nothing) Then rs.close
+    Set rs = Nothing
+    On Error GoTo 0
+
+    Err.Raise errorNumber, errorSource, errorDescription
+
+End Sub
+
+
+Private Function ValidateProjectReceiptEntry( _
+    ByVal ItemID As Long, _
+    ByVal ToLocationID As Long, _
+    ByVal Quantity As Double _
+) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim db As DAO.Database
+    Dim rs As DAO.Recordset
+    Dim savedOutputItemID As Long
+    Dim receivedQuantity As Double
+    Dim remainingQuantity As Double
+    Dim projectStatus As String
+
+    ValidateProjectReceiptEntry = False
+
+    If Not mProjectReceiptMode Or mProjectID <= 0 Then
+        Err.Raise _
+            vbObjectError + 7221, _
+            "ValidateProjectReceiptEntry", _
+            "The project receipt context is not active."
+    End If
+
+    Set db = CurrentDb
+    Set rs = db.OpenRecordset( _
+        "SELECT OutputLocationID, BuildQuantity, [Status] " & _
+        "FROM T_Projects " & _
+        "WHERE ProjectID=" & mProjectID & ";", _
+        dbOpenSnapshot)
+
+    If rs.EOF Then
+        Err.Raise _
+            vbObjectError + 7222, _
+            "ValidateProjectReceiptEntry", _
+            "The project no longer exists."
+    End If
+
+    mProjectOutputLocationID = Nz(rs!OutputLocationID, 0)
+    mProjectBuildQuantity = Nz(rs!BuildQuantity, 0)
+    projectStatus = UCase$(Trim$(Nz(rs!Status, vbNullString)))
+
+    rs.close
+    Set rs = Nothing
+
+    If projectStatus = "CANCELLED" Or projectStatus = "SHIPPED" Then
+        MsgBox _
+            "Output cannot be received while the project status is " & _
+            projectStatus & ".", _
+            vbExclamation, _
+            "Project Receipt Blocked"
+        Exit Function
+    End If
+
+    If ToLocationID <> mProjectOutputLocationID Then
+        MsgBox _
+            "Use the Output Location selected on the project.", _
+            vbExclamation, _
+            "Project Output Location"
+
+        Me.cboToLocationID = mProjectOutputLocationID
+        Exit Function
+    End If
+
+    If ItemRequiresSerial(ItemID) And _
+       Abs(mProjectBuildQuantity - Fix(mProjectBuildQuantity)) > _
+            QUANTITY_TOLERANCE Then
+
+        MsgBox _
+            "A serialized output item requires a whole-number " & _
+            "Build Quantity. Correct the project Build Quantity " & _
+            "before receiving it.", _
+            vbExclamation, _
+            "Whole Quantity Required"
+        Exit Function
+    End If
+
+    GetProjectReceiptSummary _
+        db, _
+        mProjectID, _
+        savedOutputItemID, _
+        receivedQuantity
+
+    If savedOutputItemID > 0 And ItemID <> savedOutputItemID Then
+        MsgBox _
+            "This project's first production receipt established " & _
+            "a different output item. All later receipts must use " & _
+            "that same item.", _
+            vbExclamation, _
+            "Project Output Item"
+
+        Me.cboItemID = savedOutputItemID
+        Me.cboItemID.Locked = True
+        LoadSelectedItem
+        Exit Function
+    End If
+
+    remainingQuantity = mProjectBuildQuantity - receivedQuantity
+
+    If remainingQuantity <= QUANTITY_TOLERANCE Then
+        MsgBox _
+            "The full project Build Quantity has already been received.", _
+            vbInformation, _
+            "Project Receipt Complete"
+        Exit Function
+    End If
+
+    If Quantity > remainingQuantity + QUANTITY_TOLERANCE Then
+        MsgBox _
+            "The receipt quantity exceeds the remaining project " & _
+            "quantity." & vbCrLf & vbCrLf & _
+            "Remaining quantity: " & _
+                Format$(remainingQuantity, "0.######") & vbCrLf & _
+            "Entered quantity: " & _
+                Format$(Quantity, "0.######"), _
+            vbExclamation, _
+            "Receipt Quantity Too High"
+
+        Me.txtQuantity = remainingQuantity
+        Exit Function
+    End If
+
+    If savedOutputItemID > 0 Then
+        mProjectOutputItemID = savedOutputItemID
+    Else
+        mProjectOutputItemID = ItemID
+    End If
+
+    mProjectReceivedQuantity = receivedQuantity
+    ValidateProjectReceiptEntry = True
+
+Exit_Handler:
+    On Error Resume Next
+    If Not (rs Is Nothing) Then rs.close
+    Set rs = Nothing
+    Set db = Nothing
+    On Error GoTo 0
+    Exit Function
+
+Err_Handler:
+    ValidateProjectReceiptEntry = False
+    MsgBox _
+        "The project receipt could not be validated." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Project Receipt"
+    Resume Exit_Handler
+
+End Function
+
+
+Private Sub ApplyProjectReceiptControlValues()
+
+    If Not mProjectReceiptMode Then
+        Exit Sub
+    End If
+
+    Me.cboReason = REASON_PRODUCTION_RECEIPT
+    Me.cboReason.Enabled = True
+    Me.cboReason.Locked = True
+
+    Me.cboToLocationID = mProjectOutputLocationID
+    Me.cboToLocationID.Enabled = True
+    Me.cboToLocationID.Locked = True
+
+    Me.txtReferenceDocument = mProjectCode
+
+    If mProjectOutputItemID > 0 Then
+        Me.cboItemID.Locked = True
+    Else
+        Me.cboItemID.Locked = False
+    End If
+
+    If Not IsNull(Me.cboItemID) Then
+        If ItemRequiresSerial(CLng(Me.cboItemID)) Then
+            Me.txtQuantity = 1
+        Else
+            Me.txtQuantity = ProjectReceiptRemainingQuantity()
+        End If
+    End If
+
+End Sub
+
+
+Private Sub ConfigureProjectSupplierArea()
+
+    On Error GoTo Err_Handler
+
+    Dim itemSelected As Boolean
+    Dim ItemID As Long
+
+    If Not mProjectReceiptMode Then
+        Exit Sub
+    End If
+
+    itemSelected = Not IsNull(Me.cboItemID)
+
+    If itemSelected Then
+        ItemID = CLng(Me.cboItemID)
+    End If
+
+    'Keep the supplier combo editable during a project receipt.
+    'The existing NotInList event opens F_SupplierSetup when a new
+    'supplier name is typed and then links it to this item.
+    With Me.cboSupplierID
+        .Enabled = itemSelected
+        .Locked = Not itemSelected
+        .LimitToList = True
+        .AutoExpand = True
+        .Requery
+    End With
+
+    If itemSelected Then
+        SelectDefaultSupplierForItem ItemID
+    Else
+        Me.cboSupplierID = Null
+    End If
+
+    'Keep the approved-suppliers subform fully editable for the
+    'finished item selected on the project.
+    With Me.SF_ItemSuppliers
+        .Enabled = itemSelected
+        .Form.AllowAdditions = itemSelected
+        .Form.AllowEdits = itemSelected
+        .Form.AllowDeletions = itemSelected
+        .Form.Requery
+    End With
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The project item suppliers could not be enabled." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Project Item Suppliers"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub PrepareNextProjectReceipt( _
+    ByVal RequiresSerial As Boolean _
+)
+
+    Dim remainingQuantity As Double
+
+    remainingQuantity = ProjectReceiptRemainingQuantity()
+
+    Me.txtNOtes = Null
+    Me.cboItemID.Locked = True
+
+    If remainingQuantity <= QUANTITY_TOLERANCE Then
+        Me.cmdPostStockIn.Enabled = False
+        Exit Sub
+    End If
+
+    If RequiresSerial Then
+        Me.txtSerialNumber = Null
+        Me.txtQuantity = 1
+        Me.txtSerialNumber.SetFocus
+    Else
+        Me.txtQuantity = remainingQuantity
+        Me.txtQuantity.SetFocus
+    End If
+
+End Sub
+
+
+Private Function ProjectReceiptRemainingQuantity() As Double
+
+    ProjectReceiptRemainingQuantity = _
+        mProjectBuildQuantity - mProjectReceivedQuantity
+
+    If ProjectReceiptRemainingQuantity < 0 Then
+        ProjectReceiptRemainingQuantity = 0
+    End If
+
+End Function
+
+
+Private Sub UpdateProjectReceiptStatus( _
+    ByVal db As DAO.Database, _
+    ByVal quantityJustReceived As Double _
+)
+
+    Dim rs As DAO.Recordset
+    Dim receivedAfterPosting As Double
+    Dim currentStatus As String
+
+    receivedAfterPosting = _
+        mProjectReceivedQuantity + quantityJustReceived
+
+    Set rs = db.OpenRecordset( _
+        "SELECT * FROM T_Projects " & _
+        "WHERE ProjectID=" & mProjectID & ";", _
+        dbOpenDynaset)
+
+    If rs.EOF Then
+        Err.Raise _
+            vbObjectError + 7223, _
+            "UpdateProjectReceiptStatus", _
+            "The project could not be found while updating its status."
+    End If
+
+    currentStatus = UCase$(Trim$(Nz(rs!Status, vbNullString)))
+
+    If currentStatus = "CANCELLED" Or currentStatus = "SHIPPED" Then
+        Err.Raise _
+            vbObjectError + 7224, _
+            "UpdateProjectReceiptStatus", _
+            "The project status changed before the receipt was posted."
+    End If
+
+    rs.Edit
+
+    If receivedAfterPosting + QUANTITY_TOLERANCE >= _
+       mProjectBuildQuantity Then
+
+        rs!Status = "Finished Received"
+    Else
+        rs!Status = "In Progress"
+    End If
+
+    SetRecordsetFieldIfExists rs, "UpdatedOn", Now()
+    rs.Update
+
+    rs.close
+    Set rs = Nothing
+
+End Sub
+
+
+Private Sub RefreshProjectFormIfOpen()
+
+    On Error Resume Next
+
+    If (SysCmd( _
+        acSysCmdGetObjectState, _
+        acForm, _
+        PROJECT_FORM) And acObjStateOpen) <> 0 Then
+
+        Forms(PROJECT_FORM).Refresh
+        Forms(PROJECT_FORM).Recalc
+    End If
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub EnsureValueListItem( _
+    ByVal comboControl As Access.ComboBox, _
+    ByVal listValue As String _
+)
+
+    Dim entries() As String
+    Dim entry As Variant
+    Dim currentRowSource As String
+
+    If StrComp( _
+        comboControl.RowSourceType, _
+        "Value List", _
+        vbTextCompare) <> 0 Then
+
+        comboControl.LimitToList = False
+        Exit Sub
+    End If
+
+    currentRowSource = Nz(comboControl.RowSource, vbNullString)
+    entries = Split(currentRowSource, ";")
+
+    For Each entry In entries
+        If StrComp( _
+            Trim$(CStr(entry)), _
+            listValue, _
+            vbTextCompare) = 0 Then
+
+            Exit Sub
+        End If
+    Next entry
+
+    If Len(Trim$(currentRowSource)) > 0 Then
+        currentRowSource = currentRowSource & ";"
+    End If
+
+    comboControl.RowSource = currentRowSource & listValue
+
+End Sub
+
+
+Private Function RecordsetHasField( _
+    ByVal rs As DAO.Recordset, _
+    ByVal fieldName As String _
+) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim testValue As String
+
+    testValue = rs.Fields(fieldName).Name
+    RecordsetHasField = True
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    RecordsetHasField = False
+    Resume Exit_Handler
+
+End Function
+
+
+Private Sub SetRecordsetFieldIfExists( _
+    ByVal rs As DAO.Recordset, _
+    ByVal fieldName As String, _
+    ByVal fieldValue As Variant _
+)
+
+    If RecordsetHasField(rs, fieldName) Then
+        rs.Fields(fieldName).value = fieldValue
+    End If
+
+End Sub
+
+
+Private Function NullIfZero(ByVal numberValue As Long) As Variant
+
+    If numberValue > 0 Then
+        NullIfZero = numberValue
+    Else
+        NullIfZero = Null
+    End If
+
+End Function
+
+
+'=============================================================
+' SELECT THE BEST DEFAULT RECEIVING LOCATION
+'=============================================================
+Private Function GetSuggestedReceivingLocationID( _
+    ByVal ItemID As Long, _
+    ByVal RequiresSerial As Boolean _
+) As Variant
+
+    Dim LocationID As Variant
+
+    If Not RequiresSerial Then
+
+        LocationID = DLookup( _
+            "CurrentLocationID", _
+            "T_StockBalances", _
+            "ItemID = " & ItemID _
+        )
+
+        If Not IsNull(LocationID) Then
+
+            GetSuggestedReceivingLocationID = CLng(LocationID)
+            Exit Function
+
+        End If
+
+    End If
+
+    LocationID = DLookup( _
+        "DefaultLocationID", _
+        "T_Items", _
+        "ItemID = " & ItemID _
+    )
+
+    If IsNull(LocationID) Then
+
+        GetSuggestedReceivingLocationID = Null
+
+    Else
+
+        GetSuggestedReceivingLocationID = CLng(LocationID)
+
+    End If
+
+End Function
+
+
+'=============================================================
+' DETERMINE WHETHER AN ITEM REQUIRES SERIAL-NUMBER TRACKING
+'
+' FIX: reads RequiresSerial directly from T_Items instead of
+' joining through T_Categories. An item's own flag is now the
+' single source of truth - its category no longer forces serial
+' tracking on or off, and an item with no category (or no
+' RequiresSerial value set) is simply treated as not requiring
+' one instead of raising a hard error.
+'=============================================================
+Private Function ItemRequiresSerial( _
+    ByVal ItemID As Long _
+) As Boolean
+
+    Dim db As DAO.Database
+    Dim rs As DAO.Recordset
+
+    Set db = CurrentDb
+
+    Set rs = db.OpenRecordset( _
+        "SELECT RequiresSerial " & _
+        "FROM T_Items " & _
+        "WHERE ItemID = " & ItemID & ";", _
+        dbOpenSnapshot _
+    )
+
+    If rs.EOF Then
+
+        rs.close
+        Set rs = Nothing
+        Set db = Nothing
+
+        Err.Raise _
+            vbObjectError + 1100, _
+            "ItemRequiresSerial", _
+            "The selected item could not be found in T_Items."
+
+    End If
+
+    ItemRequiresSerial = Nz(rs!RequiresSerial, False)
+
+    rs.close
+    Set rs = Nothing
+    Set db = Nothing
+
+End Function
+
+
+'=============================================================
+' RETURN READABLE LOCATION DESCRIPTION
+'=============================================================
+Private Function GetLocationDescription( _
+    ByVal LocationID As Long _
+) As String
+
+    On Error GoTo Err_Handler
+
+    Dim db As DAO.Database
+    Dim rs As DAO.Recordset
+
+    Dim result As String
+
+    Set db = CurrentDb
+
+    Set rs = db.OpenRecordset( _
+        "SELECT " & _
+            "W.WarehouseName, " & _
+            "L.LocationCode, " & _
+            "L.LocationName, " & _
+            "L.BinNumber, " & _
+            "L.ShelfNumber " & _
+        "FROM " & _
+            "T_Warehouses AS W " & _
+            "INNER JOIN T_Locations AS L " & _
+                "ON W.WarehouseID = L.WarehouseID " & _
+        "WHERE " & _
+            "L.LocationID = " & LocationID & ";", _
+        dbOpenSnapshot _
+    )
+
+    If rs.EOF Then
+
+        result = "Unknown location"
+
+    Else
+
+        result = Nz(rs!WarehouseName, vbNullString)
+
+        If Len(Trim$(Nz(rs!LocationCode, vbNullString))) > 0 Then
+            result = result & " - " & rs!LocationCode
+        End If
+
+        If Len(Trim$(Nz(rs!locationName, vbNullString))) > 0 Then
+            result = result & " - " & rs!locationName
+        End If
+
+        If Len(Trim$(Nz(rs!BinNumber, vbNullString))) > 0 Then
+            result = result & " | Bin: " & rs!BinNumber
+        End If
+
+        If Len(Trim$(Nz(rs!ShelfNumber, vbNullString))) > 0 Then
+            result = result & " | Shelf: " & rs!ShelfNumber
+        End If
+
+    End If
+
+    rs.close
+    Set rs = Nothing
+    Set db = Nothing
+
+    GetLocationDescription = result
+
+Exit_Handler:
+
+    Exit Function
+
+Err_Handler:
+
+    GetLocationDescription = "Location ID: " & LocationID
+
+    Resume Exit_Handler
+
+End Function
+
+
+'=============================================================
+' RETURN TO STOCK REASON CHECK
+'=============================================================
+Private Function IsReturnToStockReason( _
+    ByVal Reason As String _
+) As Boolean
+
+    Dim r As String
+
+    r = UCase$(Trim$(Nz(Reason, vbNullString)))
+
+    IsReturnToStockReason = _
+        r = "RETURN TO STOCK" _
+        Or r = "RETURNED TO STOCK" _
+        Or r = "TOOL RETURN" _
+        Or r = "PROJECT TOOL RETURN" _
+        Or r = "RETURN FROM PROJECT"
+
+End Function
+
+
+'=============================================================
+' APPEND NOTE
+'=============================================================
+Private Function AppendNote( _
+    ByVal existingText As String, _
+    ByVal newText As String _
+) As String
+
+    If Len(Trim$(existingText)) = 0 Then
+
+        AppendNote = newText
+
+    ElseIf Len(Trim$(newText)) = 0 Then
+
+        AppendNote = existingText
+
+    Else
+
+        AppendNote = _
+            existingText & _
+            vbCrLf & _
+            String$(40, "-") & _
+            vbCrLf & _
+            newText
+
+    End If
+
+End Function
+
+
+'=============================================================
+' ESCAPE TEXT FOR ACCESS SQL
+'=============================================================
+Private Function SqlText( _
+    ByVal value As String _
+) As String
+
+    SqlText = "'" & Replace(value, "'", "''") & "'"
+
+End Function
+
+Private Sub cboToLocationID_NotInList(NewData As String, Response As Integer)
+    On Error GoTo Err_Handler
+    Response = acDataErrContinue
+    If HandleComboNotInList(Me.cboToLocationID, NewData, "F_LocationSetup", "T_Locations", "LocationID", "LocationName", "LocationCode") Then
+        Response = acDataErrAdded
+    Else
+        Me.cboToLocationID.Undo
+    End If
+    Exit Sub
+Err_Handler:
+    Response = acDataErrContinue
+    MsgBox Err.Description, vbExclamation, "Add Location"
+End Sub
+
+Private Sub cmdAddLocation_Click()
+    On Error GoTo Err_Handler
+    Dim oldMax As Long
+    Dim newMax As Long
+    oldMax = Nz(DMax("LocationID", "T_Locations"), 0)
+    DoCmd.OpenForm "F_LocationSetup", acNormal, , , acFormAdd, acDialog
+    newMax = Nz(DMax("LocationID", "T_Locations"), 0)
+    Me.cboToLocationID.Requery
+    If newMax > oldMax Then Me.cboToLocationID = newMax
+    Exit Sub
+Err_Handler:
+    If Err.Number <> 2501 Then MsgBox Err.Description, vbExclamation, "Add Location"
+End Sub

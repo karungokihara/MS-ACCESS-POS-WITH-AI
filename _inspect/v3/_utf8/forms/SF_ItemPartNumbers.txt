@@ -1,0 +1,685 @@
+﻿Version =21
+VersionRequired =20
+PublishOption =1
+Checksum =-322362553
+Begin Form
+    AutoCenter = NotDefault
+    DividingLines = NotDefault
+    AllowDesignChanges = NotDefault
+    DefaultView =2
+    TabularFamily =0
+    PictureAlignment =2
+    DatasheetGridlinesBehavior =3
+    GridX =24
+    GridY =24
+    Width =11274
+    RowHeight =468
+    DatasheetFontHeight =11
+    ItemSuffix =22
+    Right =15090
+    Bottom =4695
+    DatasheetGridlinesColor =15263976
+    RecSrcDt = Begin
+        0x8990cd384f8de640
+    End
+    GUID = Begin
+        0xbdc44c97bf16bd4695c326a0cf3e056e
+    End
+    RecordSource ="SELECT [T_ItemPartNumbers].[ItemPartNumberID], [T_ItemPartNumbers].[ItemID], [T_"
+        "ItemPartNumbers].[PartNumberTypeID], [T_ItemPartNumbers].[PartNumber], [T_ItemPa"
+        "rtNumbers].[SupplierID], [T_ItemPartNumbers].[ManufacturerID], [T_ItemPartNumber"
+        "s].[IsPrimary], [T_ItemPartNumbers].[Notes] FROM [T_ItemPartNumbers]"
+    Caption ="SF_ItemPartNumbers"
+    DatasheetFontName ="Aptos"
+    FilterOnLoad =0
+    ShowPageMargins =0
+    DisplayOnSharePointSite =1
+    DatasheetAlternateBackColor =15921906
+    DatasheetGridlinesColor12 =0
+    FitToScreen =1
+    DatasheetBackThemeColorIndex =1
+    BorderThemeColorIndex =3
+    ThemeFontIndex =1
+    ForeThemeColorIndex =0
+    AlternateBackThemeColorIndex =1
+    AlternateBackShade =95.0
+    NoSaveCTIWhenDisabled =1
+    Begin
+        Begin Label
+            BackStyle =0
+            TextFontFamily =0
+            FontSize =11
+            BorderColor =8355711
+            ForeColor =6710886
+            FontName ="Aptos"
+            GridlineColor =10921638
+            ThemeFontIndex =1
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =0
+            BorderTint =50.0
+            ForeThemeColorIndex =0
+            ForeTint =60.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin TextBox
+            AddColon = NotDefault
+            FELineBreak = NotDefault
+            TextFontFamily =0
+            BorderLineStyle =0
+            LabelX =-1800
+            FontSize =11
+            BorderColor =10921638
+            ForeColor =4210752
+            FontName ="Aptos"
+            AsianLineBreak =1
+            GridlineColor =10921638
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            ThemeFontIndex =1
+            ForeThemeColorIndex =0
+            ForeTint =75.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin ComboBox
+            AddColon = NotDefault
+            TextFontFamily =0
+            BorderLineStyle =0
+            LabelX =-1800
+            FontSize =11
+            BorderColor =10921638
+            ForeColor =2102279
+            FontName ="Aptos"
+            GridlineColor =10921638
+            AllowValueListEdits =1
+            InheritValueList =1
+            ThemeFontIndex =1
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            ForeThemeColorIndex =2
+            ForeShade =50.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin Subform
+            BorderLineStyle =0
+            BorderColor =10921638
+            GridlineColor =10921638
+            BorderThemeColorIndex =1
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+            BorderShade =65.0
+            ShowPageHeaderAndPageFooter =1
+        End
+        Begin FormHeader
+            Height =0
+            BackColor =14482166
+            Name ="FormHeader"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x97a7bff38f89a944840c2e003f8ae25c
+            End
+            AutoHeight =1
+            AlternateBackShade =95.0
+            BackTint =20.0
+        End
+        Begin Section
+            Height =4764
+            BackColor =14482166
+            Name ="Detail"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x0a27079714c16c459437476c5c5cab7b
+            End
+            AutoHeight =1
+            AlternateBackColor =14482166
+            AlternateBackShade =95.0
+            Begin
+                Begin TextBox
+                    ColumnHidden = NotDefault
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =2178
+                    Top =780
+                    Width =2856
+                    Height =360
+                    ColumnWidth =2460
+                    ColumnOrder =0
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="PartNumber"
+                    ControlSource ="PartNumber"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x4134aa25bffb614bacf805a3eaea4118
+                    End
+
+                    LayoutCachedLeft =2178
+                    LayoutCachedTop =780
+                    LayoutCachedWidth =5034
+                    LayoutCachedHeight =1140
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =60
+                            Top =780
+                            Width =2028
+                            Height =312
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="PartNumber_Label"
+                            Caption ="PartNumber"
+                            GUID = Begin
+                                0x5bb023c076295f4cbbb7c7eff089abe5
+                            End
+                            LayoutCachedLeft =60
+                            LayoutCachedTop =780
+                            LayoutCachedWidth =2088
+                            LayoutCachedHeight =1092
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =7338
+                    Top =780
+                    Width =2856
+                    Height =312
+                    ColumnWidth =1128
+                    ColumnOrder =4
+                    TabIndex =1
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="IsPrimary"
+                    ControlSource ="IsPrimary"
+                    Format ="True/False"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xcebcec8b29434a479ffb739c07fb1921
+                    End
+
+                    LayoutCachedLeft =7338
+                    LayoutCachedTop =780
+                    LayoutCachedWidth =10194
+                    LayoutCachedHeight =1092
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =5340
+                            Top =780
+                            Width =1908
+                            Height =312
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="IsPrimary_Label"
+                            Caption ="IsPrimary"
+                            GUID = Begin
+                                0x40b1758abe1a91408a8af5bbf29a53e2
+                            End
+                            LayoutCachedLeft =5340
+                            LayoutCachedTop =780
+                            LayoutCachedWidth =7248
+                            LayoutCachedHeight =1092
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =215
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =180
+                    Top =2100
+                    Width =10080
+                    Height =1080
+                    ColumnWidth =3972
+                    ColumnOrder =5
+                    TabIndex =2
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="Notes"
+                    ControlSource ="Notes"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x53a27903b86b0a42b8823131fee3ef76
+                    End
+
+                    LayoutCachedLeft =180
+                    LayoutCachedTop =2100
+                    LayoutCachedWidth =10260
+                    LayoutCachedHeight =3180
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =93
+                            TextAlign =2
+                            Left =4020
+                            Top =1800
+                            Width =2448
+                            Height =312
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Notes_Label"
+                            Caption ="Notes"
+                            GUID = Begin
+                                0x0f20d33662f7244493d84ad397bb2a15
+                            End
+                            LayoutCachedLeft =4020
+                            LayoutCachedTop =1800
+                            LayoutCachedWidth =6468
+                            LayoutCachedHeight =2112
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin ComboBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    ColumnCount =2
+                    Left =2160
+                    Top =360
+                    Width =2880
+                    Height =300
+                    ColumnWidth =2004
+                    ColumnOrder =1
+                    TabIndex =3
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    ColumnInfo ="\"\";\"\";\"\";\"\";\"10\";\"100\""
+                    GUID = Begin
+                        0x65978fa397a2aa4f849c2c7e5439173b
+                    End
+                    Name ="cboPartNumberTypeID"
+                    ControlSource ="PartNumberTypeID"
+                    RowSourceType ="Table/Query"
+                    RowSource ="SELECT \015\012    PartNumberTypeID,\015\012    PartNumberTypeName\015\012FROM \015"
+                        "\012    T_PartNumberTypes\015\012ORDER BY \015\012    PartNumberTypeName;"
+                    ColumnWidths ="0;2268"
+                    OnDblClick ="[Event Procedure]"
+                    FontName ="Segoe UI"
+                    OnNotInList ="[Event Procedure]"
+                    BaseInfo ="\"SELECT \015\012    PartNumberTypeID,\015\012    PartNumberTypeName\015\012FROM"
+                        " \015\012    T_PartNumberTypes\015\012ORDER BY \015\012    PartNumberTypeName;\""
+                        ";\"T_PartNumberTypes\";\"\";\"PartNumberTypeID\";\"PartNumberTypeName\";\"Primar"
+                        "yKey\""
+
+                    LayoutCachedLeft =2160
+                    LayoutCachedTop =360
+                    LayoutCachedWidth =5040
+                    LayoutCachedHeight =660
+                    ThemeFontIndex =-1
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ForeThemeColorIndex =-1
+                    ForeShade =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =420
+                            Top =360
+                            Width =1620
+                            Height =300
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label17"
+                            Caption ="Part Number"
+                            GUID = Begin
+                                0x41730a3bd801cb45a033691603fdc695
+                            End
+                            LayoutCachedLeft =420
+                            LayoutCachedTop =360
+                            LayoutCachedWidth =2040
+                            LayoutCachedHeight =660
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin ComboBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    ColumnCount =3
+                    Left =2160
+                    Top =1260
+                    Width =2880
+                    Height =300
+                    ColumnOrder =2
+                    TabIndex =4
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    ColumnInfo ="\"\";\"\";\"\";\"\";\"\";\"\";\"10\";\"60\""
+                    GUID = Begin
+                        0x50b4ad19bcd4e74093fb6635f64a51c7
+                    End
+                    Name ="cboSupplierID"
+                    ControlSource ="SupplierID"
+                    RowSourceType ="Table/Query"
+                    RowSource ="SELECT \015\012    SupplierID,\015\012    SupplierCode,\015\012    CompanyName\015"
+                        "\012FROM \015\012    T_Suppliers\015\012ORDER BY \015\012    CompanyName;"
+                    ColumnWidths ="0;1418;2835"
+                    OnDblClick ="[Event Procedure]"
+                    FontName ="Segoe UI"
+                    OnNotInList ="[Event Procedure]"
+                    BaseInfo ="\"SELECT \015\012    SupplierID,\015\012    SupplierCode,\015\012    CompanyName"
+                        "\015\012FROM \015\012    T_Suppliers\015\012ORDER BY \015\012    CompanyName;\";"
+                        "\"T_Suppliers\";\"\";\"SupplierID\";\"SupplierCode\";\"PrimaryKey\""
+
+                    LayoutCachedLeft =2160
+                    LayoutCachedTop =1260
+                    LayoutCachedWidth =5040
+                    LayoutCachedHeight =1560
+                    ThemeFontIndex =-1
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ForeThemeColorIndex =-1
+                    ForeShade =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =420
+                            Top =1260
+                            Width =1680
+                            Height =300
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label19"
+                            Caption ="Supplier"
+                            GUID = Begin
+                                0xc464c605c9066b40ab1292a37b394508
+                            End
+                            LayoutCachedLeft =420
+                            LayoutCachedTop =1260
+                            LayoutCachedWidth =2100
+                            LayoutCachedHeight =1560
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin ComboBox
+                    LimitToList = NotDefault
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    ColumnCount =2
+                    Left =7320
+                    Top =360
+                    Width =2880
+                    Height =300
+                    ColumnOrder =3
+                    TabIndex =5
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    ColumnInfo ="\"\";\"\";\"\";\"\";\"10\";\"300\""
+                    GUID = Begin
+                        0x11633f801a265b459c3dad7d2c76f406
+                    End
+                    Name ="cboManufacturerID"
+                    ControlSource ="ManufacturerID"
+                    RowSourceType ="Table/Query"
+                    RowSource ="SELECT \015\012    ManufacturerID,\015\012    ManufacturerName\015\012FROM \015\012"
+                        "    T_Manufacturers\015\012ORDER BY \015\012    ManufacturerName;"
+                    ColumnWidths ="0;2835"
+                    OnDblClick ="[Event Procedure]"
+                    FontName ="Segoe UI"
+                    OnNotInList ="[Event Procedure]"
+                    BaseInfo ="\"SELECT \015\012    ManufacturerID,\015\012    ManufacturerName\015\012FROM \015"
+                        "\012    T_Manufacturers\015\012ORDER BY \015\012    ManufacturerName;\";\"T_Manu"
+                        "facturers\";\"\";\"ManufacturerID\";\"ManufacturerName\";\"PrimaryKey\""
+                    AllowValueListEdits =0
+
+                    LayoutCachedLeft =7320
+                    LayoutCachedTop =360
+                    LayoutCachedWidth =10200
+                    LayoutCachedHeight =660
+                    ThemeFontIndex =-1
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    BorderShade =100.0
+                    ForeThemeColorIndex =-1
+                    ForeShade =100.0
+                    GridlineThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            TextAlign =3
+                            Left =5520
+                            Top =360
+                            Width =1740
+                            Height =300
+                            FontWeight =700
+                            ForeColor =4272139
+                            Name ="Label21"
+                            Caption ="Manufacturer"
+                            GUID = Begin
+                                0x8bcac0654fd8f94cb868827b755a1dd9
+                            End
+                            LayoutCachedLeft =5520
+                            LayoutCachedTop =360
+                            LayoutCachedWidth =7260
+                            LayoutCachedHeight =660
+                            BackThemeColorIndex =-1
+                            BorderThemeColorIndex =-1
+                            BorderTint =100.0
+                            ForeThemeColorIndex =-1
+                            ForeTint =100.0
+                            GridlineThemeColorIndex =-1
+                        End
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =14482166
+            Name ="FormFooter"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x15c6a655e24f7a468a093726d4dd564f
+            End
+            AutoHeight =1
+            AlternateBackShade =95.0
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+
+'=============================================================
+' MANUFACTURER
+'=============================================================
+
+Private Sub cboManufacturerID_NotInList( _
+    NewData As String, _
+    Response As Integer _
+)
+
+    Response = acDataErrContinue
+
+    If HandleComboNotInList( _
+        Me!cboManufacturerID, _
+        NewData, _
+        "F_ManufacturerSetup", _
+        "T_Manufacturers", _
+        "ManufacturerID", _
+        "ManufacturerName" _
+    ) Then
+
+        Response = acDataErrAdded
+
+    Else
+
+        Me!cboManufacturerID.Undo
+
+    End If
+
+End Sub
+
+
+Private Sub cboManufacturerID_DblClick(Cancel As Integer)
+
+    Cancel = True
+
+    EditComboEntry _
+        Me!cboManufacturerID, _
+        "F_ManufacturerSetup", _
+        "ManufacturerID"
+
+End Sub
+
+
+'=============================================================
+' PART-NUMBER TYPE
+'=============================================================
+
+Private Sub cboPartNumberTypeID_NotInList( _
+    NewData As String, _
+    Response As Integer _
+)
+
+    Response = acDataErrContinue
+
+    If HandleComboNotInList( _
+        Me!cboPartNumberTypeID, _
+        NewData, _
+        "F_PartNumberTypeSetup", _
+        "T_PartNumberTypes", _
+        "PartNumberTypeID", _
+        "PartNumberTypeName" _
+    ) Then
+
+        Response = acDataErrAdded
+
+    Else
+
+        Me!cboPartNumberTypeID.Undo
+
+    End If
+
+End Sub
+
+
+Private Sub cboPartNumberTypeID_DblClick(Cancel As Integer)
+
+    Cancel = True
+
+    EditComboEntry _
+        Me!cboPartNumberTypeID, _
+        "F_PartNumberTypeSetup", _
+        "PartNumberTypeID"
+
+End Sub
+
+
+'=============================================================
+' SUPPLIER
+'=============================================================
+
+Private Sub cboSupplierID_NotInList( _
+    NewData As String, _
+    Response As Integer _
+)
+
+    Response = acDataErrContinue
+
+    If HandleComboNotInList( _
+        Me!cboSupplierID, _
+        NewData, _
+        "F_SupplierSetup", _
+        "T_Suppliers", _
+        "SupplierID", _
+        "SupplierCode", _
+        "CompanyName" _
+    ) Then
+
+        Response = acDataErrAdded
+
+    Else
+
+        Me!cboSupplierID.Undo
+
+    End If
+
+End Sub
+
+
+Private Sub cboSupplierID_DblClick(Cancel As Integer)
+
+    Cancel = True
+
+    EditComboEntry _
+        Me!cboSupplierID, _
+        "F_SupplierSetup", _
+        "SupplierID"
+
+End Sub

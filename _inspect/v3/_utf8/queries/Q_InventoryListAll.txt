@@ -1,0 +1,164 @@
+﻿dbMemo "SQL" ="SELECT 'Bulk' AS StockType, Nz(B.StockBalanceID, I.ItemID) AS SourceRecordID, I."
+    "ItemID AS ItemID, Null AS ItemInstanceID, I.CategoryID AS CategoryID, L.Warehous"
+    "eID AS WarehouseID, B.CurrentLocationID AS LocationID, I.InternalSKU AS Internal"
+    "SKU, I.ItemName AS ItemName, I.Description AS Description, C.CategoryName AS Cat"
+    "egoryName, Null AS SerialNumber, Nz(B.QuantityOnHand,0) AS QuantityOnHand, Nz(B."
+    "QuantityReserved,0) AS QuantityReserved, Nz(B.QuantityOnHand,0)-Nz(B.QuantityRes"
+    "erved,0) AS AvailableQuantity, IIf(Nz(B.QuantityOnHand,0)-Nz(B.QuantityReserved,"
+    "0)<=0,'Out of Stock',IIf(Nz(I.ReorderLevel,0)>0 AND Nz(B.QuantityOnHand,0)-Nz(B."
+    "QuantityReserved,0)<=Nz(I.ReorderLevel,0),'Low Stock','In Stock')) AS StockStatu"
+    "s, IIf(Nz(I.ReorderLevel,0)>0 AND Nz(B.QuantityOnHand,0)-Nz(B.QuantityReserved,0"
+    ")<=0,'Restock Required',IIf(Nz(I.ReorderLevel,0)>0 AND Nz(B.QuantityOnHand,0)-Nz"
+    "(B.QuantityReserved,0)<=Nz(I.ReorderLevel,0),'Low Stock','OK')) AS StockAlert, W"
+    ".WarehouseName AS WarehouseName, L.LocationCode AS LocationCode, L.LocationName "
+    "AS LocationName, L.BinNumber AS BinNumber, L.ShelfNumber AS ShelfNumber, IIf(Len"
+    "(Trim(Nz(U.UnitCode,'')))=0,Nz(U.UnitName,''),U.UnitCode) AS UnitCode, Nz(I.Reor"
+    "derLevel,0) AS ReorderLevel, B.LastUpdated AS LastUpdated\015\012FROM ((((T_Item"
+    "s AS I LEFT JOIN T_StockBalances AS B ON I.ItemID = B.ItemID) LEFT JOIN T_Catego"
+    "ries AS C ON I.CategoryID = C.CategoryID) LEFT JOIN T_Units AS U ON I.BaseUnitID"
+    " = U.UnitID) LEFT JOIN T_Locations AS L ON B.CurrentLocationID = L.LocationID) L"
+    "EFT JOIN T_Warehouses AS W ON L.WarehouseID = W.WarehouseID\015\012WHERE Nz(I.Re"
+    "quiresSerial,False)=False\015\012UNION ALL SELECT 'Serialized' AS StockType, S.I"
+    "temInstanceID AS SourceRecordID, I.ItemID AS ItemID, S.ItemInstanceID AS ItemIns"
+    "tanceID, I.CategoryID AS CategoryID, L.WarehouseID AS WarehouseID, S.CurrentLoca"
+    "tionID AS LocationID, I.InternalSKU AS InternalSKU, I.ItemName AS ItemName, I.De"
+    "scription AS Description, C.CategoryName AS CategoryName, S.SerialNumber AS Seri"
+    "alNumber, 1 AS QuantityOnHand, 0 AS QuantityReserved, IIf(Nz(S.CurrentStatus,'')"
+    "='In Stock',1,0) AS AvailableQuantity, Nz(S.CurrentStatus,'Unknown') AS StockSta"
+    "tus, IIf(Nz(S.CurrentStatus,'')='In Stock','OK',Nz(S.CurrentStatus,'Unknown')) A"
+    "S StockAlert, W.WarehouseName AS WarehouseName, L.LocationCode AS LocationCode, "
+    "L.LocationName AS LocationName, L.BinNumber AS BinNumber, L.ShelfNumber AS Shelf"
+    "Number, IIf(Len(Trim(Nz(U.UnitCode,'')))=0,Nz(U.UnitName,''),U.UnitCode) AS Unit"
+    "Code, Nz(I.ReorderLevel,0) AS ReorderLevel, S.AcquisitionDate AS LastUpdated\015"
+    "\012FROM ((((T_ItemInstances AS S INNER JOIN T_Items AS I ON S.ItemID = I.ItemID"
+    ") LEFT JOIN T_Categories AS C ON I.CategoryID = C.CategoryID) LEFT JOIN T_Units "
+    "AS U ON I.BaseUnitID = U.UnitID) LEFT JOIN T_Locations AS L ON S.CurrentLocation"
+    "ID = L.LocationID) LEFT JOIN T_Warehouses AS W ON L.WarehouseID = W.WarehouseID\015"
+    "\012WHERE Nz(I.RequiresSerial,False)=True\015\012UNION ALL SELECT 'Serialized' A"
+    "S StockType, I.ItemID AS SourceRecordID, I.ItemID AS ItemID, Null AS ItemInstanc"
+    "eID, I.CategoryID AS CategoryID, Null AS WarehouseID, Null AS LocationID, I.Inte"
+    "rnalSKU AS InternalSKU, I.ItemName AS ItemName, I.Description AS Description, C."
+    "CategoryName AS CategoryName, Null AS SerialNumber, 0 AS QuantityOnHand, 0 AS Qu"
+    "antityReserved, 0 AS AvailableQuantity, 'No Stock' AS StockStatus, 'No Stock' AS"
+    " StockAlert, Null AS WarehouseName, Null AS LocationCode, Null AS LocationName, "
+    "Null AS BinNumber, Null AS ShelfNumber, IIf(Len(Trim(Nz(U.UnitCode,'')))=0,Nz(U."
+    "UnitName,''),U.UnitCode) AS UnitCode, Nz(I.ReorderLevel,0) AS ReorderLevel, I.Up"
+    "datedOn AS LastUpdated\015\012FROM (T_Items AS I LEFT JOIN T_Categories AS C ON "
+    "I.CategoryID = C.CategoryID) LEFT JOIN T_Units AS U ON I.BaseUnitID = U.UnitID\015"
+    "\012WHERE Nz(I.RequiresSerial,False)=True AND Not Exists (SELECT 1 FROM T_ItemIn"
+    "stances AS S WHERE S.ItemID = I.ItemID)\015\012ORDER BY ItemName, StockType, Ser"
+    "ialNumber;\015\012"
+dbMemo "Connect" =""
+dbBoolean "ReturnsRecords" ="-1"
+dbInteger "ODBCTimeout" ="60"
+dbBoolean "OrderByOn" ="0"
+dbByte "Orientation" ="0"
+dbByte "DefaultView" ="2"
+dbBinary "GUID" = Begin
+    0xe40720ea96921c46917a86c0dbfd44b3
+End
+dbBoolean "FilterOnLoad" ="0"
+dbBoolean "OrderByOnLoad" ="-1"
+dbByte "PublishToWeb" ="1"
+Begin
+    Begin
+        dbText "Name" ="StockType"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="ItemInstanceID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="SerialNumber"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="QuantityOnHand"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="QuantityReserved"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="AvailableQuantity"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="StockStatus"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="ReorderLevel"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="LocationID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="SourceRecordID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="LastUpdated"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="UnitCode"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="StockAlert"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="ItemID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="CategoryID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="WarehouseID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="InternalSKU"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="ItemName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="Description"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="CategoryName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="WarehouseName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="LocationCode"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="LocationName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="BinNumber"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="ShelfNumber"
+        dbLong "AggregateType" ="-1"
+    End
+End

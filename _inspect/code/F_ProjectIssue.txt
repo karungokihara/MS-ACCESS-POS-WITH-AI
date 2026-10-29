@@ -1,0 +1,3465 @@
+﻿Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+'=============================================================
+' FORM: F_ProjectIssue
+' STEP 3 - TRANSACTIONAL THREE-MODE POSTING
+'
+' Supported OpenArgs:
+'   ProjectID=<number>;IssueType=Materials
+'   ProjectID=<number>;IssueType=Tools
+'   ProjectID=<number>;IssueType=ToolReturn
+'
+' The form loads the outstanding project requirement, validates
+' the selected rows again at posting time, and posts the whole
+' batch inside one DAO transaction.
+'
+' TABLES UPDATED:
+'   T_StockBalances  - bulk issues and bulk tool returns
+'   T_ItemInstances  - serialized issues and returns
+'   T_StockMovements - permanent project audit trail
+'   T_Projects       - workflow status after issue posting
+'
+' IMPORTANT:
+'   No removed finished-item or template-line key is used.
+'=============================================================
+
+Private Const SUBFORM_CONTROL As String = "SF_ProjectIssueItems"
+Private Const STAGING_TABLE As String = "T_ProjectIssueStaging"
+
+Private Const MODE_MATERIALS As String = "Materials"
+Private Const MODE_TOOLS As String = "Tools"
+Private Const MODE_TOOL_RETURN As String = "ToolReturn"
+
+Private Const MOVEMENT_STOCK_OUT As String = "STOCK_OUT"
+Private Const MOVEMENT_STOCK_IN As String = "STOCK_IN"
+
+Private Const REASON_MATERIAL_ISSUE As String = _
+    "Project Material Issue"
+Private Const REASON_TOOL_ISSUE As String = _
+    "Project Tool Issue"
+Private Const REASON_TOOL_RETURN As String = _
+    "Project Tool Return"
+
+Private Const SOURCE_PROJECT As String = "Project"
+Private Const STATUS_IN_STOCK As String = "In Stock"
+Private Const STATUS_ISSUED_TO_PROJECT As String = _
+    "Issued to Project"
+Private Const PROJECT_FORM As String = "F_Projects"
+
+Private Const QUANTITY_EPSILON As Double = 0.000001
+
+Private mProjectID As Long
+Private mIssueType As String
+Private mAssemblyTemplateID As Long
+Private mCustomerID As Long
+Private mProjectQuantity As Double
+Private mRequiredCompletionDate As Variant
+Private mProjectCode As String
+
+
+'=============================================================
+' FORM EVENTS
+'=============================================================
+
+Private Sub Form_Load()
+
+    On Error GoTo Err_Handler
+
+    ParseOpenArgs
+    ValidateProjectIssueStructures
+    ConfigureHeaderControls
+    LoadProjectHeader
+    ConfigureModeInterface
+    ConfigureIssuedToCombo
+
+    Me.txtIssueDate = Date
+
+    ConfigureProjectIssueSubform
+    LoadModeRows False
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The Project Issue screen could not be opened." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Project Issue"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub Form_Unload(Cancel As Integer)
+
+    On Error Resume Next
+
+    If mProjectID > 0 And Len(mIssueType) > 0 Then
+        ClearStagingRows CurrentDb
+    End If
+
+    On Error GoTo 0
+
+End Sub
+
+
+'=============================================================
+' OPENARGS
+'=============================================================
+
+Private Sub ParseOpenArgs()
+
+    Dim projectIDText As String
+    Dim issueTypeText As String
+
+    projectIDText = Trim$(GetOpenArgValue("ProjectID"))
+    issueTypeText = Trim$(GetOpenArgValue("IssueType"))
+
+    If Len(projectIDText) = 0 Or Val(projectIDText) <= 0 Then
+        Err.Raise _
+            vbObjectError + 7201, _
+            "ParseOpenArgs", _
+            "F_ProjectIssue was opened without a valid ProjectID."
+    End If
+
+    Select Case UCase$(issueTypeText)
+        Case UCase$(MODE_MATERIALS)
+            mIssueType = MODE_MATERIALS
+
+        Case UCase$(MODE_TOOLS)
+            mIssueType = MODE_TOOLS
+
+        Case UCase$(MODE_TOOL_RETURN), "TOOL RETURN"
+            mIssueType = MODE_TOOL_RETURN
+
+        Case Else
+            Err.Raise _
+                vbObjectError + 7202, _
+                "ParseOpenArgs", _
+                "F_ProjectIssue requires IssueType=Materials, " & _
+                "IssueType=Tools, or IssueType=ToolReturn."
+    End Select
+
+    mProjectID = CLng(Val(projectIDText))
+
+End Sub
+
+
+Private Function GetOpenArgValue( _
+    ByVal keyName As String _
+) As String
+
+    Dim rawArguments As String
+    Dim argumentParts() As String
+    Dim onePart As Variant
+    Dim equalsPosition As Long
+    Dim thisKey As String
+
+    rawArguments = Nz(Me.OpenArgs, vbNullString)
+
+    If Len(Trim$(rawArguments)) = 0 Then
+        Exit Function
+    End If
+
+    argumentParts = Split(rawArguments, ";")
+
+    For Each onePart In argumentParts
+        equalsPosition = InStr(1, CStr(onePart), "=", vbBinaryCompare)
+
+        If equalsPosition > 0 Then
+            thisKey = Trim$(Left$(CStr(onePart), equalsPosition - 1))
+
+            If StrComp(thisKey, keyName, vbTextCompare) = 0 Then
+                GetOpenArgValue = _
+                    Trim$(Mid$(CStr(onePart), equalsPosition + 1))
+                Exit Function
+            End If
+        End If
+    Next onePart
+
+End Function
+
+
+'=============================================================
+' PROJECT HEADER
+'=============================================================
+
+Private Sub ConfigureHeaderControls()
+
+    On Error Resume Next
+
+    Dim controlName As Variant
+
+    For Each controlName In Array( _
+        "txtProjectNumber", _
+        "txtProjectName", _
+        "txtCustomer", _
+        "txtTemplate", _
+        "txtRequiredCompletion", _
+        "txtIssueType" _
+    )
+        With Me.Controls(CStr(controlName))
+            .Locked = True
+            .TabStop = False
+        End With
+    Next controlName
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub LoadProjectHeader()
+
+    On Error GoTo Err_Handler
+
+    Dim db As DAO.Database
+    Dim rows As DAO.Recordset
+    Dim savedErrorNumber As Long
+    Dim savedErrorDescription As String
+    Dim savedErrorSource As String
+
+    Set db = CurrentDb
+
+    Set rows = db.OpenRecordset( _
+        "SELECT " & _
+            "P.ProjectCode, " & _
+            "P.ProjectName, " & _
+            "P.CustomerID, " & _
+            "P.AssemblyTemplateID, " & _
+            "P.EndDate, " & _
+            "P.BuildQuantity, " & _
+            "Cu.CustomerName, " & _
+            "Tm.TemplateName " & _
+        "FROM " & _
+            "(T_Projects AS P " & _
+            "LEFT JOIN T_Customers AS Cu " & _
+                "ON P.CustomerID=Cu.CustomerID) " & _
+            "LEFT JOIN T_AssemblyTemplates AS Tm " & _
+                "ON P.AssemblyTemplateID=Tm.AssemblyTemplateID " & _
+        "WHERE P.ProjectID=" & CStr(mProjectID) & ";", _
+        dbOpenSnapshot)
+
+    If rows.EOF Then
+        Err.Raise _
+            vbObjectError + 7203, _
+            "LoadProjectHeader", _
+            "Project ID " & CStr(mProjectID) & _
+            " was not found in T_Projects."
+    End If
+
+    mProjectCode = Trim$(Nz( _
+        rows!ProjectCode, _
+        vbNullString))
+    mCustomerID = Nz(rows!CustomerID, 0)
+
+    Me.txtProjectNumber = mProjectCode
+    Me.txtProjectName = Nz(rows!ProjectName, vbNullString)
+    Me.txtCustomer = Nz(rows!customerName, vbNullString)
+    Me.txtTemplate = Nz(rows!TemplateName, vbNullString)
+
+    mAssemblyTemplateID = Nz(rows!AssemblyTemplateID, 0)
+    mProjectQuantity = Nz(rows!BuildQuantity, 0)
+    mRequiredCompletionDate = rows!EndDate
+
+    If IsNull(mRequiredCompletionDate) Then
+        Me.txtRequiredCompletion = vbNullString
+    Else
+        Me.txtRequiredCompletion = _
+            Format$(CDate(mRequiredCompletionDate), "yyyy-mm-dd")
+    End If
+
+    If mIssueType = MODE_TOOL_RETURN Then
+        Me.txtIssueType = "Tool Return"
+    Else
+        Me.txtIssueType = mIssueType
+    End If
+
+Exit_Handler:
+    On Error Resume Next
+    If Not rows Is Nothing Then rows.close
+    Set rows = Nothing
+    Set db = Nothing
+    On Error GoTo 0
+    Exit Sub
+
+Err_Handler:
+    savedErrorNumber = Err.Number
+    savedErrorDescription = Err.Description
+    savedErrorSource = Err.Source
+
+    On Error Resume Next
+    If Not rows Is Nothing Then rows.close
+    Set rows = Nothing
+    Set db = Nothing
+    On Error GoTo 0
+
+    Err.Raise _
+        savedErrorNumber, _
+        savedErrorSource, _
+        savedErrorDescription
+
+End Sub
+
+
+Private Sub ConfigureModeInterface()
+
+    On Error Resume Next
+
+    Select Case mIssueType
+        Case MODE_MATERIALS
+            Me.Caption = "Project Material Issue"
+            Me.cmdLoadTemplate.Caption = "Reload Template"
+            Me.cmdIssueSelected.Caption = "Issue Selected"
+
+            Me.txtExpectedReturnDate = Null
+            Me.txtExpectedReturnDate.Visible = False
+            Me.txtExpectedReturnDate.Enabled = False
+
+            SetAttachedLabelCaption Me.txtIssueDate, "Issue Date"
+            SetAttachedLabelCaption Me.cboIssuedToStaff, "Issue To"
+
+        Case MODE_TOOLS
+            Me.Caption = "Project Tool Issue"
+            Me.cmdLoadTemplate.Caption = "Reload Template"
+            Me.cmdIssueSelected.Caption = "Issue Selected"
+
+            Me.txtExpectedReturnDate.Visible = True
+            Me.txtExpectedReturnDate.Enabled = True
+            Me.txtExpectedReturnDate.Locked = False
+
+            If Not IsNull(mRequiredCompletionDate) Then
+                Me.txtExpectedReturnDate = mRequiredCompletionDate
+            End If
+
+            SetAttachedLabelCaption Me.txtIssueDate, "Issue Date"
+            SetAttachedLabelCaption Me.cboIssuedToStaff, "Issue To"
+
+        Case MODE_TOOL_RETURN
+            Me.Caption = "Project Tool Return"
+            Me.cmdLoadTemplate.Caption = "Refresh Outstanding"
+            Me.cmdIssueSelected.Caption = "Return Selected"
+
+            Me.txtExpectedReturnDate = Null
+            Me.txtExpectedReturnDate.Visible = False
+            Me.txtExpectedReturnDate.Enabled = False
+
+            SetAttachedLabelCaption Me.txtIssueDate, "Return Date"
+            SetAttachedLabelCaption Me.cboIssuedToStaff, "Returned By"
+    End Select
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Sub ConfigureIssuedToCombo()
+
+    On Error GoTo Err_Handler
+
+    Dim db As DAO.Database
+    Dim displayField As String
+
+    Set db = CurrentDb
+    displayField = GetUserDisplayField(db)
+
+    With Me.cboIssuedToStaff
+        .RowSourceType = "Table/Query"
+
+        If Len(displayField) > 0 Then
+            .RowSource = _
+                "SELECT [UserID], " & _
+                    QuoteIdentifier(displayField) & _
+                    " AS UserDisplay " & _
+                "FROM [T_Users] " & _
+                "ORDER BY " & QuoteIdentifier(displayField) & ";"
+        Else
+            .RowSource = _
+                "SELECT [UserID], CStr([UserID]) AS UserDisplay " & _
+                "FROM [T_Users] ORDER BY [UserID];"
+        End If
+
+        .BoundColumn = 1
+        .ColumnCount = 2
+        .ColumnWidths = "0cm;6cm"
+        .AutoExpand = True
+        .Requery
+    End With
+
+Exit_Handler:
+    Set db = Nothing
+    Exit Sub
+
+Err_Handler:
+    'The item list can still be reviewed if user setup is unfinished.
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Function GetUserDisplayField( _
+    ByVal db As DAO.Database _
+) As String
+
+    Dim tableObject As DAO.TableDef
+    Dim candidate As Variant
+
+    Set tableObject = db.TableDefs("T_Users")
+
+    For Each candidate In Array( _
+        "FullName", _
+        "UserName", _
+        "LoginName", _
+        "DisplayName" _
+    )
+        If FieldExists(tableObject, CStr(candidate)) Then
+            GetUserDisplayField = CStr(candidate)
+            Exit Function
+        End If
+    Next candidate
+
+End Function
+
+
+'=============================================================
+' BUTTON EVENTS
+'=============================================================
+
+Private Sub cmdLoadTemplate_Click()
+
+    LoadModeRows True
+
+End Sub
+
+
+Private Sub cmdSelectAll_Click()
+
+    On Error GoTo Err_Handler
+
+    SaveCurrentSubformRow
+
+    CurrentDb.Execute _
+        "UPDATE " & STAGING_TABLE & " " & _
+        "SET Selected=True " & _
+        "WHERE ProjectID=" & CStr(mProjectID) & _
+        " AND IssueType=" & SqlText(mIssueType) & _
+        " AND Nz(AvailableQty,0)>0 " & _
+        " AND Nz(IssueQty,0)>0;", _
+        dbFailOnError
+
+    RequerySubform
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The available rows could not be selected." & _
+        vbCrLf & vbCrLf & Err.Description, _
+        vbExclamation, _
+        "Select All"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cmdClearSelection_Click()
+
+    On Error GoTo Err_Handler
+
+    SaveCurrentSubformRow
+
+    CurrentDb.Execute _
+        "UPDATE " & STAGING_TABLE & " " & _
+        "SET Selected=False " & _
+        "WHERE ProjectID=" & CStr(mProjectID) & _
+        " AND IssueType=" & SqlText(mIssueType) & ";", _
+        dbFailOnError
+
+    RequerySubform
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The selection could not be cleared." & _
+        vbCrLf & vbCrLf & Err.Description, _
+        vbExclamation, _
+        "Clear Selection"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cmdIssueSelected_Click()
+
+    On Error GoTo Err_Handler
+
+    Dim workspaceObject As DAO.Workspace
+    Dim db As DAO.Database
+    Dim selectedRows As DAO.Recordset
+
+    Dim selectedCount As Long
+    Dim MovementTypeID As Long
+    Dim responsibleUserID As Long
+    Dim ItemID As Long
+    Dim ItemInstanceID As Long
+    Dim FromLocationID As Long
+    Dim ToLocationID As Long
+    Dim sourceMovementID As Long
+    Dim actionQuantity As Double
+    Dim unitCost As Variant
+
+    Dim actionDate As Date
+    Dim ExpectedReturnDate As Variant
+    Dim actionDescription As String
+    Dim transactionStarted As Boolean
+    Dim stepName As String
+
+    Dim savedErrorNumber As Long
+    Dim savedErrorDescription As String
+    Dim savedErrorSource As String
+
+    SaveCurrentSubformRow
+
+    If Not ValidatePostingSelection( _
+        selectedCount, _
+        actionDate, _
+        responsibleUserID, _
+        ExpectedReturnDate) Then
+
+        Exit Sub
+    End If
+
+    actionDescription = PostingActionDescription()
+
+    If MsgBox( _
+        "Post " & CStr(selectedCount) & _
+        " selected row(s) as a " & actionDescription & "?" & _
+        vbCrLf & vbCrLf & _
+        "This action changes inventory and creates permanent " & _
+        "stock-movement records.", _
+        vbQuestion + vbYesNo + vbDefaultButton2, _
+        "Confirm " & PostingActionTitle()) <> vbYes Then
+
+        Exit Sub
+    End If
+
+    Set workspaceObject = DBEngine.Workspaces(0)
+    Set db = CurrentDb
+
+    If mIssueType = MODE_TOOL_RETURN Then
+        MovementTypeID = _
+            GetMovementTypeID(db, MOVEMENT_STOCK_IN)
+    Else
+        MovementTypeID = _
+            GetMovementTypeID(db, MOVEMENT_STOCK_OUT)
+    End If
+
+    stepName = "Starting the project stock transaction"
+    workspaceObject.BeginTrans
+    transactionStarted = True
+
+    stepName = "Rechecking the project"
+    ValidateProjectForPosting db
+
+    If mIssueType = MODE_TOOL_RETURN Then
+        stepName = "Rechecking the outstanding tool returns"
+        ValidateSelectedToolReturnQuantities db
+    Else
+        stepName = "Rechecking the outstanding project requirement"
+        ValidateSelectedProjectQuantities db
+    End If
+
+    stepName = "Opening the selected project rows"
+    Set selectedRows = db.OpenRecordset( _
+        "SELECT * FROM " & STAGING_TABLE & " " & _
+        "WHERE " & StagingScopeCriteria() & _
+        " AND Selected=True " & _
+        "ORDER BY ProjectIssueStagingID;", _
+        dbOpenSnapshot)
+
+    Do While Not selectedRows.EOF
+        ItemID = Nz(selectedRows!ItemID, 0)
+        ItemInstanceID = Nz(selectedRows!ItemInstanceID, 0)
+        FromLocationID = Nz(selectedRows!FromLocationID, 0)
+        ToLocationID = Nz(selectedRows!ToLocationID, 0)
+        sourceMovementID = Nz(selectedRows!sourceMovementID, 0)
+        actionQuantity = Nz(selectedRows!IssueQty, 0)
+
+        If ItemID <= 0 Or actionQuantity <= 0 Then
+            Err.Raise _
+                vbObjectError + 7240, _
+                "cmdIssueSelected_Click", _
+                "A selected staging row has no valid item or quantity."
+        End If
+
+        If ItemInstanceID > 0 Then
+            unitCost = GetSerializedUnitCost( _
+                db, ItemID, ItemInstanceID)
+        Else
+            unitCost = GetLatestItemUnitCost(db, ItemID)
+        End If
+
+        If mIssueType = MODE_TOOL_RETURN Then
+            stepName = _
+                "Returning item ID " & CStr(ItemID) & " to stock"
+
+            If ItemInstanceID > 0 Then
+                ReturnSerializedProjectItem _
+                    db, _
+                    ItemID, _
+                    ItemInstanceID, _
+                    ToLocationID, _
+                    sourceMovementID, _
+                    actionDate, _
+                    Nz(selectedRows!Notes, vbNullString)
+            Else
+                ReturnBulkProjectItem _
+                    db, _
+                    ItemID, _
+                    ToLocationID, _
+                    actionQuantity
+            End If
+        Else
+            stepName = _
+                "Issuing item ID " & CStr(ItemID) & " from stock"
+
+            If ItemInstanceID > 0 Then
+                IssueSerializedProjectItem _
+                    db, _
+                    ItemID, _
+                    ItemInstanceID, _
+                    FromLocationID, _
+                    actionDate, _
+                    Nz(selectedRows!Notes, vbNullString)
+            Else
+                IssueBulkProjectItem _
+                    db, _
+                    ItemID, _
+                    FromLocationID, _
+                    actionQuantity
+            End If
+        End If
+
+        stepName = _
+            "Creating the stock movement for item ID " & _
+            CStr(ItemID)
+
+        InsertProjectStockMovement _
+            db, _
+            MovementTypeID, _
+            ItemID, _
+            ItemInstanceID, _
+            actionQuantity, _
+            FromLocationID, _
+            ToLocationID, _
+            sourceMovementID, _
+            actionDate, _
+            ExpectedReturnDate, _
+            responsibleUserID, _
+            Nz(selectedRows!Notes, vbNullString), _
+            unitCost
+
+        selectedRows.MoveNext
+    Loop
+
+    selectedRows.close
+    Set selectedRows = Nothing
+
+    stepName = "Updating the project workflow status"
+    UpdateProjectWorkflowStatus db
+
+    stepName = "Committing the project stock transaction"
+    workspaceObject.CommitTrans dbForceOSFlush
+    transactionStarted = False
+
+    RefreshProjectFormIfOpen
+    LoadModeRows False, False
+
+    MsgBox _
+        CStr(selectedCount) & " row(s) were posted successfully." & _
+        vbCrLf & vbCrLf & _
+        "Completed action: " & PostingActionTitle(), _
+        vbInformation, _
+        PostingActionTitle() & " Completed"
+
+Exit_Handler:
+    On Error Resume Next
+    If Not selectedRows Is Nothing Then selectedRows.close
+    Set selectedRows = Nothing
+    Set db = Nothing
+    Set workspaceObject = Nothing
+    On Error GoTo 0
+    Exit Sub
+
+Err_Handler:
+    savedErrorNumber = Err.Number
+    savedErrorDescription = Err.Description
+    savedErrorSource = Err.Source
+
+    On Error Resume Next
+    If transactionStarted Then
+        workspaceObject.Rollback
+        transactionStarted = False
+    End If
+    On Error GoTo 0
+
+    MsgBox _
+        "The project stock transaction was not posted." & _
+        vbCrLf & vbCrLf & _
+        "Failed Step: " & stepName & vbCrLf & _
+        "Error Number: " & savedErrorNumber & vbCrLf & _
+        "Source: " & savedErrorSource & vbCrLf & _
+        "Details: " & savedErrorDescription & vbCrLf & vbCrLf & _
+        "No inventory changes from this batch were saved.", _
+        vbExclamation, _
+        PostingActionTitle() & " Failed"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub cmdCancel_Click()
+
+    On Error Resume Next
+
+    ClearStagingRows CurrentDb
+    DoCmd.close acForm, Me.Name
+
+    On Error GoTo 0
+
+End Sub
+
+
+'=============================================================
+' POSTING VALIDATION
+'=============================================================
+
+Private Function ValidatePostingSelection( _
+    ByRef selectedCount As Long, _
+    ByRef actionDate As Date, _
+    ByRef responsibleUserID As Long, _
+    ByRef ExpectedReturnDate As Variant _
+) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim invalidCount As Long
+
+    ValidatePostingSelection = False
+    ExpectedReturnDate = Null
+
+    selectedCount = DCount( _
+        "*", _
+        STAGING_TABLE, _
+        StagingScopeCriteria() & " AND Selected=True")
+
+    If selectedCount <= 0 Then
+        MsgBox _
+            "Select at least one available row first.", _
+            vbExclamation, _
+            "Nothing Selected"
+        Exit Function
+    End If
+
+    invalidCount = DCount( _
+        "*", _
+        STAGING_TABLE, _
+        StagingScopeCriteria() & _
+        " AND Selected=True" & _
+        " AND (Nz(ItemID,0)<=0" & _
+        " OR Nz(IssueQty,0)<=0" & _
+        " OR Nz(IssueQty,0)>Nz(AvailableQty,0))")
+
+    If invalidCount > 0 Then
+        MsgBox _
+            CStr(invalidCount) & _
+            " selected row(s) have an invalid item or quantity.", _
+            vbExclamation, _
+            "Check Quantities"
+        Exit Function
+    End If
+
+    invalidCount = DCount( _
+        "*", _
+        STAGING_TABLE, _
+        StagingScopeCriteria() & _
+        " AND Selected=True" & _
+        " AND Nz(ItemInstanceID,0)>0" & _
+        " AND Abs(Nz(IssueQty,0)-1)>" & _
+            Replace(CStr(QUANTITY_EPSILON), ",", "."))
+
+    If invalidCount > 0 Then
+        MsgBox _
+            "Each selected serialized item must have quantity 1.", _
+            vbExclamation, _
+            "Serialized Quantity"
+        Exit Function
+    End If
+
+    If mIssueType = MODE_TOOL_RETURN Then
+        invalidCount = DCount( _
+            "*", _
+            STAGING_TABLE, _
+            StagingScopeCriteria() & _
+            " AND Selected=True" & _
+            " AND (Nz(ToLocationID,0)<=0" & _
+            " OR Nz(SourceMovementID,0)<=0)")
+    Else
+        invalidCount = DCount( _
+            "*", _
+            STAGING_TABLE, _
+            StagingScopeCriteria() & _
+            " AND Selected=True" & _
+            " AND Nz(FromLocationID,0)<=0")
+    End If
+
+    If invalidCount > 0 Then
+        MsgBox _
+            CStr(invalidCount) & _
+            " selected row(s) have no valid stock location " & _
+            "or source movement.", _
+            vbExclamation, _
+            "Posting Details Required"
+        Exit Function
+    End If
+
+    If IsNull(Me.txtIssueDate) Or _
+       Not IsDate(Me.txtIssueDate) Then
+
+        MsgBox _
+            "Enter a valid " & _
+            IIf(mIssueType = MODE_TOOL_RETURN, _
+                "return date.", _
+                "issue date."), _
+            vbExclamation, _
+            "Date Required"
+        Me.txtIssueDate.SetFocus
+        Exit Function
+    End If
+
+    actionDate = CDate(Me.txtIssueDate)
+
+    If Nz(Me.cboIssuedToStaff, 0) <= 0 Then
+        MsgBox _
+            IIf(mIssueType = MODE_TOOL_RETURN, _
+                "Select the user returning the tools.", _
+                "Select the user receiving the issued items."), _
+            vbExclamation, _
+            "User Required"
+        Me.cboIssuedToStaff.SetFocus
+        Exit Function
+    End If
+
+    responsibleUserID = CLng(Me.cboIssuedToStaff)
+
+    If mIssueType = MODE_TOOLS Then
+        If IsNull(Me.txtExpectedReturnDate) Or _
+           Not IsDate(Me.txtExpectedReturnDate) Then
+
+            MsgBox _
+                "Enter a valid expected return date for the tools.", _
+                vbExclamation, _
+                "Return Date Required"
+            Me.txtExpectedReturnDate.SetFocus
+            Exit Function
+        End If
+
+        ExpectedReturnDate = _
+            CDate(Me.txtExpectedReturnDate)
+
+        If CDate(ExpectedReturnDate) < DateValue(actionDate) Then
+            MsgBox _
+                "The expected return date cannot be earlier than " & _
+                "the issue date.", _
+                vbExclamation, _
+                "Invalid Return Date"
+            Me.txtExpectedReturnDate.SetFocus
+            Exit Function
+        End If
+    End If
+
+    ValidatePostingSelection = True
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    ValidatePostingSelection = False
+    MsgBox _
+        "The selected rows could not be validated." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Project Posting Validation"
+    Resume Exit_Handler
+
+End Function
+
+
+Private Sub ValidateProjectForPosting( _
+    ByVal db As DAO.Database _
+)
+
+    On Error GoTo Err_Handler
+
+    Dim rows As DAO.Recordset
+    Dim currentTemplateID As Long
+    Dim currentBuildQuantity As Double
+    Dim currentStatus As String
+
+    Set rows = db.OpenRecordset( _
+        "SELECT ProjectCode, CustomerID, AssemblyTemplateID, " & _
+            "BuildQuantity, EndDate, [Status] " & _
+        "FROM T_Projects " & _
+        "WHERE ProjectID=" & CStr(mProjectID) & ";", _
+        dbOpenSnapshot)
+
+    If rows.EOF Then
+        Err.Raise _
+            vbObjectError + 7241, _
+            "ValidateProjectForPosting", _
+            "The project no longer exists."
+    End If
+
+    mProjectCode = Trim$(Nz( _
+        rows!ProjectCode, _
+        mProjectCode))
+    mCustomerID = Nz(rows!CustomerID, 0)
+    mRequiredCompletionDate = rows!EndDate
+    currentTemplateID = Nz(rows!AssemblyTemplateID, 0)
+    currentBuildQuantity = Nz(rows!BuildQuantity, 0)
+    currentStatus = UCase$(Trim$(Nz( _
+        rows!Status, _
+        vbNullString)))
+
+    rows.close
+    Set rows = Nothing
+
+    If mIssueType <> MODE_TOOL_RETURN Then
+        Select Case currentStatus
+            Case "CANCELLED", _
+                 "SHIPPED", _
+                 "FINISHED RECEIVED", _
+                 "READY TO SHIP"
+
+                Err.Raise _
+                    vbObjectError + 7242, _
+                    "ValidateProjectForPosting", _
+                    "Items cannot be issued while the project status " & _
+                    "is " & currentStatus & "."
+        End Select
+
+        If currentTemplateID <> mAssemblyTemplateID Then
+            Err.Raise _
+                vbObjectError + 7243, _
+                "ValidateProjectForPosting", _
+                "The project's assembly template changed after this " & _
+                "screen was loaded. Reload the Project Issue form."
+        End If
+
+        If Abs(currentBuildQuantity - mProjectQuantity) > _
+           QUANTITY_EPSILON Then
+
+            Err.Raise _
+                vbObjectError + 7244, _
+                "ValidateProjectForPosting", _
+                "The project's Build Quantity changed after this " & _
+                "screen was loaded. Reload the Project Issue form."
+        End If
+    End If
+
+Exit_Handler:
+    On Error Resume Next
+    If Not rows Is Nothing Then rows.close
+    Set rows = Nothing
+    On Error GoTo 0
+    Exit Sub
+
+Err_Handler:
+    Dim savedErrorNumber As Long
+    Dim savedErrorDescription As String
+    Dim savedErrorSource As String
+
+    savedErrorNumber = Err.Number
+    savedErrorDescription = Err.Description
+    savedErrorSource = Err.Source
+
+    On Error Resume Next
+    If Not rows Is Nothing Then rows.close
+    Set rows = Nothing
+    On Error GoTo 0
+
+    Err.Raise _
+        savedErrorNumber, _
+        savedErrorSource, _
+        savedErrorDescription
+
+End Sub
+
+
+Private Sub ValidateSelectedProjectQuantities( _
+    ByVal db As DAO.Database _
+)
+
+    On Error GoTo Err_Handler
+
+    Dim rows As DAO.Recordset
+    Dim ItemID As Long
+    Dim selectedQuantity As Double
+    Dim requiredQuantity As Double
+    Dim satisfiedQuantity As Double
+    Dim remainingQuantity As Double
+
+    Set rows = db.OpenRecordset( _
+        "SELECT ItemID, Sum(Nz(IssueQty,0)) AS SelectedQty " & _
+        "FROM " & STAGING_TABLE & " " & _
+        "WHERE " & StagingScopeCriteria() & _
+        " AND Selected=True " & _
+        "GROUP BY ItemID;", _
+        dbOpenSnapshot)
+
+    Do While Not rows.EOF
+        ItemID = Nz(rows!ItemID, 0)
+        selectedQuantity = Nz(rows!SelectedQty, 0)
+        requiredQuantity = _
+            GetTemplateRequiredQuantity(db, ItemID)
+        satisfiedQuantity = _
+            GetPostedRequirementQuantity(db, ItemID)
+        remainingQuantity = _
+            requiredQuantity - satisfiedQuantity
+
+        If remainingQuantity < 0 Then
+            remainingQuantity = 0
+        End If
+
+        If requiredQuantity <= QUANTITY_EPSILON Then
+            Err.Raise _
+                vbObjectError + 7245, _
+                "ValidateSelectedProjectQuantities", _
+                "Item ID " & CStr(ItemID) & _
+                " is no longer required by the project's template."
+        End If
+
+        If selectedQuantity > _
+           remainingQuantity + QUANTITY_EPSILON Then
+
+            Err.Raise _
+                vbObjectError + 7246, _
+                "ValidateSelectedProjectQuantities", _
+                "The selected quantity for item ID " & _
+                CStr(ItemID) & _
+                " is greater than the remaining project " & _
+                "requirement." & vbCrLf & vbCrLf & _
+                "Remaining: " & _
+                    Format$(remainingQuantity, "0.######") & vbCrLf & _
+                "Selected: " & _
+                    Format$(selectedQuantity, "0.######")
+        End If
+
+        rows.MoveNext
+    Loop
+
+Exit_Handler:
+    On Error Resume Next
+    If Not rows Is Nothing Then rows.close
+    Set rows = Nothing
+    On Error GoTo 0
+    Exit Sub
+
+Err_Handler:
+    Dim savedErrorNumber As Long
+    Dim savedErrorDescription As String
+    Dim savedErrorSource As String
+
+    savedErrorNumber = Err.Number
+    savedErrorDescription = Err.Description
+    savedErrorSource = Err.Source
+
+    On Error Resume Next
+    If Not rows Is Nothing Then rows.close
+    Set rows = Nothing
+    On Error GoTo 0
+
+    Err.Raise _
+        savedErrorNumber, _
+        savedErrorSource, _
+        savedErrorDescription
+
+End Sub
+
+
+Private Sub ValidateSelectedToolReturnQuantities( _
+    ByVal db As DAO.Database _
+)
+
+    On Error GoTo Err_Handler
+
+    Dim rows As DAO.Recordset
+    Dim ItemID As Long
+    Dim selectedQuantity As Double
+    Dim outstandingQuantity As Double
+
+    Set rows = db.OpenRecordset( _
+        "SELECT ItemID, Sum(Nz(IssueQty,0)) AS SelectedQty " & _
+        "FROM " & STAGING_TABLE & " " & _
+        "WHERE " & StagingScopeCriteria() & _
+        " AND Selected=True " & _
+        "GROUP BY ItemID;", _
+        dbOpenSnapshot)
+
+    Do While Not rows.EOF
+        ItemID = Nz(rows!ItemID, 0)
+        selectedQuantity = Nz(rows!SelectedQty, 0)
+        outstandingQuantity = _
+            GetPostedRequirementQuantity(db, ItemID)
+
+        If selectedQuantity > _
+           outstandingQuantity + QUANTITY_EPSILON Then
+
+            Err.Raise _
+                vbObjectError + 7247, _
+                "ValidateSelectedToolReturnQuantities", _
+                "The selected return quantity for item ID " & _
+                CStr(ItemID) & _
+                " is greater than the quantity still outstanding." & _
+                vbCrLf & vbCrLf & _
+                "Outstanding: " & _
+                    Format$(outstandingQuantity, "0.######") & _
+                vbCrLf & _
+                "Selected: " & _
+                    Format$(selectedQuantity, "0.######")
+        End If
+
+        rows.MoveNext
+    Loop
+
+Exit_Handler:
+    On Error Resume Next
+    If Not rows Is Nothing Then rows.close
+    Set rows = Nothing
+    On Error GoTo 0
+    Exit Sub
+
+Err_Handler:
+    Dim savedErrorNumber As Long
+    Dim savedErrorDescription As String
+    Dim savedErrorSource As String
+
+    savedErrorNumber = Err.Number
+    savedErrorDescription = Err.Description
+    savedErrorSource = Err.Source
+
+    On Error Resume Next
+    If Not rows Is Nothing Then rows.close
+    Set rows = Nothing
+    On Error GoTo 0
+
+    Err.Raise _
+        savedErrorNumber, _
+        savedErrorSource, _
+        savedErrorDescription
+
+End Sub
+
+
+'=============================================================
+' INVENTORY POSTING
+'=============================================================
+
+Private Sub IssueBulkProjectItem( _
+    ByVal db As DAO.Database, _
+    ByVal ItemID As Long, _
+    ByVal FromLocationID As Long, _
+    ByVal actionQuantity As Double _
+)
+
+    Dim rows As DAO.Recordset
+    Dim CurrentLocationID As Long
+    Dim QuantityOnHand As Double
+    Dim QuantityReserved As Double
+    Dim AvailableQuantity As Double
+    Dim newQuantity As Double
+
+    Set rows = db.OpenRecordset( _
+        "SELECT * FROM T_StockBalances " & _
+        "WHERE ItemID=" & CStr(ItemID) & ";", _
+        dbOpenDynaset)
+
+    If rows.EOF Then
+        Err.Raise _
+            vbObjectError + 7250, _
+            "IssueBulkProjectItem", _
+            "No stock-balance record exists for item ID " & _
+            CStr(ItemID) & "."
+    End If
+
+    rows.MoveLast
+
+    If rows.recordCount > 1 Then
+        Err.Raise _
+            vbObjectError + 7251, _
+            "IssueBulkProjectItem", _
+            "More than one stock-balance record exists for " & _
+            "item ID " & CStr(ItemID) & "."
+    End If
+
+    rows.MoveFirst
+
+    CurrentLocationID = Nz(rows!CurrentLocationID, 0)
+    QuantityOnHand = Nz(rows!QuantityOnHand, 0)
+    QuantityReserved = Nz(rows!QuantityReserved, 0)
+    AvailableQuantity = QuantityOnHand - QuantityReserved
+
+    If CurrentLocationID <> FromLocationID Then
+        Err.Raise _
+            vbObjectError + 7252, _
+            "IssueBulkProjectItem", _
+            "The stock location for item ID " & CStr(ItemID) & _
+            " changed after the issue list was loaded."
+    End If
+
+    If actionQuantity > _
+       AvailableQuantity + QUANTITY_EPSILON Then
+
+        Err.Raise _
+            vbObjectError + 7253, _
+            "IssueBulkProjectItem", _
+            "Insufficient available stock for item ID " & _
+            CStr(ItemID) & "." & vbCrLf & vbCrLf & _
+            "Available: " & _
+                Format$(AvailableQuantity, "0.######") & vbCrLf & _
+            "Requested: " & _
+                Format$(actionQuantity, "0.######")
+    End If
+
+    newQuantity = QuantityOnHand - actionQuantity
+
+    If Abs(newQuantity) <= QUANTITY_EPSILON Then
+        newQuantity = 0
+    End If
+
+    rows.Edit
+    rows!QuantityOnHand = newQuantity
+    SetRecordsetFieldIfExists rows, "LastUpdated", Now()
+    rows.Update
+
+    rows.close
+    Set rows = Nothing
+
+End Sub
+
+
+Private Sub ReturnBulkProjectItem( _
+    ByVal db As DAO.Database, _
+    ByVal ItemID As Long, _
+    ByVal ToLocationID As Long, _
+    ByVal actionQuantity As Double _
+)
+
+    Dim rows As DAO.Recordset
+    Dim CurrentLocationID As Long
+    Dim QuantityOnHand As Double
+
+    Set rows = db.OpenRecordset( _
+        "SELECT * FROM T_StockBalances " & _
+        "WHERE ItemID=" & CStr(ItemID) & ";", _
+        dbOpenDynaset)
+
+    If Not rows.EOF Then
+        rows.MoveLast
+
+        If rows.recordCount > 1 Then
+            Err.Raise _
+                vbObjectError + 7254, _
+                "ReturnBulkProjectItem", _
+                "More than one stock-balance record exists for " & _
+                "item ID " & CStr(ItemID) & "."
+        End If
+
+        rows.MoveFirst
+    End If
+
+    If rows.EOF Then
+        rows.addnew
+        rows!ItemID = ItemID
+        rows!CurrentLocationID = ToLocationID
+        rows!QuantityOnHand = actionQuantity
+        rows!QuantityReserved = 0
+        SetRecordsetFieldIfExists rows, "LastUpdated", Now()
+        rows.Update
+    Else
+        CurrentLocationID = Nz(rows!CurrentLocationID, 0)
+        QuantityOnHand = Nz(rows!QuantityOnHand, 0)
+
+        If CurrentLocationID > 0 And _
+           CurrentLocationID <> ToLocationID And _
+           QuantityOnHand > QUANTITY_EPSILON Then
+
+            Err.Raise _
+                vbObjectError + 7255, _
+                "ReturnBulkProjectItem", _
+                "Item ID " & CStr(ItemID) & _
+                " currently has stock in another location. " & _
+                "Return it to that location or transfer the " & _
+                "existing stock first."
+        End If
+
+        rows.Edit
+        rows!CurrentLocationID = ToLocationID
+        rows!QuantityOnHand = _
+            QuantityOnHand + actionQuantity
+        SetRecordsetFieldIfExists rows, "LastUpdated", Now()
+        rows.Update
+    End If
+
+    rows.close
+    Set rows = Nothing
+
+End Sub
+
+
+Private Sub IssueSerializedProjectItem( _
+    ByVal db As DAO.Database, _
+    ByVal ItemID As Long, _
+    ByVal ItemInstanceID As Long, _
+    ByVal FromLocationID As Long, _
+    ByVal actionDate As Date, _
+    ByVal rowNotes As String _
+)
+
+    Dim rows As DAO.Recordset
+    Dim instanceNote As String
+
+    Set rows = db.OpenRecordset( _
+        "SELECT * FROM T_ItemInstances " & _
+        "WHERE ItemInstanceID=" & _
+            CStr(ItemInstanceID) & ";", _
+        dbOpenDynaset)
+
+    If rows.EOF Then
+        Err.Raise _
+            vbObjectError + 7256, _
+            "IssueSerializedProjectItem", _
+            "Serialized instance ID " & _
+            CStr(ItemInstanceID) & " no longer exists."
+    End If
+
+    If Nz(rows!ItemID, 0) <> ItemID Then
+        Err.Raise _
+            vbObjectError + 7257, _
+            "IssueSerializedProjectItem", _
+            "Serialized instance ID " & _
+            CStr(ItemInstanceID) & _
+            " does not belong to item ID " & CStr(ItemID) & "."
+    End If
+
+    If StrComp( _
+        Nz(rows!currentStatus, vbNullString), _
+        STATUS_IN_STOCK, _
+        vbTextCompare) <> 0 Then
+
+        Err.Raise _
+            vbObjectError + 7258, _
+            "IssueSerializedProjectItem", _
+            "Serialized instance ID " & _
+            CStr(ItemInstanceID) & " is no longer In Stock."
+    End If
+
+    If Nz(rows!CurrentLocationID, 0) <> FromLocationID Then
+        Err.Raise _
+            vbObjectError + 7259, _
+            "IssueSerializedProjectItem", _
+            "The location of serialized instance ID " & _
+            CStr(ItemInstanceID) & _
+            " changed after the issue list was loaded."
+    End If
+
+    instanceNote = _
+        PostingActionTitle() & " on " & _
+        Format$(actionDate, "yyyy-mm-dd hh:nn") & _
+        " for project " & mProjectCode & "."
+
+    If Len(Trim$(rowNotes)) > 0 Then
+        instanceNote = _
+            instanceNote & vbCrLf & Trim$(rowNotes)
+    End If
+
+    rows.Edit
+    rows!CurrentLocationID = Null
+    rows!currentStatus = STATUS_ISSUED_TO_PROJECT
+    SetRecordsetFieldIfExists rows, "ProjectID", mProjectID
+    SetRecordsetFieldIfExists rows, "CurrentProjectID", mProjectID
+    SetRecordsetFieldIfExists _
+        rows, _
+        "Notes", _
+        AppendNote( _
+            Nz(rows!Notes, vbNullString), _
+            instanceNote)
+    rows.Update
+
+    rows.close
+    Set rows = Nothing
+
+End Sub
+
+
+Private Sub ReturnSerializedProjectItem( _
+    ByVal db As DAO.Database, _
+    ByVal ItemID As Long, _
+    ByVal ItemInstanceID As Long, _
+    ByVal ToLocationID As Long, _
+    ByVal sourceMovementID As Long, _
+    ByVal actionDate As Date, _
+    ByVal rowNotes As String _
+)
+
+    Dim rows As DAO.Recordset
+    Dim instanceNote As String
+
+    ValidateSerializedReturnSource _
+        db, _
+        ItemID, _
+        ItemInstanceID, _
+        sourceMovementID
+
+    Set rows = db.OpenRecordset( _
+        "SELECT * FROM T_ItemInstances " & _
+        "WHERE ItemInstanceID=" & _
+            CStr(ItemInstanceID) & ";", _
+        dbOpenDynaset)
+
+    If rows.EOF Then
+        Err.Raise _
+            vbObjectError + 7260, _
+            "ReturnSerializedProjectItem", _
+            "Serialized instance ID " & _
+            CStr(ItemInstanceID) & " no longer exists."
+    End If
+
+    If Nz(rows!ItemID, 0) <> ItemID Then
+        Err.Raise _
+            vbObjectError + 7261, _
+            "ReturnSerializedProjectItem", _
+            "Serialized instance ID " & _
+            CStr(ItemInstanceID) & _
+            " does not belong to item ID " & CStr(ItemID) & "."
+    End If
+
+    If StrComp( _
+        Nz(rows!currentStatus, vbNullString), _
+        STATUS_IN_STOCK, _
+        vbTextCompare) = 0 Then
+
+        Err.Raise _
+            vbObjectError + 7262, _
+            "ReturnSerializedProjectItem", _
+            "Serialized instance ID " & _
+            CStr(ItemInstanceID) & " is already In Stock."
+    End If
+
+    instanceNote = _
+        "Project Tool Return on " & _
+        Format$(actionDate, "yyyy-mm-dd hh:nn") & _
+        " for project " & mProjectCode & "."
+
+    If Len(Trim$(rowNotes)) > 0 Then
+        instanceNote = _
+            instanceNote & vbCrLf & Trim$(rowNotes)
+    End If
+
+    rows.Edit
+    rows!CurrentLocationID = ToLocationID
+    rows!currentStatus = STATUS_IN_STOCK
+    SetRecordsetFieldIfExists rows, "ProjectID", Null
+    SetRecordsetFieldIfExists rows, "CurrentProjectID", Null
+    SetRecordsetFieldIfExists _
+        rows, _
+        "Notes", _
+        AppendNote( _
+            Nz(rows!Notes, vbNullString), _
+            instanceNote)
+    rows.Update
+
+    rows.close
+    Set rows = Nothing
+
+End Sub
+
+
+Private Sub ValidateSerializedReturnSource( _
+    ByVal db As DAO.Database, _
+    ByVal ItemID As Long, _
+    ByVal ItemInstanceID As Long, _
+    ByVal sourceMovementID As Long _
+)
+
+    Dim rows As DAO.Recordset
+
+    Set rows = db.OpenRecordset( _
+        "SELECT M.StockMovementID " & _
+        "FROM T_StockMovements AS M " & _
+        "INNER JOIN T_StockMovementTypes AS MT " & _
+            "ON M.MovementTypeID=MT.MovementTypeID " & _
+        "WHERE M.StockMovementID=" & _
+            CStr(sourceMovementID) & _
+        " AND M.ProjectID=" & CStr(mProjectID) & _
+        " AND M.ItemID=" & CStr(ItemID) & _
+        " AND M.ItemInstanceID=" & _
+            CStr(ItemInstanceID) & _
+        " AND MT.MovementTypeCode=" & _
+            SqlText(MOVEMENT_STOCK_OUT) & _
+        " AND " & ToolIssueReasonClause("M") & ";", _
+        dbOpenSnapshot)
+
+    If rows.EOF Then
+        Err.Raise _
+            vbObjectError + 7263, _
+            "ValidateSerializedReturnSource", _
+            "The original project Tool Issue movement is no " & _
+            "longer available for serialized instance ID " & _
+            CStr(ItemInstanceID) & "."
+    End If
+
+    rows.close
+    Set rows = Nothing
+
+    If HasLaterStockIn( _
+        db, _
+        ItemInstanceID, _
+        sourceMovementID) Then
+
+        Err.Raise _
+            vbObjectError + 7264, _
+            "ValidateSerializedReturnSource", _
+            "Serialized instance ID " & _
+            CStr(ItemInstanceID) & _
+            " already has a later Stock In movement."
+    End If
+
+End Sub
+
+
+'=============================================================
+' STOCK MOVEMENT / PROJECT STATUS
+'=============================================================
+
+Private Sub InsertProjectStockMovement( _
+    ByVal db As DAO.Database, _
+    ByVal MovementTypeID As Long, _
+    ByVal ItemID As Long, _
+    ByVal ItemInstanceID As Long, _
+    ByVal actionQuantity As Double, _
+    ByVal FromLocationID As Long, _
+    ByVal ToLocationID As Long, _
+    ByVal sourceMovementID As Long, _
+    ByVal actionDate As Date, _
+    ByVal ExpectedReturnDate As Variant, _
+    ByVal responsibleUserID As Long, _
+    ByVal rowNotes As String, _
+    ByVal unitCost As Variant _
+)
+
+    Dim rows As DAO.Recordset
+    Dim movementNote As String
+
+    Set rows = db.OpenRecordset( _
+        "T_StockMovements", _
+        dbOpenDynaset)
+
+    rows.addnew
+    rows!MovementDate = actionDate
+    rows!ItemID = ItemID
+
+    If ItemInstanceID > 0 Then
+        rows!ItemInstanceID = ItemInstanceID
+    End If
+
+    rows!ProjectID = mProjectID
+    rows!MovementTypeID = MovementTypeID
+    rows!Quantity = actionQuantity
+
+    If FromLocationID > 0 Then
+        rows!FromLocationID = FromLocationID
+    End If
+
+    If ToLocationID > 0 Then
+        rows!ToLocationID = ToLocationID
+    End If
+
+    If Not IsNull(ExpectedReturnDate) Then
+        rows!ExpectedReturnDate = _
+            CDate(ExpectedReturnDate)
+    End If
+
+    rows!performedByUserID = responsibleUserID
+    rows!Reason = PostingReason()
+    rows!ReferenceDocument = mProjectCode
+
+    If Len(Trim$(rowNotes)) > 0 Then
+        rows!Notes = Trim$(rowNotes)
+    End If
+
+    If Not IsNull(unitCost) Then
+        rows!unitCost = unitCost
+    End If
+
+    movementNote = _
+        PostingActionTitle() & " for project " & _
+        mProjectCode & "."
+
+    SetRecordsetFieldIfExists _
+        rows, "CustomerID", NullIfZero(mCustomerID)
+    SetRecordsetFieldIfExists _
+        rows, _
+        "AssemblyTemplateID", _
+        NullIfZero(mAssemblyTemplateID)
+    SetRecordsetFieldIfExists _
+        rows, "SourceDocumentType", SOURCE_PROJECT
+    SetRecordsetFieldIfExists _
+        rows, _
+        "SourceMovementID", _
+        NullIfZero(sourceMovementID)
+
+    If mIssueType = MODE_TOOL_RETURN Then
+        SetRecordsetFieldIfExists _
+            rows, "ReturnedByUserID", responsibleUserID
+    Else
+        SetRecordsetFieldIfExists _
+            rows, "IssuedToUserID", responsibleUserID
+        SetRecordsetFieldIfExists _
+            rows, "AssignedToUserID", responsibleUserID
+    End If
+
+    SetRecordsetFieldIfExists _
+        rows, "MovementNotes", movementNote
+
+    rows.Update
+
+    rows.close
+    Set rows = Nothing
+
+End Sub
+
+
+Private Sub UpdateProjectWorkflowStatus( _
+    ByVal db As DAO.Database _
+)
+
+    Dim rows As DAO.Recordset
+    Dim currentStatus As String
+    Dim nextStatus As String
+
+    Set rows = db.OpenRecordset( _
+        "SELECT * FROM T_Projects " & _
+        "WHERE ProjectID=" & CStr(mProjectID) & ";", _
+        dbOpenDynaset)
+
+    If rows.EOF Then
+        Err.Raise _
+            vbObjectError + 7265, _
+            "UpdateProjectWorkflowStatus", _
+            "The project could not be found while updating " & _
+            "its workflow status."
+    End If
+
+    currentStatus = UCase$(Trim$(Nz( _
+        rows!Status, _
+        vbNullString)))
+
+    Select Case currentStatus
+        Case "CANCELLED", _
+             "SHIPPED", _
+             "FINISHED RECEIVED", _
+             "READY TO SHIP"
+
+            rows.close
+            Set rows = Nothing
+            Exit Sub
+    End Select
+
+    If mIssueType = MODE_TOOL_RETURN Then
+        If currentStatus <> "TOOLS ISSUED" Then
+            rows.close
+            Set rows = Nothing
+            Exit Sub
+        End If
+
+        nextStatus = "In Progress"
+    Else
+        If ModeRequirementIsComplete(db) Then
+            If mIssueType = MODE_MATERIALS Then
+                nextStatus = "Materials Issued"
+            Else
+                nextStatus = "Tools Issued"
+            End If
+        Else
+            nextStatus = "In Progress"
+        End If
+    End If
+
+    rows.Edit
+    rows!Status = nextStatus
+    SetRecordsetFieldIfExists rows, "UpdatedOn", Now()
+    rows.Update
+
+    rows.close
+    Set rows = Nothing
+
+End Sub
+
+
+Private Function ModeRequirementIsComplete( _
+    ByVal db As DAO.Database _
+) As Boolean
+
+    Dim sourceRows As DAO.Recordset
+    Dim sourceSql As String
+    Dim ItemID As Long
+    Dim requiredQuantity As Double
+    Dim satisfiedQuantity As Double
+    Dim remainingQuantity As Double
+    Dim satisfiedQuantity As Double
+
+    ModeRequirementIsComplete = True
+
+    If mIssueType = MODE_MATERIALS Then
+        sourceSql = _
+            "SELECT ComponentItemID AS ItemID, " & _
+                "Sum(Nz(QuantityPerOutput,0)) AS LineQty " & _
+            "FROM T_AssemblyTemplateMaterials " & _
+            "WHERE AssemblyTemplateID=" & _
+                CStr(mAssemblyTemplateID) & " " & _
+            "GROUP BY ComponentItemID;"
+    Else
+        sourceSql = _
+            "SELECT ToolItemID AS ItemID, " & _
+                "Sum(Nz(QuantityRequired,0)) AS LineQty " & _
+            "FROM T_AssemblyTemplateTools " & _
+            "WHERE AssemblyTemplateID=" & _
+                CStr(mAssemblyTemplateID) & " " & _
+            "GROUP BY ToolItemID;"
+    End If
+
+    Set sourceRows = _
+        db.OpenRecordset(sourceSql, dbOpenSnapshot)
+
+    Do While Not sourceRows.EOF
+        ItemID = Nz(sourceRows!ItemID, 0)
+
+        If mIssueType = MODE_MATERIALS Then
+            requiredQuantity = _
+                Nz(sourceRows!LineQty, 0) * mProjectQuantity
+        Else
+            requiredQuantity = Nz(sourceRows!LineQty, 0)
+        End If
+
+        satisfiedQuantity = _
+            GetPostedRequirementQuantity(db, ItemID)
+
+        If satisfiedQuantity + QUANTITY_EPSILON < _
+           requiredQuantity Then
+
+            ModeRequirementIsComplete = False
+            Exit Do
+        End If
+
+        sourceRows.MoveNext
+    Loop
+
+    sourceRows.close
+    Set sourceRows = Nothing
+
+End Function
+
+
+Private Function GetTemplateRequiredQuantity( _
+    ByVal db As DAO.Database, _
+    ByVal ItemID As Long _
+) As Double
+
+    Dim rows As DAO.Recordset
+    Dim sourceSql As String
+
+    If mIssueType = MODE_MATERIALS Then
+        sourceSql = _
+            "SELECT Sum(Nz(QuantityPerOutput,0)) AS LineQty " & _
+            "FROM T_AssemblyTemplateMaterials " & _
+            "WHERE AssemblyTemplateID=" & _
+                CStr(mAssemblyTemplateID) & _
+            " AND ComponentItemID=" & CStr(ItemID) & ";"
+    Else
+        sourceSql = _
+            "SELECT Sum(Nz(QuantityRequired,0)) AS LineQty " & _
+            "FROM T_AssemblyTemplateTools " & _
+            "WHERE AssemblyTemplateID=" & _
+                CStr(mAssemblyTemplateID) & _
+            " AND ToolItemID=" & CStr(ItemID) & ";"
+    End If
+
+    Set rows = db.OpenRecordset(sourceSql, dbOpenSnapshot)
+
+    If Not rows.EOF Then
+        GetTemplateRequiredQuantity = Nz(rows!LineQty, 0)
+    End If
+
+    If mIssueType = MODE_MATERIALS Then
+        GetTemplateRequiredQuantity = _
+            GetTemplateRequiredQuantity * mProjectQuantity
+    End If
+
+    rows.close
+    Set rows = Nothing
+
+End Function
+
+
+Private Function GetPostedRequirementQuantity( _
+    ByVal db As DAO.Database, _
+    ByVal ItemID As Long _
+) As Double
+
+    Dim issuedQuantity As Double
+    Dim returnedQuantity As Double
+
+    If mIssueType = MODE_MATERIALS Then
+        GetPostedRequirementQuantity = _
+            GetMovementQuantity( _
+                db, _
+                ItemID, _
+                MOVEMENT_STOCK_OUT, _
+                MaterialIssueReasonClause("M"))
+    Else
+        issuedQuantity = _
+            GetMovementQuantity( _
+                db, _
+                ItemID, _
+                MOVEMENT_STOCK_OUT, _
+                ToolIssueReasonClause("M"))
+
+        returnedQuantity = _
+            GetMovementQuantity( _
+                db, _
+                ItemID, _
+                MOVEMENT_STOCK_IN, _
+                ToolReturnReasonClause("M"))
+
+        GetPostedRequirementQuantity = _
+            issuedQuantity - returnedQuantity
+
+        If GetPostedRequirementQuantity < 0 Then
+            GetPostedRequirementQuantity = 0
+        End If
+    End If
+
+End Function
+
+
+Private Function GetMovementQuantity( _
+    ByVal db As DAO.Database, _
+    ByVal ItemID As Long, _
+    ByVal MovementTypeCode As String, _
+    ByVal reasonClause As String _
+) As Double
+
+    Dim rows As DAO.Recordset
+
+    Set rows = db.OpenRecordset( _
+        "SELECT Sum(Nz(M.Quantity,0)) AS MovementQty " & _
+        "FROM T_StockMovements AS M " & _
+        "INNER JOIN T_StockMovementTypes AS MT " & _
+            "ON M.MovementTypeID=MT.MovementTypeID " & _
+        "WHERE M.ProjectID=" & CStr(mProjectID) & _
+        " AND M.ItemID=" & CStr(ItemID) & _
+        " AND MT.MovementTypeCode=" & _
+            SqlText(MovementTypeCode) & _
+        " AND " & reasonClause & ";", _
+        dbOpenSnapshot)
+
+    If Not rows.EOF Then
+        GetMovementQuantity = Nz(rows!MovementQty, 0)
+    End If
+
+    rows.close
+    Set rows = Nothing
+
+End Function
+
+
+Private Function GetSerializedUnitCost( _
+    ByVal db As DAO.Database, _
+    ByVal ItemID As Long, _
+    ByVal ItemInstanceID As Long _
+) As Variant
+
+    Dim rows As DAO.Recordset
+
+    Set rows = db.OpenRecordset( _
+        "SELECT UnitCost FROM T_ItemInstances " & _
+        "WHERE ItemInstanceID=" & CStr(ItemInstanceID) & _
+        " AND ItemID=" & CStr(ItemID) & ";", _
+        dbOpenSnapshot)
+
+    If rows.EOF Then
+        GetSerializedUnitCost = Null
+    ElseIf IsNull(rows!unitCost) Then
+        GetSerializedUnitCost = Null
+    Else
+        GetSerializedUnitCost = rows!unitCost
+    End If
+
+    rows.close
+    Set rows = Nothing
+
+End Function
+
+
+Private Function GetLatestItemUnitCost( _
+    ByVal db As DAO.Database, _
+    ByVal ItemID As Long _
+) As Variant
+
+    Dim rows As DAO.Recordset
+
+    Set rows = db.OpenRecordset( _
+        "SELECT TOP 1 UnitCost " & _
+        "FROM T_StockMovements " & _
+        "WHERE ItemID=" & CStr(ItemID) & _
+        " AND UnitCost Is Not Null " & _
+        "ORDER BY MovementDate DESC, StockMovementID DESC;", _
+        dbOpenSnapshot)
+
+    If rows.EOF Then
+        GetLatestItemUnitCost = Null
+    ElseIf IsNull(rows!unitCost) Then
+        GetLatestItemUnitCost = Null
+    Else
+        GetLatestItemUnitCost = rows!unitCost
+    End If
+
+    rows.close
+    Set rows = Nothing
+
+End Function
+
+
+Private Function GetMovementTypeID( _
+    ByVal db As DAO.Database, _
+    ByVal MovementTypeCode As String _
+) As Long
+
+    Dim rows As DAO.Recordset
+
+    Set rows = db.OpenRecordset( _
+        "SELECT MovementTypeID " & _
+        "FROM T_StockMovementTypes " & _
+        "WHERE MovementTypeCode=" & _
+            SqlText(MovementTypeCode) & ";", _
+        dbOpenSnapshot)
+
+    If rows.EOF Then
+        Err.Raise _
+            vbObjectError + 7266, _
+            "GetMovementTypeID", _
+            "Movement type code '" & MovementTypeCode & _
+            "' was not found in T_StockMovementTypes."
+    End If
+
+    GetMovementTypeID = CLng(rows!MovementTypeID)
+
+    rows.close
+    Set rows = Nothing
+
+End Function
+
+
+Private Function PostingReason() As String
+
+    Select Case mIssueType
+        Case MODE_MATERIALS
+            PostingReason = REASON_MATERIAL_ISSUE
+
+        Case MODE_TOOLS
+            PostingReason = REASON_TOOL_ISSUE
+
+        Case MODE_TOOL_RETURN
+            PostingReason = REASON_TOOL_RETURN
+    End Select
+
+End Function
+
+
+Private Function PostingActionTitle() As String
+
+    Select Case mIssueType
+        Case MODE_MATERIALS
+            PostingActionTitle = "Material Issue"
+
+        Case MODE_TOOLS
+            PostingActionTitle = "Tool Issue"
+
+        Case MODE_TOOL_RETURN
+            PostingActionTitle = "Tool Return"
+    End Select
+
+End Function
+
+
+Private Function PostingActionDescription() As String
+
+    Select Case mIssueType
+        Case MODE_MATERIALS
+            PostingActionDescription = "project material issue"
+
+        Case MODE_TOOLS
+            PostingActionDescription = "project tool issue"
+
+        Case MODE_TOOL_RETURN
+            PostingActionDescription = "project tool return"
+    End Select
+
+End Function
+
+
+'=============================================================
+' LOAD THE SELECTED MODE
+'=============================================================
+
+Private Function LoadModeRows( _
+    ByVal showSuccessMessage As Boolean, _
+    Optional ByVal showEmptyMessage As Boolean = True _
+) As Boolean
+
+    On Error GoTo Err_Handler
+
+    Dim workspaceObject As DAO.Workspace
+    Dim db As DAO.Database
+    Dim stagingRows As DAO.Recordset
+    Dim loadedCount As Long
+    Dim transactionStarted As Boolean
+    Dim savedErrorNumber As Long
+    Dim savedErrorDescription As String
+
+    LoadModeRows = False
+
+    If mIssueType <> MODE_TOOL_RETURN Then
+        If mAssemblyTemplateID <= 0 Then
+            ClearStagingRows CurrentDb
+            MsgBox _
+                "Select and save an assembly template on the project " & _
+                "before loading " & LCase$(mIssueType) & ".", _
+                vbExclamation, _
+                "Template Required"
+            RequerySubform
+            Exit Function
+        End If
+
+        If mIssueType = MODE_MATERIALS And mProjectQuantity <= 0 Then
+            ClearStagingRows CurrentDb
+            MsgBox _
+                "The project Build Quantity must be greater than zero.", _
+                vbExclamation, _
+                "Build Quantity Required"
+            RequerySubform
+            Exit Function
+        End If
+    End If
+
+    Set workspaceObject = DBEngine.Workspaces(0)
+    Set db = CurrentDb
+
+    workspaceObject.BeginTrans
+    transactionStarted = True
+
+    ClearStagingRows db
+    Set stagingRows = db.OpenRecordset(STAGING_TABLE, dbOpenDynaset)
+
+    If mIssueType = MODE_TOOL_RETURN Then
+        LoadOutstandingToolRows db, stagingRows, loadedCount
+    Else
+        LoadTemplateIssueRows db, stagingRows, loadedCount
+    End If
+
+    stagingRows.close
+    Set stagingRows = Nothing
+
+    workspaceObject.CommitTrans dbForceOSFlush
+    transactionStarted = False
+
+    RequerySubform
+
+    If loadedCount <= 0 Then
+        If showEmptyMessage Then
+            ShowNoRowsMessage
+        End If
+        Exit Function
+    End If
+
+    If showSuccessMessage Then
+        If mIssueType = MODE_TOOL_RETURN Then
+            MsgBox _
+                CStr(loadedCount) & _
+                " outstanding tool row(s) loaded.", _
+                vbInformation, _
+                "Outstanding Tools Refreshed"
+        Else
+            MsgBox _
+                CStr(loadedCount) & " " & LCase$(mIssueType) & _
+                " staging row(s) loaded.", _
+                vbInformation, _
+                "Template Loaded"
+        End If
+    End If
+
+    LoadModeRows = True
+
+Exit_Handler:
+    On Error Resume Next
+    If Not stagingRows Is Nothing Then stagingRows.close
+    Set stagingRows = Nothing
+    Set db = Nothing
+    Set workspaceObject = Nothing
+    On Error GoTo 0
+    Exit Function
+
+Err_Handler:
+    savedErrorNumber = Err.Number
+    savedErrorDescription = Err.Description
+
+    On Error Resume Next
+    If transactionStarted Then workspaceObject.Rollback
+    On Error GoTo 0
+
+    MsgBox _
+        "The project item rows could not be loaded." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & savedErrorNumber & vbCrLf & _
+        "Details: " & savedErrorDescription, _
+        vbExclamation, _
+        "Load Project Items"
+    Resume Exit_Handler
+
+End Function
+
+
+Private Sub ShowNoRowsMessage()
+
+    If mIssueType = MODE_TOOL_RETURN Then
+        MsgBox _
+            "No outstanding tools were found for this project." & _
+            vbCrLf & vbCrLf & _
+            "Only project-linked Tool Issue stock movements that have " & _
+            "not yet been returned appear here.", _
+            vbInformation, _
+            "No Outstanding Tools"
+    ElseIf TemplateModeLineCount() > 0 And _
+           ModeRequirementIsComplete(CurrentDb) Then
+
+        MsgBox _
+            "The full " & LCase$(mIssueType) & _
+            " requirement has already been posted for this project.", _
+            vbInformation, _
+            mIssueType & " Already Posted"
+    Else
+        MsgBox _
+            "No " & LCase$(mIssueType) & _
+            " were found for the project's selected template." & _
+            vbCrLf & vbCrLf & _
+            "Template ID: " & CStr(mAssemblyTemplateID), _
+            vbExclamation, _
+            "No Template Lines"
+    End If
+
+End Sub
+
+
+Private Function TemplateModeLineCount() As Long
+
+    If mAssemblyTemplateID <= 0 Then
+        Exit Function
+    End If
+
+    If mIssueType = MODE_MATERIALS Then
+        TemplateModeLineCount = DCount( _
+            "*", _
+            "T_AssemblyTemplateMaterials", _
+            "AssemblyTemplateID=" & _
+                CStr(mAssemblyTemplateID))
+    Else
+        TemplateModeLineCount = DCount( _
+            "*", _
+            "T_AssemblyTemplateTools", _
+            "AssemblyTemplateID=" & _
+                CStr(mAssemblyTemplateID))
+    End If
+
+End Function
+
+
+'=============================================================
+' MATERIAL / TOOL TEMPLATE LOADING
+'=============================================================
+
+Private Sub LoadTemplateIssueRows( _
+    ByVal db As DAO.Database, _
+    ByVal stagingRows As DAO.Recordset, _
+    ByRef loadedCount As Long _
+)
+
+    On Error GoTo Err_Handler
+
+    Dim sourceRows As DAO.Recordset
+    Dim sourceSql As String
+    Dim ItemID As Long
+    Dim requiredQuantity As Double
+    Dim savedErrorNumber As Long
+    Dim savedErrorDescription As String
+    Dim savedErrorSource As String
+
+    If mIssueType = MODE_MATERIALS Then
+        sourceSql = _
+            "SELECT ComponentItemID AS ItemID, " & _
+                "Sum(Nz(QuantityPerOutput,0)) AS LineQty " & _
+            "FROM T_AssemblyTemplateMaterials " & _
+            "WHERE AssemblyTemplateID=" & _
+                CStr(mAssemblyTemplateID) & " " & _
+            "GROUP BY ComponentItemID " & _
+            "ORDER BY ComponentItemID;"
+    Else
+        sourceSql = _
+            "SELECT ToolItemID AS ItemID, " & _
+                "Sum(Nz(QuantityRequired,0)) AS LineQty " & _
+            "FROM T_AssemblyTemplateTools " & _
+            "WHERE AssemblyTemplateID=" & _
+                CStr(mAssemblyTemplateID) & " " & _
+            "GROUP BY ToolItemID " & _
+            "ORDER BY ToolItemID;"
+    End If
+
+    Set sourceRows = db.OpenRecordset(sourceSql, dbOpenSnapshot)
+
+    Do While Not sourceRows.EOF
+        ItemID = Nz(sourceRows!ItemID, 0)
+
+        If mIssueType = MODE_MATERIALS Then
+            requiredQuantity = _
+                Nz(sourceRows!LineQty, 0) * mProjectQuantity
+        Else
+            requiredQuantity = Nz(sourceRows!LineQty, 0)
+        End If
+
+        satisfiedQuantity = _
+            GetPostedRequirementQuantity(db, ItemID)
+        remainingQuantity = _
+            requiredQuantity - satisfiedQuantity
+
+        If remainingQuantity < 0 Then
+            remainingQuantity = 0
+        End If
+
+        If ItemID > 0 And _
+           remainingQuantity > QUANTITY_EPSILON Then
+
+            InsertTemplateItemRows _
+                db, _
+                stagingRows, _
+                ItemID, _
+                remainingQuantity, _
+                loadedCount
+        End If
+
+        sourceRows.MoveNext
+    Loop
+
+Exit_Handler:
+    On Error Resume Next
+    If Not sourceRows Is Nothing Then sourceRows.close
+    Set sourceRows = Nothing
+    On Error GoTo 0
+    Exit Sub
+
+Err_Handler:
+    savedErrorNumber = Err.Number
+    savedErrorDescription = Err.Description
+    savedErrorSource = Err.Source
+
+    On Error Resume Next
+    If Not sourceRows Is Nothing Then sourceRows.close
+    Set sourceRows = Nothing
+    On Error GoTo 0
+
+    Err.Raise _
+        savedErrorNumber, _
+        savedErrorSource, _
+        savedErrorDescription
+
+End Sub
+
+
+Private Sub InsertTemplateItemRows( _
+    ByVal db As DAO.Database, _
+    ByVal stagingRows As DAO.Recordset, _
+    ByVal ItemID As Long, _
+    ByVal requiredQuantity As Double, _
+    ByRef loadedCount As Long _
+)
+
+    If ItemRequiresSerial(db, ItemID) Then
+        InsertSerializedIssueRows _
+            db, _
+            stagingRows, _
+            ItemID, _
+            requiredQuantity, _
+            loadedCount
+    Else
+        InsertBulkIssueRow _
+            db, _
+            stagingRows, _
+            ItemID, _
+            requiredQuantity, _
+            loadedCount
+    End If
+
+End Sub
+
+
+Private Sub InsertBulkIssueRow( _
+    ByVal db As DAO.Database, _
+    ByVal stagingRows As DAO.Recordset, _
+    ByVal ItemID As Long, _
+    ByVal requiredQuantity As Double, _
+    ByRef loadedCount As Long _
+)
+
+    Dim AvailableQuantity As Double
+    Dim FromLocationID As Long
+    Dim rowNotes As String
+    Dim selectRow As Boolean
+
+    GetBulkStockPosition _
+        db, ItemID, AvailableQuantity, FromLocationID
+
+    selectRow = _
+        AvailableQuantity + QUANTITY_EPSILON >= requiredQuantity _
+        And FromLocationID > 0
+
+    If AvailableQuantity + QUANTITY_EPSILON < requiredQuantity Then
+        rowNotes = _
+            "Short by " & _
+            Format$(requiredQuantity - AvailableQuantity, _
+                "General Number") & "."
+    ElseIf FromLocationID <= 0 Then
+        rowNotes = "No source stock location is available."
+    End If
+
+    InsertStagingRecord _
+        stagingRows, _
+        ItemID, _
+        0, _
+        FromLocationID, _
+        0, _
+        0, _
+        requiredQuantity, _
+        AvailableQuantity, _
+        requiredQuantity, _
+        selectRow, _
+        rowNotes, _
+        loadedCount
+
+End Sub
+
+
+Private Sub InsertSerializedIssueRows( _
+    ByVal db As DAO.Database, _
+    ByVal stagingRows As DAO.Recordset, _
+    ByVal ItemID As Long, _
+    ByVal requiredQuantity As Double, _
+    ByRef loadedCount As Long _
+)
+
+    On Error GoTo Err_Handler
+
+    Dim instanceRows As DAO.Recordset
+    Dim requiredUnits As Long
+    Dim availableUnitsLoaded As Long
+    Dim missingUnits As Long
+    Dim savedErrorNumber As Long
+    Dim savedErrorDescription As String
+    Dim savedErrorSource As String
+
+    If Abs(requiredQuantity - Fix(requiredQuantity)) > _
+       QUANTITY_EPSILON Then
+        Err.Raise _
+            vbObjectError + 7204, _
+            "InsertSerializedIssueRows", _
+            "Serialized item ID " & CStr(ItemID) & _
+            " has a non-whole required quantity of " & _
+            Format$(requiredQuantity, "General Number") & "."
+    End If
+
+    requiredUnits = CLng(requiredQuantity)
+
+    Set instanceRows = db.OpenRecordset( _
+        "SELECT ItemInstanceID, CurrentLocationID " & _
+        "FROM T_ItemInstances " & _
+        "WHERE ItemID=" & CStr(ItemID) & _
+        " AND Nz(CurrentStatus,'')='In Stock'" & _
+        " AND CurrentLocationID Is Not Null " & _
+        "ORDER BY SerialNumber, ItemInstanceID;", _
+        dbOpenSnapshot)
+
+    Do While Not instanceRows.EOF _
+             And availableUnitsLoaded < requiredUnits
+
+        InsertStagingRecord _
+            stagingRows, _
+            ItemID, _
+            CLng(instanceRows!ItemInstanceID), _
+            Nz(instanceRows!CurrentLocationID, 0), _
+            0, _
+            0, _
+            1, _
+            1, _
+            1, _
+            True, _
+            vbNullString, _
+            loadedCount
+
+        availableUnitsLoaded = availableUnitsLoaded + 1
+        instanceRows.MoveNext
+    Loop
+
+    missingUnits = requiredUnits - availableUnitsLoaded
+
+    If missingUnits > 0 Then
+        InsertStagingRecord _
+            stagingRows, _
+            ItemID, _
+            0, _
+            0, _
+            0, _
+            0, _
+            missingUnits, _
+            0, _
+            missingUnits, _
+            False, _
+            CStr(missingUnits) & _
+                " serialized unit(s) are not currently in stock.", _
+            loadedCount
+    End If
+
+Exit_Handler:
+    On Error Resume Next
+    If Not instanceRows Is Nothing Then instanceRows.close
+    Set instanceRows = Nothing
+    On Error GoTo 0
+    Exit Sub
+
+Err_Handler:
+    savedErrorNumber = Err.Number
+    savedErrorDescription = Err.Description
+    savedErrorSource = Err.Source
+
+    On Error Resume Next
+    If Not instanceRows Is Nothing Then instanceRows.close
+    Set instanceRows = Nothing
+    On Error GoTo 0
+
+    Err.Raise _
+        savedErrorNumber, _
+        savedErrorSource, _
+        savedErrorDescription
+
+End Sub
+
+
+'=============================================================
+' OUTSTANDING TOOL RETURN LOADING
+'=============================================================
+
+Private Sub LoadOutstandingToolRows( _
+    ByVal db As DAO.Database, _
+    ByVal stagingRows As DAO.Recordset, _
+    ByRef loadedCount As Long _
+)
+
+    LoadOutstandingSerializedTools db, stagingRows, loadedCount
+    LoadOutstandingBulkTools db, stagingRows, loadedCount
+
+End Sub
+
+
+Private Sub LoadOutstandingSerializedTools( _
+    ByVal db As DAO.Database, _
+    ByVal stagingRows As DAO.Recordset, _
+    ByRef loadedCount As Long _
+)
+
+    On Error GoTo Err_Handler
+
+    Dim sourceRows As DAO.Recordset
+    Dim seenInstances As Object
+    Dim ItemInstanceID As Long
+    Dim sourceMovementID As Long
+    Dim ItemID As Long
+    Dim returnLocationID As Long
+    Dim rowAvailable As Double
+    Dim rowNotes As String
+    Dim savedErrorNumber As Long
+    Dim savedErrorDescription As String
+    Dim savedErrorSource As String
+
+    Set seenInstances = CreateObject("Scripting.Dictionary")
+
+    Set sourceRows = db.OpenRecordset( _
+        "SELECT " & _
+            "M.StockMovementID, " & _
+            "M.MovementDate, " & _
+            "M.ItemID, " & _
+            "M.ItemInstanceID, " & _
+            "M.FromLocationID, " & _
+            "II.ItemInstanceID AS ExistingInstanceID, " & _
+            "II.CurrentStatus " & _
+        "FROM " & _
+            "(T_StockMovements AS M " & _
+            "INNER JOIN T_StockMovementTypes AS MT " & _
+                "ON M.MovementTypeID=MT.MovementTypeID) " & _
+            "LEFT JOIN T_ItemInstances AS II " & _
+                "ON M.ItemInstanceID=II.ItemInstanceID " & _
+        "WHERE M.ProjectID=" & CStr(mProjectID) & _
+            " AND MT.MovementTypeCode=" & _
+                SqlText(MOVEMENT_STOCK_OUT) & _
+            " AND M.ItemInstanceID Is Not Null" & _
+            " AND " & ToolIssueReasonClause("M") & " " & _
+        "ORDER BY M.StockMovementID DESC;", _
+        dbOpenSnapshot)
+
+    Do While Not sourceRows.EOF
+        ItemInstanceID = Nz(sourceRows!ItemInstanceID, 0)
+        sourceMovementID = Nz(sourceRows!StockMovementID, 0)
+
+        If ItemInstanceID > 0 Then
+            If Not seenInstances.Exists(CStr(ItemInstanceID)) Then
+                seenInstances.Add CStr(ItemInstanceID), True
+
+                If Not HasLaterStockIn( _
+                    db, ItemInstanceID, sourceMovementID) Then
+
+                    If StrComp( _
+                        Nz(sourceRows!currentStatus, vbNullString), _
+                        "In Stock", _
+                        vbTextCompare) <> 0 Then
+
+                        ItemID = Nz(sourceRows!ItemID, 0)
+                        returnLocationID = _
+                            Nz(sourceRows!FromLocationID, 0)
+
+                        If returnLocationID <= 0 Then
+                            returnLocationID = _
+                                GetDefaultLocationID(db, ItemID)
+                        End If
+
+                        rowAvailable = 1
+                        rowNotes = vbNullString
+
+                        If Nz(sourceRows!ExistingInstanceID, 0) <= 0 Then
+                            rowAvailable = 0
+                            rowNotes = _
+                                "The serialized instance record is missing."
+                        ElseIf returnLocationID <= 0 Then
+                            rowAvailable = 0
+                            rowNotes = _
+                                "No return stock location is available."
+                        End If
+
+                        InsertStagingRecord _
+                            stagingRows, _
+                            ItemID, _
+                            ItemInstanceID, _
+                            0, _
+                            returnLocationID, _
+                            sourceMovementID, _
+                            1, _
+                            rowAvailable, _
+                            1, _
+                            False, _
+                            rowNotes, _
+                            loadedCount
+                    End If
+                End If
+            End If
+        End If
+
+        sourceRows.MoveNext
+    Loop
+
+Exit_Handler:
+    On Error Resume Next
+    If Not sourceRows Is Nothing Then sourceRows.close
+    Set sourceRows = Nothing
+    Set seenInstances = Nothing
+    On Error GoTo 0
+    Exit Sub
+
+Err_Handler:
+    savedErrorNumber = Err.Number
+    savedErrorDescription = Err.Description
+    savedErrorSource = Err.Source
+
+    On Error Resume Next
+    If Not sourceRows Is Nothing Then sourceRows.close
+    Set sourceRows = Nothing
+    Set seenInstances = Nothing
+    On Error GoTo 0
+
+    Err.Raise _
+        savedErrorNumber, _
+        savedErrorSource, _
+        savedErrorDescription
+
+End Sub
+
+
+Private Sub LoadOutstandingBulkTools( _
+    ByVal db As DAO.Database, _
+    ByVal stagingRows As DAO.Recordset, _
+    ByRef loadedCount As Long _
+)
+
+    On Error GoTo Err_Handler
+
+    Dim sourceRows As DAO.Recordset
+    Dim ItemID As Long
+    Dim issuedQuantity As Double
+    Dim returnedQuantity As Double
+    Dim outstandingQuantity As Double
+    Dim returnLocationID As Long
+    Dim sourceMovementID As Long
+    Dim rowAvailable As Double
+    Dim rowNotes As String
+    Dim savedErrorNumber As Long
+    Dim savedErrorDescription As String
+    Dim savedErrorSource As String
+
+    Set sourceRows = db.OpenRecordset( _
+        "SELECT " & _
+            "M.ItemID, " & _
+            "Sum(Nz(M.Quantity,0)) AS IssuedQty, " & _
+            "Max(Nz(M.FromLocationID,0)) AS ReturnLocationID, " & _
+            "Max(M.StockMovementID) AS SourceMovementID " & _
+        "FROM T_StockMovements AS M " & _
+            "INNER JOIN T_StockMovementTypes AS MT " & _
+                "ON M.MovementTypeID=MT.MovementTypeID " & _
+        "WHERE M.ProjectID=" & CStr(mProjectID) & _
+            " AND MT.MovementTypeCode=" & _
+                SqlText(MOVEMENT_STOCK_OUT) & _
+            " AND M.ItemInstanceID Is Null" & _
+            " AND " & ToolIssueReasonClause("M") & " " & _
+        "GROUP BY M.ItemID " & _
+        "HAVING Sum(Nz(M.Quantity,0))>0 " & _
+        "ORDER BY M.ItemID;", _
+        dbOpenSnapshot)
+
+    Do While Not sourceRows.EOF
+        ItemID = Nz(sourceRows!ItemID, 0)
+        issuedQuantity = Nz(sourceRows!IssuedQty, 0)
+        sourceMovementID = Nz(sourceRows!sourceMovementID, 0)
+
+        returnedQuantity = GetBulkReturnedQuantity(db, ItemID)
+        outstandingQuantity = issuedQuantity - returnedQuantity
+
+        If outstandingQuantity > QUANTITY_EPSILON Then
+            returnLocationID = Nz(sourceRows!returnLocationID, 0)
+
+            If returnLocationID <= 0 Then
+                returnLocationID = GetDefaultLocationID(db, ItemID)
+            End If
+
+            rowAvailable = outstandingQuantity
+            rowNotes = vbNullString
+
+            If returnLocationID <= 0 Then
+                rowAvailable = 0
+                rowNotes = "No return stock location is available."
+            End If
+
+            InsertStagingRecord _
+                stagingRows, _
+                ItemID, _
+                0, _
+                0, _
+                returnLocationID, _
+                sourceMovementID, _
+                outstandingQuantity, _
+                rowAvailable, _
+                outstandingQuantity, _
+                False, _
+                rowNotes, _
+                loadedCount
+        End If
+
+        sourceRows.MoveNext
+    Loop
+
+Exit_Handler:
+    On Error Resume Next
+    If Not sourceRows Is Nothing Then sourceRows.close
+    Set sourceRows = Nothing
+    On Error GoTo 0
+    Exit Sub
+
+Err_Handler:
+    savedErrorNumber = Err.Number
+    savedErrorDescription = Err.Description
+    savedErrorSource = Err.Source
+
+    On Error Resume Next
+    If Not sourceRows Is Nothing Then sourceRows.close
+    Set sourceRows = Nothing
+    On Error GoTo 0
+
+    Err.Raise _
+        savedErrorNumber, _
+        savedErrorSource, _
+        savedErrorDescription
+
+End Sub
+
+
+Private Function HasLaterStockIn( _
+    ByVal db As DAO.Database, _
+    ByVal ItemInstanceID As Long, _
+    ByVal sourceMovementID As Long _
+) As Boolean
+
+    Dim rows As DAO.Recordset
+
+    Set rows = db.OpenRecordset( _
+        "SELECT TOP 1 M.StockMovementID " & _
+        "FROM T_StockMovements AS M " & _
+            "INNER JOIN T_StockMovementTypes AS MT " & _
+                "ON M.MovementTypeID=MT.MovementTypeID " & _
+        "WHERE M.ItemInstanceID=" & CStr(ItemInstanceID) & _
+            " AND M.StockMovementID>" & CStr(sourceMovementID) & _
+            " AND MT.MovementTypeCode=" & _
+                SqlText(MOVEMENT_STOCK_IN) & _
+        " ORDER BY M.StockMovementID;", _
+        dbOpenSnapshot)
+
+    HasLaterStockIn = Not rows.EOF
+
+    rows.close
+    Set rows = Nothing
+
+End Function
+
+
+Private Function GetBulkReturnedQuantity( _
+    ByVal db As DAO.Database, _
+    ByVal ItemID As Long _
+) As Double
+
+    Dim rows As DAO.Recordset
+
+    Set rows = db.OpenRecordset( _
+        "SELECT Sum(Nz(M.Quantity,0)) AS ReturnedQty " & _
+        "FROM T_StockMovements AS M " & _
+            "INNER JOIN T_StockMovementTypes AS MT " & _
+                "ON M.MovementTypeID=MT.MovementTypeID " & _
+        "WHERE M.ProjectID=" & CStr(mProjectID) & _
+            " AND M.ItemID=" & CStr(ItemID) & _
+            " AND M.ItemInstanceID Is Null" & _
+            " AND MT.MovementTypeCode=" & _
+                SqlText(MOVEMENT_STOCK_IN) & _
+            " AND " & ToolReturnReasonClause("M") & ";", _
+        dbOpenSnapshot)
+
+    If Not rows.EOF Then
+        GetBulkReturnedQuantity = Nz(rows!ReturnedQty, 0)
+    End If
+
+    rows.close
+    Set rows = Nothing
+
+End Function
+
+
+Private Function MaterialIssueReasonClause( _
+    ByVal tableAlias As String _
+) As String
+
+    MaterialIssueReasonClause = _
+        "UCase(Trim(Nz(" & tableAlias & ".[Reason],''))) " & _
+        "In ('MATERIAL ISSUE','PROJECT MATERIAL ISSUE'," & _
+        "'ISSUE MATERIAL TO PROJECT')"
+
+End Function
+
+
+Private Function ToolIssueReasonClause( _
+    ByVal tableAlias As String _
+) As String
+
+    ToolIssueReasonClause = _
+        "UCase(Trim(Nz(" & tableAlias & ".[Reason],''))) " & _
+        "In ('TOOL ISSUE','PROJECT TOOL ISSUE'," & _
+        "'ISSUE TOOL TO PROJECT')"
+
+End Function
+
+
+Private Function ToolReturnReasonClause( _
+    ByVal tableAlias As String _
+) As String
+
+    ToolReturnReasonClause = _
+        "UCase(Trim(Nz(" & tableAlias & ".[Reason],''))) " & _
+        "In ('TOOL RETURN','PROJECT TOOL RETURN'," & _
+        "'RETURN FROM PROJECT','RETURN TO STOCK'," & _
+        "'RETURNED TO STOCK')"
+
+End Function
+
+
+'=============================================================
+' STAGING INSERT / STOCK AVAILABILITY HELPERS
+'=============================================================
+
+Private Sub InsertStagingRecord( _
+    ByVal stagingRows As DAO.Recordset, _
+    ByVal ItemID As Long, _
+    ByVal ItemInstanceID As Long, _
+    ByVal FromLocationID As Long, _
+    ByVal ToLocationID As Long, _
+    ByVal sourceMovementID As Long, _
+    ByVal requiredQuantity As Double, _
+    ByVal AvailableQuantity As Double, _
+    ByVal actionQuantity As Double, _
+    ByVal selected As Boolean, _
+    ByVal rowNotes As String, _
+    ByRef loadedCount As Long _
+)
+
+    stagingRows.addnew
+
+    stagingRows!ProjectID = mProjectID
+    stagingRows!issueType = mIssueType
+    stagingRows!ItemID = ItemID
+
+    If ItemInstanceID > 0 Then
+        stagingRows!ItemInstanceID = ItemInstanceID
+    Else
+        stagingRows!ItemInstanceID = Null
+    End If
+
+    If FromLocationID > 0 Then
+        stagingRows!FromLocationID = FromLocationID
+    Else
+        stagingRows!FromLocationID = Null
+    End If
+
+    If ToLocationID > 0 Then
+        stagingRows!ToLocationID = ToLocationID
+    Else
+        stagingRows!ToLocationID = Null
+    End If
+
+    If sourceMovementID > 0 Then
+        stagingRows!sourceMovementID = sourceMovementID
+    Else
+        stagingRows!sourceMovementID = Null
+    End If
+
+    stagingRows!requiredQty = requiredQuantity
+    stagingRows!availableQty = AvailableQuantity
+    stagingRows!IssueQty = actionQuantity
+    stagingRows!selected = selected
+
+    If Len(Trim$(rowNotes)) > 0 Then
+        stagingRows!Notes = Trim$(rowNotes)
+    Else
+        stagingRows!Notes = Null
+    End If
+
+    stagingRows.Update
+    loadedCount = loadedCount + 1
+
+End Sub
+
+
+Private Sub GetBulkStockPosition( _
+    ByVal db As DAO.Database, _
+    ByVal ItemID As Long, _
+    ByRef AvailableQuantity As Double, _
+    ByRef FromLocationID As Long _
+)
+
+    Dim rows As DAO.Recordset
+
+    AvailableQuantity = 0
+    FromLocationID = 0
+
+    Set rows = db.OpenRecordset( _
+        "SELECT TOP 1 " & _
+            "CurrentLocationID, " & _
+            "QuantityOnHand, " & _
+            "QuantityReserved " & _
+        "FROM T_StockBalances " & _
+        "WHERE ItemID=" & CStr(ItemID) & " " & _
+        "ORDER BY " & _
+            "(Nz(QuantityOnHand,0)-Nz(QuantityReserved,0)) DESC;", _
+        dbOpenSnapshot)
+
+    If Not rows.EOF Then
+        AvailableQuantity = _
+            Nz(rows!QuantityOnHand, 0) - _
+            Nz(rows!QuantityReserved, 0)
+
+        If AvailableQuantity < 0 Then
+            AvailableQuantity = 0
+        End If
+
+        FromLocationID = Nz(rows!CurrentLocationID, 0)
+    End If
+
+    rows.close
+    Set rows = Nothing
+
+End Sub
+
+
+Private Function ItemRequiresSerial( _
+    ByVal db As DAO.Database, _
+    ByVal ItemID As Long _
+) As Boolean
+
+    Dim rows As DAO.Recordset
+
+    Set rows = db.OpenRecordset( _
+        "SELECT RequiresSerial " & _
+        "FROM T_Items " & _
+        "WHERE ItemID=" & CStr(ItemID) & ";", _
+        dbOpenSnapshot)
+
+    If rows.EOF Then
+        rows.close
+        Set rows = Nothing
+
+        Err.Raise _
+            vbObjectError + 7205, _
+            "ItemRequiresSerial", _
+            "Item ID " & CStr(ItemID) & _
+            " was not found in T_Items."
+    End If
+
+    ItemRequiresSerial = Nz(rows!RequiresSerial, False)
+
+    rows.close
+    Set rows = Nothing
+
+End Function
+
+
+Private Function GetDefaultLocationID( _
+    ByVal db As DAO.Database, _
+    ByVal ItemID As Long _
+) As Long
+
+    Dim rows As DAO.Recordset
+
+    Set rows = db.OpenRecordset( _
+        "SELECT DefaultLocationID " & _
+        "FROM T_Items " & _
+        "WHERE ItemID=" & CStr(ItemID) & ";", _
+        dbOpenSnapshot)
+
+    If Not rows.EOF Then
+        GetDefaultLocationID = Nz(rows!DefaultLocationID, 0)
+    End If
+
+    rows.close
+    Set rows = Nothing
+
+End Function
+
+
+Private Sub ClearStagingRows( _
+    ByVal db As DAO.Database _
+)
+
+    db.Execute _
+        "DELETE FROM " & STAGING_TABLE & " " & _
+        "WHERE " & StagingScopeCriteria() & ";", _
+        dbFailOnError
+
+End Sub
+
+
+Private Function StagingScopeCriteria() As String
+
+    StagingScopeCriteria = _
+        "ProjectID=" & CStr(mProjectID) & _
+        " AND IssueType=" & SqlText(mIssueType)
+
+End Function
+
+
+'=============================================================
+' SUBFORM BINDING
+'=============================================================
+
+Private Sub ConfigureProjectIssueSubform()
+
+    On Error GoTo Err_Handler
+
+    On Error Resume Next
+    Me.Controls(SUBFORM_CONTROL).LinkMasterFields = vbNullString
+    Me.Controls(SUBFORM_CONTROL).LinkChildFields = vbNullString
+    On Error GoTo Err_Handler
+
+    With Me.Controls(SUBFORM_CONTROL).Form
+        .FilterOn = False
+        .RecordSource = ProjectIssueRowSource()
+        .AllowAdditions = False
+        .AllowDeletions = False
+        .AllowEdits = True
+
+        BindIssueControl .Controls("Text0"), "ItemName", True
+        BindIssueControl .Controls("Text2"), "UnitCode", True
+        BindIssueControl .Controls("Text4"), "RequiredQty", True
+        BindIssueControl .Controls("Text6"), "AvailableQty", True
+        BindIssueControl .Controls("Text8"), "IssueQty", False
+        BindIssueControl .Controls("Text10"), "Notes", False
+        BindIssueControl .Controls("Check12"), "Selected", False
+
+        .Controls("Text4").Format = "General Number"
+        .Controls("Text6").Format = "General Number"
+        .Controls("Text8").Format = "General Number"
+
+        ApplyDatasheetHeadings
+        .Requery
+    End With
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "SF_ProjectIssueItems could not be bound to its staging data." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Project Issue Items"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub BindIssueControl( _
+    ByVal targetControl As Control, _
+    ByVal fieldName As String, _
+    ByVal readOnlyControl As Boolean _
+)
+
+    targetControl.ControlSource = fieldName
+    targetControl.Locked = readOnlyControl
+    targetControl.Enabled = True
+    targetControl.TabStop = Not readOnlyControl
+
+End Sub
+
+
+Private Sub ApplyDatasheetHeadings()
+
+    On Error Resume Next
+
+    With Me.Controls(SUBFORM_CONTROL).Form
+        .Controls("Text0").Properties("DatasheetCaption") = "Item Name"
+        .Controls("Text2").Properties("DatasheetCaption") = "Unit"
+
+        If mIssueType = MODE_TOOL_RETURN Then
+            .Controls("Text4").Properties("DatasheetCaption") = _
+                "Outstanding Qty"
+            .Controls("Text6").Properties("DatasheetCaption") = _
+                "Returnable Qty"
+            .Controls("Text8").Properties("DatasheetCaption") = _
+                "Return Qty"
+        Else
+            .Controls("Text4").Properties("DatasheetCaption") = _
+                "Required Qty"
+            .Controls("Text6").Properties("DatasheetCaption") = _
+                "Available Qty"
+            .Controls("Text8").Properties("DatasheetCaption") = _
+                "Issue Qty"
+        End If
+
+        .Controls("Text10").Properties("DatasheetCaption") = "Notes"
+        .Controls("Check12").Properties("DatasheetCaption") = "Select"
+    End With
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Function ProjectIssueRowSource() As String
+
+    Dim rowSql As String
+
+    rowSql = _
+        "SELECT " & _
+            "S.ProjectIssueStagingID, " & _
+            "S.ProjectID, " & _
+            "S.IssueType, " & _
+            "S.ItemID, " & _
+            "S.ItemInstanceID, " & _
+            "S.FromLocationID, " & _
+            "S.ToLocationID, " & _
+            "S.SourceMovementID, " & _
+            "Nz(I.ItemName,'') & " & _
+                "IIf(Len(Nz(II.SerialNumber,''))>0, " & _
+                    "' [' & II.SerialNumber & ']', '') " & _
+                "AS ItemName, " & _
+            "Nz(U.UnitCode,'') AS UnitCode, " & _
+            "S.RequiredQty, " & _
+            "S.AvailableQty, " & _
+            "S.IssueQty, " & _
+            "S.Notes, " & _
+            "S.Selected "
+
+    rowSql = rowSql & _
+        "FROM " & _
+            "((" & STAGING_TABLE & " AS S " & _
+            "LEFT JOIN T_Items AS I " & _
+                "ON S.ItemID=I.ItemID) " & _
+            "LEFT JOIN T_ItemInstances AS II " & _
+                "ON S.ItemInstanceID=II.ItemInstanceID) " & _
+            "LEFT JOIN T_Units AS U " & _
+                "ON I.BaseUnitID=U.UnitID " & _
+        "WHERE " & StagingScopeCriteria() & " " & _
+        "ORDER BY I.ItemName, II.SerialNumber, " & _
+            "S.ProjectIssueStagingID;"
+
+    ProjectIssueRowSource = rowSql
+
+End Function
+
+
+Private Sub RequerySubform()
+
+    On Error GoTo Err_Handler
+
+    With Me.Controls(SUBFORM_CONTROL).Form
+        .FilterOn = False
+        .RecordSource = ProjectIssueRowSource()
+        .Requery
+    End With
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    MsgBox _
+        "The item list could not be refreshed." & _
+        vbCrLf & vbCrLf & _
+        "Error Number: " & Err.Number & vbCrLf & _
+        "Details: " & Err.Description, _
+        vbExclamation, _
+        "Project Issue"
+    Resume Exit_Handler
+
+End Sub
+
+
+Private Sub SaveCurrentSubformRow()
+
+    On Error GoTo Err_Handler
+
+    With Me.Controls(SUBFORM_CONTROL).Form
+        If .Dirty Then
+            .Dirty = False
+        End If
+    End With
+
+Exit_Handler:
+    Exit Sub
+
+Err_Handler:
+    Err.Raise Err.Number, Err.Source, Err.Description
+
+End Sub
+
+
+'=============================================================
+' STRUCTURE VALIDATION
+'=============================================================
+
+Private Sub ValidateProjectIssueStructures()
+
+    RequireField STAGING_TABLE, "ProjectIssueStagingID"
+    RequireField STAGING_TABLE, "ProjectID"
+    RequireField STAGING_TABLE, "IssueType"
+    RequireField STAGING_TABLE, "ItemID"
+    RequireField STAGING_TABLE, "ItemInstanceID"
+    RequireField STAGING_TABLE, "FromLocationID"
+    RequireField STAGING_TABLE, "ToLocationID"
+    RequireField STAGING_TABLE, "SourceMovementID"
+    RequireField STAGING_TABLE, "RequiredQty"
+    RequireField STAGING_TABLE, "AvailableQty"
+    RequireField STAGING_TABLE, "IssueQty"
+    RequireField STAGING_TABLE, "Selected"
+    RequireField STAGING_TABLE, "Notes"
+
+    RequireField "T_Projects", "ProjectID"
+    RequireField "T_Projects", "ProjectCode"
+    RequireField "T_Projects", "ProjectName"
+    RequireField "T_Projects", "CustomerID"
+    RequireField "T_Projects", "AssemblyTemplateID"
+    RequireField "T_Projects", "BuildQuantity"
+    RequireField "T_Projects", "EndDate"
+    RequireField "T_Projects", "Status"
+
+    RequireField "T_Customers", "CustomerID"
+    RequireField "T_Customers", "CustomerName"
+
+    RequireField "T_AssemblyTemplates", "AssemblyTemplateID"
+    RequireField "T_AssemblyTemplates", "TemplateName"
+
+    RequireField "T_AssemblyTemplateMaterials", "AssemblyTemplateID"
+    RequireField "T_AssemblyTemplateMaterials", "ComponentItemID"
+    RequireField "T_AssemblyTemplateMaterials", "QuantityPerOutput"
+
+    RequireField "T_AssemblyTemplateTools", "AssemblyTemplateID"
+    RequireField "T_AssemblyTemplateTools", "ToolItemID"
+    RequireField "T_AssemblyTemplateTools", "QuantityRequired"
+
+    RequireField "T_Items", "ItemID"
+    RequireField "T_Items", "ItemName"
+    RequireField "T_Items", "BaseUnitID"
+    RequireField "T_Items", "RequiresSerial"
+    RequireField "T_Items", "DefaultLocationID"
+
+    RequireField "T_Units", "UnitID"
+    RequireField "T_Units", "UnitCode"
+
+    RequireField "T_Users", "UserID"
+
+    RequireField "T_StockBalances", "ItemID"
+    RequireField "T_StockBalances", "CurrentLocationID"
+    RequireField "T_StockBalances", "QuantityOnHand"
+    RequireField "T_StockBalances", "QuantityReserved"
+    RequireField "T_StockBalances", "LastUpdated"
+
+    RequireField "T_ItemInstances", "ItemInstanceID"
+    RequireField "T_ItemInstances", "ItemID"
+    RequireField "T_ItemInstances", "SerialNumber"
+    RequireField "T_ItemInstances", "CurrentLocationID"
+    RequireField "T_ItemInstances", "CurrentStatus"
+    RequireField "T_ItemInstances", "UnitCost"
+    RequireField "T_ItemInstances", "Notes"
+
+    RequireField "T_StockMovements", "StockMovementID"
+    RequireField "T_StockMovements", "MovementDate"
+    RequireField "T_StockMovements", "ExpectedReturnDate"
+    RequireField "T_StockMovements", "ItemID"
+    RequireField "T_StockMovements", "ItemInstanceID"
+    RequireField "T_StockMovements", "ProjectID"
+    RequireField "T_StockMovements", "MovementTypeID"
+    RequireField "T_StockMovements", "Quantity"
+    RequireField "T_StockMovements", "FromLocationID"
+    RequireField "T_StockMovements", "ToLocationID"
+    RequireField "T_StockMovements", "PerformedByUserID"
+    RequireField "T_StockMovements", "Reason"
+    RequireField "T_StockMovements", "ReferenceDocument"
+    RequireField "T_StockMovements", "Notes"
+    RequireField "T_StockMovements", "UnitCost"
+
+    RequireField "T_StockMovementTypes", "MovementTypeID"
+    RequireField "T_StockMovementTypes", "MovementTypeCode"
+
+End Sub
+
+
+Private Sub RequireField( _
+    ByVal tableName As String, _
+    ByVal fieldName As String _
+)
+
+    On Error GoTo Missing_Field
+
+    Dim fieldObject As DAO.Field
+
+    Set fieldObject = CurrentDb.TableDefs(tableName).Fields(fieldName)
+    Set fieldObject = Nothing
+    Exit Sub
+
+Missing_Field:
+    Err.Raise _
+        vbObjectError + 7220, _
+        "RequireField", _
+        "Required field " & tableName & "." & _
+        fieldName & " is missing."
+
+End Sub
+
+
+Private Function FieldExists( _
+    ByVal tableObject As DAO.TableDef, _
+    ByVal fieldName As String _
+) As Boolean
+
+    On Error GoTo Missing_Field
+
+    Dim fieldObject As DAO.Field
+
+    Set fieldObject = tableObject.Fields(fieldName)
+    FieldExists = True
+
+Exit_Function:
+    Set fieldObject = Nothing
+    Exit Function
+
+Missing_Field:
+    FieldExists = False
+    Resume Exit_Function
+
+End Function
+
+
+'=============================================================
+' SAFE RECORDSET / FORM HELPERS
+'=============================================================
+
+Private Function RecordsetHasField( _
+    ByVal rows As DAO.Recordset, _
+    ByVal fieldName As String _
+) As Boolean
+
+    On Error GoTo Missing_Field
+
+    Dim fieldObject As DAO.Field
+
+    Set fieldObject = rows.Fields(fieldName)
+    RecordsetHasField = True
+
+Exit_Function:
+    Set fieldObject = Nothing
+    Exit Function
+
+Missing_Field:
+    RecordsetHasField = False
+    Resume Exit_Function
+
+End Function
+
+
+Private Sub SetRecordsetFieldIfExists( _
+    ByVal rows As DAO.Recordset, _
+    ByVal fieldName As String, _
+    ByVal fieldValue As Variant _
+)
+
+    If RecordsetHasField(rows, fieldName) Then
+        rows.Fields(fieldName).value = fieldValue
+    End If
+
+End Sub
+
+
+Private Function NullIfZero( _
+    ByVal numberValue As Long _
+) As Variant
+
+    If numberValue > 0 Then
+        NullIfZero = numberValue
+    Else
+        NullIfZero = Null
+    End If
+
+End Function
+
+
+Private Function AppendNote( _
+    ByVal existingNote As String, _
+    ByVal newNote As String _
+) As String
+
+    existingNote = Trim$(existingNote)
+    newNote = Trim$(newNote)
+
+    If Len(existingNote) = 0 Then
+        AppendNote = newNote
+    ElseIf Len(newNote) = 0 Then
+        AppendNote = existingNote
+    Else
+        AppendNote = existingNote & vbCrLf & newNote
+    End If
+
+End Function
+
+
+Private Sub RefreshProjectFormIfOpen()
+
+    On Error Resume Next
+
+    If (SysCmd( _
+        acSysCmdGetObjectState, _
+        acForm, _
+        PROJECT_FORM) And acObjStateOpen) <> 0 Then
+
+        Forms(PROJECT_FORM).Refresh
+        Forms(PROJECT_FORM).Recalc
+    End If
+
+    On Error GoTo 0
+
+End Sub
+
+
+'=============================================================
+' DISPLAY / SQL HELPERS
+'=============================================================
+
+Private Sub SetAttachedLabelCaption( _
+    ByVal targetControl As Control, _
+    ByVal newCaption As String _
+)
+
+    On Error Resume Next
+
+    targetControl.Controls(0).Caption = newCaption
+
+    On Error GoTo 0
+
+End Sub
+
+
+Private Function QuoteIdentifier( _
+    ByVal identifierName As String _
+) As String
+
+    QuoteIdentifier = _
+        "[" & Replace(identifierName, "]", "]]") & "]"
+
+End Function
+
+
+Private Function SqlText( _
+    ByVal value As String _
+) As String
+
+    SqlText = "'" & Replace(value, "'", "''") & "'"
+
+End Function

@@ -1,0 +1,978 @@
+﻿Version =21
+VersionRequired =20
+PublishOption =1
+Checksum =-1639783291
+Begin Form
+    DividingLines = NotDefault
+    AllowDesignChanges = NotDefault
+    DefaultView =0
+    PictureAlignment =2
+    DatasheetGridlinesBehavior =3
+    GridX =24
+    GridY =24
+    Width =14000
+    DatasheetFontHeight =11
+    ItemSuffix =32
+    Right =15090
+    Bottom =4695
+    DatasheetGridlinesColor =15263976
+    RecSrcDt = Begin
+        0x338e1bb2749ce640
+    End
+    GUID = Begin
+        0x70c11d1fe8f00945b0263bef6835f048
+    End
+    Caption ="Staff and Leave"
+    DatasheetFontName ="Aptos"
+    FilterOnLoad =0
+    ShowPageMargins =0
+    DisplayOnSharePointSite =1
+    DatasheetAlternateBackColor =15921906
+    DatasheetGridlinesColor12 =0
+    FitToScreen =1
+    DatasheetBackThemeColorIndex =1
+    BorderThemeColorIndex =3
+    ThemeFontIndex =1
+    ForeThemeColorIndex =0
+    AlternateBackThemeColorIndex =1
+    AlternateBackShade =95.0
+    NoSaveCTIWhenDisabled =1
+    Begin
+        Begin Label
+            BackStyle =0
+            FontSize =11
+            BorderColor =8355711
+            ForeColor =6710886
+            FontName ="Aptos"
+            GridlineColor =10921638
+            ThemeFontIndex =1
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =0
+            BorderTint =50.0
+            ForeThemeColorIndex =0
+            ForeTint =60.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin CommandButton
+            FontSize =11
+            FontWeight =400
+            ForeColor =4210752
+            FontName ="Aptos"
+            GridlineColor =10921638
+            ForeThemeColorIndex =0
+            ForeTint =75.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+            UseTheme =1
+            Shape =1
+            Gradient =12
+            BackColor =14790982
+            BackThemeColorIndex =4
+            BackTint =60.0
+            BorderLineStyle =0
+            BorderColor =14790982
+            BorderThemeColorIndex =4
+            BorderTint =60.0
+            ThemeFontIndex =1
+            HoverColor =15453059
+            HoverThemeColorIndex =4
+            HoverTint =40.0
+            PressedColor =6440976
+            PressedThemeColorIndex =4
+            PressedShade =75.0
+            HoverForeColor =4210752
+            HoverForeThemeColorIndex =0
+            HoverForeTint =75.0
+            PressedForeColor =4210752
+            PressedForeThemeColorIndex =0
+            PressedForeTint =75.0
+        End
+        Begin TextBox
+            AddColon = NotDefault
+            FELineBreak = NotDefault
+            BorderLineStyle =0
+            LabelX =-1800
+            FontSize =11
+            BorderColor =10921638
+            ForeColor =4210752
+            FontName ="Aptos"
+            AsianLineBreak =1
+            GridlineColor =10921638
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            ThemeFontIndex =1
+            ForeThemeColorIndex =0
+            ForeTint =75.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin ComboBox
+            AddColon = NotDefault
+            BorderLineStyle =0
+            LabelX =-1800
+            FontSize =11
+            BorderColor =10921638
+            ForeColor =2102279
+            FontName ="Aptos"
+            GridlineColor =10921638
+            AllowValueListEdits =1
+            InheritValueList =1
+            ThemeFontIndex =1
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            ForeThemeColorIndex =2
+            ForeShade =50.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin Subform
+            BorderLineStyle =0
+            BorderColor =10921638
+            GridlineColor =10921638
+            BorderThemeColorIndex =1
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+            BorderShade =65.0
+            ShowPageHeaderAndPageFooter =1
+        End
+        Begin Section
+            Height =10000
+            BackColor =14482166
+            Name ="Detail"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x2922b1c21a88644e99d5f501e1780ef9
+            End
+            AutoHeight =1
+            AlternateBackColor =14482166
+            AlternateBackShade =95.0
+            Begin
+                Begin Label
+                    OverlapFlags =93
+                    Left =300
+                    Top =140
+                    Width =7000
+                    Height =400
+                    FontSize =20
+                    FontWeight =700
+                    ForeColor =3947580
+                    Name ="lblTitle"
+                    Caption ="Staff, arrivals, and leave"
+                    GUID = Begin
+                        0x26a0a472225a20449ea7b98aa85918e1
+                    End
+                    LayoutCachedLeft =300
+                    LayoutCachedTop =140
+                    LayoutCachedWidth =7300
+                    LayoutCachedHeight =540
+                    ForeThemeColorIndex =-1
+                End
+                Begin Label
+                    OverlapFlags =85
+                    Left =300
+                    Top =680
+                    Width =1200
+                    Height =280
+                    FontSize =10
+                    FontWeight =700
+                    ForeColor =3947580
+                    Name ="lblPerson"
+                    Caption ="Person"
+                    GUID = Begin
+                        0x6aa9ccef549adc40b920a93a446f4d58
+                    End
+                    LayoutCachedLeft =300
+                    LayoutCachedTop =680
+                    LayoutCachedWidth =1500
+                    LayoutCachedHeight =960
+                    ForeThemeColorIndex =-1
+                End
+                Begin ComboBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    ColumnCount =2
+                    Left =1600
+                    Top =660
+                    Width =3600
+                    Height =300
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    ColumnInfo ="\"\";\"\";\"\";\"\";\"10\";\"240\""
+                    GUID = Begin
+                        0xc4e2ddd7700b0b4c87d56465c9534809
+                    End
+                    Name ="cboStaff"
+                    RowSourceType ="Table/Query"
+                    RowSource ="SELECT StaffID, StaffName FROM T_Staff ORDER BY StaffName;"
+                    ColumnWidths ="0;3402"
+                    FontName ="Segoe UI"
+                    BaseInfo ="\"SELECT StaffID, StaffName FROM T_Staff ORDER BY StaffName;\";\"T_Staff\";\"\";"
+                        "\"StaffID\";\"StaffName\";\"PrimaryKey\""
+
+                    LayoutCachedLeft =1600
+                    LayoutCachedTop =660
+                    LayoutCachedWidth =5200
+                    LayoutCachedHeight =960
+                    ThemeFontIndex =-1
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ForeThemeColorIndex =-1
+                End
+                Begin Label
+                    OverlapFlags =85
+                    Left =5400
+                    Top =680
+                    Width =1400
+                    Height =280
+                    FontSize =10
+                    FontWeight =700
+                    ForeColor =3947580
+                    Name ="lblNew"
+                    Caption ="New person"
+                    GUID = Begin
+                        0xfa3f6da11c08f54fa3cb0a024b59d345
+                    End
+                    LayoutCachedLeft =5400
+                    LayoutCachedTop =680
+                    LayoutCachedWidth =6800
+                    LayoutCachedHeight =960
+                    ForeThemeColorIndex =-1
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =6900
+                    Top =660
+                    Width =2800
+                    Height =300
+                    TabIndex =1
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtStaffName"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x12baf4569c2ea945be3109825f900c8a
+                    End
+
+                    LayoutCachedLeft =6900
+                    LayoutCachedTop =660
+                    LayoutCachedWidth =9700
+                    LayoutCachedHeight =960
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                End
+                Begin TextBox
+                    OverlapFlags =93
+                    IMESentenceMode =3
+                    Left =6900
+                    Top =1020
+                    Width =1800
+                    Height =300
+                    TabIndex =2
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtJobTitle"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x2e7bb7a8712b9f43a7b5ae7c9d33b716
+                    End
+
+                    LayoutCachedLeft =6900
+                    LayoutCachedTop =1020
+                    LayoutCachedWidth =8700
+                    LayoutCachedHeight =1320
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                End
+                Begin TextBox
+                    OverlapFlags =93
+                    IMESentenceMode =3
+                    Left =8800
+                    Top =1020
+                    Width =1600
+                    Height =300
+                    TabIndex =3
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtPhone"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xa7160cb6951cb648b21e988ec821604b
+                    End
+
+                    LayoutCachedLeft =8800
+                    LayoutCachedTop =1020
+                    LayoutCachedWidth =10400
+                    LayoutCachedHeight =1320
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =10500
+                    Top =660
+                    Width =1800
+                    Height =320
+                    FontWeight =700
+                    TabIndex =4
+                    ForeColor =16777215
+                    Name ="cmdAddStaff"
+                    Caption ="Add Person"
+                    OnClick ="=UX_AddStaff()"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdAddStaff\")"
+                    GUID = Begin
+                        0xa95298d9b05dda4b8f74c3879176e20a
+                    End
+
+                    LayoutCachedLeft =10500
+                    LayoutCachedTop =660
+                    LayoutCachedWidth =12300
+                    LayoutCachedHeight =980
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                End
+                Begin Label
+                    OverlapFlags =85
+                    Left =300
+                    Top =1500
+                    Width =2000
+                    Height =300
+                    FontSize =14
+                    FontWeight =700
+                    ForeColor =3947580
+                    Name ="lblArr"
+                    Caption ="Arrival"
+                    GUID = Begin
+                        0x9839ab4db1d70e4bba657ee74c244e40
+                    End
+                    LayoutCachedLeft =300
+                    LayoutCachedTop =1500
+                    LayoutCachedWidth =2300
+                    LayoutCachedHeight =1800
+                    ForeThemeColorIndex =-1
+                End
+                Begin Label
+                    OverlapFlags =85
+                    Left =300
+                    Top =1900
+                    Width =800
+                    Height =260
+                    FontSize =10
+                    FontWeight =700
+                    ForeColor =3947580
+                    Name ="lblWork"
+                    Caption ="Date"
+                    GUID = Begin
+                        0x83cdf4cf91efa048a569deb0b5ebc10a
+                    End
+                    LayoutCachedLeft =300
+                    LayoutCachedTop =1900
+                    LayoutCachedWidth =1100
+                    LayoutCachedHeight =2160
+                    ForeThemeColorIndex =-1
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =1200
+                    Top =1880
+                    Width =1600
+                    Height =300
+                    TabIndex =5
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtWorkDate"
+                    DefaultValue ="=Date()"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x37c58a601c50dd4aaa1cdfac30c36697
+                    End
+
+                    LayoutCachedLeft =1200
+                    LayoutCachedTop =1880
+                    LayoutCachedWidth =2800
+                    LayoutCachedHeight =2180
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                End
+                Begin Label
+                    OverlapFlags =85
+                    Left =3000
+                    Top =1900
+                    Width =900
+                    Height =260
+                    FontSize =10
+                    FontWeight =700
+                    ForeColor =3947580
+                    Name ="lblIn"
+                    Caption ="Time in"
+                    GUID = Begin
+                        0x5b9dd2d9d1a7064ca9a6ea75ef0749aa
+                    End
+                    LayoutCachedLeft =3000
+                    LayoutCachedTop =1900
+                    LayoutCachedWidth =3900
+                    LayoutCachedHeight =2160
+                    ForeThemeColorIndex =-1
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =4000
+                    Top =1880
+                    Width =1400
+                    Height =300
+                    TabIndex =6
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtTimeIn"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x5ab2a085a33cad419595d33d40a88d8b
+                    End
+
+                    LayoutCachedLeft =4000
+                    LayoutCachedTop =1880
+                    LayoutCachedWidth =5400
+                    LayoutCachedHeight =2180
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                End
+                Begin Label
+                    OverlapFlags =85
+                    Left =5600
+                    Top =1900
+                    Width =1000
+                    Height =260
+                    FontSize =10
+                    FontWeight =700
+                    ForeColor =3947580
+                    Name ="lblOut"
+                    Caption ="Time out"
+                    GUID = Begin
+                        0xe68a69a335cfec46a758e7eb2b8f194b
+                    End
+                    LayoutCachedLeft =5600
+                    LayoutCachedTop =1900
+                    LayoutCachedWidth =6600
+                    LayoutCachedHeight =2160
+                    ForeThemeColorIndex =-1
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =6700
+                    Top =1880
+                    Width =1400
+                    Height =300
+                    TabIndex =7
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtTimeOut"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x5e03faec8cff7141802da7530550ddde
+                    End
+
+                    LayoutCachedLeft =6700
+                    LayoutCachedTop =1880
+                    LayoutCachedWidth =8100
+                    LayoutCachedHeight =2180
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =8300
+                    Top =1880
+                    Width =2200
+                    Height =300
+                    TabIndex =8
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtAttendanceNotes"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x14310f68df0488418bd07603ccdffd2f
+                    End
+
+                    LayoutCachedLeft =8300
+                    LayoutCachedTop =1880
+                    LayoutCachedWidth =10500
+                    LayoutCachedHeight =2180
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =300
+                    Top =2300
+                    Width =2000
+                    FontWeight =700
+                    TabIndex =9
+                    ForeColor =16777215
+                    Name ="cmdSign"
+                    Caption ="Save Arrival"
+                    OnClick ="=UX_SaveAttendance()"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdSign\")"
+                    GUID = Begin
+                        0xd4c24a0196cf724ab0c7d8fc8e36f05c
+                    End
+
+                    LayoutCachedLeft =300
+                    LayoutCachedTop =2300
+                    LayoutCachedWidth =2300
+                    LayoutCachedHeight =2660
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                End
+                Begin Subform
+                    OverlapFlags =85
+                    Left =300
+                    Top =2780
+                    Width =12000
+                    Height =1800
+                    TabIndex =10
+                    Name ="SF_Attendance"
+                    SourceObject ="Form.SF_Attendance"
+                    GUID = Begin
+                        0x30f80d5300001f49b6ec9107d98ad52b
+                    End
+
+                    LayoutCachedLeft =300
+                    LayoutCachedTop =2780
+                    LayoutCachedWidth =12300
+                    LayoutCachedHeight =4580
+                End
+                Begin Label
+                    OverlapFlags =93
+                    Left =300
+                    Top =4700
+                    Width =4000
+                    Height =300
+                    FontSize =14
+                    FontWeight =700
+                    ForeColor =3947580
+                    Name ="lblLeave"
+                    Caption ="Off days and leave"
+                    GUID = Begin
+                        0x76554a20dc684d4c9da78abe077529bb
+                    End
+                    LayoutCachedLeft =300
+                    LayoutCachedTop =4700
+                    LayoutCachedWidth =4300
+                    LayoutCachedHeight =5000
+                    ForeThemeColorIndex =-1
+                End
+                Begin ComboBox
+                    RowSourceTypeInt =1
+                    OverlapFlags =93
+                    IMESentenceMode =3
+                    Left =300
+                    Top =5100
+                    Width =1800
+                    Height =300
+                    TabIndex =11
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    GUID = Begin
+                        0x9fb8389364fe1543bb30880b034a5b9e
+                    End
+                    Name ="cboLeaveType"
+                    RowSourceType ="Value List"
+                    RowSource ="Annual;Sick;Off day;Unpaid"
+                    ColumnWidths ="0;3402"
+                    DefaultValue ="\"Off day\""
+                    FontName ="Segoe UI"
+
+                    LayoutCachedLeft =300
+                    LayoutCachedTop =5100
+                    LayoutCachedWidth =2100
+                    LayoutCachedHeight =5400
+                    ThemeFontIndex =-1
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ForeThemeColorIndex =-1
+                End
+                Begin TextBox
+                    OverlapFlags =93
+                    IMESentenceMode =3
+                    Left =2300
+                    Top =5100
+                    Width =1600
+                    Height =300
+                    TabIndex =12
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtLeaveStart"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xa28ccca806c1c843877aeda98d16e2bd
+                    End
+
+                    LayoutCachedLeft =2300
+                    LayoutCachedTop =5100
+                    LayoutCachedWidth =3900
+                    LayoutCachedHeight =5400
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                End
+                Begin TextBox
+                    OverlapFlags =93
+                    IMESentenceMode =3
+                    Left =4100
+                    Top =5100
+                    Width =1600
+                    Height =300
+                    TabIndex =13
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtLeaveEnd"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x731ef2f5b2f1f94c98d6893696cfefe5
+                    End
+
+                    LayoutCachedLeft =4100
+                    LayoutCachedTop =5100
+                    LayoutCachedWidth =5700
+                    LayoutCachedHeight =5400
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                End
+                Begin TextBox
+                    OverlapFlags =93
+                    IMESentenceMode =3
+                    Left =5900
+                    Top =5100
+                    Width =900
+                    Height =300
+                    TabIndex =14
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtLeaveDays"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x103f6ee9cd1a614db400eb5ae6fd84f8
+                    End
+
+                    LayoutCachedLeft =5900
+                    LayoutCachedTop =5100
+                    LayoutCachedWidth =6800
+                    LayoutCachedHeight =5400
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                End
+                Begin ComboBox
+                    RowSourceTypeInt =1
+                    OverlapFlags =93
+                    IMESentenceMode =3
+                    Left =7000
+                    Top =5100
+                    Width =1800
+                    Height =300
+                    TabIndex =15
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    GUID = Begin
+                        0x1b17579f0c0d2f4ba15b2e59dec5d650
+                    End
+                    Name ="cboLeaveStatus"
+                    RowSourceType ="Value List"
+                    RowSource ="Requested;Approved;Taken"
+                    ColumnWidths ="0;3402"
+                    DefaultValue ="\"Approved\""
+                    FontName ="Segoe UI"
+
+                    LayoutCachedLeft =7000
+                    LayoutCachedTop =5100
+                    LayoutCachedWidth =8800
+                    LayoutCachedHeight =5400
+                    ThemeFontIndex =-1
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ForeThemeColorIndex =-1
+                End
+                Begin TextBox
+                    OverlapFlags =93
+                    IMESentenceMode =3
+                    Left =9000
+                    Top =5100
+                    Width =2400
+                    Height =300
+                    TabIndex =16
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="txtLeaveNotes"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xbecb4d7ceede9d458a7e7516ed9e5582
+                    End
+
+                    LayoutCachedLeft =9000
+                    LayoutCachedTop =5100
+                    LayoutCachedWidth =11400
+                    LayoutCachedHeight =5400
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =300
+                    Top =5540
+                    Width =2000
+                    FontWeight =700
+                    TabIndex =17
+                    ForeColor =16777215
+                    Name ="cmdLeave"
+                    Caption ="Save Leave"
+                    OnClick ="=UX_SaveLeave()"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdLeave\")"
+                    GUID = Begin
+                        0x7fae5354dea24c43be9e37e1a878f465
+                    End
+
+                    LayoutCachedLeft =300
+                    LayoutCachedTop =5540
+                    LayoutCachedWidth =2300
+                    LayoutCachedHeight =5900
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                End
+                Begin Subform
+                    OverlapFlags =85
+                    Left =300
+                    Top =6040
+                    Width =12000
+                    Height =2200
+                    TabIndex =18
+                    Name ="SF_Leave"
+                    SourceObject ="Form.SF_Leave"
+                    GUID = Begin
+                        0x8bf01f9f95d90a408e902ff96faf26cd
+                    End
+
+                    LayoutCachedLeft =300
+                    LayoutCachedTop =6040
+                    LayoutCachedWidth =12300
+                    LayoutCachedHeight =8240
+                End
+                Begin Subform
+                    OverlapFlags =85
+                    Left =300
+                    Top =8400
+                    Width =12000
+                    Height =1200
+                    TabIndex =19
+                    Name ="SF_StaffList"
+                    SourceObject ="Form.SF_StaffList"
+                    GUID = Begin
+                        0xa228f8724be1cf41906a0c1003dbbce9
+                    End
+
+                    LayoutCachedLeft =300
+                    LayoutCachedTop =8400
+                    LayoutCachedWidth =12300
+                    LayoutCachedHeight =9600
+                End
+                Begin CommandButton
+                    OverlapFlags =215
+                    Left =5600
+                    Top =180
+                    Width =1500
+                    Height =400
+                    FontWeight =700
+                    TabIndex =20
+                    ForeColor =16777215
+                    Name ="cmdUXBack"
+                    Caption ="Back"
+                    OnClick ="=UX_GoBack()"
+                    FontName ="Segoe UI Semibold"
+                    OnMouseMove ="=UX_ButtonIn([Form],\"cmdUXBack\")"
+                    GUID = Begin
+                        0x396a70fd3ed3a443b963bac73dd05000
+                    End
+
+                    LayoutCachedLeft =5600
+                    LayoutCachedTop =180
+                    LayoutCachedWidth =7100
+                    LayoutCachedHeight =580
+                    ForeThemeColorIndex =-1
+                    ForeTint =100.0
+                    Gradient =0
+                    BackColor =0
+                    BackThemeColorIndex =-1
+                    BackTint =100.0
+                    BorderColor =0
+                    BorderThemeColorIndex =-1
+                    BorderTint =100.0
+                    ThemeFontIndex =-1
+                    HoverColor =11485214
+                    HoverThemeColorIndex =-1
+                    HoverTint =100.0
+                    PressedColor =0
+                    PressedThemeColorIndex =-1
+                    PressedShade =100.0
+                    HoverForeColor =16777215
+                    HoverForeThemeColorIndex =-1
+                    PressedForeColor =16777215
+                    PressedForeThemeColorIndex =-1
+                    WebImagePaddingLeft =2
+                    WebImagePaddingTop =2
+                    WebImagePaddingRight =1
+                    WebImagePaddingBottom =1
+                    Overlaps =1
+                End
+                Begin Label
+                    OverlapFlags =85
+                    Left =6200
+                    Top =1020
+                    Width =680
+                    Height =280
+                    ForeColor =3947580
+                    Name ="lblRole"
+                    Caption ="Role"
+                    GUID = Begin
+                        0x8dc9b55d72b6e641801407122109bd5c
+                    End
+                    LayoutCachedLeft =6200
+                    LayoutCachedTop =1020
+                    LayoutCachedWidth =6880
+                    LayoutCachedHeight =1300
+                    ForeThemeColorIndex =-1
+                End
+                Begin Label
+                    OverlapFlags =247
+                    Left =8300
+                    Top =1020
+                    Width =500
+                    Height =280
+                    ForeColor =3947580
+                    Name ="lblPhone"
+                    Caption ="Phone"
+                    GUID = Begin
+                        0x4cf2cc53df5bad439c29cd221938516e
+                    End
+                    LayoutCachedLeft =8300
+                    LayoutCachedTop =1020
+                    LayoutCachedWidth =8800
+                    LayoutCachedHeight =1300
+                    ForeThemeColorIndex =-1
+                End
+                Begin Label
+                    OverlapFlags =215
+                    Left =300
+                    Top =4860
+                    Width =9000
+                    Height =240
+                    ForeColor =7895160
+                    Name ="lblLeaveHint"
+                    Caption ="Type, start date, end date, days, status, then a short note."
+                    GUID = Begin
+                        0xfacda62be5b4ef4996542d386891a04c
+                    End
+                    LayoutCachedLeft =300
+                    LayoutCachedTop =4860
+                    LayoutCachedWidth =9300
+                    LayoutCachedHeight =5100
+                    ForeThemeColorIndex =-1
+                End
+            End
+        End
+    End
+End

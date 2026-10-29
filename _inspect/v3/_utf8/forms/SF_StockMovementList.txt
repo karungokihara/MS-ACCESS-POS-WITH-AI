@@ -1,0 +1,1942 @@
+﻿Version =21
+VersionRequired =20
+PublishOption =1
+Checksum =316847199
+Begin Form
+    AutoCenter = NotDefault
+    DividingLines = NotDefault
+    AllowDesignChanges = NotDefault
+    DefaultView =2
+    TabularFamily =0
+    PictureAlignment =2
+    DatasheetGridlinesBehavior =3
+    GridX =24
+    GridY =24
+    Width =11520
+    DatasheetFontHeight =11
+    ItemSuffix =69
+    Right =15090
+    Bottom =4695
+    DatasheetGridlinesColor =15263976
+    RecSrcDt = Begin
+        0xdf134dd46b8ee640
+    End
+    GUID = Begin
+        0x001dc8dba906fb49b541ac1dd49518f6
+    End
+    RecordSource ="Q_StockMovementList"
+    Caption ="SF_StockMovementList"
+    DatasheetFontName ="Aptos"
+    PrtMip = Begin
+        0x6801000068010000680100006801000000000000201c0000e010000001000000 ,
+        0x010000006801000000000000a10700000100000001000000
+    End
+    PrtDevMode = Begin
+        0x0000000000000000308490d58b0200000000000000000000e70a7e35f77f0000 ,
+        0x010403069c004003032d000001000100ea0a6f08640001000f00580202000100 ,
+        0x5802030001004c657474657200000000030000000000c8420000c842e8e8e800 ,
+        0x9068bde28b020000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000ffffffff4749533400000000000000000000000044494e55 ,
+        0x2200c80024031c00ac13d8c00000000000000000000000000000000000000000 ,
+        0x0000000000000000050000000000070000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000100000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000c8000000534d544a ,
+        0x000000001000b8007b00330045004500330039003100310034002d0033003000 ,
+        0x420034002d0034003500610034002d0041003100300039002d00310039004400 ,
+        0x3400410034003000460043004300320032007d000000524553444c4c00556e69 ,
+        0x726573444c4c00506170657253697a65004c4554544552004f7269656e746174 ,
+        0x696f6e00504f525452414954005265736f6c7574696f6e004450493630300043 ,
+        0x6f6c6f724d6f6465003234627070000000000000000000000000000000000000 ,
+        0x1c0000005634444d0100000000000000000000000000000000000000
+    End
+    PrtDevNames = Begin
+        0x08002c003f000100000000000000000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000000000000000006e ,
+        0x756c3a0000000000000000000000000000000000000000000000000000000000 ,
+        0x00000000000000000000000000000000000000000000000000000000
+    End
+    FilterOnLoad =0
+    ShowPageMargins =0
+    DisplayOnSharePointSite =1
+    DatasheetAlternateBackColor =15921906
+    DatasheetGridlinesColor12 =0
+    FitToScreen =1
+    DatasheetBackThemeColorIndex =1
+    BorderThemeColorIndex =3
+    ThemeFontIndex =1
+    ForeThemeColorIndex =0
+    AlternateBackThemeColorIndex =1
+    AlternateBackShade =95.0
+    PrtDevModeW = Begin
+        0x000025d08b0200000b000000f77f0000a0c7c5e28b0200000b00000000000000 ,
+        0xf0cbc5e28b0200005fed3db5f97f0000000008c48b020000796d2ff7f1000000 ,
+        0x01040306dc004003032d000001000100ea0a6f08640001000f00580202000100 ,
+        0x5802030001004c0065007400740065007200000000000000b0c7c5e28b020000 ,
+        0x00000000000000000000000000000000a0c7c5e28b0200004f000000f1000000 ,
+        0x0b00000000000000000000000000000000000000010000000000000001000000 ,
+        0x0200000001000000ffffffff4749533400000000000000000000000044494e55 ,
+        0x2200c80024031c00ac13d8c00000000000000000000000000000000000000000 ,
+        0x0000000000000000050000000000070000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000100000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000000000c8000000534d544a ,
+        0x000000001000b8007b00330045004500330039003100310034002d0033003000 ,
+        0x420034002d0034003500610034002d0041003100300039002d00310039004400 ,
+        0x3400410034003000460043004300320032007d000000524553444c4c00556e69 ,
+        0x726573444c4c00506170657253697a65004c4554544552004f7269656e746174 ,
+        0x696f6e00504f525452414954005265736f6c7574696f6e004450493630300043 ,
+        0x6f6c6f724d6f6465003234627070000000000000000000000000000000000000 ,
+        0x1c0000005634444d0100000000000000000000000000000000000000
+    End
+    PrtDevNamesW = Begin
+        0x040028003b000100000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x000000000000000000000000000000000000000000006e0075006c003a000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x0000000000000000000000000000000000000000000000000000000000000000 ,
+        0x00000000000000000000000000000000
+    End
+    NoSaveCTIWhenDisabled =1
+    Begin
+        Begin Label
+            BackStyle =0
+            TextFontFamily =0
+            FontSize =11
+            BorderColor =8355711
+            ForeColor =6710886
+            FontName ="Aptos"
+            GridlineColor =10921638
+            ThemeFontIndex =1
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =0
+            BorderTint =50.0
+            ForeThemeColorIndex =0
+            ForeTint =60.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin TextBox
+            AddColon = NotDefault
+            FELineBreak = NotDefault
+            TextFontFamily =0
+            BorderLineStyle =0
+            LabelX =-1800
+            FontSize =11
+            BorderColor =10921638
+            ForeColor =4210752
+            FontName ="Aptos"
+            AsianLineBreak =1
+            GridlineColor =10921638
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            ThemeFontIndex =1
+            ForeThemeColorIndex =0
+            ForeTint =75.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin FormHeader
+            Height =1080
+            BackColor =14482166
+            Name ="FormHeader"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x5e3416fb99315d4c87dcec22a00bf681
+            End
+            AutoHeight =1
+            AlternateBackShade =95.0
+            BackTint =20.0
+            Begin
+                Begin Label
+                    OverlapFlags =85
+                    Left =60
+                    Top =60
+                    Width =4925
+                    Height =1020
+                    FontSize =20
+                    Name ="Label68"
+                    Caption ="SF_StockMovementList"
+                    GUID = Begin
+                        0x27a2a892894b2443a3c69ebff860c29e
+                    End
+                    LayoutCachedLeft =60
+                    LayoutCachedTop =60
+                    LayoutCachedWidth =4985
+                    LayoutCachedHeight =1080
+                    ForeThemeColorIndex =-1
+                End
+            End
+        End
+        Begin Section
+            Height =8640
+            BackColor =14482166
+            Name ="Detail"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x91fd422a592b354f964f2e68b6d23608
+            End
+            AutoHeight =1
+            AlternateBackColor =14482166
+            AlternateBackShade =95.0
+            Begin
+                Begin TextBox
+                    ColumnHidden = NotDefault
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =1410
+                    Top =360
+                    Height =300
+                    ColumnWidth =1440
+                    ColumnOrder =0
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="StockMovementID"
+                    ControlSource ="StockMovementID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x261db35ede82394b8205637187b0796c
+                    End
+
+                    LayoutCachedLeft =1410
+                    LayoutCachedTop =360
+                    LayoutCachedWidth =2850
+                    LayoutCachedHeight =660
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =360
+                            Width =960
+                            Height =312
+                            Name ="StockMovementID_Label"
+                            Caption ="StockMovementID"
+                            GUID = Begin
+                                0xf8e1966571c20345b240dc17d9ce6765
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =360
+                            LayoutCachedWidth =1320
+                            LayoutCachedHeight =672
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =1410
+                    Top =780
+                    Width =1608
+                    Height =312
+                    ColumnWidth =1656
+                    ColumnOrder =2
+                    TabIndex =1
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="MovementDate"
+                    ControlSource ="MovementDate"
+                    Format ="Medium Date"
+                    OnDblClick ="=OpenSelectedRecord()"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x06c9042c89a3a54fae09287b08e27fbe
+                    End
+
+                    LayoutCachedLeft =1410
+                    LayoutCachedTop =780
+                    LayoutCachedWidth =3018
+                    LayoutCachedHeight =1092
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =780
+                            Width =960
+                            Height =312
+                            Name ="MovementDate_Label"
+                            Caption ="MovementDate"
+                            GUID = Begin
+                                0x52e0a515fc2c274b8f3d05780fb3f5dd
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =780
+                            LayoutCachedWidth =1320
+                            LayoutCachedHeight =1092
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    ColumnHidden = NotDefault
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =1410
+                    Top =1200
+                    Width =1488
+                    Height =312
+                    ColumnWidth =1488
+                    ColumnOrder =4
+                    TabIndex =2
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="MovementTypeID"
+                    ControlSource ="MovementTypeID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xec47802d1f47e44187bf38fb87ba6c88
+                    End
+
+                    LayoutCachedLeft =1410
+                    LayoutCachedTop =1200
+                    LayoutCachedWidth =2898
+                    LayoutCachedHeight =1512
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =1200
+                            Width =960
+                            Height =312
+                            Name ="MovementTypeID_Label"
+                            Caption ="MovementTypeID"
+                            GUID = Begin
+                                0x6761292eba198a41a483b4870459db31
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =1200
+                            LayoutCachedWidth =1320
+                            LayoutCachedHeight =1512
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    ColumnHidden = NotDefault
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =1410
+                    Top =1620
+                    Width =2730
+                    Height =312
+                    ColumnWidth =1944
+                    ColumnOrder =5
+                    TabIndex =4
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="MovementTypeCode"
+                    ControlSource ="MovementTypeCode"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x30dd5a38707d4b429d8c0e04f16167e6
+                    End
+
+                    LayoutCachedLeft =1410
+                    LayoutCachedTop =1620
+                    LayoutCachedWidth =4140
+                    LayoutCachedHeight =1932
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =1620
+                            Width =960
+                            Height =312
+                            Name ="MovementTypeCode_Label"
+                            Caption ="MovementTypeCode"
+                            GUID = Begin
+                                0x2ff2247b23f4284e94efe4bb66eca3e4
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =1620
+                            LayoutCachedWidth =1320
+                            LayoutCachedHeight =1932
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =1410
+                    Top =2040
+                    Width =2730
+                    Height =576
+                    ColumnWidth =1152
+                    ColumnOrder =6
+                    TabIndex =5
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="MovementTypeName"
+                    ControlSource ="MovementTypeName"
+                    OnDblClick ="=OpenSelectedRecord()"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xd493b9f25eec2344b15cc270d9b6887d
+                    End
+
+                    LayoutCachedLeft =1410
+                    LayoutCachedTop =2040
+                    LayoutCachedWidth =4140
+                    LayoutCachedHeight =2616
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =2040
+                            Width =960
+                            Height =312
+                            Name ="MovementTypeName_Label"
+                            Caption ="MovementTypeName"
+                            GUID = Begin
+                                0x532ce6e03ae0af4a963433eccbecdba3
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =2040
+                            LayoutCachedWidth =1320
+                            LayoutCachedHeight =2352
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =1410
+                    Top =2700
+                    Width =1488
+                    Height =312
+                    ColumnWidth =1488
+                    ColumnOrder =9
+                    TabIndex =7
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="StockEffect"
+                    ControlSource ="StockEffect"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x45a697883a85be48adfb9b4678de0eec
+                    End
+
+                    LayoutCachedLeft =1410
+                    LayoutCachedTop =2700
+                    LayoutCachedWidth =2898
+                    LayoutCachedHeight =3012
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =2700
+                            Width =960
+                            Height =312
+                            Name ="StockEffect_Label"
+                            Caption ="StockEffect"
+                            GUID = Begin
+                                0x6cf03356bcd97a49911c6cef5401a279
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =2700
+                            LayoutCachedWidth =1320
+                            LayoutCachedHeight =3012
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    ColumnHidden = NotDefault
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =1410
+                    Top =3120
+                    Width =1488
+                    Height =312
+                    ColumnWidth =780
+                    ColumnOrder =10
+                    TabIndex =8
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="ItemID"
+                    ControlSource ="ItemID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x452c879a1e1b2b4da085ce99e64265e8
+                    End
+
+                    LayoutCachedLeft =1410
+                    LayoutCachedTop =3120
+                    LayoutCachedWidth =2898
+                    LayoutCachedHeight =3432
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =3120
+                            Width =960
+                            Height =312
+                            Name ="ItemID_Label"
+                            Caption ="ItemID"
+                            GUID = Begin
+                                0xe465d382e030cd468dd63728d6636377
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =3120
+                            LayoutCachedWidth =1320
+                            LayoutCachedHeight =3432
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =1410
+                    Top =3540
+                    Width =2730
+                    Height =312
+                    ColumnWidth =1968
+                    ColumnOrder =3
+                    TabIndex =9
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="InternalSKU"
+                    ControlSource ="InternalSKU"
+                    OnDblClick ="=OpenSelectedRecord()"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xa24a7ba3add7114a96beacf2b4b6d59e
+                    End
+
+                    LayoutCachedLeft =1410
+                    LayoutCachedTop =3540
+                    LayoutCachedWidth =4140
+                    LayoutCachedHeight =3852
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =3540
+                            Width =960
+                            Height =312
+                            Name ="InternalSKU_Label"
+                            Caption ="InternalSKU"
+                            GUID = Begin
+                                0x347376fa84d73642a93e159f8331a312
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =3540
+                            LayoutCachedWidth =1320
+                            LayoutCachedHeight =3852
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =1410
+                    Top =3960
+                    Width =2730
+                    Height =576
+                    ColumnWidth =3000
+                    ColumnOrder =1
+                    TabIndex =10
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="ItemName"
+                    ControlSource ="ItemName"
+                    OnDblClick ="=OpenSelectedRecord()"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xc11d4fe04756da458ce7e4488c501b12
+                    End
+
+                    LayoutCachedLeft =1410
+                    LayoutCachedTop =3960
+                    LayoutCachedWidth =4140
+                    LayoutCachedHeight =4536
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =3960
+                            Width =960
+                            Height =312
+                            Name ="ItemName_Label"
+                            Caption ="ItemName"
+                            GUID = Begin
+                                0xe29c02cda967e14dbe6a6d9db9c13e4d
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =3960
+                            LayoutCachedWidth =1320
+                            LayoutCachedHeight =4272
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =1410
+                    Top =4620
+                    Width =2730
+                    Height =312
+                    ColumnWidth =996
+                    ColumnOrder =12
+                    TabIndex =11
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="Quantity"
+                    ControlSource ="Quantity"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xf1e23255ee8aa049b03c02a61cfa349d
+                    End
+
+                    LayoutCachedLeft =1410
+                    LayoutCachedTop =4620
+                    LayoutCachedWidth =4140
+                    LayoutCachedHeight =4932
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =4620
+                            Width =960
+                            Height =312
+                            Name ="Quantity_Label"
+                            Caption ="Quantity"
+                            GUID = Begin
+                                0xee477e8e89a7084fbf6462fbc95aedab
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =4620
+                            LayoutCachedWidth =1320
+                            LayoutCachedHeight =4932
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    ColumnHidden = NotDefault
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =1410
+                    Top =5040
+                    Width =1488
+                    Height =312
+                    ColumnWidth =1488
+                    ColumnOrder =13
+                    TabIndex =12
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="FromLocationID"
+                    ControlSource ="FromLocationID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x419b5d8665409f4dab34aa68734722fc
+                    End
+
+                    LayoutCachedLeft =1410
+                    LayoutCachedTop =5040
+                    LayoutCachedWidth =2898
+                    LayoutCachedHeight =5352
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =5040
+                            Width =960
+                            Height =312
+                            Name ="FromLocationID_Label"
+                            Caption ="FromLocationID"
+                            GUID = Begin
+                                0x9fa3d2c8f3dc0d4195333118e255b95e
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =5040
+                            LayoutCachedWidth =1320
+                            LayoutCachedHeight =5352
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =1410
+                    Top =5460
+                    Width =2730
+                    Height =312
+                    ColumnWidth =1596
+                    ColumnOrder =14
+                    TabIndex =13
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="FromLocationCode"
+                    ControlSource ="FromLocationCode"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x9f669b473528854ea36dd7703ebec0ca
+                    End
+
+                    LayoutCachedLeft =1410
+                    LayoutCachedTop =5460
+                    LayoutCachedWidth =4140
+                    LayoutCachedHeight =5772
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =5460
+                            Width =960
+                            Height =312
+                            Name ="FromLocationCode_Label"
+                            Caption ="FromLocationCode"
+                            GUID = Begin
+                                0xf1abdfe1085d954491252a26134aeb2f
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =5460
+                            LayoutCachedWidth =1320
+                            LayoutCachedHeight =5772
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =1410
+                    Top =5880
+                    Width =2730
+                    Height =576
+                    ColumnWidth =2280
+                    ColumnOrder =15
+                    TabIndex =14
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="FromLocationName"
+                    ControlSource ="FromLocationName"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xcca145c8128fe94bb6f8ae88912fb5e9
+                    End
+
+                    LayoutCachedLeft =1410
+                    LayoutCachedTop =5880
+                    LayoutCachedWidth =4140
+                    LayoutCachedHeight =6456
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =5880
+                            Width =960
+                            Height =312
+                            Name ="FromLocationName_Label"
+                            Caption ="FromLocationName"
+                            GUID = Begin
+                                0x0512c565f77f0642b357c61965a5fa3f
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =5880
+                            LayoutCachedWidth =1320
+                            LayoutCachedHeight =6192
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =1410
+                    Top =6540
+                    Width =2730
+                    Height =576
+                    ColumnWidth =3000
+                    ColumnOrder =16
+                    TabIndex =15
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="FromWarehouseName"
+                    ControlSource ="FromWarehouseName"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xf0178e02a90cd14092475b84fe591aea
+                    End
+
+                    LayoutCachedLeft =1410
+                    LayoutCachedTop =6540
+                    LayoutCachedWidth =4140
+                    LayoutCachedHeight =7116
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =6540
+                            Width =960
+                            Height =312
+                            Name ="FromWarehouseName_Label"
+                            Caption ="FromWarehouseName"
+                            GUID = Begin
+                                0x084786b80d9dbf4fa8c012228afcfd28
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =6540
+                            LayoutCachedWidth =1320
+                            LayoutCachedHeight =6852
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =1410
+                    Top =7200
+                    Width =1488
+                    Height =312
+                    ColumnWidth =1488
+                    ColumnOrder =17
+                    TabIndex =16
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="ToLocationID"
+                    ControlSource ="ToLocationID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x9ba085ab14415448a1aad37615d21109
+                    End
+
+                    LayoutCachedLeft =1410
+                    LayoutCachedTop =7200
+                    LayoutCachedWidth =2898
+                    LayoutCachedHeight =7512
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =7200
+                            Width =960
+                            Height =312
+                            Name ="ToLocationID_Label"
+                            Caption ="ToLocationID"
+                            GUID = Begin
+                                0x13250b6ea960b84d9d5508b8a29bb18d
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =7200
+                            LayoutCachedWidth =1320
+                            LayoutCachedHeight =7512
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =1410
+                    Top =7620
+                    Width =2730
+                    Height =312
+                    ColumnWidth =3000
+                    ColumnOrder =18
+                    TabIndex =17
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="ToLocationCode"
+                    ControlSource ="ToLocationCode"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x5390dfdcb314a345821082b01d053c52
+                    End
+
+                    LayoutCachedLeft =1410
+                    LayoutCachedTop =7620
+                    LayoutCachedWidth =4140
+                    LayoutCachedHeight =7932
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =7620
+                            Width =960
+                            Height =312
+                            Name ="ToLocationCode_Label"
+                            Caption ="ToLocationCode"
+                            GUID = Begin
+                                0x12f75d996b85f846a5eef6e3a5963cd2
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =7620
+                            LayoutCachedWidth =1320
+                            LayoutCachedHeight =7932
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =1410
+                    Top =8040
+                    Width =2730
+                    Height =576
+                    ColumnWidth =3000
+                    ColumnOrder =19
+                    TabIndex =18
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="ToLocationName"
+                    ControlSource ="ToLocationName"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xfb8ea6ce9c45d64d869d7b2062731d67
+                    End
+
+                    LayoutCachedLeft =1410
+                    LayoutCachedTop =8040
+                    LayoutCachedWidth =4140
+                    LayoutCachedHeight =8616
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =360
+                            Top =8040
+                            Width =960
+                            Height =312
+                            Name ="ToLocationName_Label"
+                            Caption ="ToLocationName"
+                            GUID = Begin
+                                0x14b848ef17082e4f920cb18d90323e18
+                            End
+                            LayoutCachedLeft =360
+                            LayoutCachedTop =8040
+                            LayoutCachedWidth =1320
+                            LayoutCachedHeight =8352
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =5370
+                    Top =360
+                    Width =2730
+                    Height =576
+                    ColumnWidth =3000
+                    ColumnOrder =20
+                    TabIndex =19
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="ToWarehouseName"
+                    ControlSource ="ToWarehouseName"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xb7ef15ebf26bcf4d9d568bb04037b596
+                    End
+
+                    LayoutCachedLeft =5370
+                    LayoutCachedTop =360
+                    LayoutCachedWidth =8100
+                    LayoutCachedHeight =936
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =4320
+                            Top =360
+                            Width =960
+                            Height =312
+                            Name ="ToWarehouseName_Label"
+                            Caption ="ToWarehouseName"
+                            GUID = Begin
+                                0xbe5de822aa889545ba1c8fb2e753cda3
+                            End
+                            LayoutCachedLeft =4320
+                            LayoutCachedTop =360
+                            LayoutCachedWidth =5280
+                            LayoutCachedHeight =672
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    ColumnHidden = NotDefault
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =5370
+                    Top =1020
+                    Width =1488
+                    Height =312
+                    ColumnWidth =1488
+                    ColumnOrder =21
+                    TabIndex =20
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="CustomerID"
+                    ControlSource ="CustomerID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xf03fd4565f975a438d6e12f4ce5fea5f
+                    End
+
+                    LayoutCachedLeft =5370
+                    LayoutCachedTop =1020
+                    LayoutCachedWidth =6858
+                    LayoutCachedHeight =1332
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =4320
+                            Top =1020
+                            Width =960
+                            Height =312
+                            Name ="CustomerID_Label"
+                            Caption ="CustomerID"
+                            GUID = Begin
+                                0x79d6ef41206e8842835da48efc97e90a
+                            End
+                            LayoutCachedLeft =4320
+                            LayoutCachedTop =1020
+                            LayoutCachedWidth =5280
+                            LayoutCachedHeight =1332
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =5370
+                    Top =1440
+                    Width =2730
+                    Height =576
+                    ColumnWidth =3000
+                    ColumnOrder =11
+                    TabIndex =6
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="CustomerName"
+                    ControlSource ="CustomerName"
+                    OnDblClick ="=OpenSelectedRecord()"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xde06ceaeea076d488de7e27c77ea196a
+                    End
+
+                    LayoutCachedLeft =5370
+                    LayoutCachedTop =1440
+                    LayoutCachedWidth =8100
+                    LayoutCachedHeight =2016
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =4320
+                            Top =1440
+                            Width =960
+                            Height =312
+                            Name ="CustomerName_Label"
+                            Caption ="CustomerName"
+                            GUID = Begin
+                                0x637f665cb6372849bbd0345ba0347d8a
+                            End
+                            LayoutCachedLeft =4320
+                            LayoutCachedTop =1440
+                            LayoutCachedWidth =5280
+                            LayoutCachedHeight =1752
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    ColumnHidden = NotDefault
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =5370
+                    Top =2100
+                    Width =1488
+                    Height =312
+                    ColumnWidth =1488
+                    ColumnOrder =22
+                    TabIndex =21
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="SalesOrderID"
+                    ControlSource ="SalesOrderID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xf16c01ed62378247b3a36db0924e9ca6
+                    End
+
+                    LayoutCachedLeft =5370
+                    LayoutCachedTop =2100
+                    LayoutCachedWidth =6858
+                    LayoutCachedHeight =2412
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =4320
+                            Top =2100
+                            Width =960
+                            Height =312
+                            Name ="SalesOrderID_Label"
+                            Caption ="SalesOrderID"
+                            GUID = Begin
+                                0x07b415e3ec84de4489a425a5bc46b4c2
+                            End
+                            LayoutCachedLeft =4320
+                            LayoutCachedTop =2100
+                            LayoutCachedWidth =5280
+                            LayoutCachedHeight =2412
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =5370
+                    Top =2520
+                    Width =2730
+                    Height =312
+                    ColumnWidth =3000
+                    ColumnOrder =23
+                    TabIndex =22
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="SalesOrderNo"
+                    ControlSource ="SalesOrderNo"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x2d45d38534a0464c9b865d8c77a7595a
+                    End
+
+                    LayoutCachedLeft =5370
+                    LayoutCachedTop =2520
+                    LayoutCachedWidth =8100
+                    LayoutCachedHeight =2832
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =4320
+                            Top =2520
+                            Width =960
+                            Height =312
+                            Name ="SalesOrderNo_Label"
+                            Caption ="SalesOrderNo"
+                            GUID = Begin
+                                0x3090490be059df40a5d05b153ea6880f
+                            End
+                            LayoutCachedLeft =4320
+                            LayoutCachedTop =2520
+                            LayoutCachedWidth =5280
+                            LayoutCachedHeight =2832
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =5370
+                    Top =2940
+                    Width =1488
+                    Height =312
+                    ColumnWidth =1488
+                    ColumnOrder =24
+                    TabIndex =23
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="SalesOrderLineID"
+                    ControlSource ="SalesOrderLineID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x4f1f562586d14a47937e58c70dd702ae
+                    End
+
+                    LayoutCachedLeft =5370
+                    LayoutCachedTop =2940
+                    LayoutCachedWidth =6858
+                    LayoutCachedHeight =3252
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =4320
+                            Top =2940
+                            Width =960
+                            Height =312
+                            Name ="SalesOrderLineID_Label"
+                            Caption ="SalesOrderLineID"
+                            GUID = Begin
+                                0x8f4c1fc295b4d241a7dbc25cdeee2394
+                            End
+                            LayoutCachedLeft =4320
+                            LayoutCachedTop =2940
+                            LayoutCachedWidth =5280
+                            LayoutCachedHeight =3252
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =5370
+                    Top =3360
+                    Width =1488
+                    Height =312
+                    ColumnWidth =1488
+                    ColumnOrder =25
+                    TabIndex =24
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="CustomerPOID"
+                    ControlSource ="CustomerPOID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xbe2e1ea857d41c48ac0a57bee59d0e57
+                    End
+
+                    LayoutCachedLeft =5370
+                    LayoutCachedTop =3360
+                    LayoutCachedWidth =6858
+                    LayoutCachedHeight =3672
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =4320
+                            Top =3360
+                            Width =960
+                            Height =312
+                            Name ="CustomerPOID_Label"
+                            Caption ="CustomerPOID"
+                            GUID = Begin
+                                0xbfb4c007304f7e4e9bf87710e9dfab71
+                            End
+                            LayoutCachedLeft =4320
+                            LayoutCachedTop =3360
+                            LayoutCachedWidth =5280
+                            LayoutCachedHeight =3672
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =5370
+                    Top =3780
+                    Width =2730
+                    Height =312
+                    ColumnWidth =3000
+                    ColumnOrder =26
+                    TabIndex =25
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="PONumber"
+                    ControlSource ="PONumber"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x0fd5f00e2ad68a4184c24093f719baa1
+                    End
+
+                    LayoutCachedLeft =5370
+                    LayoutCachedTop =3780
+                    LayoutCachedWidth =8100
+                    LayoutCachedHeight =4092
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =4320
+                            Top =3780
+                            Width =960
+                            Height =312
+                            Name ="PONumber_Label"
+                            Caption ="PONumber"
+                            GUID = Begin
+                                0x410d423190154f468869577316224a1a
+                            End
+                            LayoutCachedLeft =4320
+                            LayoutCachedTop =3780
+                            LayoutCachedWidth =5280
+                            LayoutCachedHeight =4092
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =5370
+                    Top =4200
+                    Width =1488
+                    Height =312
+                    ColumnWidth =1488
+                    ColumnOrder =27
+                    TabIndex =26
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="CustomerPOLineID"
+                    ControlSource ="CustomerPOLineID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xd790e99f6b96544f8a01cc4d022aa1f2
+                    End
+
+                    LayoutCachedLeft =5370
+                    LayoutCachedTop =4200
+                    LayoutCachedWidth =6858
+                    LayoutCachedHeight =4512
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =4320
+                            Top =4200
+                            Width =960
+                            Height =312
+                            Name ="CustomerPOLineID_Label"
+                            Caption ="CustomerPOLineID"
+                            GUID = Begin
+                                0xd8a0c14acc4aae488940a71fbb628e71
+                            End
+                            LayoutCachedLeft =4320
+                            LayoutCachedTop =4200
+                            LayoutCachedWidth =5280
+                            LayoutCachedHeight =4512
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =5370
+                    Top =4620
+                    Width =1488
+                    Height =312
+                    ColumnWidth =1488
+                    ColumnOrder =28
+                    TabIndex =27
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="InvoiceID"
+                    ControlSource ="InvoiceID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x684cdf085124284fbf365790c67f8d11
+                    End
+
+                    LayoutCachedLeft =5370
+                    LayoutCachedTop =4620
+                    LayoutCachedWidth =6858
+                    LayoutCachedHeight =4932
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =4320
+                            Top =4620
+                            Width =960
+                            Height =312
+                            Name ="InvoiceID_Label"
+                            Caption ="InvoiceID"
+                            GUID = Begin
+                                0x657fcdd088278c48b0fde18370f98fc5
+                            End
+                            LayoutCachedLeft =4320
+                            LayoutCachedTop =4620
+                            LayoutCachedWidth =5280
+                            LayoutCachedHeight =4932
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =5370
+                    Top =5040
+                    Width =2730
+                    Height =312
+                    ColumnWidth =3000
+                    ColumnOrder =29
+                    TabIndex =28
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="InvoiceNo"
+                    ControlSource ="InvoiceNo"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x4f3664ce53081d49b12e9dd2cb6526fd
+                    End
+
+                    LayoutCachedLeft =5370
+                    LayoutCachedTop =5040
+                    LayoutCachedWidth =8100
+                    LayoutCachedHeight =5352
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =4320
+                            Top =5040
+                            Width =960
+                            Height =312
+                            Name ="InvoiceNo_Label"
+                            Caption ="InvoiceNo"
+                            GUID = Begin
+                                0x9c9afc0dc818fb4a9aea427339fd6e83
+                            End
+                            LayoutCachedLeft =4320
+                            LayoutCachedTop =5040
+                            LayoutCachedWidth =5280
+                            LayoutCachedHeight =5352
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =5370
+                    Top =5460
+                    Width =1488
+                    Height =312
+                    ColumnWidth =1488
+                    ColumnOrder =30
+                    TabIndex =29
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="InvoiceLineID"
+                    ControlSource ="InvoiceLineID"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x6b1eaefadc52d649ac45ff20df203c9c
+                    End
+
+                    LayoutCachedLeft =5370
+                    LayoutCachedTop =5460
+                    LayoutCachedWidth =6858
+                    LayoutCachedHeight =5772
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =4320
+                            Top =5460
+                            Width =960
+                            Height =312
+                            Name ="InvoiceLineID_Label"
+                            Caption ="InvoiceLineID"
+                            GUID = Begin
+                                0x5192f89d5b8a8e4a8a71ad8c83b20516
+                            End
+                            LayoutCachedLeft =4320
+                            LayoutCachedTop =5460
+                            LayoutCachedWidth =5280
+                            LayoutCachedHeight =5772
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =5370
+                    Top =5880
+                    Width =2730
+                    Height =576
+                    ColumnWidth =3000
+                    ColumnOrder =31
+                    TabIndex =30
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="ReferenceDocument"
+                    ControlSource ="ReferenceDocument"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xa93fc52f3ac1534788ed6b6f49af9146
+                    End
+
+                    LayoutCachedLeft =5370
+                    LayoutCachedTop =5880
+                    LayoutCachedWidth =8100
+                    LayoutCachedHeight =6456
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =4320
+                            Top =5880
+                            Width =960
+                            Height =312
+                            Name ="ReferenceDocument_Label"
+                            Caption ="ReferenceDocument"
+                            GUID = Begin
+                                0xc2d2262c67a813419f226e0747fabe3e
+                            End
+                            LayoutCachedLeft =4320
+                            LayoutCachedTop =5880
+                            LayoutCachedWidth =5280
+                            LayoutCachedHeight =6192
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =5370
+                    Top =6540
+                    Width =2730
+                    Height =312
+                    ColumnWidth =3000
+                    ColumnOrder =32
+                    TabIndex =31
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="SourceDocumentType"
+                    ControlSource ="SourceDocumentType"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x2e5a1fc134f03b439269e0114b1ff3ce
+                    End
+
+                    LayoutCachedLeft =5370
+                    LayoutCachedTop =6540
+                    LayoutCachedWidth =8100
+                    LayoutCachedHeight =6852
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =4320
+                            Top =6540
+                            Width =960
+                            Height =312
+                            Name ="SourceDocumentType_Label"
+                            Caption ="SourceDocumentType"
+                            GUID = Begin
+                                0xa14df8982d355a408760f67736c9ca88
+                            End
+                            LayoutCachedLeft =4320
+                            LayoutCachedTop =6540
+                            LayoutCachedWidth =5280
+                            LayoutCachedHeight =6852
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =5370
+                    Top =6960
+                    Width =2730
+                    Height =576
+                    ColumnWidth =3000
+                    ColumnOrder =7
+                    TabIndex =3
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="Reason"
+                    ControlSource ="Reason"
+                    OnDblClick ="=OpenSelectedRecord()"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0xf631e2107d2fc3458a178d6f3a043ec7
+                    End
+
+                    LayoutCachedLeft =5370
+                    LayoutCachedTop =6960
+                    LayoutCachedWidth =8100
+                    LayoutCachedHeight =7536
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =4320
+                            Top =6960
+                            Width =960
+                            Height =312
+                            Name ="Reason_Label"
+                            Caption ="Reason"
+                            GUID = Begin
+                                0x4360e46628502d448e88c2a8cca869bb
+                            End
+                            LayoutCachedLeft =4320
+                            LayoutCachedTop =6960
+                            LayoutCachedWidth =5280
+                            LayoutCachedHeight =7272
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =9330
+                    Top =360
+                    Width =2130
+                    Height =1104
+                    ColumnWidth =3000
+                    ColumnOrder =8
+                    TabIndex =32
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="Notes"
+                    ControlSource ="Notes"
+                    OnDblClick ="=OpenSelectedRecord()"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x135258001308ae4489f40b820c1caf48
+                    End
+
+                    LayoutCachedLeft =9330
+                    LayoutCachedTop =360
+                    LayoutCachedWidth =11460
+                    LayoutCachedHeight =1464
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =8280
+                            Top =360
+                            Width =960
+                            Height =312
+                            Name ="Notes_Label"
+                            Caption ="Notes"
+                            GUID = Begin
+                                0xeff372b4fc207a459c294d5d3f94d63f
+                            End
+                            LayoutCachedLeft =8280
+                            LayoutCachedTop =360
+                            LayoutCachedWidth =9240
+                            LayoutCachedHeight =672
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+                Begin TextBox
+                    EnterKeyBehavior = NotDefault
+                    ScrollBars =2
+                    OverlapFlags =85
+                    TextFontFamily =34
+                    IMESentenceMode =3
+                    Left =9330
+                    Top =1560
+                    Width =2130
+                    Height =1104
+                    ColumnWidth =3000
+                    TabIndex =33
+                    BorderColor =14211288
+                    ForeColor =1315860
+                    Name ="MovementNotes"
+                    ControlSource ="MovementNotes"
+                    FontName ="Segoe UI"
+                    GUID = Begin
+                        0x79d5e14884967447b5f1228094073550
+                    End
+
+                    LayoutCachedLeft =9330
+                    LayoutCachedTop =1560
+                    LayoutCachedWidth =11460
+                    LayoutCachedHeight =2664
+                    BackThemeColorIndex =-1
+                    BorderThemeColorIndex =-1
+                    ThemeFontIndex =-1
+                    ForeThemeColorIndex =-1
+                    Begin
+                        Begin Label
+                            OverlapFlags =85
+                            Left =8280
+                            Top =1560
+                            Width =960
+                            Height =312
+                            Name ="MovementNotes_Label"
+                            Caption ="MovementNotes"
+                            GUID = Begin
+                                0xc563e09ff0ce474db77f40f4435621b0
+                            End
+                            LayoutCachedLeft =8280
+                            LayoutCachedTop =1560
+                            LayoutCachedWidth =9240
+                            LayoutCachedHeight =1872
+                            ForeThemeColorIndex =-1
+                        End
+                    End
+                End
+            End
+        End
+        Begin FormFooter
+            Height =0
+            BackColor =14482166
+            Name ="FormFooter"
+            OnClick ="=UX_ButtonOut()"
+            GUID = Begin
+                0x3d718137b5896445a563e9d1ec4ecca5
+            End
+            AutoHeight =1
+            AlternateBackShade =95.0
+        End
+    End
+End
+CodeBehindForm
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Compare Database
+Option Explicit
+
+Public Function OpenSelectedRecord() As Boolean
+
+    On Error GoTo Err_Handler
+
+    If Nz(Me!SalesOrderID, 0) > 0 Then
+        DoCmd.OpenForm "F_SalesOrders", acNormal, , "SalesOrderID = " & CLng(Me!SalesOrderID)
+        OpenSelectedRecord = True
+        Exit Function
+    End If
+
+    If Nz(Me!InvoiceID, 0) > 0 Then
+        DoCmd.OpenForm "F_Invoices", acNormal, , "InvoiceID = " & CLng(Me!InvoiceID)
+        OpenSelectedRecord = True
+        Exit Function
+    End If
+
+    If Nz(Me!CustomerPOID, 0) > 0 Then
+        DoCmd.OpenForm "F_CustomerPO", acNormal, , "CustomerPOID = " & CLng(Me!CustomerPOID)
+        OpenSelectedRecord = True
+        Exit Function
+    End If
+
+    If Nz(Me!ItemID, 0) > 0 Then
+        DoCmd.OpenForm "F_ItemSetup", acNormal, , "ItemID = " & CLng(Me!ItemID)
+        OpenSelectedRecord = True
+        Exit Function
+    End If
+
+    MsgBox "No linked document was found for this movement.", vbInformation, "Open Movement Source"
+
+Exit_Handler:
+    Exit Function
+
+Err_Handler:
+    MsgBox "The selected movement source could not be opened." & vbCrLf & vbCrLf & _
+           "Error Number: " & Err.Number & vbCrLf & _
+           "Details: " & Err.Description, vbExclamation, "Open Movement Source"
+    Resume Exit_Handler
+
+End Function

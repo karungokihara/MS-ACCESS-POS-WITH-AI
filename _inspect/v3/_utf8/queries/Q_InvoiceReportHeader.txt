@@ -1,0 +1,121 @@
+﻿dbMemo "SQL" ="SELECT I.InvoiceID, I.InvoiceNo, I.CustomerID, C.CustomerName, I.CustomerPOID, P"
+    "O.PONumber, I.SalesOrderID, SO.SalesOrderNo, I.InvoiceDate, I.InvoiceType, I.Pay"
+    "mentTerms, I.BillToName, I.BillToAddress, I.SubtotalAmount, I.TaxAmount, I.Grand"
+    "TotalAmount, I.InvoiceStatus, I.Notes, \"Value Transformation LLC\" AS CompanyNa"
+    "me, \"1211 Heath Church Road\" AS CompanyAddress1, \"Lexington, NC, 27292, phone"
+    ": 336-963-0119\" AS CompanyAddress2, \"email: Jon.Quigley@ValueTransform.com\" A"
+    "S CompanyEmail, \"Product Development Experts - Training and Consulting\" AS Com"
+    "panyFooter, Nz(I.Notes,\"\") AS InvoiceDescription\015\012FROM ((T_Invoices AS I"
+    " LEFT JOIN T_Customers AS C ON I.CustomerID = C.CustomerID) LEFT JOIN T_Customer"
+    "POs AS PO ON I.CustomerPOID = PO.CustomerPOID) LEFT JOIN T_SalesOrders AS SO ON "
+    "I.SalesOrderID = SO.SalesOrderID;\015\012"
+dbMemo "Connect" =""
+dbBoolean "ReturnsRecords" ="-1"
+dbInteger "ODBCTimeout" ="60"
+dbBoolean "OrderByOn" ="0"
+dbByte "Orientation" ="0"
+dbByte "DefaultView" ="2"
+dbBinary "GUID" = Begin
+    0x8a0b799ab490fa4097b9e550e9cdb5f5
+End
+dbBoolean "FilterOnLoad" ="0"
+dbBoolean "OrderByOnLoad" ="-1"
+dbByte "PublishToWeb" ="1"
+Begin
+    Begin
+        dbText "Name" ="I.InvoiceNo"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.InvoiceID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="InvoiceDescription"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.CustomerPOID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="C.CustomerName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.CustomerID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.SalesOrderID"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="PO.PONumber"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="SO.SalesOrderNo"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.InvoiceDate"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.InvoiceType"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.PaymentTerms"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.BillToName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.BillToAddress"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.SubtotalAmount"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.TaxAmount"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.GrandTotalAmount"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.InvoiceStatus"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="I.Notes"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="CompanyName"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="CompanyAddress1"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="CompanyAddress2"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="CompanyEmail"
+        dbLong "AggregateType" ="-1"
+    End
+    Begin
+        dbText "Name" ="CompanyFooter"
+        dbLong "AggregateType" ="-1"
+    End
+End
